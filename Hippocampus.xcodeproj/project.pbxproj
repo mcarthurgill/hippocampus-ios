@@ -22,6 +22,8 @@
 		281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CF1951EC7E00E6BE96 /* UIKit.framework */; };
 		281CA8F81951EC7E00E6BE96 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */; };
 		281CA8FA1951EC7E00E6BE96 /* HippocampusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */; };
+		281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA9081951ECBA00E6BE96 /* LXServer.m */; };
+		281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA90A1951ECBA00E6BE96 /* LXSession.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +58,10 @@
 		281CA8F51951EC7E00E6BE96 /* HippocampusTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HippocampusTests-Info.plist"; sourceTree = "<group>"; };
 		281CA8F71951EC7E00E6BE96 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HippocampusTests.m; sourceTree = "<group>"; };
+		281CA9071951ECBA00E6BE96 /* LXServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXServer.h; sourceTree = "<group>"; };
+		281CA9081951ECBA00E6BE96 /* LXServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXServer.m; sourceTree = "<group>"; };
+		281CA9091951ECBA00E6BE96 /* LXSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXSession.h; sourceTree = "<group>"; };
+		281CA90A1951ECBA00E6BE96 /* LXSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXSession.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,13 +121,13 @@
 		281CA8D11951EC7E00E6BE96 /* Hippocampus */ = {
 			isa = PBXGroup;
 			children = (
+				281CA8DD1951EC7E00E6BE96 /* Main.storyboard */,
 				281CA8DA1951EC7E00E6BE96 /* LXAppDelegate.h */,
 				281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */,
-				281CA8DD1951EC7E00E6BE96 /* Main.storyboard */,
-				281CA8E01951EC7E00E6BE96 /* LXFirstViewController.h */,
-				281CA8E11951EC7E00E6BE96 /* LXFirstViewController.m */,
-				281CA8E31951EC7E00E6BE96 /* LXSecondViewController.h */,
-				281CA8E41951EC7E00E6BE96 /* LXSecondViewController.m */,
+				281CA9061951ECA000E6BE96 /* Session */,
+				281CA9051951EC9C00E6BE96 /* Models */,
+				281CA9041951EC9700E6BE96 /* Assets */,
+				281CA9031951EC8E00E6BE96 /* View Controllers */,
 				281CA8E61951EC7E00E6BE96 /* Images.xcassets */,
 				281CA8D21951EC7E00E6BE96 /* Supporting Files */,
 			);
@@ -155,6 +161,42 @@
 				281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				281CA8E01951EC7E00E6BE96 /* LXFirstViewController.h */,
+				281CA8E11951EC7E00E6BE96 /* LXFirstViewController.m */,
+				281CA8E31951EC7E00E6BE96 /* LXSecondViewController.h */,
+				281CA8E41951EC7E00E6BE96 /* LXSecondViewController.m */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		281CA9041951EC9700E6BE96 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		281CA9051951EC9C00E6BE96 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		281CA9061951ECA000E6BE96 /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				281CA9071951ECBA00E6BE96 /* LXServer.h */,
+				281CA9081951ECBA00E6BE96 /* LXServer.m */,
+				281CA9091951ECBA00E6BE96 /* LXSession.h */,
+				281CA90A1951ECBA00E6BE96 /* LXSession.m */,
+			);
+			name = Session;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +299,10 @@
 			files = (
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
 				281CA8E21951EC7E00E6BE96 /* LXFirstViewController.m in Sources */,
+				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				281CA8E51951EC7E00E6BE96 /* LXSecondViewController.m in Sources */,
 				281CA8D81951EC7E00E6BE96 /* main.m in Sources */,
+				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
