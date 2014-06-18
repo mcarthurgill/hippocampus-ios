@@ -12,6 +12,8 @@ static LXSession* thisSession = nil;
 
 @implementation LXSession
 
+@synthesize user;
+
 //constructor
 -(id) init
 {
@@ -44,10 +46,10 @@ static LXSession* thisSession = nil;
 //set singleton variables
 - (void) setVariables
 {
-    //CTUser* u = [CTUser loggedInUser];
-    //if (u) {
-        //[self setUser:u];
-    //}
+    HCUser* u = [HCUser loggedInUser];
+    if (u) {
+        [self setUser:u];
+    }
 }
 
 

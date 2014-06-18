@@ -7,9 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HCUser.h"
 
 @interface LXSession : NSObject
 
 +(LXSession*) thisSession;
+
+@property (strong, nonatomic) HCUser* user;
 
 @end

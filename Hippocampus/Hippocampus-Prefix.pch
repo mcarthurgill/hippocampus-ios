@@ -17,4 +17,7 @@
     #import "AFNetworking.h"
     #import "LXServer.h"
     #import <CoreData/CoreData.h>
+    #import "HCUser.h"
+    #import "HCPerson.h"
+    #import "HCItem.h"
 #endif
