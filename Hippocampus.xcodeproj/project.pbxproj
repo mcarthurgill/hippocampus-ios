@@ -1,522 +1,1234 @@
-// !$*UTF8*$!
-{
-	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 46;
-	objects = {
-
-/* Begin PBXBuildFile section */
-		281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CB1951EC7E00E6BE96 /* Foundation.framework */; };
-		281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */; };
-		281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CF1951EC7E00E6BE96 /* UIKit.framework */; };
-		281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8D41951EC7E00E6BE96 /* InfoPlist.strings */; };
-		281CA8D81951EC7E00E6BE96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8D71951EC7E00E6BE96 /* main.m */; };
-		281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */; };
-		281CA8DF1951EC7E00E6BE96 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8DD1951EC7E00E6BE96 /* Main.storyboard */; };
-		281CA8E21951EC7E00E6BE96 /* LXFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8E11951EC7E00E6BE96 /* LXFirstViewController.m */; };
-		281CA8E51951EC7E00E6BE96 /* LXSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8E41951EC7E00E6BE96 /* LXSecondViewController.m */; };
-		281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8E61951EC7E00E6BE96 /* Images.xcassets */; };
-		281CA8EE1951EC7E00E6BE96 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8ED1951EC7E00E6BE96 /* XCTest.framework */; };
-		281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CB1951EC7E00E6BE96 /* Foundation.framework */; };
-		281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CF1951EC7E00E6BE96 /* UIKit.framework */; };
-		281CA8F81951EC7E00E6BE96 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */; };
-		281CA8FA1951EC7E00E6BE96 /* HippocampusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */; };
-		281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA9081951ECBA00E6BE96 /* LXServer.m */; };
-		281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA90A1951ECBA00E6BE96 /* LXSession.m */; };
-/* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		281CA8F11951EC7E00E6BE96 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 281CA8C01951EC7E00E6BE96 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 281CA8C71951EC7E00E6BE96;
-			remoteInfo = Hippocampus;
-		};
-/* End PBXContainerItemProxy section */
-
-/* Begin PBXFileReference section */
-		281CA8C81951EC7E00E6BE96 /* Hippocampus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hippocampus.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		281CA8CB1951EC7E00E6BE96 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		281CA8CF1951EC7E00E6BE96 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		281CA8D31951EC7E00E6BE96 /* Hippocampus-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Hippocampus-Info.plist"; sourceTree = "<group>"; };
-		281CA8D51951EC7E00E6BE96 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		281CA8D71951EC7E00E6BE96 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		281CA8D91951EC7E00E6BE96 /* Hippocampus-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Hippocampus-Prefix.pch"; sourceTree = "<group>"; };
-		281CA8DA1951EC7E00E6BE96 /* LXAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXAppDelegate.h; sourceTree = "<group>"; };
-		281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LXAppDelegate.m; sourceTree = "<group>"; };
-		281CA8DE1951EC7E00E6BE96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		281CA8E01951EC7E00E6BE96 /* LXFirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXFirstViewController.h; sourceTree = "<group>"; };
-		281CA8E11951EC7E00E6BE96 /* LXFirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LXFirstViewController.m; sourceTree = "<group>"; };
-		281CA8E31951EC7E00E6BE96 /* LXSecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXSecondViewController.h; sourceTree = "<group>"; };
-		281CA8E41951EC7E00E6BE96 /* LXSecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LXSecondViewController.m; sourceTree = "<group>"; };
-		281CA8E61951EC7E00E6BE96 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HippocampusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		281CA8ED1951EC7E00E6BE96 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		281CA8F51951EC7E00E6BE96 /* HippocampusTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HippocampusTests-Info.plist"; sourceTree = "<group>"; };
-		281CA8F71951EC7E00E6BE96 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HippocampusTests.m; sourceTree = "<group>"; };
-		281CA9071951ECBA00E6BE96 /* LXServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXServer.h; sourceTree = "<group>"; };
-		281CA9081951ECBA00E6BE96 /* LXServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXServer.m; sourceTree = "<group>"; };
-		281CA9091951ECBA00E6BE96 /* LXSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXSession.h; sourceTree = "<group>"; };
-		281CA90A1951ECBA00E6BE96 /* LXSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXSession.m; sourceTree = "<group>"; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		281CA8C51951EC7E00E6BE96 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */,
-				281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
-				281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		281CA8E91951EC7E00E6BE96 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				281CA8EE1951EC7E00E6BE96 /* XCTest.framework in Frameworks */,
-				281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
-				281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXGroup section */
-		281CA8BF1951EC7E00E6BE96 = {
-			isa = PBXGroup;
-			children = (
-				281CA8D11951EC7E00E6BE96 /* Hippocampus */,
-				281CA8F31951EC7E00E6BE96 /* HippocampusTests */,
-				281CA8CA1951EC7E00E6BE96 /* Frameworks */,
-				281CA8C91951EC7E00E6BE96 /* Products */,
-			);
-			sourceTree = "<group>";
-		};
-		281CA8C91951EC7E00E6BE96 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				281CA8C81951EC7E00E6BE96 /* Hippocampus.app */,
-				281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		281CA8CA1951EC7E00E6BE96 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				281CA8CB1951EC7E00E6BE96 /* Foundation.framework */,
-				281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */,
-				281CA8CF1951EC7E00E6BE96 /* UIKit.framework */,
-				281CA8ED1951EC7E00E6BE96 /* XCTest.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		281CA8D11951EC7E00E6BE96 /* Hippocampus */ = {
-			isa = PBXGroup;
-			children = (
-				281CA8DD1951EC7E00E6BE96 /* Main.storyboard */,
-				281CA8DA1951EC7E00E6BE96 /* LXAppDelegate.h */,
-				281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */,
-				281CA9061951ECA000E6BE96 /* Session */,
-				281CA9051951EC9C00E6BE96 /* Models */,
-				281CA9041951EC9700E6BE96 /* Assets */,
-				281CA9031951EC8E00E6BE96 /* View Controllers */,
-				281CA8E61951EC7E00E6BE96 /* Images.xcassets */,
-				281CA8D21951EC7E00E6BE96 /* Supporting Files */,
-			);
-			path = Hippocampus;
-			sourceTree = "<group>";
-		};
-		281CA8D21951EC7E00E6BE96 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				281CA8D31951EC7E00E6BE96 /* Hippocampus-Info.plist */,
-				281CA8D41951EC7E00E6BE96 /* InfoPlist.strings */,
-				281CA8D71951EC7E00E6BE96 /* main.m */,
-				281CA8D91951EC7E00E6BE96 /* Hippocampus-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		281CA8F31951EC7E00E6BE96 /* HippocampusTests */ = {
-			isa = PBXGroup;
-			children = (
-				281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */,
-				281CA8F41951EC7E00E6BE96 /* Supporting Files */,
-			);
-			path = HippocampusTests;
-			sourceTree = "<group>";
-		};
-		281CA8F41951EC7E00E6BE96 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				281CA8F51951EC7E00E6BE96 /* HippocampusTests-Info.plist */,
-				281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				281CA8E01951EC7E00E6BE96 /* LXFirstViewController.h */,
-				281CA8E11951EC7E00E6BE96 /* LXFirstViewController.m */,
-				281CA8E31951EC7E00E6BE96 /* LXSecondViewController.h */,
-				281CA8E41951EC7E00E6BE96 /* LXSecondViewController.m */,
-			);
-			name = "View Controllers";
-			sourceTree = "<group>";
-		};
-		281CA9041951EC9700E6BE96 /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Assets;
-			sourceTree = "<group>";
-		};
-		281CA9051951EC9C00E6BE96 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Models;
-			sourceTree = "<group>";
-		};
-		281CA9061951ECA000E6BE96 /* Session */ = {
-			isa = PBXGroup;
-			children = (
-				281CA9071951ECBA00E6BE96 /* LXServer.h */,
-				281CA9081951ECBA00E6BE96 /* LXServer.m */,
-				281CA9091951ECBA00E6BE96 /* LXSession.h */,
-				281CA90A1951ECBA00E6BE96 /* LXSession.m */,
-			);
-			name = Session;
-			sourceTree = "<group>";
-		};
-/* End PBXGroup section */
-
-/* Begin PBXNativeTarget section */
-		281CA8C71951EC7E00E6BE96 /* Hippocampus */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 281CA8FD1951EC7E00E6BE96 /* Build configuration list for PBXNativeTarget "Hippocampus" */;
-			buildPhases = (
-				281CA8C41951EC7E00E6BE96 /* Sources */,
-				281CA8C51951EC7E00E6BE96 /* Frameworks */,
-				281CA8C61951EC7E00E6BE96 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = Hippocampus;
-			productName = Hippocampus;
-			productReference = 281CA8C81951EC7E00E6BE96 /* Hippocampus.app */;
-			productType = "com.apple.product-type.application";
-		};
-		281CA8EB1951EC7E00E6BE96 /* HippocampusTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 281CA9001951EC7E00E6BE96 /* Build configuration list for PBXNativeTarget "HippocampusTests" */;
-			buildPhases = (
-				281CA8E81951EC7E00E6BE96 /* Sources */,
-				281CA8E91951EC7E00E6BE96 /* Frameworks */,
-				281CA8EA1951EC7E00E6BE96 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				281CA8F21951EC7E00E6BE96 /* PBXTargetDependency */,
-			);
-			name = HippocampusTests;
-			productName = HippocampusTests;
-			productReference = 281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-/* End PBXNativeTarget section */
-
-/* Begin PBXProject section */
-		281CA8C01951EC7E00E6BE96 /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				CLASSPREFIX = LX;
-				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = LXV;
-				TargetAttributes = {
-					281CA8EB1951EC7E00E6BE96 = {
-						TestTargetID = 281CA8C71951EC7E00E6BE96;
-					};
-				};
-			};
-			buildConfigurationList = 281CA8C31951EC7E00E6BE96 /* Build configuration list for PBXProject "Hippocampus" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-				Base,
-			);
-			mainGroup = 281CA8BF1951EC7E00E6BE96;
-			productRefGroup = 281CA8C91951EC7E00E6BE96 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				281CA8C71951EC7E00E6BE96 /* Hippocampus */,
-				281CA8EB1951EC7E00E6BE96 /* HippocampusTests */,
-			);
-		};
-/* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		281CA8C61951EC7E00E6BE96 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */,
-				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
-				281CA8DF1951EC7E00E6BE96 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		281CA8EA1951EC7E00E6BE96 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				281CA8F81951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		281CA8C41951EC7E00E6BE96 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
-				281CA8E21951EC7E00E6BE96 /* LXFirstViewController.m in Sources */,
-				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
-				281CA8E51951EC7E00E6BE96 /* LXSecondViewController.m in Sources */,
-				281CA8D81951EC7E00E6BE96 /* main.m in Sources */,
-				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		281CA8E81951EC7E00E6BE96 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				281CA8FA1951EC7E00E6BE96 /* HippocampusTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		281CA8F21951EC7E00E6BE96 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 281CA8C71951EC7E00E6BE96 /* Hippocampus */;
-			targetProxy = 281CA8F11951EC7E00E6BE96 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		281CA8D41951EC7E00E6BE96 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				281CA8D51951EC7E00E6BE96 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		281CA8DD1951EC7E00E6BE96 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				281CA8DE1951EC7E00E6BE96 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				281CA8F71951EC7E00E6BE96 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
-/* Begin XCBuildConfiguration section */
-		281CA8FB1951EC7E00E6BE96 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-			};
-			name = Debug;
-		};
-		281CA8FC1951EC7E00E6BE96 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				SDKROOT = iphoneos;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		281CA8FE1951EC7E00E6BE96 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
-				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		281CA8FF1951EC7E00E6BE96 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
-				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		281CA9011951EC7E00E6BE96 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		281CA9021951EC7E00E6BE96 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
-				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
-/* End XCBuildConfiguration section */
-
-/* Begin XCConfigurationList section */
-		281CA8C31951EC7E00E6BE96 /* Build configuration list for PBXProject "Hippocampus" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				281CA8FB1951EC7E00E6BE96 /* Debug */,
-				281CA8FC1951EC7E00E6BE96 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		281CA8FD1951EC7E00E6BE96 /* Build configuration list for PBXNativeTarget "Hippocampus" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				281CA8FE1951EC7E00E6BE96 /* Debug */,
-				281CA8FF1951EC7E00E6BE96 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-		281CA9001951EC7E00E6BE96 /* Build configuration list for PBXNativeTarget "HippocampusTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				281CA9011951EC7E00E6BE96 /* Debug */,
-				281CA9021951EC7E00E6BE96 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-		};
-/* End XCConfigurationList section */
-	};
-	rootObject = 281CA8C01951EC7E00E6BE96 /* Project object */;
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>archiveVersion</key>
+	<string>1</string>
+	<key>classes</key>
+	<dict/>
+	<key>objectVersion</key>
+	<string>46</string>
+	<key>objects</key>
+	<dict>
+		<key>273C203826C44A489B4BC08C</key>
+		<dict>
+			<key>fileRef</key>
+			<string>DE8247FA37024A189440AC3C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8BF1951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8D11951EC7E00E6BE96</string>
+				<string>281CA8F31951EC7E00E6BE96</string>
+				<string>281CA8CA1951EC7E00E6BE96</string>
+				<string>281CA8C91951EC7E00E6BE96</string>
+				<string>2D1CA383F6474C8B855EDE4C</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8C01951EC7E00E6BE96</key>
+		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>CLASSPREFIX</key>
+				<string>LX</string>
+				<key>LastUpgradeCheck</key>
+				<string>0510</string>
+				<key>ORGANIZATIONNAME</key>
+				<string>LXV</string>
+				<key>TargetAttributes</key>
+				<dict>
+					<key>281CA8EB1951EC7E00E6BE96</key>
+					<dict>
+						<key>TestTargetID</key>
+						<string>281CA8C71951EC7E00E6BE96</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>buildConfigurationList</key>
+			<string>281CA8C31951EC7E00E6BE96</string>
+			<key>compatibilityVersion</key>
+			<string>Xcode 3.2</string>
+			<key>developmentRegion</key>
+			<string>English</string>
+			<key>hasScannedForEncodings</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXProject</string>
+			<key>knownRegions</key>
+			<array>
+				<string>en</string>
+				<string>Base</string>
+			</array>
+			<key>mainGroup</key>
+			<string>281CA8BF1951EC7E00E6BE96</string>
+			<key>productRefGroup</key>
+			<string>281CA8C91951EC7E00E6BE96</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectReferences</key>
+			<array/>
+			<key>projectRoot</key>
+			<string></string>
+			<key>targets</key>
+			<array>
+				<string>281CA8C71951EC7E00E6BE96</string>
+				<string>281CA8EB1951EC7E00E6BE96</string>
+			</array>
+		</dict>
+		<key>281CA8C31951EC7E00E6BE96</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>281CA8FB1951EC7E00E6BE96</string>
+				<string>281CA8FC1951EC7E00E6BE96</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>281CA8C41951EC7E00E6BE96</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>281CA8DC1951EC7E00E6BE96</string>
+				<string>281CA8E21951EC7E00E6BE96</string>
+				<string>281CA90C1951ECBA00E6BE96</string>
+				<string>281CA8E51951EC7E00E6BE96</string>
+				<string>281CA8D81951EC7E00E6BE96</string>
+				<string>281CA90B1951ECBA00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>281CA8C51951EC7E00E6BE96</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>281CA8CE1951EC7E00E6BE96</string>
+				<string>281CA8D01951EC7E00E6BE96</string>
+				<string>281CA8CC1951EC7E00E6BE96</string>
+				<string>273C203826C44A489B4BC08C</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>281CA8C61951EC7E00E6BE96</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>281CA8E71951EC7E00E6BE96</string>
+				<string>281CA8D61951EC7E00E6BE96</string>
+				<string>281CA8DF1951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXResourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>281CA8C71951EC7E00E6BE96</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>281CA8FD1951EC7E00E6BE96</string>
+			<key>buildPhases</key>
+			<array>
+				<string>F9B47DB1943142BBA8425D85</string>
+				<string>281CA8C41951EC7E00E6BE96</string>
+				<string>281CA8C51951EC7E00E6BE96</string>
+				<string>281CA8C61951EC7E00E6BE96</string>
+				<string>D8CB7745B36648E88B33C586</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>Hippocampus</string>
+			<key>productName</key>
+			<string>Hippocampus</string>
+			<key>productReference</key>
+			<string>281CA8C81951EC7E00E6BE96</string>
+			<key>productType</key>
+			<string>com.apple.product-type.application</string>
+		</dict>
+		<key>281CA8C81951EC7E00E6BE96</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.application</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>Hippocampus.app</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>281CA8C91951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8C81951EC7E00E6BE96</string>
+				<string>281CA8EC1951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8CA1951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8CB1951EC7E00E6BE96</string>
+				<string>281CA8CD1951EC7E00E6BE96</string>
+				<string>281CA8CF1951EC7E00E6BE96</string>
+				<string>281CA8ED1951EC7E00E6BE96</string>
+				<string>DE8247FA37024A189440AC3C</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8CB1951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>Foundation.framework</string>
+			<key>path</key>
+			<string>System/Library/Frameworks/Foundation.framework</string>
+			<key>sourceTree</key>
+			<string>SDKROOT</string>
+		</dict>
+		<key>281CA8CC1951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8CB1951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8CD1951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>CoreGraphics.framework</string>
+			<key>path</key>
+			<string>System/Library/Frameworks/CoreGraphics.framework</string>
+			<key>sourceTree</key>
+			<string>SDKROOT</string>
+		</dict>
+		<key>281CA8CE1951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8CD1951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8CF1951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>UIKit.framework</string>
+			<key>path</key>
+			<string>System/Library/Frameworks/UIKit.framework</string>
+			<key>sourceTree</key>
+			<string>SDKROOT</string>
+		</dict>
+		<key>281CA8D01951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8CF1951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8D11951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8DD1951EC7E00E6BE96</string>
+				<string>281CA8DA1951EC7E00E6BE96</string>
+				<string>281CA8DB1951EC7E00E6BE96</string>
+				<string>281CA9061951ECA000E6BE96</string>
+				<string>281CA9051951EC9C00E6BE96</string>
+				<string>281CA9041951EC9700E6BE96</string>
+				<string>281CA9031951EC8E00E6BE96</string>
+				<string>281CA8E61951EC7E00E6BE96</string>
+				<string>281CA8D21951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Hippocampus</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8D21951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8D31951EC7E00E6BE96</string>
+				<string>281CA8D41951EC7E00E6BE96</string>
+				<string>281CA8D71951EC7E00E6BE96</string>
+				<string>281CA8D91951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Supporting Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8D31951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>Hippocampus-Info.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8D41951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8D51951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXVariantGroup</string>
+			<key>name</key>
+			<string>InfoPlist.strings</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8D51951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.strings</string>
+			<key>name</key>
+			<string>en</string>
+			<key>path</key>
+			<string>en.lproj/InfoPlist.strings</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8D61951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8D41951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8D71951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>main.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8D81951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8D71951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8D91951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>Hippocampus-Prefix.pch</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8DA1951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>LXAppDelegate.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8DB1951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>LXAppDelegate.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8DC1951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8DB1951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8DD1951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8DE1951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXVariantGroup</string>
+			<key>name</key>
+			<string>Main.storyboard</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8DE1951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>file.storyboard</string>
+			<key>name</key>
+			<string>Base</string>
+			<key>path</key>
+			<string>Base.lproj/Main.storyboard</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8DF1951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8DD1951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8E01951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>LXFirstViewController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8E11951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>LXFirstViewController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8E21951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8E11951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8E31951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>LXSecondViewController.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8E41951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>LXSecondViewController.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8E51951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8E41951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8E61951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>folder.assetcatalog</string>
+			<key>path</key>
+			<string>Images.xcassets</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8E71951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8E61951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8E81951EC7E00E6BE96</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>281CA8FA1951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>281CA8E91951EC7E00E6BE96</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>281CA8EE1951EC7E00E6BE96</string>
+				<string>281CA8F01951EC7E00E6BE96</string>
+				<string>281CA8EF1951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>281CA8EA1951EC7E00E6BE96</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>281CA8F81951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXResourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>281CA8EB1951EC7E00E6BE96</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>281CA9001951EC7E00E6BE96</string>
+			<key>buildPhases</key>
+			<array>
+				<string>281CA8E81951EC7E00E6BE96</string>
+				<string>281CA8E91951EC7E00E6BE96</string>
+				<string>281CA8EA1951EC7E00E6BE96</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array>
+				<string>281CA8F21951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>HippocampusTests</string>
+			<key>productName</key>
+			<string>HippocampusTests</string>
+			<key>productReference</key>
+			<string>281CA8EC1951EC7E00E6BE96</string>
+			<key>productType</key>
+			<string>com.apple.product-type.bundle.unit-test</string>
+		</dict>
+		<key>281CA8EC1951EC7E00E6BE96</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.cfbundle</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>HippocampusTests.xctest</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>281CA8ED1951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>wrapper.framework</string>
+			<key>name</key>
+			<string>XCTest.framework</string>
+			<key>path</key>
+			<string>Library/Frameworks/XCTest.framework</string>
+			<key>sourceTree</key>
+			<string>DEVELOPER_DIR</string>
+		</dict>
+		<key>281CA8EE1951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8ED1951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8EF1951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8CB1951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8F01951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8CF1951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8F11951EC7E00E6BE96</key>
+		<dict>
+			<key>containerPortal</key>
+			<string>281CA8C01951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXContainerItemProxy</string>
+			<key>proxyType</key>
+			<string>1</string>
+			<key>remoteGlobalIDString</key>
+			<string>281CA8C71951EC7E00E6BE96</string>
+			<key>remoteInfo</key>
+			<string>Hippocampus</string>
+		</dict>
+		<key>281CA8F21951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXTargetDependency</string>
+			<key>target</key>
+			<string>281CA8C71951EC7E00E6BE96</string>
+			<key>targetProxy</key>
+			<string>281CA8F11951EC7E00E6BE96</string>
+		</dict>
+		<key>281CA8F31951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8F91951EC7E00E6BE96</string>
+				<string>281CA8F41951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>HippocampusTests</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8F41951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8F51951EC7E00E6BE96</string>
+				<string>281CA8F61951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Supporting Files</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8F51951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.xml</string>
+			<key>path</key>
+			<string>HippocampusTests-Info.plist</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8F61951EC7E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8F71951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXVariantGroup</string>
+			<key>name</key>
+			<string>InfoPlist.strings</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8F71951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.strings</string>
+			<key>name</key>
+			<string>en</string>
+			<key>path</key>
+			<string>en.lproj/InfoPlist.strings</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8F81951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8F61951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8F91951EC7E00E6BE96</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>HippocampusTests.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA8FA1951EC7E00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA8F91951EC7E00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA8FB1951EC7E00E6BE96</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_SYMBOLS_PRIVATE_EXTERN</key>
+				<string>NO</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>7.1</string>
+				<key>ONLY_ACTIVE_ARCH</key>
+				<string>YES</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>281CA8FC1951EC7E00E6BE96</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++0x</string>
+				<key>CLANG_CXX_LIBRARY</key>
+				<string>libc++</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>CODE_SIGN_IDENTITY[sdk=iphoneos*]</key>
+				<string>iPhone Developer</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>YES</string>
+				<key>ENABLE_NS_ASSERTIONS</key>
+				<string>NO</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu99</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>7.1</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>281CA8FD1951EC7E00E6BE96</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>281CA8FE1951EC7E00E6BE96</string>
+				<string>281CA8FF1951EC7E00E6BE96</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>281CA8FE1951EC7E00E6BE96</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>2D1CA383F6474C8B855EDE4C</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
+				<string>AppIcon</string>
+				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
+				<string>LaunchImage</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Hippocampus/Hippocampus-Prefix.pch</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Hippocampus/Hippocampus-Info.plist</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>WRAPPER_EXTENSION</key>
+				<string>app</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>281CA8FF1951EC7E00E6BE96</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>2D1CA383F6474C8B855EDE4C</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
+				<string>AppIcon</string>
+				<key>ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME</key>
+				<string>LaunchImage</string>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Hippocampus/Hippocampus-Prefix.pch</string>
+				<key>INFOPLIST_FILE</key>
+				<string>Hippocampus/Hippocampus-Info.plist</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>WRAPPER_EXTENSION</key>
+				<string>app</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>281CA9001951EC7E00E6BE96</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>281CA9011951EC7E00E6BE96</string>
+				<string>281CA9021951EC7E00E6BE96</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>281CA9011951EC7E00E6BE96</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>BUNDLE_LOADER</key>
+				<string>$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus</string>
+				<key>FRAMEWORK_SEARCH_PATHS</key>
+				<array>
+					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
+					<string>$(inherited)</string>
+					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
+				</array>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Hippocampus/Hippocampus-Prefix.pch</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>INFOPLIST_FILE</key>
+				<string>HippocampusTests/HippocampusTests-Info.plist</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>TEST_HOST</key>
+				<string>$(BUNDLE_LOADER)</string>
+				<key>WRAPPER_EXTENSION</key>
+				<string>xctest</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>281CA9021951EC7E00E6BE96</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>BUNDLE_LOADER</key>
+				<string>$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus</string>
+				<key>FRAMEWORK_SEARCH_PATHS</key>
+				<array>
+					<string>$(SDKROOT)/Developer/Library/Frameworks</string>
+					<string>$(inherited)</string>
+					<string>$(DEVELOPER_FRAMEWORKS_DIR)</string>
+				</array>
+				<key>GCC_PRECOMPILE_PREFIX_HEADER</key>
+				<string>YES</string>
+				<key>GCC_PREFIX_HEADER</key>
+				<string>Hippocampus/Hippocampus-Prefix.pch</string>
+				<key>INFOPLIST_FILE</key>
+				<string>HippocampusTests/HippocampusTests-Info.plist</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>TEST_HOST</key>
+				<string>$(BUNDLE_LOADER)</string>
+				<key>WRAPPER_EXTENSION</key>
+				<string>xctest</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>281CA9031951EC8E00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA8E01951EC7E00E6BE96</string>
+				<string>281CA8E11951EC7E00E6BE96</string>
+				<string>281CA8E31951EC7E00E6BE96</string>
+				<string>281CA8E41951EC7E00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>View Controllers</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA9041951EC9700E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Assets</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA9051951EC9C00E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Models</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA9061951ECA000E6BE96</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>281CA9071951ECBA00E6BE96</string>
+				<string>281CA9081951ECBA00E6BE96</string>
+				<string>281CA9091951ECBA00E6BE96</string>
+				<string>281CA90A1951ECBA00E6BE96</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Session</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA9071951ECBA00E6BE96</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>LXServer.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA9081951ECBA00E6BE96</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>LXServer.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA9091951ECBA00E6BE96</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>path</key>
+			<string>LXSession.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA90A1951ECBA00E6BE96</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.objc</string>
+			<key>path</key>
+			<string>LXSession.m</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>281CA90B1951ECBA00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA9081951ECBA00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>281CA90C1951ECBA00E6BE96</key>
+		<dict>
+			<key>fileRef</key>
+			<string>281CA90A1951ECBA00E6BE96</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2D1CA383F6474C8B855EDE4C</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods.xcconfig</string>
+			<key>path</key>
+			<string>Pods/Pods.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D8CB7745B36648E88B33C586</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Copy Pods Resources</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${SRCROOT}/Pods/Pods-resources.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>DE8247FA37024A189440AC3C</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>archive.ar</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>libPods.a</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>F9B47DB1943142BBA8425D85</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputPaths</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>Check Pods Manifest.lock</string>
+			<key>outputPaths</key>
+			<array/>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>diff "${PODS_ROOT}/../Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [[ $? != 0 ]] ; then
+    cat &lt;&lt; EOM
+error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.
+EOM
+    exit 1
+fi
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+	</dict>
+	<key>rootObject</key>
+	<string>281CA8C01951EC7E00E6BE96</string>
+</dict>
+</plist>
