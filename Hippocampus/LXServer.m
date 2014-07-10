@@ -54,6 +54,8 @@
 + (id) addToDatabase:(NSString *)modelName object:(NSDictionary *)object primaryKeyName:(NSString *)primaryKeyName withMapping:(NSDictionary *)mapping
 {
     
+    NSLog(@"object: %@", object);
+    
     if (!NULL_TO_NIL([object valueForKey:@"id"])) {
         return nil;
     }
@@ -79,9 +81,53 @@
         }
     }
     
+    if ([newObject updatedAt] && [[newObject updatedAt] length] > 0) {
+        NSLog(@"lastUpdatedAt: %f", [[NSDate timeWithString:[newObject updatedAt]] timeIntervalSince1970]);
+        if ([modelName isEqualToString:@"HCItem"]) {
+            //update last item update
+            [[[LXSession thisSession] user] setLastItemUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject updatedAt]] timeIntervalSince1970]] ];
+        } else if ([modelName isEqualToString:@"HCBucket"]) {
+            //update last bucket update
+            [[[LXSession thisSession] user] setLastBucketUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject updatedAt]] timeIntervalSince1970]] ];
+        }
+    }
+    
     [[newObject managedObjectContext] save:nil];
     
     return newObject;
+}
+
++ (void) addArrayToDatabase:(NSString*)modelName array:(NSArray*)array primaryKeyName:(NSString *)primaryKey withMapping:(NSDictionary *)mapping
+{
+    for (int i = 0; i < array.count; ++i) {
+        [LXServer addToDatabase:modelName object:[array objectAtIndex:i] primaryKeyName:primaryKey withMapping:mapping];
+    }
+}
+
++ (void) saveObject:(id)object withPath:(NSString*)path method:(NSString*)method mapping:(NSDictionary*)mapping success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] init];
+    NSArray* keys = [mapping allKeys];
+    NSLog(@"Keys: %@", mapping);
+    for (int i = 0; i < keys.count; ++i) {
+        NSString* core_key = keys[i];
+        NSString* json_key = [mapping objectForKey:core_key];
+        if ([object valueForKey:core_key] && ![core_key isEqualToString:@"createdAt"] && ![core_key isEqualToString:@"updatedAt"] && ![core_key isEqualToString:@"id"]) {
+            [parameters setValue:[object valueForKey:core_key] forKey:json_key];
+        }
+    }
+    NSDictionary* finalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:parameters, [object serverObjectName], nil];
+    NSLog(@"finalParameters: %@", finalParameters);
+    [[LXServer shared] requestPath:path withMethod:method withParamaters:finalParameters
+                           success:^(id responseObject) {
+                               if (successCallback)
+                                   successCallback(responseObject);
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback)
+                                   failureCallback(error);
+                           }
+     ];
 }
 
 - (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:params success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback

@@ -7,6 +7,7 @@
 //
 
 #import "LXAppDelegate.h"
+#import "HCMainTabBarController.h"
 
 @implementation LXAppDelegate
 
@@ -18,14 +19,23 @@
 {
     // Override point for customization after application launch.
     
-    if ([[LXSession thisSession] user]) {
-        //go on to main board
-        NSLog(@"FOUND USER: %@", [[[LXSession thisSession] user] userID]);
-    } else {
-        
-    }
+    if ([self shouldPresentLoginViews])
+        [self setRootStoryboard:@"Login"];
     
     return YES;
+}
+
+- (BOOL) shouldPresentLoginViews
+{
+    NSLog(@"USER: %@", [[LXSession thisSession] user]);
+    return ![[LXSession thisSession] user];
+}
+
+- (void) setRootStoryboard:(NSString*)name
+{
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:name bundle:[NSBundle mainBundle]];
+    self.window.rootViewController = [storyboard instantiateInitialViewController];
+    [self.window makeKeyAndVisible];
 }
 							
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -65,6 +75,15 @@
 }
 
 
+# pragma mark login methods
+
+- (void) presentLoginViews:(BOOL)animated
+{
+    [(HCMainTabBarController*)self.window.rootViewController presentLoginViews:animated];
+}
+
+
+# pragma mark managed object context
 
 
 // 1

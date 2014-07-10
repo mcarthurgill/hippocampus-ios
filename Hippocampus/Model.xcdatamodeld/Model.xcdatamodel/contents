@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13C64" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="HCItem" representedClassName="HCItem" syncable="YES">
-        <attribute name="itemID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="personID" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="reminderDate" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="HCBucket" representedClassName="HCBucket" syncable="YES">
+        <attribute name="bucketDescription" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="bucketID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="bucketType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="HCPerson" representedClassName="HCPerson" syncable="YES">
-        <attribute name="first_name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="last_name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="location" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="personID" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="HCItem" representedClassName="HCItem" syncable="YES">
+        <attribute name="bucketID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="inputMethod" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="itemID" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="itemType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="message" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reminderDate" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="status" optional="YES" attributeType="String" indexed="YES" syncable="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="HCUser" representedClassName="HCUser" syncable="YES">
         <attribute name="countryCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="createdAt" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastBucketUpdateTime" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lastItemUpdateTime" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="loggedInUser" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="updatedAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="HCUser" positionX="-63" positionY="-18" width="128" height="103"/>
-        <element name="HCPerson" positionX="-54" positionY="18" width="128" height="118"/>
-        <element name="HCItem" positionX="-36" positionY="54" width="128" height="135"/>
+        <element name="HCUser" positionX="-63" positionY="-18" width="128" height="163"/>
+        <element name="HCItem" positionX="-36" positionY="54" width="128" height="193"/>
+        <element name="HCBucket" positionX="-18" positionY="117" width="128" height="163"/>
     </elements>
 </model>

@@ -18,6 +18,7 @@
     #import "LXServer.h"
     #import <CoreData/CoreData.h>
     #import "HCUser.h"
-    #import "HCPerson.h"
+    #import "HCBucket.h"
     #import "HCItem.h"
+    #import "LXDate+RailsTimeConverter.h"
 #endif

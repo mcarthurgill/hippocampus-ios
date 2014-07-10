@@ -1,27 +1,24 @@
 //
-//  HCItem.m
+//  HCBucket.m
 //  Hippocampus
 //
-//  Created by Will Schreiber on 6/18/14.
+//  Created by Will Schreiber on 7/8/14.
 //  Copyright (c) 2014 LXV. All rights reserved.
 //
 
-#import "HCItem.h"
+#import "HCBucket.h"
 #import "LXAppDelegate.h"
 
-@implementation HCItem
+@implementation HCBucket
 
-@dynamic itemID;
-@dynamic message;
-@dynamic bucketID;
-@dynamic userID;
-@dynamic itemType;
-@dynamic reminderDate;
 @dynamic createdAt;
 @dynamic updatedAt;
-@dynamic inputMethod;
-@dynamic status;
-
+@dynamic bucketID;
+@dynamic bucketDescription;
+@dynamic firstName;
+@dynamic lastName;
+@dynamic userID;
+@dynamic bucketType;
 
 - (id) create
 {
@@ -41,42 +38,41 @@
                                                              @"userID": @"user_id",
                                                              @"createdAt": @"created_at",
                                                              @"updatedAt": @"updated_at",
-                                                             @"itemID": @"id",
-                                                             @"message": @"message",
-                                                             @"itemType": @"item_type",
-                                                             @"reminderDate": @"reminder_date",
-                                                             @"inputMethod": @"input_method",
-                                                             @"status": @"status",
-                                                             @"bucketID": @"bucket_id"
+                                                             @"bucketID": @"id",
+                                                             @"bucketDescription": @"description",
+                                                             @"firstName": @"first_name",
+                                                             @"lastName": @"last_name",
+                                                             @"bucketType": @"bucket_type"
                                                              }];
 }
 
 
-+ (NSArray*) allItems
++ (NSArray*) bucketTypes
 {
-    return [self items:@"all" ascending:NO index:0 limit:500];
+    return [[NSArray alloc] initWithObjects:@"Person", @"Place", @"Event", @"Other", nil];
 }
 
 
-+ (NSArray*) items:(NSString*)status ascending:(BOOL)ascending index:(NSUInteger)index limit:(NSUInteger)number
++ (NSArray*) allBuckets
+{
+    return [self buckets:@"all" ascending:YES index:0 limit:0];
+}
+
++ (NSArray*) buckets:(NSString *)type ascending:(BOOL)ascending index:(NSUInteger)index limit:(NSUInteger)number
 {
     NSManagedObjectContext *moc = [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] managedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription
-                                              entityForName:@"HCItem" inManagedObjectContext:moc];
+                                              entityForName:@"HCBucket" inManagedObjectContext:moc];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:entityDescription];
     [request setReturnsObjectsAsFaults:NO];
     
-    if (![status isEqualToString:@"all"]) {
+    if (![type isEqualToString:@"all"]) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:
-                                  @"(status == %@) AND (status <> %@)", status, @"deleted"];
-        [request setPredicate:predicate];
-    } else {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:
-                                  @"(status <> %@)", @"deleted"];
+                                  @"(bucketType == %@)", type];
         [request setPredicate:predicate];
     }
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"createdAt" ascending:ascending];
+    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"firstName" ascending:ascending];
     [request setSortDescriptors:@[descriptor]];
     
     if (number > 0) {
@@ -97,24 +93,30 @@
 }
 
 
+- (NSString*) titleString
+{
+    return (self.firstName && self.firstName.length > 0 && self.lastName && self.lastName.length > 0) ? [NSString stringWithFormat:@"%@ %@", self.firstName, self.lastName] : (self.firstName && self.firstName.length > 0 ? self.firstName : @"Untitled");
+}
+
 - (void) saveWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
+    [[self managedObjectContext] save:nil];
+    
     NSString* method = @"PUT";
-    NSString* path = [NSString stringWithFormat:@"/%@s/%@.json", [self serverObjectName], self.itemID];
-    if (!self.itemID || self.itemID.length == 0) {
+    NSString* path = [NSString stringWithFormat:@"/%@s/%@.json", [self serverObjectName], self.bucketID];
+    if (!self.bucketID || self.bucketID.length == 0) {
         method = @"POST";
         path = [NSString stringWithFormat:@"/%@s.json", [self serverObjectName]];
-        [self setInputMethod:@"ios"];
     }
     if (!self.userID || self.userID.length == 0) {
         [self setUserID:[[[LXSession thisSession] user] userID]];
     }
-    [LXServer saveObject:self withPath:path method:method mapping:[HCItem resourceKeysForPropertyKeys]
+    [LXServer saveObject:self withPath:path method:method mapping:[HCBucket resourceKeysForPropertyKeys]
                  success:^(id responseObject) {
-                     if ((!self.itemID || self.itemID.length == 0) && [responseObject objectForKey:@"id"]) {
+                     if ((!self.bucketID || self.bucketID.length == 0) && [responseObject objectForKey:@"id"]) {
                          [self destroy];
                      }
-                     [LXServer addToDatabase:[self coreObjectName] object:responseObject primaryKeyName:@"itemID" withMapping:[HCItem resourceKeysForPropertyKeys]];
+                     [LXServer addToDatabase:[self coreObjectName] object:responseObject primaryKeyName:@"bucketID" withMapping:[HCBucket resourceKeysForPropertyKeys]];
                      if (successCallback)
                          successCallback(responseObject);
                  }
@@ -127,13 +129,17 @@
 
 - (NSString*) serverObjectName
 {
-    return @"item";
+    return @"bucket";
 }
 
 - (NSString*) coreObjectName
 {
-    return @"HCItem";
+    return @"HCBucket";
 }
 
+- (BOOL) isPersonType
+{
+    return self.bucketType && ([self.bucketType isEqualToString:@"Person"] || [self.bucketType isEqualToString:@"person"]);
+}
 
 @end
