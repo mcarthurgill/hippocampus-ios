@@ -17,5 +17,6 @@
 - (IBAction)saveAction:(id)sender;
 
 - (void) saveReminder:(NSString*)reminder;
+- (void) saveUpdatedMessage:(NSString *)updatedMessage; 
 
 @end
