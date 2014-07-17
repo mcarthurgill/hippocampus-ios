@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSMutableArray* sections;
 
 @property (strong, nonatomic) NSMutableArray* allItems;
+@property (strong, nonatomic) NSMutableArray* outstandingItems;
 
 - (IBAction)refreshControllerChanged:(id)sender;
 - (IBAction)addAction:(id)sender;

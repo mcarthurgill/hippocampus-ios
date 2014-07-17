@@ -11,5 +11,11 @@
 @interface HCItemTableViewController : UITableViewController
 
 @property (strong, nonatomic) HCItem* item;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
+@property (strong, nonatomic) NSMutableArray* sections;
+
+- (IBAction)saveAction:(id)sender;
+
+- (void) saveReminder:(NSString*)reminder;
 
 @end

@@ -12,4 +12,10 @@
 
 @property (strong, nonatomic) HCBucket* bucket;
 
+@property (strong, nonatomic) NSMutableArray* sections;
+@property (strong, nonatomic) NSMutableArray* allItems;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *addButton;
+
+- (IBAction)addAction:(id)sender;
+
 @end

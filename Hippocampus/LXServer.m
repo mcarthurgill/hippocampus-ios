@@ -81,14 +81,22 @@
         }
     }
     
-    if ([newObject updatedAt] && [[newObject updatedAt] length] > 0) {
-        NSLog(@"lastUpdatedAt: %f", [[NSDate timeWithString:[newObject updatedAt]] timeIntervalSince1970]);
+    if ([modelName isEqualToString:@"HCBucket"]) {
+        [newObject setValue:[newObject titleString] forKey:@"name"];
+    }
+    
+    if ([newObject createdAt] && [[newObject createdAt] length] > 0) {
+        NSLog(@"lastCreatedAt: %f", [[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970]);
         if ([modelName isEqualToString:@"HCItem"]) {
             //update last item update
-            [[[LXSession thisSession] user] setLastItemUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject updatedAt]] timeIntervalSince1970]] ];
+            if ([[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970] > [[[[LXSession thisSession] user] lastItemUpdateTime] doubleValue]) {
+                [[[LXSession thisSession] user] setLastItemUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970]] ];
+            }
         } else if ([modelName isEqualToString:@"HCBucket"]) {
             //update last bucket update
-            [[[LXSession thisSession] user] setLastBucketUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject updatedAt]] timeIntervalSince1970]] ];
+            if ([[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970] > [[[[LXSession thisSession] user] lastBucketUpdateTime] doubleValue]) {
+                [[[LXSession thisSession] user] setLastBucketUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970]] ];
+            }
         }
     }
     

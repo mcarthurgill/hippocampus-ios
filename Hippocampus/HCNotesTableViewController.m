@@ -34,12 +34,16 @@
     [super viewDidLoad];
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self refreshChange];
+    [self reloadScreen];
+}
+
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self reloadScreen];
-    [self refreshChange];
 }
 
 - (void)didReceiveMemoryWarning
@@ -52,7 +56,8 @@
 
 - (void) reloadScreen
 {
-    self.allItems = [[NSMutableArray alloc] initWithArray:[HCItem allItems]];
+    self.allItems = [[NSMutableArray alloc] initWithArray:[HCItem items:@"assigned" ascending:NO index:0 limit:2000]];
+    self.outstandingItems = [[NSMutableArray alloc] initWithArray:[HCItem items:@"outstanding" ascending:YES index:0 limit:0]];
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
 }
@@ -61,6 +66,10 @@
 {
     // Return the number of sections.
     self.sections = [[NSMutableArray alloc] init];
+    
+    if (self.outstandingItems.count > 0) {
+        [self.sections addObject:@"outstanding"];
+    }
     
     [self.sections addObject:@"all"];
     
@@ -72,6 +81,8 @@
     // Return the number of rows in the section.
     if ([[self.sections objectAtIndex:section] isEqualToString:@"all"]) {
         return self.allItems.count;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"outstanding"]) {
+        return self.outstandingItems.count;
     }
     return 0;
 }
@@ -80,16 +91,16 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-        return [self itemCellForTableView:tableView cellForRowAtIndexPath:indexPath];
+        return [self itemCellForTableView:tableView withItem:[self.allItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"outstanding"]) {
+        return [self itemCellForTableView:tableView withItem:[self.outstandingItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
 
-- (UITableViewCell*) itemCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(HCItem*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
-    
-    HCItem* item = [self.allItems objectAtIndex:indexPath.row];
     
     UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
     float leftMargin = note.frame.origin.x;
@@ -104,6 +115,10 @@
     [note setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.contentView addSubview:note];
     
+    UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
+    [timestamp setText:[NSString stringWithFormat:@"%@%@", [NSDate timeAgoInWordsFromDatetime:item.createdAt], ([item bucket] ? [NSString stringWithFormat:@" - %@", [item bucket].titleString] : @"")]];
+    
+    //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
     return cell;
 }
 
@@ -123,19 +138,40 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         HCItem* item = [self.allItems objectAtIndex:indexPath.row];
-        return [self heightForText:item.message width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f;
+        return [self heightForText:item.message width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"outstanding"]) {
+        HCItem* item = [self.outstandingItems objectAtIndex:indexPath.row];
+        return [self heightForText:item.message width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
     }
     return 44.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
         [itvc setItem:[self.allItems objectAtIndex:indexPath.row]];
+        [self.navigationController pushViewController:itvc animated:YES];
     }
-    [self.navigationController pushViewController:itvc animated:YES];
+    else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"outstanding"]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"selectBucketTableViewController"];
+        [itvc setItem:[self.outstandingItems objectAtIndex:indexPath.row]];
+        [self.navigationController pushViewController:itvc animated:YES];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"all"]) {
+        return @"All Notes";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"outstanding"]) {
+        return @"Pending Action";
+    }
+    return nil;
 }
 
 

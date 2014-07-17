@@ -27,16 +27,30 @@
 
 - (void) destroy;
 
+- (void) destroyAllOfType;
+
 + (NSMutableDictionary *)resourceKeysForPropertyKeys;
 
 + (NSArray*) allItems;
 
++ (NSArray*) search:(NSString*)text;
+
 + (NSArray*) items:(NSString*)status ascending:(BOOL)ascending index:(NSUInteger)index limit:(NSUInteger)number;
+
++ (NSArray*) items:(NSString*)status ascending:(BOOL)ascending ascendingCriterion:(NSString*)ascendingCriterion index:(NSUInteger)index limit:(NSUInteger)number;
+
++ (NSArray*) items:(NSString*)status withPredicate:(NSPredicate*)pred ascending:(BOOL)ascending ascendingCriterion:(NSString*)ascendingCriterion index:(NSUInteger)index limit:(NSUInteger)number;
 
 - (void) saveWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 - (NSString*) serverObjectName;
 
 - (NSString*) coreObjectName;
+
+- (void) assignAndSaveToBucket:(HCBucket*)bucket;
+
+- (HCBucket*) bucket;
+
+- (NSDate*) reminder;
 
 @end

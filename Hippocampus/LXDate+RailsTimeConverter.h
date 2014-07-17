@@ -12,4 +12,10 @@
 
 + (NSDate*) timeWithString:(NSString*)string;
 
++ (NSString*) timeAgoInWords:(double)relativeTimestamp;
+
++ (NSString*) timeAgoInWordsFromDatetime:(NSString*)string;
+
++ (NSString*) timeAgoActualFromDatetime:(NSString*)string;
+
 @end

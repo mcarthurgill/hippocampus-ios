@@ -21,4 +21,6 @@
     #import "HCBucket.h"
     #import "HCItem.h"
     #import "LXDate+RailsTimeConverter.h"
+    #import "MBProgressHUD.h"
+    #import "NSArray+Alphabet.h"
 #endif

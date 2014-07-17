@@ -16,6 +16,9 @@
 
 @synthesize cancelButton;
 @synthesize saveButton;
+@synthesize bucketID;
+@synthesize text;
+@synthesize tV;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -30,11 +33,11 @@
 {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    [self setText:@""];
+    keyboardHeight = 0.0f;
+    count = 0;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardChanged:) name:UIKeyboardDidChangeFrameNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -48,74 +51,55 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return 0;
+    return 1;
 }
 
-/*
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"textCell" forIndexPath:indexPath];
+    UITextView* textView = (UITextView*)[cell.contentView viewWithTag:1];
+    [textView becomeFirstResponder];
+    [textView setText:self.text];
+    [textView setDelegate:self];
+    [self setTV:textView];
+    [self.tV scrollRectToVisible:CGRectMake(1, 1, 10, 10) animated:NO];
+    [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    CGFloat height = self.view.window.frame.size.height - [[UIApplication sharedApplication] statusBarFrame].size.height - self.navigationController.navigationBar.frame.size.height - keyboardHeight;
+    return height;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+# pragma mark keyboard
+
+- (void) keyboardChanged:(NSNotification*)notification
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    NSDictionary* info = [notification userInfo];
+    //CGPoint from = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].origin;
+    CGPoint to = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].origin;
+    keyboardHeight = self.view.window.frame.size.height - to.y;
+    
+    if (count < 1) {
+        [self.tableView reloadData];
+        ++count;
+        //[self.tV setContentOffset:CGPointZero animated:NO];
+        //[self.tV setContentOffset:CGPointMake(0, 0)];
+        //[self.tV scrollRectToVisible:CGRectMake(1, 1, 10, 10) animated:NO];
+    }
+    
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+# pragma  mark actions
 
 - (IBAction)cancelAction:(id)sender
 {
@@ -124,7 +108,32 @@
 
 - (IBAction)saveAction:(id)sender
 {
+    if (self.tV.text.length > 0) {
+        HCItem* item = [[HCItem alloc] create];
+        [item setMessage:self.tV.text];
+        [item setItemType:@"note"];
+        if (self.bucketID && self.bucketID.length > 0) {
+            [item setBucketID:self.bucketID];
+            [item setStatus:@"assigned"];
+        }
+        [item saveWithSuccess:^(id responseBlock) {
+                [self dismissViewControllerAnimated:YES completion:nil];
+                NSLog(@"SUCCESS! %@", responseBlock);
+            }
+            failure:^(NSError *error) {
+                NSLog(@"Error! %@", [error localizedDescription]);
+            }
+        ];
+    } else {
+        [self cancelAction:nil];
+    }
 }
 
+# pragma mark text view delegate
+
+- (void) textViewDidChange:(UITextView *)textView
+{
+    [self setText:textView.text];
+}
 
 @end

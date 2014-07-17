@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HCNewItemTableViewController : UITableViewController
+@interface HCNewItemTableViewController : UITableViewController <UITextViewDelegate> {
+    CGFloat keyboardHeight;
+    int count;
+}
+
+@property (strong, nonatomic) NSString* text;
+@property (strong, nonatomic) UITextView* tV;
+
+@property (strong, nonatomic) NSString* bucketID;
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;

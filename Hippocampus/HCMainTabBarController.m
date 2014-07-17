@@ -26,7 +26,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showNoteView:) name:@"openNewItemScreen" object:nil];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -49,6 +50,18 @@
     UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
     UIViewController * loginController = [storyboard instantiateInitialViewController];
     [self presentViewController:loginController animated:animated completion:nil];
+}
+
+- (void) presentNoteView:(BOOL)animated
+{
+    UIStoryboard * storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    UINavigationController * nc = [storyboard instantiateViewControllerWithIdentifier:@"newItemNavigationController"];
+    [self presentViewController:nc animated:animated completion:nil];
+}
+
+- (void) showNoteView:(NSNotification*)notification
+{
+    [self presentNoteView:NO];
 }
 
 @end

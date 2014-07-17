@@ -44,6 +44,9 @@
 		281CA949196CA22100E6BE96 /* HCNewItemTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA948196CA22100E6BE96 /* HCNewItemTableViewController.m */; };
 		281CA94C196D9EE100E6BE96 /* HCNewBucketIITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA94B196D9EE100E6BE96 /* HCNewBucketIITableViewController.m */; };
 		281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */; };
+		2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827B8491970B6D900F595D9 /* HCReminderViewController.m */; };
+		28BD3EAC196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAB196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m */; };
+		28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +116,12 @@
 		281CA94B196D9EE100E6BE96 /* HCNewBucketIITableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCNewBucketIITableViewController.m; sourceTree = "<group>"; };
 		281CA94E196DB62A00E6BE96 /* LXDate+RailsTimeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LXDate+RailsTimeConverter.h"; sourceTree = "<group>"; };
 		281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LXDate+RailsTimeConverter.m"; sourceTree = "<group>"; };
+		2827B8481970B6D900F595D9 /* HCReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCReminderViewController.h; sourceTree = "<group>"; };
+		2827B8491970B6D900F595D9 /* HCReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCReminderViewController.m; sourceTree = "<group>"; };
+		28BD3EAA196F3F6700BBF5B0 /* HCSelectBucketTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCSelectBucketTableViewController.h; sourceTree = "<group>"; };
+		28BD3EAB196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCSelectBucketTableViewController.m; sourceTree = "<group>"; };
+		28BD3EAD196F519B00BBF5B0 /* NSArray+Alphabet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Alphabet.h"; sourceTree = "<group>"; };
+		28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Alphabet.m"; sourceTree = "<group>"; };
 		2D1CA383F6474C8B855EDE4C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		DE8247FA37024A189440AC3C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -325,6 +334,10 @@
 				281CA93E196C8D0500E6BE96 /* HCItemTableViewController.m */,
 				281CA947196CA22100E6BE96 /* HCNewItemTableViewController.h */,
 				281CA948196CA22100E6BE96 /* HCNewItemTableViewController.m */,
+				28BD3EAA196F3F6700BBF5B0 /* HCSelectBucketTableViewController.h */,
+				28BD3EAB196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m */,
+				2827B8481970B6D900F595D9 /* HCReminderViewController.h */,
+				2827B8491970B6D900F595D9 /* HCReminderViewController.m */,
 			);
 			name = Item;
 			sourceTree = "<group>";
@@ -347,6 +360,8 @@
 			children = (
 				281CA94E196DB62A00E6BE96 /* LXDate+RailsTimeConverter.h */,
 				281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */,
+				28BD3EAD196F519B00BBF5B0 /* NSArray+Alphabet.h */,
+				28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -494,11 +509,14 @@
 			files = (
 				281CA929196C2C2900E6BE96 /* HCLoginViewController.m in Sources */,
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
+				28BD3EAC196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				281CA9111951F36700E6BE96 /* Model.xcdatamodeld in Sources */,
 				281CA930196C3C9400E6BE96 /* HCBucket.m in Sources */,
 				281CA949196CA22100E6BE96 /* HCNewItemTableViewController.m in Sources */,
 				281CA92D196C309E00E6BE96 /* HCMainTabBarController.m in Sources */,
+				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,
+				2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */,
 				281CA9141951F4F800E6BE96 /* HCUser.m in Sources */,
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
 				281CA934196C457500E6BE96 /* HCNotesTableViewController.m in Sources */,

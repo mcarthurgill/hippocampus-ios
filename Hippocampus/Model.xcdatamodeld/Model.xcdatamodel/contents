@@ -7,6 +7,7 @@
         <attribute name="createdAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="firstName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="updatedAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
@@ -33,8 +34,8 @@
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="HCUser" positionX="-63" positionY="-18" width="128" height="163"/>
+        <element name="HCBucket" positionX="-18" positionY="117" width="128" height="180"/>
         <element name="HCItem" positionX="-36" positionY="54" width="128" height="193"/>
-        <element name="HCBucket" positionX="-18" positionY="117" width="128" height="163"/>
+        <element name="HCUser" positionX="-63" positionY="-18" width="128" height="163"/>
     </elements>
 </model>

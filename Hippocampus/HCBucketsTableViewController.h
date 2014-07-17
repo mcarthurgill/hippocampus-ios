@@ -12,9 +12,9 @@
 
 @property (strong, nonatomic) IBOutlet UIRefreshControl *refreshControl;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
-@property (strong, nonatomic) NSMutableArray* sections;
 
-@property (strong, nonatomic) NSMutableArray* allBuckets;
+@property (strong, nonatomic) NSMutableArray* sections;
+@property (strong, nonatomic) NSMutableArray* bucketsArray;
 
 - (IBAction)refreshControllerChanged:(id)sender;
 - (IBAction)addAction:(id)sender;

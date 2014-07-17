@@ -8,10 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HCSearchTableViewController : UITableViewController
+@interface HCSearchTableViewController : UITableViewController <UISearchBarDelegate>
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *doneButton;
+
+@property (strong, nonatomic) NSMutableArray* sections;
+@property (strong, nonatomic) NSMutableArray* bucketsArray;
+@property (strong, nonatomic) NSMutableArray* itemsArray;
 
 - (IBAction)doneAction:(id)sender;
 

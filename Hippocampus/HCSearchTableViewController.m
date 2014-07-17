@@ -7,6 +7,8 @@
 //
 
 #import "HCSearchTableViewController.h"
+#import "HCBucketTableViewController.h"
+#import "HCItemTableViewController.h"
 
 @interface HCSearchTableViewController ()
 
@@ -52,81 +54,169 @@
 
 #pragma mark - Table view data source
 
+- (void) reloadScreen
+{
+    self.bucketsArray = [[NSMutableArray alloc] initWithArray:[HCBucket search:self.searchBar.text]];
+    self.itemsArray = [[NSMutableArray alloc] initWithArray:[HCItem search:self.searchBar.text]];
+    [self.tableView reloadData];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return 0;
+    self.sections = [[NSMutableArray alloc] init];
+    
+    [self.sections addObject:@"items"];
+    [self.sections addObject:@"buckets"];
+    
+    return self.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"items"]) {
+        return self.itemsArray.count;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
+        return self.bucketsArray.count;
+    }
     return 0;
 }
 
-/*
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"items"]) {
+        return [self itemCellForTableView:tableView withItem:[self.itemsArray objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+        return [self bucketCellForTableView:tableView cellForRowAtIndexPath:indexPath];
+    }
+    return nil;
+}
+
+
+- (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(HCItem*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
     
-    // Configure the cell...
+    UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
+    float leftMargin = note.frame.origin.x;
+    float topMargin = note.frame.origin.y;
+    float width = note.frame.size.width;
+    [note removeFromSuperview];
+    
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:item.message width:width font:note.font])];
+    [note setText:item.message];
+    [note setTag:1];
+    [note setNumberOfLines:0];
+    [note setLineBreakMode:NSLineBreakByWordWrapping];
+    [cell.contentView addSubview:note];
+    
+    UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
+    [timestamp setText:[NSString stringWithFormat:@"%@%@", [NSDate timeAgoInWordsFromDatetime:item.createdAt], ([item bucket] ? [NSString stringWithFormat:@" - %@", [item bucket].titleString] : @"")]];
+    
+    //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
+    return cell;
+}
+
+- (UITableViewCell*) bucketCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    HCBucket* bucket = [self.bucketsArray objectAtIndex:indexPath.row];
+    
+    NSString* identifier = @"bucketCell";
+    if ([bucket descriptionText]) {
+        identifier = @"bucketAndDescriptionCell";
+    }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    
+    UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
+    [note setAttributedText:[bucket titleAttributedString]];
+    
+    if ([bucket descriptionText]) {
+        UILabel* description = (UILabel*)[cell.contentView viewWithTag:2];
+        [description setText:[bucket descriptionText]];
+    }
     
     return cell;
 }
-*/
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+    NSDictionary *attributes = @{NSFontAttributeName: font};
+    // NSString class method: boundingRectWithSize:options:attributes:context is
+    // available only on ios7.0 sdk.
+    CGRect rect = [text boundingRectWithSize:CGSizeMake(width, 100000)
+                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                  attributes:attributes
+                                     context:nil];
+    return rect.size.height;
 }
-*/
 
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"items"]) {
+        HCItem* item = [self.itemsArray objectAtIndex:indexPath.row];
+        return [self heightForText:item.message width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"] && [(HCBucket*)[self.bucketsArray objectAtIndex:indexPath.row] descriptionText]) {
+        return 60.0f;
+    }
+    return 44.0;
 }
-*/
 
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"items"]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
+        [itvc setItem:[self.itemsArray objectAtIndex:indexPath.row]];
+        [self.navigationController pushViewController:itvc animated:YES];
+    }
+    else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        HCBucketTableViewController* itvc = (HCBucketTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketTableViewController"];
+        [itvc setBucket:[self.bucketsArray objectAtIndex:indexPath.row]];
+        [self.navigationController pushViewController:itvc animated:YES];
+    }
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-*/
 
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"items"] && self.itemsArray.count > 0) {
+        return @"Notes";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"] && self.bucketsArray.count > 0) {
+        return @"Stacks";
+    }
+    return nil;
 }
-*/
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+# pragma mark actions
 
 - (IBAction)doneAction:(id)sender
 {
     [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+
+# pragma mark scroll view delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.searchBar resignFirstResponder];
+}
+
+
+# pragma mark search bar delegate
+
+- (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [self reloadScreen];
+}
+
+- (void) searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [self reloadScreen];
 }
 
 @end
