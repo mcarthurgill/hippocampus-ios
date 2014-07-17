@@ -174,7 +174,15 @@
     return nil;
 }
 
-
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
+            [self deleteItem:[[self allItems] objectAtIndex:indexPath.row]];
+        } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"outstanding"]) {
+            [self deleteItem:[[self outstandingItems] objectAtIndex:indexPath.row]];
+        }
+    }
+}
 
 
 # pragma mark refresh controller
@@ -218,5 +226,16 @@
     return NO;
 }
 
+#pragma mark deletions
+
+- (void) deleteItem:(HCItem *)item {
+    [item setStatus:@"deleted"];
+    [item saveWithSuccess:^(id responseObject) {
+        NSLog(@"SUCCESS!: %@", responseObject);
+        [self reloadScreen]; 
+    } failure:^(NSError* error) {
+        NSLog(@"FAIL! %@", [error localizedDescription]);
+    }];
+}
 
 @end
