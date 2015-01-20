@@ -9,6 +9,7 @@
 #import "HCItemTableViewController.h"
 #import "HCReminderViewController.h"
 #import "HCBucketTableViewController.h"
+#import "HCEditItemViewController.h"
 
 @interface HCItemTableViewController ()
 
@@ -207,6 +208,12 @@
         HCBucketTableViewController* itvc = (HCBucketTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketTableViewController"];
         [itvc setBucket:self.item.bucket];
         [self.navigationController pushViewController:itvc animated:YES];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        HCEditItemViewController* itvc = (HCEditItemViewController*)[storyboard instantiateViewControllerWithIdentifier:@"editItemViewController"];
+        [itvc setItem:self.item];
+        [itvc setDelegate:self];
+        [self presentViewController:itvc animated:YES completion:nil];
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -223,6 +230,17 @@
         } failure:^(NSError* error) {
             NSLog(@"FAIL! %@", [error localizedDescription]);
         }];
+}
+
+- (void) saveUpdatedMessage:(NSString*)updatedMessage
+{
+    [self.item setMessage:updatedMessage];
+    [self.item saveWithSuccess:^(id responseObject) {
+        NSLog(@"SUCCESS!: %@", responseObject);
+        [self.navigationController popViewControllerAnimated:YES];
+    } failure:^(NSError* error) {
+        NSLog(@"FAIL! %@", [error localizedDescription]);
+    }];
 }
 
 - (IBAction)saveAction:(id)sender

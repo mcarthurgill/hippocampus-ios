@@ -144,6 +144,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
+            [self deleteItem:[[self allItems] objectAtIndex:indexPath.row]];
+        }
+    }
+}
+
 
 # pragma  mark actions
 
@@ -153,5 +161,17 @@
     UINavigationController* itvc = (UINavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"newItemNavigationController"];
     [(HCNewItemTableViewController*)[[itvc viewControllers] firstObject] setBucketID:self.bucket.bucketID];
     [self presentViewController:itvc animated:NO completion:nil];
+}
+
+#pragma mark deletions
+
+- (void) deleteItem:(HCItem *)item {
+    [item setStatus:@"deleted"];
+    [item saveWithSuccess:^(id responseObject) {
+        NSLog(@"SUCCESS!: %@", responseObject);
+        [self reloadScreen];
+    } failure:^(NSError* error) {
+        NSLog(@"FAIL! %@", [error localizedDescription]);
+    }];
 }
 @end
