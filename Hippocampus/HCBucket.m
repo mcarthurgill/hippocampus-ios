@@ -23,7 +23,7 @@
 
 - (id) create
 {
-    NSManagedObjectContext *moc = [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
     return [NSEntityDescription insertNewObjectForEntityForName:[self coreObjectName] inManagedObjectContext:moc];
 }
 
@@ -35,7 +35,7 @@
 
 - (void) destroyAllOfType
 {
-    NSManagedObjectContext *moc = [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription
                                               entityForName:[self coreObjectName] inManagedObjectContext:moc];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -175,7 +175,7 @@
 
 + (NSArray*) bucketsWithPredicate:(NSPredicate *)predicate ascending:(BOOL)ascending index:(NSUInteger)index limit:(NSUInteger)number
 {
-    NSManagedObjectContext *moc = [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription
                                               entityForName:@"HCBucket" inManagedObjectContext:moc];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -207,7 +207,7 @@
 
 + (HCBucket*) mostRecentlyCreatedBucket
 {
-    NSManagedObjectContext *moc = [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription
                                               entityForName:@"HCBucket" inManagedObjectContext:moc];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];

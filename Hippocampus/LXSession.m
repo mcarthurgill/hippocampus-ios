@@ -14,6 +14,10 @@ static LXSession* thisSession = nil;
 
 @synthesize user;
 
+@synthesize managedObjectModel;
+@synthesize managedObjectContext;
+@synthesize persistentStoreCoordinator;
+
 //constructor
 -(id) init
 {
@@ -21,7 +25,6 @@ static LXSession* thisSession = nil;
         return thisSession;
     }
     self = [super init];
-    [self setVariables];
     return self;
 }
 

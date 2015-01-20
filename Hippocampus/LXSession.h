@@ -15,4 +15,10 @@
 
 @property (strong, nonatomic) HCUser* user;
 
+@property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+- (void) setVariables;
+
 @end

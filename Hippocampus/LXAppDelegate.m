@@ -11,13 +11,16 @@
 
 @implementation LXAppDelegate
 
-@synthesize managedObjectContext = _managedObjectContext;
-@synthesize managedObjectModel = _managedObjectModel;
-@synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    //initialize the core data variables and put in the session
+    [self managedObjectContext];
+    [self persistentStoreCoordinator];
+    [self managedObjectModel];
+    
+    [[LXSession thisSession] setVariables];
     
     if ([self shouldPresentLoginViews])
         [self setRootStoryboard:@"Login"];
@@ -45,7 +48,7 @@
     
     NSLog(@"applicationWillResignActive");
     
-    NSManagedObjectContext *moc = [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
     NSError* error;
     if (![moc save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
@@ -68,6 +71,12 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
+    
+    [[[LXSession thisSession] user]
+     getNewItemsSuccess:^(id responseObject) {
+     } failure:^(NSError *error) {
+     }
+     ];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -89,44 +98,49 @@
 
 // 1
 - (NSManagedObjectContext *) managedObjectContext {
-    if (_managedObjectContext != nil) {
-        return _managedObjectContext;
-    }
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        _managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [_managedObjectContext setPersistentStoreCoordinator: coordinator];
+    if ([[LXSession thisSession] managedObjectContext] != nil) {
+        return [[LXSession thisSession] managedObjectContext];
     }
     
-    return _managedObjectContext;
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if (coordinator != nil) {
+        [LXSession thisSession].managedObjectContext = [[NSManagedObjectContext alloc] init];
+        [[LXSession thisSession].managedObjectContext setPersistentStoreCoordinator: coordinator];
+    }
+    
+    return [LXSession thisSession].managedObjectContext;
 }
 
 //2
 - (NSManagedObjectModel *)managedObjectModel {
-    if (_managedObjectModel != nil) {
-        return _managedObjectModel;
+    if ([[LXSession thisSession] managedObjectModel] != nil) {
+        return [[LXSession thisSession] managedObjectModel];
     }
-    _managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+    [LXSession thisSession].managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     
-    return _managedObjectModel;
+    return [LXSession thisSession].managedObjectModel;
 }
 
 //3
 - (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    if (_persistentStoreCoordinator != nil) {
-        return _persistentStoreCoordinator;
+    if ([LXSession thisSession].persistentStoreCoordinator != nil) {
+        return [LXSession thisSession].persistentStoreCoordinator;
     }
     NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory]
                                                stringByAppendingPathComponent: @"Model.sqlite"]];
     NSError *error = nil;
-    _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
-                                   initWithManagedObjectModel:[self managedObjectModel]];
-    if(![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                                  configuration:nil URL:storeUrl options:nil error:&error]) {
+    NSDictionary *options = @{
+                              NSMigratePersistentStoresAutomaticallyOption : @YES,
+                              NSInferMappingModelAutomaticallyOption : @YES
+                              };
+    [LXSession thisSession].persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
+                                                          initWithManagedObjectModel:[self managedObjectModel]];
+    if(![[LXSession thisSession].persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
+                                                                         configuration:nil URL:storeUrl options:options error:&error]) {
         /*Error for store creation should be handled in here*/
     }
     
-    return _persistentStoreCoordinator;
+    return [[LXSession thisSession] persistentStoreCoordinator];
 }
 
 - (NSString *)applicationDocumentsDirectory {

@@ -127,7 +127,7 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         HCItem* item = [self.allItems objectAtIndex:indexPath.row];
-        return [self heightForText:item.message width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
+        return [self heightForText:item.message width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f;
     }
     return 44.0;
 }

@@ -28,7 +28,7 @@
 
 + (id) getObjectFromModel:(NSString*)modelName primaryKeyName:(NSString*)primaryKeyName primaryKey:(NSString*)primaryKey
 {
-    NSManagedObjectContext *moc = [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
     NSEntityDescription *entityDescription = [NSEntityDescription
                                               entityForName:modelName inManagedObjectContext:moc];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
@@ -54,7 +54,7 @@
 + (id) addToDatabase:(NSString *)modelName object:(NSDictionary *)object primaryKeyName:(NSString *)primaryKeyName withMapping:(NSDictionary *)mapping
 {
     
-    NSLog(@"object: %@", object);
+    //NSLog(@"object: %@", object);
     
     if (!NULL_TO_NIL([object valueForKey:@"id"])) {
         return nil;
@@ -64,7 +64,9 @@
     
     id newObject = [LXServer getObjectFromModel:modelName primaryKeyName:primaryKeyName primaryKey:object_id];
     
-    NSManagedObjectContext *moc = [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] managedObjectContext];
+    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
+    
+    NSLog(@"newObject: %@", newObject);
     
     if (!newObject) {
         newObject = [NSEntityDescription
@@ -100,7 +102,7 @@
         }
     }
     
-    [[newObject managedObjectContext] save:nil];
+    [[[LXSession thisSession] managedObjectContext] save:nil];
     
     return newObject;
 }
@@ -110,6 +112,7 @@
     for (int i = 0; i < array.count; ++i) {
         [LXServer addToDatabase:modelName object:[array objectAtIndex:i] primaryKeyName:primaryKey withMapping:mapping];
     }
+    [[[LXSession thisSession] managedObjectContext] save:nil];
 }
 
 + (void) saveObject:(id)object withPath:(NSString*)path method:(NSString*)method mapping:(NSDictionary*)mapping success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
@@ -142,7 +145,7 @@
 {
     if ([method.uppercaseString isEqualToString:@"GET"]) {
         [self GET:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
-            NSLog(@"%@", responseObject);
+            //NSLog(@"%@", responseObject);
             if (successCallback)
                 successCallback(responseObject);
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
@@ -152,7 +155,7 @@
         }];
     } else if ([method.uppercaseString isEqualToString:@"POST"]) {
         [self POST:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
-            NSLog(@"%@", responseObject);
+            //NSLog(@"%@", responseObject);
             if (successCallback)
                 successCallback(responseObject);
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
@@ -162,7 +165,7 @@
         }];
     } else if ([method.uppercaseString isEqualToString:@"PUT"]) {
         [self PUT:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
-            NSLog(@"%@", responseObject);
+            //NSLog(@"%@", responseObject);
             if (successCallback)
                 successCallback(responseObject);
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
@@ -172,7 +175,7 @@
         }];
     } else if ([method.uppercaseString isEqualToString:@"DELETE"]) {
         [self DELETE:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
-            NSLog(@"%@", responseObject);
+            //NSLog(@"%@", responseObject);
             if (successCallback)
                 successCallback(responseObject);
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
