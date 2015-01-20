@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="8YX-ce-x5E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="8YX-ce-x5E">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
         <!--Main Tab Bar Controller-->
@@ -23,7 +24,7 @@
             </objects>
             <point key="canvasLocation" x="132" y="180"/>
         </scene>
-        <!--Search Table View Controller - Search-->
+        <!--Search-->
         <scene sceneID="PJe-Oc-f9p">
             <objects>
                 <tableViewController id="2JM-Ca-M8q" customClass="HCSearchTableViewController" sceneMemberID="viewController">
@@ -149,7 +150,7 @@
             </objects>
             <point key="canvasLocation" x="702" y="1327"/>
         </scene>
-        <!--Buckets Table View Controller - Stacks-->
+        <!--Stacks-->
         <scene sceneID="oHT-Mt-sXS">
             <objects>
                 <tableViewController id="Zzw-HB-e1W" customClass="HCBucketsTableViewController" sceneMemberID="viewController">
@@ -157,14 +158,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="cQo-5I-o4Q">
-                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="Zzw-HB-e1W" id="WUP-2x-zCj"/>
-                            </connections>
-                        </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="bucketCell" id="F4e-r2-EnQ">
                                 <rect key="frame" x="0.0" y="130" width="320" height="44"/>
@@ -229,14 +222,13 @@
                     </refreshControl>
                     <connections>
                         <outlet property="refreshControl" destination="aWo-xd-lJb" id="a3V-6s-vGd"/>
-                        <outlet property="searchBar" destination="cQo-5I-o4Q" id="sPz-gh-NXK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XcZ-6H-kPV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1236" y="534"/>
         </scene>
-        <!--Bucket Table View Controller - Stack-->
+        <!--Stack-->
         <scene sceneID="2pB-Py-E5x">
             <objects>
                 <tableViewController storyboardIdentifier="bucketTableViewController" id="5Nb-1d-aDl" customClass="HCBucketTableViewController" sceneMemberID="viewController">
@@ -298,7 +290,7 @@
             </objects>
             <point key="canvasLocation" x="1713" y="534"/>
         </scene>
-        <!--New Item Table View Controller - New Note-->
+        <!--New Note-->
         <scene sceneID="Wfi-5L-4Cm">
             <objects>
                 <tableViewController storyboardIdentifier="newItemTableViewController" id="l1V-Af-Cca" customClass="HCNewItemTableViewController" sceneMemberID="viewController">
@@ -398,7 +390,7 @@
             </objects>
             <point key="canvasLocation" x="3985" y="-264"/>
         </scene>
-        <!--Select Bucket Table View Controller - Select Stack-->
+        <!--Select Stack-->
         <scene sceneID="efT-m7-IW3">
             <objects>
                 <tableViewController storyboardIdentifier="selectBucketTableViewController" id="WzC-up-mae" customClass="HCSelectBucketTableViewController" sceneMemberID="viewController">
@@ -519,27 +511,6 @@
                                 <date key="date" timeIntervalSinceReferenceDate="426817164.55374199">
                                     <!--2014-07-12 00:19:24 +0000-->
                                 </date>
-                                <timeZone key="timeZone" name="America/Los_Angeles">
-                                    <data key="data">
-VFppZgAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAAAAAAAAAC5AAAABAAAABCepkign7sVkKCGKqChmveQ
-y4kaoNIj9HDSYSYQ1v50INiArZDa/tGg28CQENzes6DdqayQ3r6VoN+JjpDgnneg4WlwkOJ+WaDjSVKQ
-5F47oOUpNJDmR1gg5xJREOgnOiDo8jMQ6gccIOrSFRDr5v4g7LH3EO3G4CDukdkQ76/8oPBxuxDxj96g
-8n/BkPNvwKD0X6OQ9U+ioPY/hZD3L4Sg+CiiEPkPZqD6CIQQ+viDIPvoZhD82GUg/chIEP64RyD/qCoQ
-AJgpIAGIDBACeAsgA3EokARhJ6AFUQqQBkEJoAcw7JAHjUOgCRDOkAmtvyAK8LCQC+CvoAzZzRANwJGg
-DrmvEA+priAQmZEQEYmQIBJ5cxATaXIgFFlVEBVJVCAWOTcQFyk2IBgiU5AZCRggGgI1kBryNKAb4heQ
-HNIWoB3B+ZAesfigH6HbkCB2KyAhgb2QIlYNICNq2hAkNe8gJUq8ECYV0SAnKp4QJ/7toCkKgBAp3s+g
-KupiECu+saAs036QLZ6ToC6zYJAvfnWgMJNCkDFnkiAycySQM0d0IDRTBpA1J1YgNjLokDcHOCA4HAUQ
-OOcaIDn75xA6xvwgO9vJEDywGKA9u6sQPo/6oD+bjRBAb9ygQYSpkEJPvqBDZIuQRC+goEVEbZBF89Mg
-Ry2KEEfTtSBJDWwQSbOXIErtThBLnLOgTNZqkE18laBOtkyQT1x3oFCWLpBRPFmgUnYQkFMcO6BUVfKQ
-VPwdoFY11JBW5TogWB7xEFjFHCBZ/tMQWqT+IFvetRBchOAgXb6XEF5kwiBfnnkQYE3eoGGHlZBiLcCg
-Y2d3kGQNoqBlR1mQZe2EoGcnO5BnzWagaQcdkGmtSKBq5v+Qa5ZlIGzQHBBtdkcgbq/+EG9WKSBwj+AQ
-cTYLIHJvwhBzFe0gdE+kEHT/CaB2OMCQdt7roHgYopB4vs2gefiEkHqer6B72GaQfH6RoH24SJB+XnOg
-f5gqkAABAAECAwEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEAAQABAAEA
-AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
-</data>
-                                </timeZone>
                             </datePicker>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -584,7 +555,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="2212" y="534"/>
         </scene>
-        <!--New Bucket Table View Controller - Stack Type-->
+        <!--Stack Type-->
         <scene sceneID="pYa-bG-Yy2">
             <objects>
                 <tableViewController storyboardIdentifier="newBucketTableViewController" id="V9p-r4-4FC" customClass="HCNewBucketTableViewController" sceneMemberID="viewController">
@@ -641,7 +612,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="2647" y="534"/>
         </scene>
-        <!--New BucketII Table View Controller - New Stack-->
+        <!--New Stack-->
         <scene sceneID="g3c-ai-Q2H">
             <objects>
                 <tableViewController storyboardIdentifier="newBucketIITableViewController" id="5fu-Iz-1eg" customClass="HCNewBucketIITableViewController" sceneMemberID="viewController">
@@ -711,7 +682,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="3107" y="534"/>
         </scene>
-        <!--Navigation Controller - Stacks-->
+        <!--Stacks-->
         <scene sceneID="IwE-qf-2yL">
             <objects>
                 <navigationController definesPresentationContext="YES" id="Ezu-UR-9su" sceneMemberID="viewController">
@@ -728,7 +699,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="702" y="534"/>
         </scene>
-        <!--Notes Table View Controller - Notes-->
+        <!--Notes-->
         <scene sceneID="p2f-17-GFh">
             <objects>
                 <tableViewController id="zPO-s2-IZN" customClass="HCNotesTableViewController" sceneMemberID="viewController">
@@ -736,14 +707,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="ieh-T8-e1h">
-                            <rect key="frame" x="0.0" y="64" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="zPO-s2-IZN" id="RGk-5I-Aoe"/>
-                            </connections>
-                        </searchBar>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="itemCell" rowHeight="70" id="wBA-j4-nIU">
                                 <rect key="frame" x="0.0" y="130" width="320" height="70"/>
@@ -791,14 +754,13 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
                     </refreshControl>
                     <connections>
                         <outlet property="refreshControl" destination="p9X-DG-Ez4" id="5fd-Ip-vFR"/>
-                        <outlet property="searchBar" destination="ieh-T8-e1h" id="1OA-As-Emu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QEn-se-7RF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1236" y="-264"/>
         </scene>
-        <!--Item Table View Controller - Note-->
+        <!--Note-->
         <scene sceneID="glZ-O0-Vo3">
             <objects>
                 <tableViewController storyboardIdentifier="itemTableViewController" id="gib-ko-OhS" customClass="HCItemTableViewController" sceneMemberID="viewController">
@@ -922,7 +884,7 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
             </objects>
             <point key="canvasLocation" x="1713" y="-264"/>
         </scene>
-        <!--Navigation Controller - Notes-->
+        <!--Notes-->
         <scene sceneID="U5q-z0-049">
             <objects>
                 <navigationController definesPresentationContext="YES" id="04b-83-tl8" sceneMemberID="viewController">
@@ -950,6 +912,6 @@ AQABAAEAAQAB//+dkAEA//+PgAAE//+dkAEI//+dkAEMUERUAFBTVABQV1QAUFBUAAAAAAEAAAABA
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Jdt-gQ-XV4"/>
+        <segue reference="5S9-UX-Cyx"/>
     </inferredMetricsTieBreakers>
 </document>

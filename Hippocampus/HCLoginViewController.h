@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface HCLoginViewController : UIViewController <UITextFieldDelegate>
+{
+    MBProgressHUD* hud;
+}
 
 @property (weak, nonatomic) IBOutlet UITextField *numberTextField;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;

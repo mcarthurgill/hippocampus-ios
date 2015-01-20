@@ -33,8 +33,8 @@
 {
     [super viewDidLoad];
     
-    self.sections = [[NSMutableArray alloc] initWithArray:[NSArray alphabetUppercase]];
-    [self.sections insertObject:@"Recent" atIndex:0];
+    self.sections = @[];
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -55,13 +55,7 @@
 
 - (void) reloadScreen
 {
-    NSArray* recents = [HCBucket mostRecent:5];
-    self.bucketsArray = [[NSMutableArray alloc] initWithArray:[HCBucket alphabetizedArray]];
-    if (recents && recents.count > 0) {
-        [self.bucketsArray insertObject:recents atIndex:0];
-    } else {
-        [self.bucketsArray insertObject:[[NSArray alloc] init] atIndex:0];
-    }
+    self.bucketsArray = @[];//[[NSMutableArray alloc] initWithArray:[HCBucket alphabetizedArray]];
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
 }
@@ -134,15 +128,7 @@
 
 - (void) refreshChange
 {
-    [[[LXSession thisSession] user]
-     getNewBucketsSuccess:^(id responseObject) {
-         [self.refreshControl endRefreshing];
-         [self reloadScreen];
-     } failure:^(NSError *error) {
-         [self.refreshControl endRefreshing];
-         [self reloadScreen];
-     }
-     ];
+    [self reloadScreen];
 }
 
 - (IBAction)refreshControllerChanged:(id)sender

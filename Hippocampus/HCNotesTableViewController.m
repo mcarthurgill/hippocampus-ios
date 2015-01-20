@@ -56,8 +56,8 @@
 
 - (void) reloadScreen
 {
-    self.allItems = [[NSMutableArray alloc] initWithArray:[HCItem items:@"assigned" ascending:NO index:0 limit:2000]];
-    self.outstandingItems = [[NSMutableArray alloc] initWithArray:[HCItem items:@"outstanding" ascending:YES index:0 limit:0]];
+    self.allItems = @[];//[[NSMutableArray alloc] initWithArray:[HCItem items:@"assigned" ascending:NO index:0 limit:2000]];
+    self.outstandingItems = @[];//[[NSMutableArray alloc] initWithArray:[HCItem items:@"assigned" ascending:NO index:0 limit:2000]];
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
 }
@@ -189,15 +189,7 @@
 
 - (void) refreshChange
 {
-    [[[LXSession thisSession] user]
-     getNewItemsSuccess:^(id responseObject) {
-         [self.refreshControl endRefreshing];
-         [self reloadScreen];
-     } failure:^(NSError *error) {
-         [self.refreshControl endRefreshing];
-         [self reloadScreen];
-     }
-     ];
+    [self reloadScreen];
 }
 
 - (IBAction)refreshControllerChanged:(id)sender

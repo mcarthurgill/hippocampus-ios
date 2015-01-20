@@ -60,10 +60,30 @@
 
 + (void) loginUser:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:@"/users.json" withMethod:@"POST" withParamaters:@{ @"user" : @{@"phone": phone, @"country_code" : @"1"}}
+    [[LXServer shared] requestPath:@"/passcode.json" withMethod:@"POST" withParamaters:@{ @"phone": phone, @"country_code" : @"1"}
                            success:^(id responseObject) {
-                               HCUser* user = [LXServer addToDatabase:@"HCUser" object:responseObject primaryKeyName:@"userID" withMapping:[HCUser resourceKeysForPropertyKeys]];
-                               [user makeLoggedInUser];
+                               //HCUser* user = [LXServer addToDatabase:@"HCUser" object:responseObject primaryKeyName:@"userID" withMapping:[HCUser resourceKeysForPropertyKeys]];
+                               //[user makeLoggedInUser];
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
++ (void) tokenVerify:(NSString*)code phone:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"/session.json" withMethod:@"POST" withParamaters:@{@"phone": phone, @"passcode": code }
+                           success:^(id responseObject) {
+                               if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"] && [responseObject objectForKey:@"user"]) {
+                                   HCUser* user = [LXServer addToDatabase:@"HCUser" object:[responseObject objectForKey:@"user"] primaryKeyName:@"userID" withMapping:[HCUser resourceKeysForPropertyKeys]];
+                                   [user makeLoggedInUser];
+                               }
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
@@ -88,42 +108,42 @@
 
 - (void) getNewItemsSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [self getItems:[[[LXSession thisSession] user] lastItemUpdateTime] success:successCallback failure:failureCallback];
+    //[self getItems:[[[LXSession thisSession] user] lastItemUpdateTime] success:successCallback failure:failureCallback];
 }
 
 - (void) getItems:(NSNumber*)lastUpdated success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/items.json", self.userID] withMethod:@"GET" withParamaters:@{@"above": [NSString stringWithFormat:@"%f", lastUpdated.floatValue]}
-                           success:^(id responseObject) {
-                               [LXServer addArrayToDatabase:@"HCItem" array:(NSArray*)responseObject primaryKeyName:@"itemID" withMapping:[HCItem resourceKeysForPropertyKeys]];
-                               if (successCallback)
-                                   successCallback(responseObject);
-                           }
-                           failure:^(NSError *error) {
-                               if (failureCallback)
-                                   failureCallback(error);
-                           }
-     ];
+//    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/items.json", self.userID] withMethod:@"GET" withParamaters:@{@"above": [NSString stringWithFormat:@"%f", lastUpdated.floatValue]}
+//                           success:^(id responseObject) {
+//                               [LXServer addArrayToDatabase:@"HCItem" array:(NSArray*)responseObject primaryKeyName:@"itemID" withMapping:[HCItem resourceKeysForPropertyKeys]];
+//                               if (successCallback)
+//                                   successCallback(responseObject);
+//                           }
+//                           failure:^(NSError *error) {
+//                               if (failureCallback)
+//                                   failureCallback(error);
+//                           }
+//     ];
 }
 
 - (void) getNewBucketsSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [self getBuckets:[[[LXSession thisSession] user] lastBucketUpdateTime] success:successCallback failure:failureCallback];
+    //[self getBuckets:[[[LXSession thisSession] user] lastBucketUpdateTime] success:successCallback failure:failureCallback];
 }
 
 - (void) getBuckets:(NSNumber*)lastUpdated success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", self.userID] withMethod:@"GET" withParamaters:@{@"above": [NSString stringWithFormat:@"%f", lastUpdated.floatValue]}
-                           success:^(id responseObject) {
-                               [LXServer addArrayToDatabase:@"HCBucket" array:(NSArray*)responseObject primaryKeyName:@"bucketID" withMapping:[HCBucket resourceKeysForPropertyKeys]];
-                               if (successCallback)
-                                   successCallback(responseObject);
-                           }
-                           failure:^(NSError *error) {
-                               if (failureCallback)
-                                   failureCallback(error);
-                           }
-     ];
+//    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", self.userID] withMethod:@"GET" withParamaters:@{@"above": [NSString stringWithFormat:@"%f", lastUpdated.floatValue]}
+//                           success:^(id responseObject) {
+//                               [LXServer addArrayToDatabase:@"HCBucket" array:(NSArray*)responseObject primaryKeyName:@"bucketID" withMapping:[HCBucket resourceKeysForPropertyKeys]];
+//                               if (successCallback)
+//                                   successCallback(responseObject);
+//                           }
+//                           failure:^(NSError *error) {
+//                               if (failureCallback)
+//                                   failureCallback(error);
+//                           }
+//     ];
 }
 
 @end
