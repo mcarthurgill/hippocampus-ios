@@ -23,4 +23,5 @@
     #import "LXDate+RailsTimeConverter.h"
     #import "MBProgressHUD.h"
     #import "NSArray+Alphabet.h"
+    #import "LXString+NSString.h"
 #endif

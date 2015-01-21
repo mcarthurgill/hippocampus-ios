@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface HCNotesTableViewController : UITableViewController <UISearchBarDelegate>
+{
+    BOOL requestMade;
+}
 
 @property (strong, nonatomic) IBOutlet UIRefreshControl *refreshControl;
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;

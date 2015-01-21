@@ -11,7 +11,7 @@
 @interface HCReminderViewController : UIViewController
 
 @property (strong, nonatomic) id delegate;
-@property (strong, nonatomic) HCItem* item;
+@property (strong, nonatomic) NSMutableDictionary* item;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (strong, nonatomic) IBOutlet UIDatePicker *datePicker;

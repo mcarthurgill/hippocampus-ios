@@ -10,12 +10,15 @@
 #import "HCItemTableViewController.h"
 #import "HCNewItemTableViewController.h"
 
+#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+
 @interface HCBucketTableViewController ()
 
 @end
 
 @implementation HCBucketTableViewController
 
+@synthesize refreshControl;
 @synthesize bucket;
 @synthesize sections;
 @synthesize allItems;
@@ -34,7 +37,11 @@
 {
     [super viewDidLoad];
     
-    [self.navigationItem setTitle:self.bucket.titleString];
+    requestMade = NO;
+    
+    [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
+    
+    [self refreshChange];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -54,7 +61,6 @@
 
 - (void) reloadScreen
 {
-    self.allItems = [[NSMutableArray alloc] initWithArray:[bucket allItems:0 limit:0]];
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
 }
@@ -87,7 +93,7 @@
     return nil;
 }
 
-- (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(HCItem*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(NSDictionary*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
     
@@ -97,15 +103,15 @@
     float width = note.frame.size.width;
     [note removeFromSuperview];
     
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:item.message width:width font:note.font])];
-    [note setText:item.message];
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[[item objectForKey:@"message"] truncated:320] width:width font:note.font])];
+    [note setText:[[item objectForKey:@"message"] truncated:320]];
     [note setTag:1];
     [note setNumberOfLines:0];
     [note setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.contentView addSubview:note];
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
-    [timestamp setText:[NSString stringWithFormat:@"%@%@", [NSDate timeAgoInWordsFromDatetime:item.createdAt], ([item bucket] ? [NSString stringWithFormat:@" - %@", [item bucket].titleString] : @"")]];
+    [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
     
     //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
     return cell;
@@ -126,8 +132,8 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-        HCItem* item = [self.allItems objectAtIndex:indexPath.row];
-        return [self heightForText:item.message width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f;
+        NSDictionary* item = [self.allItems objectAtIndex:indexPath.row];
+        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f;
     }
     return 44.0;
 }
@@ -147,7 +153,10 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-            [self deleteItem:[[self allItems] objectAtIndex:indexPath.row]];
+            NSDictionary* object = [[self allItems] objectAtIndex:indexPath.row];
+            [self deleteItem:object];
+            [[self allItems] removeObject:object];
+            [self reloadScreen];
         }
     }
 }
@@ -157,21 +166,45 @@
 
 - (IBAction)addAction:(id)sender
 {
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    UINavigationController* itvc = (UINavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"newItemNavigationController"];
-    [(HCNewItemTableViewController*)[[itvc viewControllers] firstObject] setBucketID:self.bucket.bucketID];
-    [self presentViewController:itvc animated:NO completion:nil];
+//    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+//    UINavigationController* itvc = (UINavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"newItemNavigationController"];
+//    [(HCNewItemTableViewController*)[[itvc viewControllers] firstObject] setBucketID:[self.bucket objectForKey:@"id"]];
+//    [self presentViewController:itvc animated:NO completion:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
+}
+
+- (IBAction)refreshControllerChanged:(id)sender
+{
+    if (self.refreshControl.isRefreshing) {
+        //Make server call here.
+        [self refreshChange];
+    }
+}
+
+
+- (void) refreshChange
+{
+    if (requestMade)
+        return;
+    requestMade = YES;
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":@"0"}
+                           success:^(id responseObject) {
+                               NSLog(@"response: %@", responseObject);
+                               self.allItems = [[NSMutableArray alloc] initWithArray:responseObject];
+                               requestMade = NO;
+                               [self reloadScreen];
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               requestMade = NO;
+                               [self reloadScreen];
+                           }
+     ];
 }
 
 #pragma mark deletions
 
-- (void) deleteItem:(HCItem *)item {
-    [item setStatus:@"deleted"];
-    [item saveWithSuccess:^(id responseObject) {
-        NSLog(@"SUCCESS!: %@", responseObject);
-        [self reloadScreen];
-    } failure:^(NSError* error) {
-        NSLog(@"FAIL! %@", [error localizedDescription]);
-    }];
+- (void) deleteItem:(NSDictionary *)item {
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil success:^(id responseObject) {} failure:^(NSError* error) {}];
 }
 @end

@@ -46,6 +46,12 @@
 		281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */; };
 		2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827B8491970B6D900F595D9 /* HCReminderViewController.m */; };
 		283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283700881A6F199600C16E87 /* LXTokenViewController.m */; };
+		2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008A1A6F34F000C16E87 /* 06-magnify.png */; };
+		2837008D1A6F34F000C16E87 /* 06-magnify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008B1A6F34F000C16E87 /* 06-magnify@2x.png */; };
+		283700901A6F366E00C16E87 /* 122-stats.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008E1A6F366E00C16E87 /* 122-stats.png */; };
+		283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008F1A6F366E00C16E87 /* 122-stats@2x.png */; };
+		283700941A6F371800C16E87 /* LXMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283700931A6F371800C16E87 /* LXMoreTableViewController.m */; };
+		28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A0857B1A700CB200BA1368 /* LXString+NSString.m */; };
 		28BD3EAC196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAB196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m */; };
 		28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */; };
 		76BB952619784012002288E0 /* HCEditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BB952519784012002288E0 /* HCEditItemViewController.m */; };
@@ -122,6 +128,14 @@
 		2827B8491970B6D900F595D9 /* HCReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCReminderViewController.m; sourceTree = "<group>"; };
 		283700871A6F199600C16E87 /* LXTokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXTokenViewController.h; sourceTree = "<group>"; };
 		283700881A6F199600C16E87 /* LXTokenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXTokenViewController.m; sourceTree = "<group>"; };
+		2837008A1A6F34F000C16E87 /* 06-magnify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "06-magnify.png"; sourceTree = "<group>"; };
+		2837008B1A6F34F000C16E87 /* 06-magnify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "06-magnify@2x.png"; sourceTree = "<group>"; };
+		2837008E1A6F366E00C16E87 /* 122-stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "122-stats.png"; sourceTree = "<group>"; };
+		2837008F1A6F366E00C16E87 /* 122-stats@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "122-stats@2x.png"; sourceTree = "<group>"; };
+		283700921A6F371800C16E87 /* LXMoreTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXMoreTableViewController.h; sourceTree = "<group>"; };
+		283700931A6F371800C16E87 /* LXMoreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXMoreTableViewController.m; sourceTree = "<group>"; };
+		28A0857A1A700CB200BA1368 /* LXString+NSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LXString+NSString.h"; sourceTree = "<group>"; };
+		28A0857B1A700CB200BA1368 /* LXString+NSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LXString+NSString.m"; sourceTree = "<group>"; };
 		28BD3EAA196F3F6700BBF5B0 /* HCSelectBucketTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCSelectBucketTableViewController.h; sourceTree = "<group>"; };
 		28BD3EAB196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCSelectBucketTableViewController.m; sourceTree = "<group>"; };
 		28BD3EAD196F519B00BBF5B0 /* NSArray+Alphabet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Alphabet.h"; sourceTree = "<group>"; };
@@ -291,6 +305,10 @@
 				281CA921196C29F800E6BE96 /* 179-notepad@2x.png */,
 				281CA91C196C29E500E6BE96 /* 256-box2.png */,
 				281CA91D196C29E500E6BE96 /* 256-box2@2x.png */,
+				2837008A1A6F34F000C16E87 /* 06-magnify.png */,
+				2837008B1A6F34F000C16E87 /* 06-magnify@2x.png */,
+				2837008E1A6F366E00C16E87 /* 122-stats.png */,
+				2837008F1A6F366E00C16E87 /* 122-stats@2x.png */,
 			);
 			name = Icons;
 			sourceTree = "<group>";
@@ -322,6 +340,8 @@
 				281CA933196C457500E6BE96 /* HCNotesTableViewController.m */,
 				281CA935196C458400E6BE96 /* HCBucketsTableViewController.h */,
 				281CA936196C458400E6BE96 /* HCBucketsTableViewController.m */,
+				283700921A6F371800C16E87 /* LXMoreTableViewController.h */,
+				283700931A6F371800C16E87 /* LXMoreTableViewController.m */,
 			);
 			name = Tabs;
 			sourceTree = "<group>";
@@ -372,6 +392,8 @@
 				281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */,
 				28BD3EAD196F519B00BBF5B0 /* NSArray+Alphabet.h */,
 				28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */,
+				28A0857A1A700CB200BA1368 /* LXString+NSString.h */,
+				28A0857B1A700CB200BA1368 /* LXString+NSString.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -460,10 +482,14 @@
 			files = (
 				281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */,
 				281CA923196C29F800E6BE96 /* 179-notepad@2x.png in Resources */,
+				283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */,
 				281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */,
 				281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
 				281CA8DF1951EC7E00E6BE96 /* Main.storyboard in Resources */,
+				283700901A6F366E00C16E87 /* 122-stats.png in Resources */,
+				2837008D1A6F34F000C16E87 /* 06-magnify@2x.png in Resources */,
+				2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,
 			);
@@ -524,6 +550,7 @@
 				281CA9111951F36700E6BE96 /* Model.xcdatamodeld in Sources */,
 				281CA930196C3C9400E6BE96 /* HCBucket.m in Sources */,
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
+				283700941A6F371800C16E87 /* LXMoreTableViewController.m in Sources */,
 				76BB952619784012002288E0 /* HCEditItemViewController.m in Sources */,
 				281CA949196CA22100E6BE96 /* HCNewItemTableViewController.m in Sources */,
 				281CA92D196C309E00E6BE96 /* HCMainTabBarController.m in Sources */,
@@ -540,6 +567,7 @@
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
 				281CA94C196D9EE100E6BE96 /* HCNewBucketIITableViewController.m in Sources */,
 				281CA91A1951F4F900E6BE96 /* HCItem.m in Sources */,
+				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
 				281CA93F196C8D0500E6BE96 /* HCItemTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

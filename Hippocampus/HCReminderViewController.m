@@ -9,6 +9,8 @@
 #import "HCReminderViewController.h"
 #import "HCItemTableViewController.h"
 
+#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+
 @interface HCReminderViewController ()
 
 @end
@@ -33,8 +35,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if (self.item.reminder) {
-        [self.datePicker setDate:self.item.reminder];
+    if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
+        [self.datePicker setDate:[self.item objectForKey:@"reminder_date"]];
     }
 }
 
@@ -52,7 +54,7 @@
     [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
     NSString* newDate = [dateFormat stringFromDate:self.datePicker.date];
     NSLog(@"Reminder Date: %@", newDate);
-    [self.item setReminderDate:newDate];
+    [self.item setObject:newDate forKey:@"reminder_date"];
     [self dismissViewControllerAnimated:NO completion:^(void){
         [(HCItemTableViewController*)self.delegate saveReminder:newDate];
     }];

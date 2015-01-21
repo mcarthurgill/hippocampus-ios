@@ -34,7 +34,7 @@
 {
     [super viewDidLoad];
     [self setBorder];
-    [editTextArea setText:self.item.message];
+    [editTextArea setText:[self.item objectForKey:@"message"]];
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,7 +58,7 @@
 
 - (IBAction)saveAction:(id)sender {
     NSString *updatedText = [NSString stringWithFormat:@"%@", editTextArea.text];
-    [self.item setMessage:updatedText];
+    [self.item setObject:updatedText forKey:@"message"];
     [self dismissViewControllerAnimated:NO completion:^(void){
         [(HCItemTableViewController*)self.delegate saveUpdatedMessage:updatedText];
     }];

@@ -103,6 +103,7 @@
 
 - (IBAction)cancelAction:(id)sender
 {
+    [self.tV resignFirstResponder];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

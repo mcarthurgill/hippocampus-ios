@@ -10,7 +10,7 @@
 
 @interface HCItemTableViewController : UITableViewController
 
-@property (strong, nonatomic) HCItem* item;
+@property (strong, nonatomic) NSMutableDictionary* item;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (strong, nonatomic) NSMutableArray* sections;
 

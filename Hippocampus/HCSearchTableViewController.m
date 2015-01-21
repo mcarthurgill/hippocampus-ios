@@ -10,6 +10,8 @@
 #import "HCBucketTableViewController.h"
 #import "HCItemTableViewController.h"
 
+#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+
 @interface HCSearchTableViewController ()
 
 @end
@@ -94,7 +96,7 @@
 }
 
 
-- (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(HCItem*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(NSDictionary*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
     
@@ -104,15 +106,15 @@
     float width = note.frame.size.width;
     [note removeFromSuperview];
     
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:item.message width:width font:note.font])];
-    [note setText:item.message];
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[[item objectForKey:@"message"] truncated:320] width:width font:note.font])];
+    [note setText:[[item objectForKey:@"message"] truncated:320]];
     [note setTag:1];
     [note setNumberOfLines:0];
     [note setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.contentView addSubview:note];
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
-    [timestamp setText:[NSString stringWithFormat:@"%@%@", [NSDate timeAgoInWordsFromDatetime:item.createdAt], ([item bucket] ? [NSString stringWithFormat:@" - %@", [item bucket].titleString] : @"")]];
+    [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
     
     //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
     return cell;
@@ -154,8 +156,8 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"items"]) {
-        HCItem* item = [self.itemsArray objectAtIndex:indexPath.row];
-        return [self heightForText:item.message width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
+        NSDictionary* item = [self.itemsArray objectAtIndex:indexPath.row];
+        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"] && [(HCBucket*)[self.bucketsArray objectAtIndex:indexPath.row] descriptionText]) {
         return 60.0f;
     }
@@ -195,7 +197,8 @@
 
 - (IBAction)doneAction:(id)sender
 {
-    [self dismissViewControllerAnimated:NO completion:nil];
+    //[self dismissViewControllerAnimated:NO completion:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
 }
 
 
