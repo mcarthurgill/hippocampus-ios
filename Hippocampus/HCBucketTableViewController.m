@@ -40,14 +40,13 @@
     requestMade = NO;
     
     [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
-    
-    [self refreshChange];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    [self refreshChange];
     [self reloadScreen];
 }
 
