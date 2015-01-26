@@ -21,13 +21,27 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - MBProgressHUD (0.8)
+  - MGEvents (1.0.3)
+  - SGHTTPRequest (1.0.3):
+    - AFNetworking
+  - SGImageCache (1.2.0):
+    - MGEvents
+    - SGHTTPRequest
+    - SGImageCache/base
+  - SGImageCache/base (1.2.0):
+    - MGEvents
+    - SGHTTPRequest
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
   - MBProgressHUD (~> 0.8)
+  - SGImageCache
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
+  MGEvents: e6254d7873bcb90b266801d171f9948194010927
+  SGHTTPRequest: 6c9c51babed3eebd182945e61f5543c66d5df46e
+  SGImageCache: e7f9b353bac495d1c9698f50581eb47fb2022216
 
-COCOAPODS: 0.32.1
+COCOAPODS: 0.34.1

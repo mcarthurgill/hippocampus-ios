@@ -12,6 +12,9 @@
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
+#define PICTURE_HEIGHT 128
+#define PICTURE_MARGIN_TOP 8
+
 @interface HCBucketTableViewController ()
 
 @end
@@ -108,9 +111,34 @@
     [note setNumberOfLines:0];
     [note setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.contentView addSubview:note];
+    //NSLog(@"message: %@, height: %f", [item objectForKey:@"message"], note.frame.size.height);
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
     [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
+    
+    int i = 0;
+    while ([cell.contentView viewWithTag:(200+i)]) {
+        [[cell.contentView viewWithTag:(200+i)] removeFromSuperview];
+        ++i;
+    }
+    
+    if ([item objectForKey:@"media_urls"] && [[item objectForKey:@"media_urls"] count] > 0) {
+        int j = 0;
+        for (NSString* url in [item objectForKey:@"media_urls"]) {
+            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*j, 280, PICTURE_HEIGHT)];
+            [iv setTag:(200+j)];
+            [iv setContentMode:UIViewContentModeScaleAspectFill];
+            [iv setClipsToBounds:YES];
+            [iv.layer setCornerRadius:8.0f];
+            [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                if (image) {
+                    iv.image = image;
+                }
+            }];
+            [cell.contentView addSubview:iv];
+            ++j;
+        }
+    }
     
     //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
     return cell;
@@ -118,6 +146,9 @@
 
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {
+    if (!text || [text length] == 0) {
+        return 0.0f;
+    }
     NSDictionary *attributes = @{NSFontAttributeName: font};
     // NSString class method: boundingRectWithSize:options:attributes:context is
     // available only on ios7.0 sdk.
@@ -132,7 +163,11 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         NSDictionary* item = [self.allItems objectAtIndex:indexPath.row];
-        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f;
+        int additional = 0;
+        if ([item objectForKey:@"media_urls"]) {
+            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item objectForKey:@"media_urls"] count];
+        }
+        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f + additional;
     }
     return 44.0;
 }

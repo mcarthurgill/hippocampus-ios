@@ -34,18 +34,20 @@
 {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.bucketsArray = [[NSMutableArray alloc] init];
+    self.itemsArray = [[NSMutableArray alloc] init];
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    requestMade = NO;
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     
-    [self.searchBar becomeFirstResponder];
+    if (!self.searchBar.text || [self.searchBar.text length] == 0) {
+        [self.searchBar becomeFirstResponder];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,8 +60,6 @@
 
 - (void) reloadScreen
 {
-    self.bucketsArray = [[NSMutableArray alloc] initWithArray:[HCBucket search:self.searchBar.text]];
-    self.itemsArray = [[NSMutableArray alloc] initWithArray:[HCItem search:self.searchBar.text]];
     [self.tableView reloadData];
 }
 
@@ -67,8 +67,12 @@
 {
     self.sections = [[NSMutableArray alloc] init];
     
-    [self.sections addObject:@"items"];
+    if (requestMade) {
+        [self.sections addObject:@"requesting"];
+    }
+    
     [self.sections addObject:@"buckets"];
+    [self.sections addObject:@"items"];
     
     return self.sections.count;
 }
@@ -79,6 +83,8 @@
         return self.itemsArray.count;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
         return self.bucketsArray.count;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"]) {
+        return 1;
     }
     return 0;
 }
@@ -91,10 +97,19 @@
         return [self itemCellForTableView:tableView withItem:[self.itemsArray objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
         return [self bucketCellForTableView:tableView cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"requesting"]) {
+        return [self indicatorCellForTableView:tableView cellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
 
+- (UITableViewCell*) indicatorCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"indicatorCell" forIndexPath:indexPath];
+    UIActivityIndicatorView* iav = (UIActivityIndicatorView*) [cell.contentView viewWithTag:10];
+    [iav startAnimating];
+    return cell;
+}
 
 - (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(NSDictionary*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
@@ -122,21 +137,13 @@
 
 - (UITableViewCell*) bucketCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    HCBucket* bucket = [self.bucketsArray objectAtIndex:indexPath.row];
+    NSDictionary* bucket = [self.bucketsArray objectAtIndex:indexPath.row];
     
     NSString* identifier = @"bucketCell";
-    if ([bucket descriptionText]) {
-        identifier = @"bucketAndDescriptionCell";
-    }
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     
     UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
-    [note setAttributedText:[bucket titleAttributedString]];
-    
-    if ([bucket descriptionText]) {
-        UILabel* description = (UILabel*)[cell.contentView viewWithTag:2];
-        [description setText:[bucket descriptionText]];
-    }
+    [note setText:[bucket objectForKey:@"first_name"]];
     
     return cell;
 }
@@ -158,8 +165,6 @@
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"items"]) {
         NSDictionary* item = [self.itemsArray objectAtIndex:indexPath.row];
         return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"] && [(HCBucket*)[self.bucketsArray objectAtIndex:indexPath.row] descriptionText]) {
-        return 60.0f;
     }
     return 44.0;
 }
@@ -169,13 +174,17 @@
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"items"]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
-        [itvc setItem:[self.itemsArray objectAtIndex:indexPath.row]];
+        NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:[self.itemsArray objectAtIndex:indexPath.row]];
+        [dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
+        [itvc setItem:dict];
         [self.navigationController pushViewController:itvc animated:YES];
     }
     else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
         HCBucketTableViewController* itvc = (HCBucketTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketTableViewController"];
-        [itvc setBucket:[self.bucketsArray objectAtIndex:indexPath.row]];
+        NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:[self.bucketsArray objectAtIndex:indexPath.row]];
+        [dict setObject:[dict objectForKey:@"bucket_id"] forKey:@"id"];
+        [itvc setBucket:dict];
         [self.navigationController pushViewController:itvc animated:YES];
     }
     
@@ -214,11 +223,35 @@
 
 - (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    [self reloadScreen];
+    //[self reloadScreen];
 }
 
-- (void) searchBarCancelButtonClicked:(UISearchBar *)searchBar
+- (void) searchBarCancelButtonClicked:(UISearchBar *)sB
 {
+    [sB resignFirstResponder];
+}
+
+- (void) searchBarSearchButtonClicked:(UISearchBar *)sB
+{
+    [self searchWithTerm:sB.text];
+    [sB resignFirstResponder];
+}
+
+- (void) searchWithTerm:(NSString*)term
+{
+    requestMade = YES;
+    [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term }
+                           success:^(id responseObject) {
+                               requestMade = NO;
+                               self.bucketsArray = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"buckets"]];
+                               self.itemsArray = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
+                               [self reloadScreen];
+                           }
+                           failure:^(NSError* error) {
+                               requestMade = NO;
+                               [self reloadScreen];
+                           }
+     ];
     [self reloadScreen];
 }
 

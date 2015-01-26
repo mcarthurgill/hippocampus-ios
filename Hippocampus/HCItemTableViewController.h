@@ -9,14 +9,23 @@
 #import <UIKit/UIKit.h>
 
 @interface HCItemTableViewController : UITableViewController
+{
+    BOOL unsavedChanges;
+    BOOL savingChanges;
+    
+    MBProgressHUD* hud;
+}
 
 @property (strong, nonatomic) NSMutableDictionary* item;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (strong, nonatomic) NSMutableArray* sections;
 
+@property (strong, nonatomic) NSMutableDictionary* mediaDictionary;
+
 - (IBAction)saveAction:(id)sender;
 
-- (void) saveReminder:(NSString*)reminder;
-- (void) saveUpdatedMessage:(NSString *)updatedMessage; 
+- (void) saveReminder:(NSString*)reminder withType:(NSString*)type;
+- (void) saveUpdatedMessage:(NSString *)updatedMessage;
+- (void) addToStack:(id)stackID;
 
 @end

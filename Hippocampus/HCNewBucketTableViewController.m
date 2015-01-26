@@ -76,7 +76,7 @@
         bucket = [[HCBucket alloc] create];
     }
     [bucket setBucketType:[self.bucketTypes objectAtIndex:indexPath.row]];
-    [bc setBucket:bucket];
+    //[bc setBucket:bucket];
     
     [self.navigationController pushViewController:bc animated:YES];
 }

@@ -35,15 +35,23 @@
         return [NSString stringWithFormat:@"%i hour%@ ago", (int)(difference+1200)/3600, ((int)(difference+1200)/3600 == 1 ? @"" : @"s")];
     } else if (difference < 172800) {
         return [NSString stringWithFormat:@"yesterday"];
-    } else if (difference < 2592000) {
-        return [NSString stringWithFormat:@"%i day%@ ago", (int)(difference+43200)/86400, ((int)(difference+43200)/86400 == 1 ? @"" : @"s")];
-    } else if (difference < 5184000) {
-        return [NSString stringWithFormat:@"last month"];
-    } else if (difference < 31536000) {
-        return [NSString stringWithFormat:@"%i month%@ ago", (int)(difference+43200)/2592000, ((int)(difference+43200)/2592000 == 1 ? @"" : @"s")];
     } else {
-        return [NSString stringWithFormat:@"%i year%@ ago", (int)(difference+43200)/31449600, ((int)(difference+43200)/31449600 == 1 ? @"" : @"s")];
+        NSDate* date = [NSDate dateWithTimeIntervalSince1970:relativeTimestamp];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"MMMM d, yyyy"];
+        return [dateFormat stringFromDate:date];
     }
+    
+    
+//    if (difference < 2592000) {
+//        return [NSString stringWithFormat:@"%i day%@ ago", (int)(difference+43200)/86400, ((int)(difference+43200)/86400 == 1 ? @"" : @"s")];
+//    } else if (difference < 5184000) {
+//        return [NSString stringWithFormat:@"last month"];
+//    } else if (difference < 31536000) {
+//        return [NSString stringWithFormat:@"%i month%@ ago", (int)(difference+43200)/2592000, ((int)(difference+43200)/2592000 == 1 ? @"" : @"s")];
+//    } else {
+//        return [NSString stringWithFormat:@"%i year%@ ago", (int)(difference+43200)/31449600, ((int)(difference+43200)/31449600 == 1 ? @"" : @"s")];
+//    }
     return @"back when dinosaurs roamed the earth"; //31449600
 }
 
@@ -56,7 +64,7 @@
 {
     NSDate* date = [self timeWithString:string];
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"MM dd, yyyy"];
+    [dateFormat setDateFormat:@"MMMM d, yyyy"];
     return [dateFormat stringFromDate:date];
 }
 

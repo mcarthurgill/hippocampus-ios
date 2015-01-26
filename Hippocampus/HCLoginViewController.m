@@ -53,6 +53,8 @@
 
 - (IBAction)loginAction:(id)sender
 {
+    [sender resignFirstResponder];
+    
     [self showHUDWithMessage:@"Working"];
     
     [HCUser loginUser:self.numberTextField.text

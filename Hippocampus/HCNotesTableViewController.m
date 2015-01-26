@@ -8,8 +8,12 @@
 
 #import "HCNotesTableViewController.h"
 #import "HCItemTableViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+
+#define PICTURE_HEIGHT 128
+#define PICTURE_MARGIN_TOP 8
 
 @interface HCNotesTableViewController ()
 
@@ -35,12 +39,15 @@
 {
     [super viewDidLoad];
     requestMade = NO;
+    [self refreshChange:0];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadItemsNotification) name:@"reloadItems" object:nil];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self refreshChange];
+    
     [self reloadScreen];
 }
 
@@ -74,6 +81,10 @@
     
     [self.sections addObject:@"all"];
     
+    if (requestMade) {
+        [self.sections addObject:@"requesting"];
+    }
+    
     return self.sections.count;
 }
 
@@ -84,6 +95,8 @@
         return self.allItems.count;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"outstanding"]) {
         return self.outstandingItems.count;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"]) {
+        return 1;
     }
     return 0;
 }
@@ -95,8 +108,18 @@
         return [self itemCellForTableView:tableView withItem:[self.allItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"outstanding"]) {
         return [self itemCellForTableView:tableView withItem:[self.outstandingItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"requesting"]) {
+        return [self indicatorCellForTableView:tableView cellForRowAtIndexPath:indexPath];
     }
     return nil;
+}
+
+- (UITableViewCell*) indicatorCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"indicatorCell" forIndexPath:indexPath];
+    UIActivityIndicatorView* iav = (UIActivityIndicatorView*) [cell.contentView viewWithTag:10];
+    [iav startAnimating];
+    return cell;
 }
 
 - (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(NSDictionary*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
@@ -115,9 +138,34 @@
     [note setNumberOfLines:0];
     [note setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.contentView addSubview:note];
+    //NSLog(@"message: %@, height: %f", [item objectForKey:@"message"], note.frame.size.height);
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
     [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
+    
+    int i = 0;
+    while ([cell.contentView viewWithTag:(200+i)]) {
+        [[cell.contentView viewWithTag:(200+i)] removeFromSuperview];
+        ++i;
+    }
+    
+    if ([item objectForKey:@"media_urls"] && [[item objectForKey:@"media_urls"] count] > 0) {
+        int j = 0;
+        for (NSString* url in [item objectForKey:@"media_urls"]) {
+            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*j, 280, PICTURE_HEIGHT)];
+            [iv setTag:(200+j)];
+            [iv setContentMode:UIViewContentModeScaleAspectFill];
+            [iv setClipsToBounds:YES];
+            [iv.layer setCornerRadius:8.0f];
+            [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                if (image) {
+                    iv.image = image;
+                }
+            }];
+            [cell.contentView addSubview:iv];
+            ++j;
+        }
+    }
     
     //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
     return cell;
@@ -125,6 +173,9 @@
 
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {
+    if (!text || [text length] == 0) {
+        return 0.0f;
+    }
     NSDictionary *attributes = @{NSFontAttributeName: font};
     // NSString class method: boundingRectWithSize:options:attributes:context is
     // available only on ios7.0 sdk.
@@ -139,10 +190,18 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         NSDictionary* item = [self.allItems objectAtIndex:indexPath.row];
-        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f;
+        int additional = 0;
+        if ([item objectForKey:@"media_urls"]) {
+            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item objectForKey:@"media_urls"] count];
+        }
+        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f + additional;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"outstanding"]) {
         NSDictionary* item = [self.outstandingItems objectAtIndex:indexPath.row];
-        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f;
+        int additional = 0;
+        if ([item objectForKey:@"media_urls"]) {
+            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item objectForKey:@"media_urls"] count];
+        }
+        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f + additional;
     }
     return 44.0;
 }
@@ -170,7 +229,7 @@
     if ([[self.sections objectAtIndex:section] isEqualToString:@"all"]) {
         return @"All Notes";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"outstanding"]) {
-        return @"Pending Action";
+        return @"Notes Not In Stacks";
     }
     return nil;
 }
@@ -191,25 +250,54 @@
     }
 }
 
+- (void) scrollViewDidScroll:(UIScrollView *)aScrollView {
+    CGPoint offset = aScrollView.contentOffset;
+    CGRect bounds = aScrollView.bounds;
+    CGSize size = aScrollView.contentSize;
+    UIEdgeInsets inset = aScrollView.contentInset;
+    float y = offset.y + bounds.size.height - inset.bottom;
+    float h = size.height;
+    // NSLog(@"offset: %f", offset.y);
+    // NSLog(@"content.height: %f", size.height);
+    // NSLog(@"bounds.height: %f", bounds.size.height);
+    // NSLog(@"inset.top: %f", inset.top);
+    // NSLog(@"inset.bottom: %f", inset.bottom);
+    // NSLog(@"pos: %f of %f", y, h);
+    
+    float reload_distance = 10;
+    if(y > h + reload_distance) {
+        NSLog(@"load more rows");
+        [self refreshChange:self.allItems.count/64];
+    }
+}
+
 
 # pragma mark refresh controller
 
-- (void) refreshChange
+- (void) reloadItemsNotification
+{
+    [self refreshChange:0];
+}
+
+- (void) refreshChange:(int)page
 {
     if (requestMade)
         return;
     requestMade = YES;
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":@"0"}
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSNumber numberWithInt:page]}
                            success:^(id responseObject) {
-                               NSLog(@"response: %@", responseObject);
+                               //NSLog(@"response: %@", responseObject);
                                if ([responseObject objectForKey:@"outstanding_items"]) {
                                    self.outstandingItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"outstanding_items"]];
                                }
                                if ([responseObject objectForKey:@"items"]) {
                                    self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
                                }
-                               if ([responseObject objectForKey:@"bottom_items"]) {
+                               if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
                                    //add to bottom of all Items & refresh!
+                                   if (self.allItems.count%64==0 && self.allItems.count <= 64*[[responseObject objectForKey:@"page"] integerValue]) {
+                                       [self.allItems addObjectsFromArray:[responseObject objectForKey:@"bottom_items"]];
+                                   }
                                }
                                requestMade = NO;
                                [self reloadScreen];
@@ -220,13 +308,14 @@
                                [self reloadScreen];
                            }
      ];
+    [self reloadScreen];
 }
 
 - (IBAction)refreshControllerChanged:(id)sender
 {
     if (self.refreshControl.isRefreshing) {
         //Make server call here.
-        [self refreshChange];
+        [self refreshChange:0];
     }
 }
 

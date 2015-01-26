@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface HCSearchTableViewController : UITableViewController <UISearchBarDelegate>
+{
+    BOOL requestMade;
+}
 
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *doneButton;

@@ -12,7 +12,7 @@
 
 - (NSString*) truncated:(int)length
 {
-    return [self substringWithRange:NSMakeRange(0, MIN([self length], length))];
+    return length < [self length] ? [NSString stringWithFormat:@"%@ [...]", [self substringWithRange:NSMakeRange(0, length)]] : self;
 }
 
 @end

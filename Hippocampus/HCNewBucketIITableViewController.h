@@ -8,12 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HCNewBucketIITableViewController : UITableViewController <UITextFieldDelegate>
+@interface HCNewBucketIITableViewController : UITableViewController <UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+{
+    MBProgressHUD* hud;
+}
 
-@property (strong, nonatomic) HCBucket* bucket;
+@property (strong, nonatomic) id delegate;
+
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
+
+@property (strong, nonatomic) IBOutlet UIPickerView *typePicker;
 @property (strong, nonatomic) IBOutlet UITextField *firstName;
-@property (strong, nonatomic) IBOutlet UITextField *lastName;
+
+@property (strong, nonatomic) NSArray* typeOptions;
 
 - (IBAction)saveAction:(id)sender;
 

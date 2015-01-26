@@ -39,6 +39,8 @@
 
 - (IBAction)goAction:(id)sender
 {
+    [sender resignFirstResponder];
+    
     [self showHUDWithMessage:@"Working"];
     
     [HCUser tokenVerify:self.tokenInput.text

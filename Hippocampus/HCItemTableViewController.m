@@ -10,6 +10,8 @@
 #import "HCReminderViewController.h"
 #import "HCBucketTableViewController.h"
 #import "HCEditItemViewController.h"
+#import "HCBucketsTableViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
@@ -23,6 +25,8 @@
 @synthesize saveButton;
 @synthesize sections;
 
+@synthesize mediaDictionary;
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -35,6 +39,11 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    self.mediaDictionary = [[NSMutableDictionary alloc] init];
+    
+    unsavedChanges = NO;
+    savingChanges = NO;
+    
     [self updateItemInfo];
 }
 
@@ -55,21 +64,45 @@
 - (void) reloadScreen
 {
     [self.tableView reloadData];
+    [self updateButtonStatus];
+}
+
+- (void) updateButtonStatus
+{
+    if (!unsavedChanges) {
+        [self.navigationItem.rightBarButtonItem  setEnabled:NO];
+        [self.navigationItem.rightBarButtonItem setTitle:@"Saved"];
+    } else if (savingChanges) {
+        [self.navigationItem.rightBarButtonItem  setEnabled:NO];
+        [self.navigationItem.rightBarButtonItem setTitle:@"Saving..."];
+    } else {
+        [self.navigationItem.rightBarButtonItem  setEnabled:YES];
+        [self.navigationItem.rightBarButtonItem setTitle:@"Save"];
+    }
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     self.sections = [[NSMutableArray alloc] init];
     
-    [self.sections addObject:@"message"];
+    if ([self.item objectForKey:@"message"] && [[self.item objectForKey:@"message"] length] > 0) {
+        [self.sections addObject:@"message"];
+    }
+    
     if ([self.item objectForKey:@"media_urls"] && [[self.item objectForKey:@"media_urls"] count] > 0) {
         [self.sections addObject:@"media"];
     }
+    
     [self.sections addObject:@"reminder"];
     if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
-        [self.sections addObject:@"type"];
+        //[self.sections addObject:@"type"];
     }
-    [self.sections addObject:@"bucket"];
+    
+    if ([self.item objectForKey:@"buckets"] && [[self.item objectForKey:@"buckets"] count] > 0) {
+        [self.sections addObject:@"bucket"];
+    }
+    
+    [self.sections addObject:@"actions"];
     
     return self.sections.count;
 }
@@ -92,6 +125,8 @@
         if ([self.item objectForKey:@"buckets"] && [[self.item objectForKey:@"buckets"] count] > 0) {
             return [[self.item objectForKey:@"buckets"] count];
         }
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
+        return 2;
     }
     return 0;
 }
@@ -104,11 +139,13 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         return [self tableView:tableView messageCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
-        return [self tableView:tableView messageCellForIndexPath:indexPath];
+        return [self tableView:tableView imageCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return [self tableView:tableView reminderCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucket"]) {
         return [self tableView:tableView bucketCellForIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
+        return [self tableView:tableView actionCellForIndexPath:indexPath];
     }
     return nil;
 }
@@ -119,6 +156,29 @@
     
     UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
     [label setText:[self.item objectForKey:@"item_type"]];
+    
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView*)tableView imageCellForIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mediaCell" forIndexPath:indexPath];
+    
+    UIActivityIndicatorView* aiv = (UIActivityIndicatorView*) [cell.contentView viewWithTag:10];
+    [aiv startAnimating];
+    
+    UIImageView* iv = (UIImageView*)[cell.contentView viewWithTag:1];
+    NSString* url = [[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row];
+    
+    if ([self.mediaDictionary objectForKey:url]) {
+        UIImage* i = [self.mediaDictionary objectForKey:url];
+        [iv setFrame:CGRectMake(iv.frame.origin.x, iv.frame.origin.y, iv.frame.size.width, i.size.height*(iv.frame.size.width/i.size.width))];
+        [iv setImage:[self.mediaDictionary objectForKey:url]];
+        [iv setClipsToBounds:YES];
+        [iv.layer setCornerRadius:8.0f];
+    } else {
+        [iv setImage:nil];
+    }
     
     return cell;
 }
@@ -159,7 +219,7 @@
     
     UILabel* direction =  (UILabel*)[cell.contentView viewWithTag:3];
     if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
-        [direction setText:@"Tap to Change"];
+        [direction setText:[NSString stringWithFormat:@"Set to remind you %@. Tap to Change", [self.item objectForKey:@"item_type"]]];
     } else {
         [direction setText:@"Tap to Set"];
     }
@@ -179,12 +239,32 @@
     return cell;
 }
 
+- (UITableViewCell*) tableView:(UITableView*)tableView actionCellForIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"actionSelectCell" forIndexPath:indexPath];
+    
+    UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
+    
+    if (indexPath.row == 0) {
+        [label setText:@"Add to Stack"];
+    } else if (indexPath.row == 1) {
+        [label setText:@"Delete"];
+    }
+    
+    return cell;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         return [self heightForText:[self.item objectForKey:@"message"] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return 56.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
+        if ([self.mediaDictionary objectForKey:[[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row]]) {
+            UIImage* i = [self.mediaDictionary objectForKey:[[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row]];
+            return 16 + i.size.height*(304/i.size.width);
+        }
     }
     return 44.0f;
 }
@@ -204,15 +284,17 @@
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if ([[self.sections objectAtIndex:section] isEqualToString:@"type"]) {
-        return @"Note Type";
+        return @"Reminder Frequency";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"message"]) {
-        return @"Note Message";
+        return @"Note";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         return @"Images";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"reminder"]) {
         return @"Reminder";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucket"]) {
-        return @"Assigned To";
+        return @"Stacks";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
+        return @"Actions";
     }
     return nil;
 }
@@ -236,22 +318,45 @@
         [itvc setItem:self.item];
         [itvc setDelegate:self];
         [self presentViewController:itvc animated:YES completion:nil];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row]]];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
+        if (indexPath.row == 0) {
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+            HCBucketsTableViewController* itvc = (HCBucketsTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketsTableViewController"];
+            [itvc setMode:@"assign"];
+            [itvc setDelegate:self];
+            [self.navigationController pushViewController:itvc animated:YES];
+        }
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 
-#pragma mark actions
 
-- (void) saveReminder:(NSString*)reminder
+#pragma mark put calls and updates
+
+- (void) saveReminder:(NSString*)reminder withType:(NSString*)type
 {
+    unsavedChanges = YES;
+    savingChanges = YES;
     [self.item setObject:reminder forKey:@"reminder_date"];
+    [self.item setObject:type forKey:@"item_type"];
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Saving Reminder"]];
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"PUT" withParamaters:@{@"item":self.item}
                            success:^(id responseObject) {
                                NSLog(@"successfully updated reminder date");
+                               unsavedChanges = NO;
+                               savingChanges = NO;
+                               [self hideHUD];
+                               [self reloadScreen];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"unsuccessfully updated reminder date");
+                               unsavedChanges = YES;
+                               savingChanges = NO;
+                               [self hideHUD];
+                               [self reloadScreen];
                            }
      ];
     [self reloadScreen];
@@ -259,17 +364,55 @@
 
 - (void) saveUpdatedMessage:(NSString*)updatedMessage
 {
+    unsavedChanges = YES;
+    savingChanges = YES;
     [self.item setObject:updatedMessage forKey:@"message"];
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"PUT" withParamaters:@{@"item":self.item}
                            success:^(id responseObject) {
                                NSLog(@"successfully updated message");
+                               unsavedChanges = NO;
+                               savingChanges = NO;
+                               [self reloadScreen];
                            }
                            failure:^(NSError *error) {
-                               NSLog(@"unsuccessfully updated message");
+                               NSLog(@"unsuccessfully updated reminder date");
+                               unsavedChanges = YES;
+                               savingChanges = NO;
+                               [self reloadScreen];
                            }
      ];
     [self reloadScreen];
 }
+
+
+- (void) addToStack:(NSDictionary*)bucket
+{
+    unsavedChanges = YES;
+    savingChanges = YES;
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Stack", [bucket objectForKey:@"first_name"]]];
+    [[LXServer shared] requestPath:@"/bucket_item_pairs.json" withMethod:@"POST" withParamaters:@{@"bucket_item_pair":@{@"bucket_id":[bucket objectForKey:@"id"], @"item_id":[self.item objectForKey:@"id"]}}
+                           success:^(id responseObject) {
+                               NSLog(@"successfully added to stack: %@", responseObject);
+                               [self.item setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
+                               unsavedChanges = NO;
+                               savingChanges = NO;
+                               [self hideHUD];
+                               if ([[self.item objectForKey:@"buckets"] count] == 1) {
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadItems" object:nil userInfo:nil];
+                               }
+                               [self reloadScreen];
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"unsuccessfully added to stack");
+                               unsavedChanges = YES;
+                               savingChanges = NO;
+                               [self hideHUD];
+                               [self reloadScreen];
+                           }
+     ];
+    [self reloadScreen];
+}
+
 
 - (IBAction)saveAction:(id)sender
 {
@@ -277,12 +420,19 @@
 }
 
 
+
+
+# pragma mark get calls
+
+
 - (void) updateItemInfo
 {
+    [self getImages];
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"GET" withParamaters:nil
                            success:^(id responseObject){
                                self.item = [NSMutableDictionary dictionaryWithDictionary:responseObject];
                                NSLog(@"response: %@", responseObject);
+                               [self getImages];
                                [self reloadScreen];
                            }
                            failure:^(NSError *error) {
@@ -290,6 +440,35 @@
                            }
      ];
 }
+
+
+- (void) getImages
+{
+    if ([self.item objectForKey:@"media_urls"] && [[self.item objectForKey:@"media_urls"] count] > 0) {
+        for (NSString* url in [self.item objectForKey:@"media_urls"]) {
+            [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                [self.mediaDictionary setObject:image forKey:url];
+                [self reloadScreen];
+            }];
+        }
+    }
+}
+
+
+
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
+{
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = message;
+}
+
+- (void) hideHUD
+{
+    [hud hide:YES];
+}
+
 
 
 

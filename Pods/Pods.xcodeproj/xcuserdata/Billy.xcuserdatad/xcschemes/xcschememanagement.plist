@@ -14,6 +14,21 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-MGEvents.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-SGHTTPRequest.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-SGImageCache.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -22,17 +37,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>7A4CCABDF76C4E3BA5950C35</key>
+		<key>16749289CE488E4C2496DD6F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A92A39F3652D49CDA46E2E3B</key>
+		<key>403BDBE96DC8EFD2797D5363</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D737989C01714E209682DDC1</key>
+		<key>659CC619D399F043518ACE20</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7CA3E5114DF8210E2044E174</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>879B7A4BADC1CBBACDF8C23E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EE5C993ED152948D90A5A2BA</key>
 		<dict>
 			<key>primary</key>
 			<true/>

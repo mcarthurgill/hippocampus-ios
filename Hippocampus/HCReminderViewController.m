@@ -22,6 +22,7 @@
 @synthesize cancelButton;
 @synthesize saveButton;
 @synthesize datePicker;
+@synthesize typePicker;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,9 +36,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.typeOptions = @[@"once", @"yearly", @"monthly", @"weekly", @"daily"];
+    
     if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
-        [self.datePicker setDate:[self.item objectForKey:@"reminder_date"]];
+        [self.datePicker setDate:[NSDate timeWithString:[self.item objectForKey:@"reminder_date"]]];
     }
+    if (NULL_TO_NIL([self.item objectForKey:@"item_type"])) {
+        [self.typePicker selectRow:[self indexOfType:[self.item objectForKey:@"item_type"]] inComponent:0 animated:NO];
+    }
+}
+
+- (NSUInteger) indexOfType:(NSString*)t
+{
+    int i = 0;
+    for (NSString* temp in self.typeOptions) {
+        if ([temp isEqualToString:t]) {
+            return i;
+        }
+        ++i;
+    }
+    return 0;
 }
 
 - (void)didReceiveMemoryWarning
@@ -56,7 +75,7 @@
     NSLog(@"Reminder Date: %@", newDate);
     [self.item setObject:newDate forKey:@"reminder_date"];
     [self dismissViewControllerAnimated:NO completion:^(void){
-        [(HCItemTableViewController*)self.delegate saveReminder:newDate];
+        [(HCItemTableViewController*)self.delegate saveReminder:newDate withType:[self.typeOptions objectAtIndex:[self.typePicker selectedRowInComponent:0]]];
     }];
 }
 
@@ -64,4 +83,48 @@
 {
     [self dismissViewControllerAnimated:NO completion:nil];
 }
+
+
+
+
+# pragma mark picker view delegate data source
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [self.typeOptions count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return [self.typeOptions objectAtIndex:row];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    
+}
+
+
+
+
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
+{
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = message;
+}
+
+- (void) hideHUD
+{
+    [hud hide:YES];
+}
+
+
 @end
