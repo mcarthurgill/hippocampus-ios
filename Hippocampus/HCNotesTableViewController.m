@@ -286,7 +286,7 @@
     requestMade = YES;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSNumber numberWithInt:page]}
                            success:^(id responseObject) {
-                               //NSLog(@"response: %@", responseObject);
+                               NSLog(@"response: %@", responseObject);
                                if ([responseObject objectForKey:@"outstanding_items"]) {
                                    self.outstandingItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"outstanding_items"]];
                                }
