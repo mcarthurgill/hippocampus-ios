@@ -187,17 +187,21 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
     
-    UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
+    UITextView *note = (UITextView*)[cell.contentView viewWithTag:1];
+
     float leftMargin = note.frame.origin.x;
     float topMargin = note.frame.origin.y;
     float width = note.frame.size.width;
+    //wrong font but it was fucking up if i didn't set the font here.
+    [note setFont:[UIFont fontWithName:@"Helvetica Neue" size:17.0f]];
+
     [note removeFromSuperview];
     
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[self.item objectForKey:@"message"] width:width font:note.font])];
+    note = [[UITextView alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[self.item objectForKey:@"message"] width:width font:note.font])];
+
+    note.delegate = self;
     [note setText:[self.item objectForKey:@"message"]];
     [note setTag:1];
-    [note setNumberOfLines:0];
-    [note setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.contentView addSubview:note];
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
@@ -313,11 +317,7 @@
         [itvc setBucket:[[self.item objectForKey:@"buckets"] objectAtIndex:indexPath.row]];
         [self.navigationController pushViewController:itvc animated:YES];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        HCEditItemViewController* itvc = (HCEditItemViewController*)[storyboard instantiateViewControllerWithIdentifier:@"editItemViewController"];
-        [itvc setItem:self.item];
-        [itvc setDelegate:self];
-        [self presentViewController:itvc animated:YES completion:nil];
+        
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row]]];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
@@ -471,5 +471,22 @@
 
 
 
+# pragma mark textview delegate
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *result = [textView.text stringByReplacingCharactersInRange:range withString:text];
+
+    [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(saveUpdatedMessage:) withObject:result afterDelay:1.5];
+    
+    return YES;
+}
+
+- (void) textViewDidBeginEditing:(UITextView *)textView {
+    unsavedChanges = YES;
+    savingChanges = NO;
+    [self updateButtonStatus];
+}
 
 @end
