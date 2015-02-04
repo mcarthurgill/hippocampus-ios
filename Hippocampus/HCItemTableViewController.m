@@ -327,6 +327,8 @@
             [itvc setMode:@"assign"];
             [itvc setDelegate:self];
             [self.navigationController pushViewController:itvc animated:YES];
+        } else if (indexPath.row == 1) {
+            [self showAlertViewWithTitle:@"Are you sure?" message:@"Deleting this note means it is gone forever."];
         }
     }
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -467,6 +469,31 @@
 - (void) hideHUD
 {
     [hud hide:YES];
+}
+
+
+# pragma mark alert
+
+- (void) showAlertViewWithTitle:(NSString*)title message:(NSString*)message
+{
+    UIAlertView* av = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Delete", nil];
+    [av show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        //do nothing. note was not deleted
+    } else if (buttonIndex == 1) {
+        [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil
+                               success:^(id responseObject){
+                                   NSLog(@"response: %@", responseObject);
+                                   [self.navigationController popToRootViewControllerAnimated:YES];
+                               }
+                               failure:^(NSError *error) {
+                                   NSLog(@"error! %@", [error localizedDescription]);
+                               }
+         ];
+    }
 }
 
 

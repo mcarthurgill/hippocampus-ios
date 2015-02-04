@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HCItemTableViewController : UITableViewController <UITextViewDelegate>
+@interface HCItemTableViewController : UITableViewController <UITextViewDelegate, UIAlertViewDelegate>
 {
     BOOL unsavedChanges;
     BOOL savingChanges;

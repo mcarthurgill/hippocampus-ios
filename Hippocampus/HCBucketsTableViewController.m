@@ -7,7 +7,7 @@
 //
 
 #import "HCBucketsTableViewController.h"
-#import "HCBucketTableViewController.h"
+#import "HCBucketViewController.h"
 #import "HCItemTableViewController.h"
 #import "HCNewBucketIITableViewController.h"
 
@@ -40,7 +40,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
     
     requestMade = NO;
@@ -207,17 +206,17 @@
     if ([self assignMode]) {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"new"]) {
             NSLog(@"NEW STACK!");
-            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-            HCNewBucketIITableViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"newBucketIITableViewController"];
-            [btvc setDelegate:self.delegate];
-            [self.navigationController pushViewController:btvc animated:YES];
+//            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+//            HCNewBucketIITableViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"newBucketIITableViewController"];
+//            [btvc setDelegate:self.delegate];
+//            [self.navigationController pushViewController:btvc animated:YES];
         } else {
             [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
             [self.navigationController popViewControllerAnimated:YES];
         }
     } else {
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        HCBucketTableViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketTableViewController"];
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
         [btvc setBucket:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
         [self.navigationController pushViewController:btvc animated:YES];
     }
@@ -285,7 +284,7 @@
     requestMade = YES;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
                            success:^(id responseObject) {
-                               NSLog(@"response: %@", responseObject);
+//                               NSLog(@"response: %@", responseObject);
                                self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
                                requestMade = NO;
                                [self reloadScreen];

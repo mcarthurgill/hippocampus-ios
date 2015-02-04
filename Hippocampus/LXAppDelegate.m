@@ -22,13 +22,13 @@
     
     [[LXSession thisSession] setVariables];
     
-    if ([self shouldPresentLoginViews])
-        [self setRootStoryboard:@"Login"];
-    
+//    if ([self shouldPresentIntroductionViews])
+        [self setRootStoryboard:@"Messages"];
+//          [self setRootStoryboard:@"Main"];
     return YES;
 }
 
-- (BOOL) shouldPresentLoginViews
+- (BOOL) shouldPresentIntroductionViews
 {
     NSLog(@"USER: %@", [[LXSession thisSession] user]);
     return ![[LXSession thisSession] user];

@@ -1,40 +1,33 @@
 //
-//  HCBucketTableViewController.m
+//  HCBucketViewController.m
 //  Hippocampus
 //
-//  Created by Will Schreiber on 7/8/14.
-//  Copyright (c) 2014 LXV. All rights reserved.
+//  Created by Joseph McArthur Gill on 2/3/15.
+//  Copyright (c) 2015 LXV. All rights reserved.
 //
 
-#import "HCBucketTableViewController.h"
-#import "HCItemTableViewController.h"
-#import "HCNewItemTableViewController.h"
+#import "HCBucketViewController.h"
 
-#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+@interface HCBucketViewController ()
+    @property (nonatomic, strong) UIView *adjustingView;
+    @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
 
-#define PICTURE_HEIGHT 128
-#define PICTURE_MARGIN_TOP 8
-
-@interface HCBucketTableViewController ()
+    - (void)keyboardWillHide:(NSNotification *)sender;
+    - (void)keyboardDidShow:(NSNotification *)sender;
 
 @end
 
-@implementation HCBucketTableViewController
+@implementation HCBucketViewController
 
 @synthesize refreshControl;
 @synthesize bucket;
 @synthesize sections;
 @synthesize allItems;
 @synthesize addButton;
+@synthesize tableView;
+@synthesize composeTextView;
+@synthesize composeView;
 
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -43,6 +36,20 @@
     requestMade = NO;
     
     [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
+    
+    self.composeView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.self.composeView];
+    
+    NSDictionary *views = @{@"view": self.composeView,
+                            @"top": self.topLayoutGuide };
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[top][view]" options:0 metrics:nil views:views]];
+    
+    self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.composeView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+    [self.view addConstraint:self.bottomConstraint];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];;
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -65,6 +72,14 @@
 {
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
+    [self setTableScrollToBottom];
+}
+
+- (void) setTableScrollToBottom {
+    if (self.allItems.count > 0) {
+        NSIndexPath* ipath = [NSIndexPath indexPathForRow: allItems.count-1 inSection: 0];
+        [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: NO];
+    }
 }
 
 
@@ -91,14 +106,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-        return [self itemCellForTableView:tableView withItem:[self.allItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
+        return [self itemCellForTableView:self.tableView withItem:[self.allItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
 
 - (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(NSDictionary*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
     
     UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
     float leftMargin = note.frame.origin.x;
@@ -173,7 +188,6 @@
     return 44.0;
 }
 
-
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
@@ -183,7 +197,7 @@
         [self.navigationController pushViewController:itvc animated:YES];
     }
     
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -202,11 +216,14 @@
 
 - (IBAction)addAction:(id)sender
 {
-//    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-//    UINavigationController* itvc = (UINavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"newItemNavigationController"];
-//    [(HCNewItemTableViewController*)[[itvc viewControllers] firstObject] setBucketID:[self.bucket objectForKey:@"id"]];
-//    [self presentViewController:itvc animated:NO completion:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
+    //    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+    //    UINavigationController* itvc = (UINavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"newItemNavigationController"];
+    //    [(HCNewItemTableViewController*)[[itvc viewControllers] firstObject] setBucketID:[self.bucket objectForKey:@"id"]];
+    //    [self presentViewController:itvc animated:NO completion:nil];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
+    NSLog(@"**************");
+    NSLog(@"%@", self.composeTextView.text);
+    NSLog(@"**************");
 }
 
 - (IBAction)refreshControllerChanged:(id)sender
@@ -242,5 +259,42 @@
 
 - (void) deleteItem:(NSDictionary *)item {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil success:^(id responseObject) {} failure:^(NSError* error) {}];
+}
+
+
+
+# pragma mark UITextView Delegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@"Add Note"]) {
+        textView.text = @"";
+        textView.textColor = [UIColor blackColor];
+    }
+    [textView becomeFirstResponder];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@""]) {
+        textView.text = @"Add note";
+        textView.textColor = [UIColor lightGrayColor];
+    }
+    [textView resignFirstResponder];
+}
+
+
+# pragma mark Keyboard Notifications
+
+- (void)keyboardDidShow:(NSNotification *)sender {
+    CGRect frame = [sender.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
+    self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
+    [self.view layoutIfNeeded];
+}
+
+- (void)keyboardWillHide:(NSNotification *)sender {
+    self.bottomConstraint.constant = 0;
+    [self.view layoutIfNeeded];
 }
 @end
