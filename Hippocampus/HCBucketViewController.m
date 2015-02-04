@@ -32,7 +32,6 @@
     requestMade = NO;
     
     [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
-    
     [self setupConstraint];
     [self observeKeyboard];
 }
@@ -252,9 +251,7 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-            NSLog(@"*********started editing!");
     if ([textView.text isEqualToString:@"Add Note"]) {
-        NSLog(@"**********INSIDE!");
         textView.text = @"";
         textView.textColor = [UIColor blackColor];
     }
@@ -264,7 +261,7 @@
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     if ([textView.text isEqualToString:@""]) {
-        textView.text = @"Add note";
+        textView.text = @"Add Note";
         textView.textColor = [UIColor lightGrayColor];
     }
     [textView resignFirstResponder];
@@ -279,13 +276,14 @@
 }
 
 - (void)keyboardWillShow:(NSNotification *)sender {
+    [self setTableScrollToBottom];
+    
     NSDictionary *info = [sender userInfo];
-
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
     self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
-    [UIView animateWithDuration:0.0 animations:^{
+    [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
 }
