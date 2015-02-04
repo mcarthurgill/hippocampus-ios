@@ -23,6 +23,7 @@
 @synthesize composeTextView;
 @synthesize composeView;
 @synthesize bottomConstraint;
+@synthesize textViewHeightConstraint;
 
 
 - (void)viewDidLoad

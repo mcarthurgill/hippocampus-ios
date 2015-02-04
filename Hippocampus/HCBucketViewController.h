@@ -31,6 +31,7 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *addButton;
 
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *textViewHeightConstraint;
 
 - (IBAction)addAction:(id)sender;
 
