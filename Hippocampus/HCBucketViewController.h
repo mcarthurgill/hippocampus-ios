@@ -30,6 +30,7 @@
 @property (strong, nonatomic) NSMutableArray* allItems;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *addButton;
 
+@property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
 
 - (IBAction)addAction:(id)sender;
 

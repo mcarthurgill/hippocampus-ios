@@ -9,11 +9,6 @@
 #import "HCBucketViewController.h"
 
 @interface HCBucketViewController ()
-    @property (nonatomic, strong) UIView *adjustingView;
-    @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
-
-    - (void)keyboardWillHide:(NSNotification *)sender;
-    - (void)keyboardDidShow:(NSNotification *)sender;
 
 @end
 
@@ -27,6 +22,7 @@
 @synthesize tableView;
 @synthesize composeTextView;
 @synthesize composeView;
+@synthesize bottomConstraint;
 
 
 - (void)viewDidLoad
@@ -49,7 +45,7 @@
     [self.view addConstraint:self.bottomConstraint];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];;
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];;
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -286,15 +282,25 @@
 
 # pragma mark Keyboard Notifications
 
-- (void)keyboardDidShow:(NSNotification *)sender {
-    CGRect frame = [sender.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+- (void)keyboardWillShow:(NSNotification *)sender {
+    NSDictionary *info = [sender userInfo];
+
+    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
     self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
-    [self.view layoutIfNeeded];
+    [UIView animateWithDuration:animationDuration animations:^{
+        [self.view layoutIfNeeded];
+    }];
 }
 
 - (void)keyboardWillHide:(NSNotification *)sender {
+    NSDictionary *info = [sender userInfo];
+    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    
     self.bottomConstraint.constant = 0;
-    [self.view layoutIfNeeded];
+    [UIView animateWithDuration:animationDuration animations:^{
+        [self.view layoutIfNeeded];
+    }];
 }
 @end
