@@ -33,19 +33,8 @@
     
     [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
     
-    self.composeView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.self.composeView];
-    
-    NSDictionary *views = @{@"view": self.composeView,
-                            @"top": self.topLayoutGuide };
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[top][view]" options:0 metrics:nil views:views]];
-    
-    self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.composeView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0];
-    [self.view addConstraint:self.bottomConstraint];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];;
+    [self setupConstraint];
+    [self observeKeyboard];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -263,7 +252,9 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
+            NSLog(@"*********started editing!");
     if ([textView.text isEqualToString:@"Add Note"]) {
+        NSLog(@"**********INSIDE!");
         textView.text = @"";
         textView.textColor = [UIColor blackColor];
     }
@@ -282,6 +273,11 @@
 
 # pragma mark Keyboard Notifications
 
+- (void)observeKeyboard {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
+}
+
 - (void)keyboardWillShow:(NSNotification *)sender {
     NSDictionary *info = [sender userInfo];
 
@@ -289,7 +285,7 @@
     CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
     self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
-    [UIView animateWithDuration:animationDuration animations:^{
+    [UIView animateWithDuration:0.0 animations:^{
         [self.view layoutIfNeeded];
     }];
 }
@@ -302,5 +298,22 @@
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
+}
+
+
+
+# pragma mark Constraints
+
+-(void) setupConstraint {
+    self.composeView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.self.composeView];
+    
+    NSDictionary *views = @{@"view": self.composeView,
+                            @"top": self.topLayoutGuide };
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[top][view]" options:0 metrics:nil views:views]];
+    
+    self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.composeView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+    [self.view addConstraint:self.bottomConstraint];
 }
 @end
