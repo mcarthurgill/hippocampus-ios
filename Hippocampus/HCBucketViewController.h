@@ -32,6 +32,8 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *addButton;
 
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableviewHeightConstraint;
+
 
 - (IBAction)addAction:(id)sender;
 

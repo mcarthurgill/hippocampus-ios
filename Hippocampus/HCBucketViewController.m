@@ -23,6 +23,7 @@
 @synthesize composeTextView;
 @synthesize composeView;
 @synthesize bottomConstraint;
+@synthesize tableviewHeightConstraint;
 @synthesize scrollToBottom;
 
 - (void)viewDidLoad
@@ -293,6 +294,10 @@
     CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
     self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
     
+    if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
+        self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
+    }
+    
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
@@ -304,6 +309,8 @@
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     self.bottomConstraint.constant = 0;
+    self.tableviewHeightConstraint.constant = self.view.frame.size.height - self.composeView.frame.size.height;
+
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
