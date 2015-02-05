@@ -133,7 +133,7 @@
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xd3-CD-40J">
                                 <rect key="frame" x="0.0" y="528" width="320" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
                                         <rect key="frame" x="269" y="5" width="36" height="30"/>
                                         <state key="normal" title="Send">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -142,9 +142,13 @@
                                             <action selector="addAction:" destination="NRV-Pe-zK1" eventType="touchUpInside" id="M2n-Aq-MSH"/>
                                         </connections>
                                     </button>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Add Note" translatesAutoresizingMaskIntoConstraints="NO" id="bUM-CL-Fv8">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="Add Note" translatesAutoresizingMaskIntoConstraints="NO" id="bUM-CL-Fv8">
                                         <rect key="frame" x="18" y="5" width="225" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="Zxe-fW-utz"/>
+                                            <constraint firstAttribute="width" constant="225" id="zF1-bp-L0g"/>
+                                        </constraints>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -155,10 +159,14 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.75968464931588975" green="0.96849423363095233" blue="0.94728827817320993" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="bUM-CL-Fv8" secondAttribute="bottom" constant="5" id="GeM-z8-tKd"/>
+                                    <constraint firstItem="bUM-CL-Fv8" firstAttribute="leading" secondItem="xd3-CD-40J" secondAttribute="leading" constant="18" id="NnO-Li-HdM"/>
+                                    <constraint firstAttribute="trailing" secondItem="bUM-CL-Fv8" secondAttribute="trailing" constant="77" id="e4U-lZ-boW"/>
                                     <constraint firstAttribute="height" constant="40" id="fx0-s2-uhs"/>
+                                    <constraint firstItem="suh-LO-BkZ" firstAttribute="leading" secondItem="bUM-CL-Fv8" secondAttribute="trailing" constant="26" id="pxE-LC-4S2"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -224,6 +232,7 @@
                         <outlet property="composeView" destination="xd3-CD-40J" id="tGS-tI-OsI"/>
                         <outlet property="tableView" destination="3q9-fo-byX" id="6PM-gN-Sun"/>
                         <outlet property="tableviewHeightConstraint" destination="qaP-pr-pKQ" id="0Wh-ad-v4t"/>
+                        <outlet property="textViewHeightConstraint" destination="Zxe-fW-utz" id="Rf9-hv-8pE"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xhS-hH-joO" userLabel="First Responder" sceneMemberID="firstResponder"/>

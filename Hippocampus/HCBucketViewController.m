@@ -24,6 +24,7 @@
 @synthesize composeView;
 @synthesize bottomConstraint;
 @synthesize tableviewHeightConstraint;
+@synthesize textViewHeightConstraint;
 @synthesize scrollToBottom;
 
 - (void)viewDidLoad
@@ -53,6 +54,7 @@
 - (void) setupProperties {
     requestMade = NO;
     self.scrollToBottom = YES;
+    [composeTextView setScrollEnabled:NO];
 }
 
 #pragma mark - Table view data source

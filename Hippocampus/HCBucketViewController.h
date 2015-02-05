@@ -33,6 +33,7 @@
 
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableviewHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
 
 
 - (IBAction)addAction:(id)sender;
