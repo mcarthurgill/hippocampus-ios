@@ -294,6 +294,7 @@
     CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
     self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
     
+    //for buckets where tableview.contentSize is small
     if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
         self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
     }
@@ -309,6 +310,8 @@
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
     self.bottomConstraint.constant = 0;
+
+    //for buckets where tableview.contentSize is small
     self.tableviewHeightConstraint.constant = self.view.frame.size.height - self.composeView.frame.size.height;
 
     [UIView animateWithDuration:animationDuration animations:^{
