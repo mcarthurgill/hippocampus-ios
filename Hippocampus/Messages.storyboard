@@ -130,7 +130,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xd3-CD-40J">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xd3-CD-40J">
                                 <rect key="frame" x="0.0" y="528" width="320" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
@@ -159,14 +159,16 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.75968464931588975" green="0.96849423363095233" blue="0.94728827817320993" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="bUM-CL-Fv8" secondAttribute="bottom" constant="5" id="GeM-z8-tKd"/>
                                     <constraint firstItem="bUM-CL-Fv8" firstAttribute="leading" secondItem="xd3-CD-40J" secondAttribute="leading" constant="18" id="NnO-Li-HdM"/>
+                                    <constraint firstItem="bUM-CL-Fv8" firstAttribute="top" secondItem="xd3-CD-40J" secondAttribute="top" constant="5" id="StE-3d-WWJ"/>
                                     <constraint firstAttribute="trailing" secondItem="bUM-CL-Fv8" secondAttribute="trailing" constant="77" id="e4U-lZ-boW"/>
-                                    <constraint firstAttribute="height" constant="40" id="fx0-s2-uhs"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="fx0-s2-uhs"/>
                                     <constraint firstItem="suh-LO-BkZ" firstAttribute="leading" secondItem="bUM-CL-Fv8" secondAttribute="trailing" constant="26" id="pxE-LC-4S2"/>
+                                    <constraint firstAttribute="bottom" secondItem="suh-LO-BkZ" secondAttribute="bottom" constant="5" id="rDu-I9-Fy0"/>
+                                    <constraint firstAttribute="bottom" secondItem="bUM-CL-Fv8" secondAttribute="bottom" constant="5" id="uBa-fO-tqX"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
