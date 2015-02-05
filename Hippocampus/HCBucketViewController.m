@@ -24,7 +24,7 @@
 @synthesize composeView;
 @synthesize bottomConstraint;
 @synthesize textViewHeightConstraint;
-@synthesize tableViewHeightConstraint;
+//@synthesize tableViewHeightConstraint;
 
 
 - (void)viewDidLoad
@@ -291,7 +291,8 @@
     NSLog(@"newframe - cgrect = %f", newFrame.origin.y - CGRectGetHeight(self.view.frame));
     NSLog(@"textview.height = %f", self.composeTextView.frame.size.height);
     NSLog(@"************");
-    self.tableViewHeightConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
+    CGFloat height = newFrame.origin.y - CGRectGetHeight(self.view.frame) - self.composeTextView.frame.size.height;
+//    self.tableViewHeightConstraint.constant = height;
     
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
