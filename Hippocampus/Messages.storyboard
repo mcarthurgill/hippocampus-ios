@@ -130,11 +130,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="528" id="aZ6-LS-t87"/>
+                                    <constraint firstAttribute="height" constant="528" id="qaP-pr-pKQ"/>
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="blankCell" id="k6y-rx-bUc">
@@ -182,7 +182,7 @@
                                     <outlet property="delegate" destination="NRV-Pe-zK1" id="Tzh-OY-tpS"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xd3-CD-40J">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xd3-CD-40J">
                                 <rect key="frame" x="0.0" y="528" width="320" height="40"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
@@ -214,11 +214,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="3q9-fo-byX" secondAttribute="trailing" id="4E6-Pi-5hk"/>
-                            <constraint firstItem="xd3-CD-40J" firstAttribute="top" secondItem="3q9-fo-byX" secondAttribute="bottom" id="4d8-du-ouM"/>
-                            <constraint firstItem="3q9-fo-byX" firstAttribute="leading" secondItem="xd3-CD-40J" secondAttribute="leading" id="F5K-K7-Rwt"/>
-                            <constraint firstItem="3q9-fo-byX" firstAttribute="top" secondItem="vbM-87-o5e" secondAttribute="top" id="ZIN-hu-qEQ"/>
                             <constraint firstItem="3q9-fo-byX" firstAttribute="leading" secondItem="vbM-87-o5e" secondAttribute="leading" id="bXo-qk-TbR"/>
-                            <constraint firstItem="3q9-fo-byX" firstAttribute="trailing" secondItem="xd3-CD-40J" secondAttribute="trailing" id="pRh-Vx-gfq"/>
+                            <constraint firstItem="xd3-CD-40J" firstAttribute="top" secondItem="3q9-fo-byX" secondAttribute="bottom" id="g3z-Fj-4L6"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Thread" id="bB9-xO-6dA"/>
@@ -226,6 +223,7 @@
                         <outlet property="composeTextView" destination="bUM-CL-Fv8" id="fNs-2N-tZb"/>
                         <outlet property="composeView" destination="xd3-CD-40J" id="tGS-tI-OsI"/>
                         <outlet property="tableView" destination="3q9-fo-byX" id="6PM-gN-Sun"/>
+                        <outlet property="tableViewHeightConstraint" destination="qaP-pr-pKQ" id="2Fo-ZO-Dnl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xhS-hH-joO" userLabel="First Responder" sceneMemberID="firstResponder"/>
