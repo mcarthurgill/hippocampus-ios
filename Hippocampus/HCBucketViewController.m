@@ -23,15 +23,13 @@
 @synthesize composeTextView;
 @synthesize composeView;
 @synthesize bottomConstraint;
-@synthesize textViewHeightConstraint;
-@synthesize tableViewHeightConstraint;
-
+@synthesize scrollToBottom;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    requestMade = NO;
+    [self setupProperties];
     
     [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
     [self setupConstraint];
@@ -41,7 +39,6 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self refreshChange];
     [self reloadScreen];
 }
@@ -52,19 +49,27 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) setupProperties {
+    requestMade = NO;
+    self.scrollToBottom = YES;
+}
+
 #pragma mark - Table view data source
 
 - (void) reloadScreen
 {
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
-    [self setTableScrollToBottom];
+    [self setTableScroll];
 }
 
-- (void) setTableScrollToBottom {
+- (void) setTableScroll {
+
     if (self.allItems.count > 0) {
-        NSIndexPath* ipath = [NSIndexPath indexPathForRow: allItems.count-1 inSection: 0];
-        [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: NO];
+        if (scrollToBottom) {
+            NSIndexPath *ipath = [NSIndexPath indexPathForRow: allItems.count-1 inSection: 0];
+            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: NO];
+        }
     }
 }
 
@@ -180,6 +185,7 @@
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
         [itvc setItem:[self.allItems objectAtIndex:indexPath.row]];
+        self.scrollToBottom = NO;
         [self.navigationController pushViewController:itvc animated:YES];
     }
     
@@ -278,7 +284,8 @@
 }
 
 - (void)keyboardWillShow:(NSNotification *)sender {
-    [self setTableScrollToBottom];
+    self.scrollToBottom = YES;
+    [self setTableScroll];
     
     NSDictionary *info = [sender userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];

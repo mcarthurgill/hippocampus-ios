@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *composeView;
 @property (weak, nonatomic) IBOutlet UITextView *composeTextView;
+@property BOOL scrollToBottom;
 
 @property (strong, nonatomic) IBOutlet UIRefreshControl *refreshControl;
 
@@ -31,8 +32,6 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *addButton;
 
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *textViewHeightConstraint;
-@property (strong, nonatomic) IBOutlet NSLayoutConstraint *tableViewHeightConstraint;
 
 - (IBAction)addAction:(id)sender;
 
