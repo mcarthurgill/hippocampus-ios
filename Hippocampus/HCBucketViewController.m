@@ -24,6 +24,7 @@
 @synthesize composeView;
 @synthesize bottomConstraint;
 @synthesize textViewHeightConstraint;
+@synthesize tableViewHeightConstraint;
 
 
 - (void)viewDidLoad
@@ -273,7 +274,7 @@
 
 - (void)observeKeyboard {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 }
 
 - (void)keyboardWillShow:(NSNotification *)sender {
@@ -284,7 +285,14 @@
     CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
     self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
-
+    NSLog(@"************");
+    NSLog(@"newframe.origin.y = %f", newFrame.origin.y);
+        NSLog(@"cgrectgetheight = %f", CGRectGetHeight(self.view.frame));
+    NSLog(@"newframe - cgrect = %f", newFrame.origin.y - CGRectGetHeight(self.view.frame));
+    NSLog(@"textview.height = %f", self.composeTextView.frame.size.height);
+    NSLog(@"************");
+    self.tableViewHeightConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
+    
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
