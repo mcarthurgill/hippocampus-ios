@@ -397,12 +397,12 @@
 			children = (
 				76FBBD891A813D7D00CAF765 /* HCBucketViewController.h */,
 				76FBBD8A1A813D7D00CAF765 /* HCBucketViewController.m */,
-				281CA941196C8DCD00E6BE96 /* HCBucketTableViewController.h */,
-				281CA942196C8DCD00E6BE96 /* HCBucketTableViewController.m */,
 				281CA944196CA18E00E6BE96 /* HCNewBucketTableViewController.h */,
 				281CA945196CA18E00E6BE96 /* HCNewBucketTableViewController.m */,
 				281CA94A196D9EE100E6BE96 /* HCNewBucketIITableViewController.h */,
 				281CA94B196D9EE100E6BE96 /* HCNewBucketIITableViewController.m */,
+				281CA941196C8DCD00E6BE96 /* HCBucketTableViewController.h */,
+				281CA942196C8DCD00E6BE96 /* HCBucketTableViewController.m */,
 			);
 			name = Bucket;
 			sourceTree = "<group>";
