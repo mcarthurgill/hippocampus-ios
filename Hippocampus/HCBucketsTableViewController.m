@@ -43,8 +43,6 @@
     self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
     
     requestMade = NO;
-    
-    [self refreshChange];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -61,7 +59,7 @@
 {
     [super viewDidAppear:animated];
     
-    [self reloadScreen];
+    [self refreshChange];
 }
 
 - (void)didReceiveMemoryWarning
@@ -180,7 +178,7 @@
     }
     
     UIImageView* blueDot = (UIImageView*) [cell.contentView viewWithTag:4];
-    if (!NULL_TO_NIL([bucket objectForKey:@"id"]) && [bucket objectForKey:@"items_count"] > 0) {
+    if (!NULL_TO_NIL([bucket objectForKey:@"id"]) && [[bucket objectForKey:@"items_count"] integerValue] > 0) {
         [blueDot setHidden:NO];
     } else {
         [blueDot setHidden:YES];
@@ -298,7 +296,6 @@
                                [self reloadScreen];
                            }
      ];
-    [self reloadScreen];
 }
 
 - (IBAction)refreshControllerChanged:(id)sender
