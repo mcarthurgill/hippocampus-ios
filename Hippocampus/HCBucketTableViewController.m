@@ -226,7 +226,7 @@
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":@"0"}
                            success:^(id responseObject) {
                                NSLog(@"response: %@", responseObject);
-                               self.allItems = [[NSMutableArray alloc] initWithArray:responseObject];
+                               self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
                                requestMade = NO;
                                [self reloadScreen];
                            }

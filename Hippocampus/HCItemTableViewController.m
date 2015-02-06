@@ -10,6 +10,7 @@
 #import "HCReminderViewController.h"
 #import "HCBucketTableViewController.h"
 #import "HCEditItemViewController.h"
+#import "HCBucketViewController.h"
 #import "HCBucketsTableViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
@@ -306,14 +307,14 @@
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCReminderViewController* itvc = (HCReminderViewController*)[storyboard instantiateViewControllerWithIdentifier:@"reminderViewController"];
         [itvc setItem:self.item];
         [itvc setDelegate:self];
         [self presentViewController:itvc animated:YES completion:nil];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucket"]) {
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-        HCBucketTableViewController* itvc = (HCBucketTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketTableViewController"];
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCBucketViewController* itvc = (HCBucketViewController *)[storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
         [itvc setBucket:[[self.item objectForKey:@"buckets"] objectAtIndex:indexPath.row]];
         [self.navigationController pushViewController:itvc animated:YES];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
@@ -322,7 +323,7 @@
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row]]];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         if (indexPath.row == 0) {
-            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCBucketsTableViewController* itvc = (HCBucketsTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketsTableViewController"];
             [itvc setMode:@"assign"];
             [itvc setDelegate:self];

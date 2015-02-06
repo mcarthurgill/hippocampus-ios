@@ -43,8 +43,6 @@
     self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
     
     requestMade = NO;
-    
-    [self refreshChange];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -61,7 +59,7 @@
 {
     [super viewDidAppear:animated];
     
-    [self reloadScreen];
+    [self refreshChange];
 }
 
 - (void)didReceiveMemoryWarning
@@ -161,7 +159,6 @@
 - (UITableViewCell*) bucketCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NSDictionary* bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
-    NSLog(@"%@", bucket);
     NSString* identifier = @"bucketCell";
     //if (NULL_TO_NIL([bucket objectForKey:@"description_text"]) || [[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
         identifier = @"bucketAndDescriptionCell";
@@ -178,6 +175,13 @@
         [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"created_at"]], ([self assignMode] ? @" - Tap to Add Note" : @"")]];
     } else {
         [description setText:[NSString stringWithFormat:@"%@ Notes %@%@", [bucket objectForKey:@"items_count"], NULL_TO_NIL([bucket objectForKey:@"id"]) ? @"" : @"Outstanding", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"updated_at"]]])]];
+    }
+    
+    UIImageView* blueDot = (UIImageView*) [cell.contentView viewWithTag:4];
+    if (!NULL_TO_NIL([bucket objectForKey:@"id"]) && [[bucket objectForKey:@"items_count"] integerValue] > 0) {
+        [blueDot setHidden:NO];
+    } else {
+        [blueDot setHidden:YES];
     }
     
     return cell;
@@ -201,10 +205,12 @@
     if ([self assignMode]) {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"new"]) {
             NSLog(@"NEW STACK!");
-//            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-//            HCNewBucketIITableViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"newBucketIITableViewController"];
-//            [btvc setDelegate:self.delegate];
-//            [self.navigationController pushViewController:btvc animated:YES];
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+            HCNewBucketIITableViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"newBucketIITableViewController"];
+            [btvc setDelegate:self.delegate];
+            [self.navigationController pushViewController:btvc animated:YES];
+        } else if([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Recent"] && !NULL_TO_NIL([[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"id"])) {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
         } else {
             [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
             [self.navigationController popViewControllerAnimated:YES];
@@ -290,7 +296,6 @@
                                [self reloadScreen];
                            }
      ];
-    [self reloadScreen];
 }
 
 - (IBAction)refreshControllerChanged:(id)sender
@@ -310,6 +315,11 @@
 }
 
 - (IBAction)composeButtonClicked:(id)sender {
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+    [btvc setBucket:[[[self currentDictionary] objectForKey:@"Recent"] objectAtIndex:0]];
+    [btvc setInitializeWithKeyboardUp:YES]; 
+    [self.navigationController pushViewController:btvc animated:YES];
 }
 
 
