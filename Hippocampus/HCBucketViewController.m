@@ -128,6 +128,16 @@
     [cell.contentView addSubview:note];
     //NSLog(@"message: %@, height: %f", [item objectForKey:@"message"], note.frame.size.height);
     
+    UIImageView* blueDot = (UIImageView*) [cell.contentView viewWithTag:4];
+    
+    if ([[item objectForKey:@"status"] isEqualToString:@"outstanding"]) {
+        [blueDot setHidden:NO];
+    } else {
+        [blueDot setHidden:YES];
+    }
+    NSLog(@"*******");
+    NSLog(@"%@", item);
+    NSLog(@"*******");
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
     [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
     

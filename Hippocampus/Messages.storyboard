@@ -60,17 +60,20 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DnI-cQ-nyv">
-                                            <rect key="frame" x="20" y="10" width="292" height="25"/>
+                                            <rect key="frame" x="28" y="9" width="292" height="25"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gE-Wp-zoN">
-                                            <rect key="frame" x="20" y="30" width="292" height="21"/>
+                                            <rect key="frame" x="28" y="31" width="292" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="bluedot.png" translatesAutoresizingMaskIntoConstraints="NO" id="sz4-Bl-1eg">
+                                            <rect key="frame" x="12" y="18" width="8" height="8"/>
+                                        </imageView>
                                     </subviews>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -105,7 +108,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hb2-wA-XgH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1000" y="1105"/>
+            <point key="canvasLocation" x="1000" y="1104"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mLZ-YD-xpE">
@@ -194,29 +197,35 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4G6-iA-qsR" id="wAD-2j-Iod">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CHv-J6-8j9">
-                                                    <rect key="frame" x="28" y="11" width="271" height="20"/>
+                                                <imageView userInteractionEnabled="NO" tag="4" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="bluedot.png" translatesAutoresizingMaskIntoConstraints="NO" id="tpD-au-FgN">
+                                                    <rect key="frame" x="8" y="40" width="8" height="8"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="20" id="R70-KL-dac"/>
+                                                        <constraint firstAttribute="height" constant="8" id="1TP-ly-FQV"/>
+                                                        <constraint firstAttribute="width" constant="8" id="7cK-mc-PB8"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0r-MJ-5Ia">
+                                                    <rect key="frame" x="24" y="34" width="288" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DaH-67-hFJ">
+                                                    <rect key="frame" x="28" y="14" width="271" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="2En-GS-5l0"/>
+                                                        <constraint firstAttribute="width" constant="271" id="cOJ-L5-xgG"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0r-MJ-5Ia">
-                                                    <rect key="frame" x="21" y="34" width="284" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="CHv-J6-8j9" firstAttribute="top" secondItem="wAD-2j-Iod" secondAttribute="topMargin" constant="3" id="Iys-ZF-4i3"/>
-                                                <constraint firstItem="CHv-J6-8j9" firstAttribute="leading" secondItem="wAD-2j-Iod" secondAttribute="leadingMargin" constant="20" id="Juk-fk-0Ub"/>
-                                                <constraint firstItem="B0r-MJ-5Ia" firstAttribute="top" secondItem="CHv-J6-8j9" secondAttribute="bottom" constant="3" id="SPR-Uy-lfb"/>
-                                                <constraint firstItem="B0r-MJ-5Ia" firstAttribute="centerX" secondItem="CHv-J6-8j9" secondAttribute="centerX" id="crR-hK-HB2"/>
-                                                <constraint firstItem="B0r-MJ-5Ia" firstAttribute="leading" secondItem="wAD-2j-Iod" secondAttribute="leadingMargin" constant="13" id="fdX-Ts-p9b"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="B0r-MJ-5Ia" secondAttribute="trailing" constant="7" id="jiv-qF-X2g"/>
+                                                <constraint firstItem="DaH-67-hFJ" firstAttribute="top" secondItem="wAD-2j-Iod" secondAttribute="topMargin" constant="6" id="D3V-xh-8CL"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="DaH-67-hFJ" secondAttribute="trailing" constant="13" id="ccl-p5-aRQ"/>
+                                                <constraint firstItem="B0r-MJ-5Ia" firstAttribute="leading" secondItem="wAD-2j-Iod" secondAttribute="leadingMargin" constant="11" id="fdX-Ts-p9b"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="B0r-MJ-5Ia" secondAttribute="trailing" id="jiv-qF-X2g"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -245,7 +254,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xhS-hH-joO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1433" y="1100"/>
+            <point key="canvasLocation" x="1433" y="1096"/>
         </scene>
         <!--HCNotesTableViewController-->
         <scene sceneID="wYN-1T-0zE">
@@ -528,6 +537,9 @@
             <point key="canvasLocation" x="2267" y="1792"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="bluedot.png" width="225" height="225"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

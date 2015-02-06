@@ -161,7 +161,6 @@
 - (UITableViewCell*) bucketCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NSDictionary* bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
-    NSLog(@"%@", bucket);
     NSString* identifier = @"bucketCell";
     //if (NULL_TO_NIL([bucket objectForKey:@"description_text"]) || [[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
         identifier = @"bucketAndDescriptionCell";
@@ -178,6 +177,13 @@
         [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"created_at"]], ([self assignMode] ? @" - Tap to Add Note" : @"")]];
     } else {
         [description setText:[NSString stringWithFormat:@"%@ Notes %@%@", [bucket objectForKey:@"items_count"], NULL_TO_NIL([bucket objectForKey:@"id"]) ? @"" : @"Outstanding", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"updated_at"]]])]];
+    }
+    
+    UIImageView* blueDot = (UIImageView*) [cell.contentView viewWithTag:4];
+    if (!NULL_TO_NIL([bucket objectForKey:@"id"]) && [bucket objectForKey:@"items_count"] > 0) {
+        [blueDot setHidden:NO];
+    } else {
+        [blueDot setHidden:YES];
     }
     
     return cell;
@@ -205,6 +211,8 @@
             HCNewBucketIITableViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"newBucketIITableViewController"];
             [btvc setDelegate:self.delegate];
             [self.navigationController pushViewController:btvc animated:YES];
+        } else if([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Recent"] && !NULL_TO_NIL([[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"id"])) {
+            [tableView deselectRowAtIndexPath:indexPath animated:YES];
         } else {
             [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
             [self.navigationController popViewControllerAnimated:YES];
