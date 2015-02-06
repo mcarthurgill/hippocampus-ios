@@ -410,6 +410,62 @@
             </objects>
             <point key="canvasLocation" x="1865" y="1105"/>
         </scene>
+        <!--Reminder View Controller-->
+        <scene sceneID="6yf-5v-quZ">
+            <objects>
+                <viewController storyboardIdentifier="reminderViewController" id="IVT-Jv-cUt" customClass="HCReminderViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bl0-H5-64b"/>
+                        <viewControllerLayoutGuide type="bottom" id="UEE-6v-VqZ"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="CoC-H6-dye">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PBq-8I-LiD">
+                                <rect key="frame" x="0.0" y="19" width="320" height="44"/>
+                                <items>
+                                    <navigationItem title="Set a Reminder" id="R5U-nn-wtA">
+                                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="Cvu-zz-Wk8">
+                                            <connections>
+                                                <action selector="cancelAction:" destination="IVT-Jv-cUt" id="TvG-PE-BCb"/>
+                                            </connections>
+                                        </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="UBe-A3-p75">
+                                            <connections>
+                                                <action selector="saveAction:" destination="IVT-Jv-cUt" id="BWO-ah-pX7"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wzW-1Y-OD4">
+                                <rect key="frame" x="0.0" y="62" width="320" height="162"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="IVT-Jv-cUt" id="sVx-gM-isb"/>
+                                    <outlet property="delegate" destination="IVT-Jv-cUt" id="CSc-PC-joa"/>
+                                </connections>
+                            </pickerView>
+                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="10" translatesAutoresizingMaskIntoConstraints="NO" id="OtA-OW-PE4">
+                                <rect key="frame" x="0.0" y="220" width="320" height="162"/>
+                                <date key="date" timeIntervalSinceReferenceDate="426817164.55374199">
+                                    <!--2014-07-12 00:19:24 +0000-->
+                                </date>
+                            </datePicker>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="Cvu-zz-Wk8" id="TNK-Ha-tFy"/>
+                        <outlet property="datePicker" destination="OtA-OW-PE4" id="kt5-dO-hEb"/>
+                        <outlet property="saveButton" destination="UBe-A3-p75" id="lcn-RJ-dEA"/>
+                        <outlet property="typePicker" destination="wzW-1Y-OD4" id="QaO-z2-dIk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="djr-Wz-Uz0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1865" y="1792"/>
+        </scene>
     </scenes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

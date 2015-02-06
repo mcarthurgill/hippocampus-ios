@@ -262,9 +262,8 @@
 - (void) sendRequestForBucketShow {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
                            success:^(id responseObject) {
-                               NSLog(@"response: %@", responseObject);
                                self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
-                               self.page = (int)[responseObject objectForKey:@"page"];
+//                               self.page = (int)[responseObject objectForKey:@"page"];
                                requestMade = NO;
                                [self reloadScreen];
                                [self clearTextField];
@@ -280,7 +279,6 @@
 - (void) sendRequestForAllItems {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
                            success:^(id responseObject) {
-                               NSLog(@"response: %@", responseObject);
                                if ([responseObject objectForKey:@"items"]) {
                                    self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
                                }
