@@ -38,7 +38,6 @@
 
 
 - (IBAction)addAction:(id)sender;
-- (IBAction)composeButtonClicked:(id)sender;
 
 - (IBAction)refreshControllerChanged:(id)sender;
 

@@ -234,11 +234,6 @@
 }
 
 
-- (IBAction)composeButtonClicked:(id)sender {
-    
-}
-
-
 - (IBAction)refreshControllerChanged:(id)sender
 {
     if (self.refreshControl.isRefreshing) {

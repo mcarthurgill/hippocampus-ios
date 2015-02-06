@@ -309,6 +309,9 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
 }
 
+- (IBAction)composeButtonClicked:(id)sender {
+}
+
 
 # pragma mark search bar delegate
 

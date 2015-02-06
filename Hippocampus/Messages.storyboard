@@ -92,7 +92,13 @@
                             <outlet property="delegate" destination="qHq-hU-e41" id="p3j-N1-22r"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Threads" id="z0i-Au-GnR"/>
+                    <navigationItem key="navigationItem" title="Threads" id="z0i-Au-GnR">
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="CAQ-VG-GKF">
+                            <connections>
+                                <action selector="composeButtonClicked:" destination="qHq-hU-e41" id="8pv-U4-Cm6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="Rft-co-NYV" id="PkP-JK-q5I"/>
                     </connections>
@@ -228,13 +234,7 @@
                             <constraint firstItem="xd3-CD-40J" firstAttribute="top" secondItem="3q9-fo-byX" secondAttribute="bottom" id="g3z-Fj-4L6"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Thread" id="bB9-xO-6dA">
-                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="qUa-0A-Z5O">
-                            <connections>
-                                <action selector="composeButtonClicked:" destination="NRV-Pe-zK1" id="raN-w9-9HX"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Thread" id="bB9-xO-6dA"/>
                     <connections>
                         <outlet property="composeTextView" destination="bUM-CL-Fv8" id="fNs-2N-tZb"/>
                         <outlet property="composeView" destination="xd3-CD-40J" id="tGS-tI-OsI"/>
