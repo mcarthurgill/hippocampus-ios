@@ -310,6 +310,11 @@
 }
 
 - (IBAction)composeButtonClicked:(id)sender {
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+    [btvc setBucket:[[[self currentDictionary] objectForKey:@"Recent"] objectAtIndex:0]];
+    [btvc setInitializeWithKeyboardUp:YES];
+    [self.navigationController pushViewController:btvc animated:YES];
 }
 
 

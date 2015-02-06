@@ -27,6 +27,7 @@
 @synthesize textViewHeightConstraint;
 @synthesize scrollToBottom;
 @synthesize page;
+@synthesize initializeWithKeyboardUp;
 
 - (void)viewDidLoad
 {
@@ -44,6 +45,7 @@
     [super viewWillAppear:animated];
     [self refreshChange];
     [self reloadScreen];
+    [self shouldSetKeyboardAsFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -58,6 +60,7 @@
     [composeTextView setScrollEnabled:NO];
     self.page = 0;
 }
+
 
 #pragma mark - Table view data source
 
@@ -217,7 +220,7 @@
         HCItem* item = [[HCItem alloc] create];
         [item setMessage:self.composeTextView.text];
         [item setItemType:@"once"];
-        if ([self.bucket objectForKey:@"id"]) {
+        if (NULL_TO_NIL([self.bucket objectForKey:@"id"])) {
             [item setBucketID:[[self.bucket objectForKey:@"id"] stringValue]];
             [item setStatus:@"assigned"];
         }
@@ -225,6 +228,7 @@
         [item saveWithSuccess:^(id responseBlock) {
             NSLog(@"SUCCESS! %@", responseBlock);
             [self refreshChange];
+            [self clearTextField];
         }
                       failure:^(NSError *error) {
                           NSLog(@"Error! %@", [error localizedDescription]);
@@ -307,7 +311,7 @@
 
 
 
-# pragma mark UITextView Delegate
+# pragma mark Textview 
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
@@ -331,6 +335,13 @@
     self.composeTextView.text = @"Add Note";
     self.composeTextView.textColor = [UIColor lightGrayColor];
     [self.composeTextView resignFirstResponder];
+}
+
+
+- (void) shouldSetKeyboardAsFirstResponder {
+    if (self.initializeWithKeyboardUp) {
+        [self.composeTextView becomeFirstResponder];
+    }
 }
 
 # pragma mark Keyboard Notifications
