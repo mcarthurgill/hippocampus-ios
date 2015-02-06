@@ -92,7 +92,13 @@
                             <outlet property="delegate" destination="qHq-hU-e41" id="p3j-N1-22r"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Threads" id="z0i-Au-GnR"/>
+                    <navigationItem key="navigationItem" title="Threads" id="z0i-Au-GnR">
+                        <barButtonItem key="rightBarButtonItem" systemItem="compose" id="CAQ-VG-GKF">
+                            <connections>
+                                <action selector="composeButtonClicked:" destination="qHq-hU-e41" id="8pv-U4-Cm6"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="searchBar" destination="Rft-co-NYV" id="PkP-JK-q5I"/>
                     </connections>

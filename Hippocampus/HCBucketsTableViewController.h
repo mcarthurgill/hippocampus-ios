@@ -25,5 +25,6 @@
 
 - (IBAction)refreshControllerChanged:(id)sender;
 - (IBAction)addAction:(id)sender;
+- (IBAction)composeButtonClicked:(id)sender;
 
 @end
