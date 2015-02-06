@@ -6,7 +6,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Threads-->
+        <!--hppcmps-->
         <scene sceneID="sDm-ZI-yLb">
             <objects>
                 <tableViewController storyboardIdentifier="bucketsTableViewController" id="qHq-hU-e41" customClass="HCBucketsTableViewController" sceneMemberID="viewController">
@@ -92,7 +92,7 @@
                             <outlet property="delegate" destination="qHq-hU-e41" id="p3j-N1-22r"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Threads" id="z0i-Au-GnR">
+                    <navigationItem key="navigationItem" title="hppcmps" id="z0i-Au-GnR">
                         <barButtonItem key="rightBarButtonItem" systemItem="compose" id="CAQ-VG-GKF">
                             <connections>
                                 <action selector="composeButtonClicked:" destination="qHq-hU-e41" id="8pv-U4-Cm6"/>
@@ -124,7 +124,7 @@
             </objects>
             <point key="canvasLocation" x="544" y="1105"/>
         </scene>
-        <!--Thread-->
+        <!--hppcmps-->
         <scene sceneID="USS-9L-GSw">
             <objects>
                 <viewController storyboardIdentifier="bucketViewController" id="NRV-Pe-zK1" customClass="HCBucketViewController" sceneMemberID="viewController">
@@ -234,7 +234,7 @@
                             <constraint firstItem="xd3-CD-40J" firstAttribute="top" secondItem="3q9-fo-byX" secondAttribute="bottom" id="g3z-Fj-4L6"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Thread" id="bB9-xO-6dA"/>
+                    <navigationItem key="navigationItem" title="hppcmps" id="bB9-xO-6dA"/>
                     <connections>
                         <outlet property="composeTextView" destination="bUM-CL-Fv8" id="fNs-2N-tZb"/>
                         <outlet property="composeView" destination="xd3-CD-40J" id="tGS-tI-OsI"/>
