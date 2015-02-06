@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIView *composeView;
 @property (weak, nonatomic) IBOutlet UITextView *composeTextView;
 @property BOOL scrollToBottom;
+@property int page; 
 
 @property (strong, nonatomic) IBOutlet UIRefreshControl *refreshControl;
 
@@ -37,8 +38,10 @@
 
 
 - (IBAction)addAction:(id)sender;
+- (IBAction)composeButtonClicked:(id)sender;
 
 - (IBAction)refreshControllerChanged:(id)sender;
+
 
 
 

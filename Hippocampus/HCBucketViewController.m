@@ -26,6 +26,7 @@
 @synthesize tableviewHeightConstraint;
 @synthesize textViewHeightConstraint;
 @synthesize scrollToBottom;
+@synthesize page;
 
 - (void)viewDidLoad
 {
@@ -55,6 +56,7 @@
     requestMade = NO;
     self.scrollToBottom = YES;
     [composeTextView setScrollEnabled:NO];
+    self.page = 0;
 }
 
 #pragma mark - Table view data source
@@ -211,15 +213,31 @@
 
 - (IBAction)addAction:(id)sender
 {
-    //    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-    //    UINavigationController* itvc = (UINavigationController*)[storyboard instantiateViewControllerWithIdentifier:@"newItemNavigationController"];
-    //    [(HCNewItemTableViewController*)[[itvc viewControllers] firstObject] setBucketID:[self.bucket objectForKey:@"id"]];
-    //    [self presentViewController:itvc animated:NO completion:nil];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
-    NSLog(@"**************");
-    NSLog(@"%@", self.composeTextView.text);
-    NSLog(@"**************");
+    if (self.composeTextView.text.length > 0) {
+        HCItem* item = [[HCItem alloc] create];
+        [item setMessage:self.composeTextView.text];
+        [item setItemType:@"once"];
+        if ([self.bucket objectForKey:@"id"]) {
+            [item setBucketID:[[self.bucket objectForKey:@"id"] stringValue]];
+            [item setStatus:@"assigned"];
+        }
+
+        [item saveWithSuccess:^(id responseBlock) {
+            NSLog(@"SUCCESS! %@", responseBlock);
+            [self refreshChange];
+        }
+                      failure:^(NSError *error) {
+                          NSLog(@"Error! %@", [error localizedDescription]);
+                      }
+         ];
+    }
 }
+
+
+- (IBAction)composeButtonClicked:(id)sender {
+    
+}
+
 
 - (IBAction)refreshControllerChanged:(id)sender
 {
@@ -235,12 +253,22 @@
     if (requestMade)
         return;
     requestMade = YES;
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":@"0"}
+    if (NULL_TO_NIL([self.bucket objectForKey:@"id"])) {
+        [self sendRequestForBucketShow];
+    } else {
+        [self sendRequestForAllItems];
+    }
+}
+
+- (void) sendRequestForBucketShow {
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
                            success:^(id responseObject) {
                                NSLog(@"response: %@", responseObject);
-                               self.allItems = [[NSMutableArray alloc] initWithArray:responseObject];
+                               self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
+                               self.page = (int)[responseObject objectForKey:@"page"];
                                requestMade = NO;
                                [self reloadScreen];
+                               [self clearTextField];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error: %@", [error localizedDescription]);
@@ -250,7 +278,33 @@
      ];
 }
 
-#pragma mark deletions
+- (void) sendRequestForAllItems {
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
+                           success:^(id responseObject) {
+                               NSLog(@"response: %@", responseObject);
+                               if ([responseObject objectForKey:@"items"]) {
+                                   self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
+                               }
+                               if ([responseObject objectForKey:@"outstanding_items"]) {
+                                   [self.allItems addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
+                               }
+                               if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
+                                   //add to bottom of all Items & refresh!
+                                   if (self.allItems.count%64==0 && self.allItems.count <= 64*[[responseObject objectForKey:@"page"] integerValue]) {
+                                       [self.allItems addObjectsFromArray:[responseObject objectForKey:@"bottom_items"]];
+                                   }
+                               }
+                               requestMade = NO;
+                               [self reloadScreen];
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               requestMade = NO;
+                               [self reloadScreen];
+                           }
+     ];
+
+}
 
 - (void) deleteItem:(NSDictionary *)item {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil success:^(id responseObject) {} failure:^(NSError* error) {}];
@@ -278,6 +332,11 @@
     [textView resignFirstResponder];
 }
 
+- (void) clearTextField {
+    self.composeTextView.text = @"Add Note";
+    self.composeTextView.textColor = [UIColor lightGrayColor];
+    [self.composeTextView resignFirstResponder];
+}
 
 # pragma mark Keyboard Notifications
 

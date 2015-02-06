@@ -105,9 +105,6 @@
     if ([[self currentDictionary] objectForKey:@"Place"] && [[[self currentDictionary] objectForKey:@"Place"] count] > 0) {
         [self.sections addObject:@"Place"];
     }
-    if ([[self currentDictionary] objectForKey:@"Journal"] && [[[self currentDictionary] objectForKey:@"Journal"] count] > 0) {
-        [self.sections addObject:@"Journal"];
-    }
     
     // Return the number of sections.
     return self.sections.count;
@@ -127,8 +124,6 @@
         return [[[self currentDictionary] objectForKey:@"Event"] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Place"]) {
         return [[[self currentDictionary] objectForKey:@"Place"] count];
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Journal"]) {
-        return [[[self currentDictionary] objectForKey:@"Journal"] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"]) {
         return 1;
     }
@@ -166,7 +161,7 @@
 - (UITableViewCell*) bucketCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     NSDictionary* bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
-    
+    NSLog(@"%@", bucket);
     NSString* identifier = @"bucketCell";
     //if (NULL_TO_NIL([bucket objectForKey:@"description_text"]) || [[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
         identifier = @"bucketAndDescriptionCell";
@@ -182,7 +177,7 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
         [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"created_at"]], ([self assignMode] ? @" - Tap to Add Note" : @"")]];
     } else {
-        [description setText:[NSString stringWithFormat:@"%@ Notes%@", [bucket objectForKey:@"items_count"], ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"updated_at"]]])]];
+        [description setText:[NSString stringWithFormat:@"%@ Notes %@%@", [bucket objectForKey:@"items_count"], NULL_TO_NIL([bucket objectForKey:@"id"]) ? @"" : @"Outstanding", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"updated_at"]]])]];
     }
     
     return cell;
