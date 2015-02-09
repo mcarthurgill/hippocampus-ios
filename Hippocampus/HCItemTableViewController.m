@@ -190,15 +190,8 @@
     
     UITextView *note = (UITextView*)[cell.contentView viewWithTag:1];
 
-    float leftMargin = note.frame.origin.x;
-    float topMargin = note.frame.origin.y;
-    float width = note.frame.size.width;
-    //wrong font but it was fucking up if i didn't set the font here.
-    [note setFont:[UIFont fontWithName:@"Helvetica Neue" size:17.0f]];
-
-    [note removeFromSuperview];
-    
-    note = [[UITextView alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[self.item objectForKey:@"message"] width:width font:note.font])];
+    note.textContainer.lineFragmentPadding = 0;
+    note.textContainerInset = UIEdgeInsetsZero;
 
     note.delegate = self;
     [note setText:[self.item objectForKey:@"message"]];

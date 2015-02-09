@@ -55,6 +55,7 @@
 		28BD3EAC196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAB196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m */; };
 		28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */; };
 		7615CD8F1A855B40008195B5 /* bluedot.png in Resources */ = {isa = PBXBuildFile; fileRef = 7615CD8E1A855B40008195B5 /* bluedot.png */; };
+		76379FD51A8904F700D19E64 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 76379FD41A8904F700D19E64 /* camera.png */; };
 		76BB952619784012002288E0 /* HCEditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BB952519784012002288E0 /* HCEditItemViewController.m */; };
 		76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76BFE0711A7C0662005AD98C /* Introduction.storyboard */; };
 		76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */; };
@@ -149,6 +150,7 @@
 		28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Alphabet.m"; sourceTree = "<group>"; };
 		48B234900A21648A78B84A3E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7615CD8E1A855B40008195B5 /* bluedot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bluedot.png; sourceTree = "<group>"; };
+		76379FD41A8904F700D19E64 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		76BB952419784012002288E0 /* HCEditItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCEditItemViewController.h; sourceTree = "<group>"; };
 		76BB952519784012002288E0 /* HCEditItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCEditItemViewController.m; sourceTree = "<group>"; };
 		76BFE0711A7C0662005AD98C /* Introduction.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Introduction.storyboard; sourceTree = "<group>"; };
@@ -290,6 +292,7 @@
 		281CA9041951EC9700E6BE96 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				76379FD41A8904F700D19E64 /* camera.png */,
 				7615CD8E1A855B40008195B5 /* bluedot.png */,
 				281CA91B196C29D500E6BE96 /* Icons */,
 			);
@@ -533,6 +536,7 @@
 				281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */,
 				76FBBD881A80122A00CAF765 /* Messages.storyboard in Resources */,
 				7615CD8F1A855B40008195B5 /* bluedot.png in Resources */,
+				76379FD51A8904F700D19E64 /* camera.png in Resources */,
 				281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
 				281CA8DF1951EC7E00E6BE96 /* Main.storyboard in Resources */,

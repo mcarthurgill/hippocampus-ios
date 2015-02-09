@@ -65,6 +65,7 @@
     requestMade = NO;
     self.scrollToBottom = YES;
     [composeTextView setScrollEnabled:NO];
+    [composeTextView.layer setCornerRadius:4.0f];
     self.page = 0;
 }
 
@@ -143,7 +144,6 @@
     [note setNumberOfLines:0];
     [note setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.contentView addSubview:note];
-    //NSLog(@"message: %@, height: %f", [item objectForKey:@"message"], note.frame.size.height);
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
     
@@ -154,9 +154,7 @@
     } else {
         [blueDot setHidden:YES];
     }
-    NSLog(@"*******");
-    NSLog(@"%@", item);
-    NSLog(@"*******");
+
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
     [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
     
