@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSMutableArray* sections;
 @property (strong, nonatomic) NSMutableDictionary* bucketsDictionary;
 @property (strong, nonatomic) NSMutableDictionary* bucketsSearchDictionary;
+@property (strong, nonatomic) NSMutableDictionary* serverSearchDictionary;
 
 @property (strong, nonatomic) HCBucketViewController* composeBucketController;
 
