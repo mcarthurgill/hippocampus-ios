@@ -13,6 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+#define SEARCH_DELAY 0.3f
 
 @interface HCBucketsTableViewController ()
 
@@ -28,6 +29,7 @@
 @synthesize sections;
 @synthesize bucketsDictionary;
 @synthesize bucketsSearchDictionary;
+@synthesize serverSearchDictionary;
 
 @synthesize composeBucketController;
 
@@ -44,6 +46,7 @@
 {
     [super viewDidLoad];
     self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
+    self.serverSearchDictionary = [[NSMutableDictionary alloc] init];
     
     requestMade = NO;
     
@@ -117,6 +120,10 @@
         [self.sections addObject:@"Place"];
     }
     
+    if ([self searchActivated] && ![self assignMode]) {
+        [self.sections addObject:@"searchResults"];
+    }
+    
     // Return the number of sections.
     return self.sections.count;
 }
@@ -137,6 +144,8 @@
         return [[[self currentDictionary] objectForKey:@"Place"] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"]) {
         return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
+        return [[self searchArray] count];
     }
     // Return the number of rows in the section.
     return 0;
@@ -149,6 +158,8 @@
         return [self indicatorCellForTableView:tableView cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"new"]) {
         return [self newCellForTableView:tableView cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
+        return [self itemCellForTableView:tableView withItem:[[self searchArray] objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     }
     return [self bucketCellForTableView:tableView cellForRowAtIndexPath:indexPath];
 }
@@ -202,10 +213,49 @@
     return cell;
 }
 
+- (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(NSDictionary*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
+    
+    UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
+    float leftMargin = note.frame.origin.x;
+    float topMargin = note.frame.origin.y;
+    float width = note.frame.size.width;
+    [note removeFromSuperview];
+    
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[[item objectForKey:@"message"] truncated:320] width:width font:note.font])];
+    [note setText:[[item objectForKey:@"message"] truncated:320]];
+    [note setTag:1];
+    [note setNumberOfLines:0];
+    [note setLineBreakMode:NSLineBreakByWordWrapping];
+    [cell.contentView addSubview:note];
+    
+    UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
+    [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at_server"]]]];
+    
+    //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
+    return cell;
+}
+
+- (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
+{
+    NSDictionary *attributes = @{NSFontAttributeName: font};
+    // NSString class method: boundingRectWithSize:options:attributes:context is
+    // available only on ios7.0 sdk.
+    CGRect rect = [text boundingRectWithSize:CGSizeMake(width, 100000)
+                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                  attributes:attributes
+                                     context:nil];
+    return rect.size.height;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"requesting"] || [[self.sections objectAtIndex:indexPath.section] isEqualToString:@"new"]) {
         return 44.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
+        NSDictionary* item = [[self searchArray] objectAtIndex:indexPath.row];
+        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
     }
     return 60.0f;
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"] || NULL_TO_NIL([[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"description_text"])) {
@@ -230,10 +280,19 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
     } else {
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-        HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
-        [btvc setBucket:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
-        [self.navigationController pushViewController:btvc animated:YES];
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+            HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
+            NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:[[self searchArray] objectAtIndex:indexPath.row]];
+            [dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
+            [itvc setItem:dict];
+            [self.navigationController pushViewController:itvc animated:YES];
+        } else {
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+            HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+            [btvc setBucket:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
+            [self.navigationController pushViewController:btvc animated:YES];
+        }
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -242,6 +301,8 @@
 {
     if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"] || [[self.sections objectAtIndex:section] isEqualToString:@"new"]) {
         return nil;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
+        return [NSString stringWithFormat:@"Notes With \"%@\"", [self searchTerm]];
     }
     return [self.sections objectAtIndex:section];
 }
@@ -252,6 +313,12 @@
 - (BOOL) assignMode
 {
     return self.mode && [self.mode isEqualToString:@"assign"];
+}
+
+- (BOOL) searchActivated
+{
+    NSString* key = self.searchBar.text ? [self.searchBar.text lowercaseString] : @"";
+    return key && [key length] > 0;
 }
 
 
@@ -288,6 +355,32 @@
     }
     
     return newDictionary;
+}
+
+- (NSMutableArray*) searchArray
+{
+    NSString* key = self.searchBar.text ? [self.searchBar.text lowercaseString] : @"";
+    if (!key || [key length] == 0) {
+        return [[NSMutableArray alloc] init];
+    }
+    NSString* tempKey = [NSString stringWithString:key];
+    while (tempKey && [tempKey length] > 0 && ![self.serverSearchDictionary objectForKey:tempKey]) {
+        tempKey = [tempKey substringToIndex:([tempKey length]-1)];
+    }
+    return [self.serverSearchDictionary objectForKey:tempKey];
+}
+
+- (NSString*) searchTerm
+{
+    NSString* key = self.searchBar.text ? [self.searchBar.text lowercaseString] : @"";
+    if (!key || [key length] == 0) {
+        return nil;
+    }
+    NSString* tempKey = [NSString stringWithString:key];
+    while (tempKey && [tempKey length] > 0 && ![self.serverSearchDictionary objectForKey:tempKey]) {
+        tempKey = [tempKey substringToIndex:([tempKey length]-1)];
+    }
+    return tempKey;
 }
 
 
@@ -350,6 +443,10 @@
 
 - (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    if (![self assignMode]) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(searchWithCurrentText) object:nil];
+        [self performSelector:@selector(searchWithCurrentText) withObject:nil afterDelay:SEARCH_DELAY];
+    }
     [self reloadScreen];
 }
 
@@ -362,6 +459,9 @@
 {
     NSLog(@"Go!");
     [sB resignFirstResponder];
+    if (![self assignMode]) {
+        [self searchWithCurrentText];
+    }
     [self reloadScreen];
 }
 
@@ -369,6 +469,26 @@
 {
     [self.searchBar resignFirstResponder];
 }
+
+- (void) searchWithCurrentText
+{
+    [self searchWithTerm:[self.searchBar.text lowercaseString]];
+}
+
+- (void) searchWithTerm:(NSString*)term
+{
+    [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term }
+                           success:^(id responseObject) {
+                               [self.serverSearchDictionary setObject:[responseObject objectForKey:@"items"] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
+                               [self reloadScreen];
+                           }
+                           failure:^(NSError* error) {
+                               [self reloadScreen];
+                           }
+     ];
+}
+//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(switchToBookDetailsModeIfShould) object:nil];
+//[self performSelector:@selector(switchToBookDetailsModeIfShould) withObject:nil afterDelay:DETAILS_VIEW_LINGER_TIME];
 
 
 @end

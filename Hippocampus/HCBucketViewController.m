@@ -7,6 +7,7 @@
 //
 
 #import "HCBucketViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface HCBucketViewController ()
 
@@ -22,17 +23,20 @@
 @synthesize tableView;
 @synthesize composeTextView;
 @synthesize composeView;
+@synthesize saveButton;
 @synthesize bottomConstraint;
 @synthesize tableviewHeightConstraint;
 @synthesize textViewHeightConstraint;
 @synthesize scrollToBottom;
 @synthesize page;
 @synthesize initializeWithKeyboardUp;
-@synthesize sendButton;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.composeTextView.layer setCornerRadius:4.0f];
+    [self.composeTextView setClipsToBounds:YES];
     
     [self setupProperties];
     
@@ -62,7 +66,6 @@
     self.scrollToBottom = YES;
     [composeTextView setScrollEnabled:NO];
     [composeTextView.layer setCornerRadius:4.0f];
-    [self.sendButton setEnabled:NO];
     self.page = 0;
 }
 
@@ -74,6 +77,7 @@
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
     [self setTableScroll];
+    [self toggleSaveButton];
 }
 
 - (void) setTableScroll {
@@ -83,6 +87,15 @@
             NSIndexPath *ipath = [NSIndexPath indexPathForRow: allItems.count-1 inSection: 0];
             [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: NO];
         }
+    }
+}
+
+- (void) toggleSaveButton
+{
+    if ([self canSaveNote]) {
+        [self.saveButton setEnabled:YES];
+    } else {
+        [self.saveButton setEnabled:NO];
     }
 }
 
@@ -323,7 +336,18 @@
 
 
 
-# pragma mark Textview 
+
+# pragma mark helpers
+
+- (BOOL) canSaveNote
+{
+    return self.composeTextView.text && [self.composeTextView.text length] > 0 && [self.composeTextView.textColor isEqual:[UIColor blackColor]];
+}
+
+
+
+
+# pragma mark Textview
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
@@ -331,7 +355,6 @@
         textView.text = @"";
         textView.textColor = [UIColor blackColor];
     }
-    [self.sendButton setEnabled:YES];
     [textView becomeFirstResponder];
 }
 
@@ -344,10 +367,14 @@
     [textView resignFirstResponder];
 }
 
+- (void) textViewDidChange:(UITextView *)textView
+{
+    [self toggleSaveButton];
+}
+
 - (void) clearTextField {
     self.composeTextView.text = @"Add Note";
     self.composeTextView.textColor = [UIColor lightGrayColor];
-    [self.sendButton setEnabled:NO];
     [self.composeTextView resignFirstResponder];
 }
 
