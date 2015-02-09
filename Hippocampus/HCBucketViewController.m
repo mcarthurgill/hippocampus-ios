@@ -384,12 +384,12 @@
 
 # pragma mark Keyboard Notifications
 
-- (void)observeKeyboard {
+- (void) observeKeyboard {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 }
 
-- (void)keyboardWillShow:(NSNotification *)sender {
+- (void) keyboardWillShow:(NSNotification *)sender {
     self.scrollToBottom = YES;
     [self setTableScroll];
     
@@ -410,7 +410,7 @@
 }
 
 
-- (void)keyboardWillHide:(NSNotification *)sender {
+- (void) keyboardWillHide:(NSNotification *)sender {
     NSDictionary *info = [sender userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
