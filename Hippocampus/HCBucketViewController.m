@@ -28,6 +28,7 @@
 @synthesize scrollToBottom;
 @synthesize page;
 @synthesize initializeWithKeyboardUp;
+@synthesize sendButton;
 
 - (void)viewDidLoad
 {
@@ -60,6 +61,8 @@
     requestMade = NO;
     self.scrollToBottom = YES;
     [composeTextView setScrollEnabled:NO];
+    [composeTextView.layer setCornerRadius:4.0f];
+    [self.sendButton setEnabled:NO];
     self.page = 0;
 }
 
@@ -128,7 +131,6 @@
     [note setNumberOfLines:0];
     [note setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.contentView addSubview:note];
-    //NSLog(@"message: %@, height: %f", [item objectForKey:@"message"], note.frame.size.height);
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
     
@@ -139,9 +141,7 @@
     } else {
         [blueDot setHidden:YES];
     }
-    NSLog(@"*******");
-    NSLog(@"%@", item);
-    NSLog(@"*******");
+
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
     [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
     
@@ -331,6 +331,7 @@
         textView.text = @"";
         textView.textColor = [UIColor blackColor];
     }
+    [self.sendButton setEnabled:YES];
     [textView becomeFirstResponder];
 }
 
@@ -346,6 +347,7 @@
 - (void) clearTextField {
     self.composeTextView.text = @"Add Note";
     self.composeTextView.textColor = [UIColor lightGrayColor];
+    [self.sendButton setEnabled:NO];
     [self.composeTextView resignFirstResponder];
 }
 
