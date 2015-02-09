@@ -38,13 +38,15 @@
     [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
     [self setupConstraint];
     [self observeKeyboard];
+    
+    [self refreshChange];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self refreshChange];
-    [self reloadScreen];
+    //[self refreshChange];
+    //[self reloadScreen];
     [self shouldSetKeyboardAsFirstResponder];
 }
 
@@ -128,9 +130,11 @@
     [cell.contentView addSubview:note];
     //NSLog(@"message: %@, height: %f", [item objectForKey:@"message"], note.frame.size.height);
     
-    UIImageView* blueDot = (UIImageView*) [cell.contentView viewWithTag:4];
+    UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
     
     if ([[item objectForKey:@"status"] isEqualToString:@"outstanding"]) {
+        [blueDot.layer setCornerRadius:4];
+        [blueDot setClipsToBounds:YES];
         [blueDot setHidden:NO];
     } else {
         [blueDot setHidden:YES];

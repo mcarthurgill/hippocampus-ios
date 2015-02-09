@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HCBucketViewController.h"
 
 @interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate>
 {
@@ -22,6 +23,8 @@
 @property (strong, nonatomic) NSMutableArray* sections;
 @property (strong, nonatomic) NSMutableDictionary* bucketsDictionary;
 @property (strong, nonatomic) NSMutableDictionary* bucketsSearchDictionary;
+
+@property (strong, nonatomic) HCBucketViewController* composeBucketController;
 
 - (IBAction)refreshControllerChanged:(id)sender;
 - (IBAction)addAction:(id)sender;

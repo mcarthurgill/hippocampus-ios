@@ -10,6 +10,7 @@
 #import "HCBucketViewController.h"
 #import "HCItemTableViewController.h"
 #import "HCNewBucketIITableViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
@@ -28,6 +29,8 @@
 @synthesize bucketsDictionary;
 @synthesize bucketsSearchDictionary;
 
+@synthesize composeBucketController;
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -43,6 +46,10 @@
     self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
     
     requestMade = NO;
+    
+    [self refreshChange];
+    
+    [self cacheComposeBucketController];
 }
 
 - (void) viewWillAppear:(BOOL)animated{
@@ -59,13 +66,19 @@
 {
     [super viewDidAppear:animated];
     
-    [self refreshChange];
+    //[self refreshChange];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) cacheComposeBucketController
+{
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    self.composeBucketController = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
 }
 
 #pragma mark - Table view data source
@@ -177,8 +190,10 @@
         [description setText:[NSString stringWithFormat:@"%@ Notes %@%@", [bucket objectForKey:@"items_count"], NULL_TO_NIL([bucket objectForKey:@"id"]) ? @"" : @"Outstanding", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"updated_at"]]])]];
     }
     
-    UIImageView* blueDot = (UIImageView*) [cell.contentView viewWithTag:4];
+    UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
     if (!NULL_TO_NIL([bucket objectForKey:@"id"]) && [[bucket objectForKey:@"items_count"] integerValue] > 0) {
+        [blueDot.layer setCornerRadius:4];
+        [blueDot setClipsToBounds:YES];
         [blueDot setHidden:NO];
     } else {
         [blueDot setHidden:YES];
@@ -210,7 +225,6 @@
             [btvc setDelegate:self.delegate];
             [self.navigationController pushViewController:btvc animated:YES];
         } else if([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Recent"] && !NULL_TO_NIL([[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"id"])) {
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
         } else {
             [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
             [self.navigationController popViewControllerAnimated:YES];
@@ -221,6 +235,7 @@
         [btvc setBucket:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
         [self.navigationController pushViewController:btvc animated:YES];
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -314,12 +329,15 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
 }
 
-- (IBAction)composeButtonClicked:(id)sender {
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-    HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
-    [btvc setBucket:[[[self currentDictionary] objectForKey:@"Recent"] objectAtIndex:0]];
-    [btvc setInitializeWithKeyboardUp:YES]; 
-    [self.navigationController pushViewController:btvc animated:YES];
+- (IBAction)composeButtonClicked:(id)sender
+{
+    if (!self.composeBucketController) {
+        [self cacheComposeBucketController];
+    }
+    [self.composeBucketController setBucket:[[[self currentDictionary] objectForKey:@"Recent"] objectAtIndex:0]];
+    [self.composeBucketController setInitializeWithKeyboardUp:YES];
+    [self.composeBucketController setScrollToBottom:YES];
+    [self.navigationController pushViewController:self.composeBucketController animated:YES];
 }
 
 
