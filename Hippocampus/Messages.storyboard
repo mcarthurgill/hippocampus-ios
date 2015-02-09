@@ -175,9 +175,9 @@
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xd3-CD-40J">
                                 <rect key="frame" x="0.0" y="528" width="320" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
-                                        <rect key="frame" x="269" y="5" width="36" height="30"/>
-                                        <state key="normal" title="Send">
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
+                                        <rect key="frame" x="243" y="0.0" width="77" height="40"/>
+                                        <state key="normal" title="Save">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -199,13 +199,12 @@
                                         </connections>
                                     </textView>
                                 </subviews>
-                                <color key="backgroundColor" red="0.75968464931588975" green="0.96849423363095233" blue="0.94728827817320993" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.92055852900552482" green="0.92055852900552482" blue="0.92055852900552482" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstItem="bUM-CL-Fv8" firstAttribute="leading" secondItem="xd3-CD-40J" secondAttribute="leading" constant="18" id="NnO-Li-HdM"/>
                                     <constraint firstItem="bUM-CL-Fv8" firstAttribute="top" secondItem="xd3-CD-40J" secondAttribute="top" constant="5" id="StE-3d-WWJ"/>
                                     <constraint firstAttribute="trailing" secondItem="bUM-CL-Fv8" secondAttribute="trailing" constant="77" id="e4U-lZ-boW"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="fx0-s2-uhs"/>
-                                    <constraint firstItem="suh-LO-BkZ" firstAttribute="leading" secondItem="bUM-CL-Fv8" secondAttribute="trailing" constant="26" id="pxE-LC-4S2"/>
                                     <constraint firstAttribute="bottom" secondItem="suh-LO-BkZ" secondAttribute="bottom" constant="5" id="rDu-I9-Fy0"/>
                                     <constraint firstAttribute="bottom" secondItem="bUM-CL-Fv8" secondAttribute="bottom" constant="5" id="uBa-fO-tqX"/>
                                 </constraints>
@@ -280,6 +279,7 @@
                     <connections>
                         <outlet property="composeTextView" destination="bUM-CL-Fv8" id="fNs-2N-tZb"/>
                         <outlet property="composeView" destination="xd3-CD-40J" id="tGS-tI-OsI"/>
+                        <outlet property="saveButton" destination="suh-LO-BkZ" id="HKQ-h5-ObB"/>
                         <outlet property="tableView" destination="3q9-fo-byX" id="6PM-gN-Sun"/>
                         <outlet property="tableviewHeightConstraint" destination="qaP-pr-pKQ" id="0Wh-ad-v4t"/>
                         <outlet property="textViewHeightConstraint" destination="Zxe-fW-utz" id="Rf9-hv-8pE"/>

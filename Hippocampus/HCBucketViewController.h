@@ -32,6 +32,7 @@
 @property (strong, nonatomic) NSMutableArray* sections;
 @property (strong, nonatomic) NSMutableArray* allItems;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *addButton;
+@property (strong, nonatomic) IBOutlet UIButton *saveButton;
 
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableviewHeightConstraint;

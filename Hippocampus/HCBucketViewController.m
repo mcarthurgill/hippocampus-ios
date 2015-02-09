@@ -7,6 +7,7 @@
 //
 
 #import "HCBucketViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface HCBucketViewController ()
 
@@ -22,6 +23,7 @@
 @synthesize tableView;
 @synthesize composeTextView;
 @synthesize composeView;
+@synthesize saveButton;
 @synthesize bottomConstraint;
 @synthesize tableviewHeightConstraint;
 @synthesize textViewHeightConstraint;
@@ -32,6 +34,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.composeTextView.layer setCornerRadius:4.0f];
+    [self.composeTextView setClipsToBounds:YES];
     
     [self setupProperties];
     
@@ -71,6 +76,7 @@
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
     [self setTableScroll];
+    [self toggleSaveButton];
 }
 
 - (void) setTableScroll {
@@ -80,6 +86,15 @@
             NSIndexPath *ipath = [NSIndexPath indexPathForRow: allItems.count-1 inSection: 0];
             [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: NO];
         }
+    }
+}
+
+- (void) toggleSaveButton
+{
+    if ([self canSaveNote]) {
+        [self.saveButton setEnabled:YES];
+    } else {
+        [self.saveButton setEnabled:NO];
     }
 }
 
@@ -323,7 +338,18 @@
 
 
 
-# pragma mark Textview 
+
+# pragma mark helpers
+
+- (BOOL) canSaveNote
+{
+    return self.composeTextView.text && [self.composeTextView.text length] > 0 && [self.composeTextView.textColor isEqual:[UIColor blackColor]];
+}
+
+
+
+
+# pragma mark Textview
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
@@ -341,6 +367,11 @@
         textView.textColor = [UIColor lightGrayColor];
     }
     [textView resignFirstResponder];
+}
+
+- (void) textViewDidChange:(UITextView *)textView
+{
+    [self toggleSaveButton];
 }
 
 - (void) clearTextField {

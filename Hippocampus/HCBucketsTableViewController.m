@@ -13,6 +13,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+#define SEARCH_DELAY 0.3f
 
 @interface HCBucketsTableViewController ()
 
@@ -301,7 +302,7 @@
     if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"] || [[self.sections objectAtIndex:section] isEqualToString:@"new"]) {
         return nil;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
-        return [NSString stringWithFormat:@"Notes containing \"%@\"", [self searchTerm]];
+        return [NSString stringWithFormat:@"Notes With \"%@\"", [self searchTerm]];
     }
     return [self.sections objectAtIndex:section];
 }
@@ -443,7 +444,8 @@
 - (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if (![self assignMode]) {
-        [self searchWithTerm:[self.searchBar.text lowercaseString]];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(searchWithCurrentText) object:nil];
+        [self performSelector:@selector(searchWithCurrentText) withObject:nil afterDelay:SEARCH_DELAY];
     }
     [self reloadScreen];
 }
@@ -458,7 +460,7 @@
     NSLog(@"Go!");
     [sB resignFirstResponder];
     if (![self assignMode]) {
-        [self searchWithTerm:[self.searchBar.text lowercaseString]];
+        [self searchWithCurrentText];
     }
     [self reloadScreen];
 }
@@ -466,6 +468,11 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.searchBar resignFirstResponder];
+}
+
+- (void) searchWithCurrentText
+{
+    [self searchWithTerm:[self.searchBar.text lowercaseString]];
 }
 
 - (void) searchWithTerm:(NSString*)term
@@ -480,5 +487,8 @@
                            }
      ];
 }
+//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(switchToBookDetailsModeIfShould) object:nil];
+//[self performSelector:@selector(switchToBookDetailsModeIfShould) withObject:nil afterDelay:DETAILS_VIEW_LINGER_TIME];
+
 
 @end
