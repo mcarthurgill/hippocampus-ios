@@ -35,9 +35,6 @@
 {
     [super viewDidLoad];
     
-    [self.composeTextView.layer setCornerRadius:4.0f];
-    [self.composeTextView setClipsToBounds:YES];
-    
     [self setupProperties];
     
     [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
@@ -411,12 +408,12 @@
 
 # pragma mark Keyboard Notifications
 
-- (void)observeKeyboard {
+- (void) observeKeyboard {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
 }
 
-- (void)keyboardWillShow:(NSNotification *)sender {
+- (void) keyboardWillShow:(NSNotification *)sender {
     self.scrollToBottom = YES;
     [self setTableScrollToIndex:self.allItems.count];
     
@@ -437,7 +434,7 @@
 }
 
 
-- (void)keyboardWillHide:(NSNotification *)sender {
+- (void) keyboardWillHide:(NSNotification *)sender {
     NSDictionary *info = [sender userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     
@@ -466,4 +463,5 @@
     self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.composeView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0];
     [self.view addConstraint:self.bottomConstraint];
 }
+
 @end
