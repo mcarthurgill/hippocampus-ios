@@ -65,7 +65,10 @@
     [composeTextView.layer setCornerRadius:4.0f];
     [self setPage:0];
     self.allItems = [[NSMutableArray alloc] init];
-    
+    [self setupRefreshControl];
+}
+
+- (void) setupRefreshControl {
     UITableViewController *tableViewController = [[UITableViewController alloc] init];
     tableViewController.tableView = self.tableView;
     
@@ -73,7 +76,6 @@
     [self.refreshControl addTarget:self action:@selector(refreshChange) forControlEvents:UIControlEventValueChanged];
     tableViewController.refreshControl = self.refreshControl;
 }
-
 
 #pragma mark - Table view data source
 
