@@ -477,7 +477,7 @@
 
 - (void) searchWithTerm:(NSString*)term
 {
-    [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term }
+    [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term, @"user_id" : [[HCUser loggedInUser] userID] }
                            success:^(id responseObject) {
                                [self.serverSearchDictionary setObject:[responseObject objectForKey:@"items"] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
                                [self reloadScreen];

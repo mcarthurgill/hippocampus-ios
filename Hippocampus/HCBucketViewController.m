@@ -63,29 +63,39 @@
 
 - (void) setupProperties {
     requestMade = NO;
-    self.scrollToBottom = YES;
+    [self setScrollToBottom:YES];
     [composeTextView setScrollEnabled:NO];
     [composeTextView.layer setCornerRadius:4.0f];
-    self.page = 0;
+    [self setPage:0];
+    self.allItems = [[NSMutableArray alloc] init];
+    
+    UITableViewController *tableViewController = [[UITableViewController alloc] init];
+    tableViewController.tableView = self.tableView;
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshChange) forControlEvents:UIControlEventValueChanged];
+    tableViewController.refreshControl = self.refreshControl;
 }
 
 
 #pragma mark - Table view data source
 
-- (void) reloadScreen
+- (void) reloadScreenToIndex:(NSUInteger)index
 {
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
-    [self setTableScroll];
+    [self setTableScrollToIndex:index];
     [self toggleSaveButton];
 }
 
-- (void) setTableScroll {
+- (void) setTableScrollToIndex:(NSInteger)index {
 
     if (self.allItems.count > 0) {
-        if (scrollToBottom) {
-            NSIndexPath *ipath = [NSIndexPath indexPathForRow: allItems.count-1 inSection: 0];
+        NSIndexPath *ipath = [NSIndexPath indexPathForRow:index-1 inSection: 0];
+        if (self.scrollToBottom) {
             [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: NO];
+        } else {
+            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: NO];
         }
     }
 }
@@ -220,7 +230,7 @@
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
         [itvc setItem:[self.allItems objectAtIndex:indexPath.row]];
-        self.scrollToBottom = NO;
+        [self setScrollToBottom:NO];
         [self.navigationController pushViewController:itvc animated:YES];
     }
     
@@ -233,7 +243,7 @@
             NSDictionary* object = [[self allItems] objectAtIndex:indexPath.row];
             [self deleteItem:object];
             [[self allItems] removeObject:object];
-            [self reloadScreen];
+            [self reloadScreenToIndex:indexPath.row];
         }
     }
 }
@@ -289,16 +299,21 @@
 - (void) sendRequestForBucketShow {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
                            success:^(id responseObject) {
-                               self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
-//                               self.page = (int)[responseObject objectForKey:@"page"];
+                               NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
+                                                      NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
+                               [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                requestMade = NO;
-                               [self reloadScreen];
+                               [self setScrollToBottom:NO];
+                               [self reloadScreenToIndex:indexes.count];
                                [self clearTextField];
+                               if ([[responseObject objectForKey:@"items"] count] > 0) {
+                                   [self incrementPage];
+                               }
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error: %@", [error localizedDescription]);
                                requestMade = NO;
-                               [self reloadScreen];
+                               [self reloadScreenToIndex:self.allItems.count];
                            }
      ];
 }
@@ -307,24 +322,31 @@
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
                            success:^(id responseObject) {
                                if ([responseObject objectForKey:@"items"]) {
-                                   self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
+                                   NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
+                                                          NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
+                                   [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
+                                   [self reloadScreenToIndex:indexes.count];
                                }
-                               if ([responseObject objectForKey:@"outstanding_items"]) {
+                               if ([responseObject objectForKey:@"outstanding_items"] && self.page < 1) {
                                    [self.allItems addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
+                                   [self reloadScreenToIndex:self.allItems.count];
                                }
                                if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
-                                   //add to bottom of all Items & refresh!
-                                   if (self.allItems.count%64==0 && self.allItems.count <= 64*[[responseObject objectForKey:@"page"] integerValue]) {
-                                       [self.allItems addObjectsFromArray:[responseObject objectForKey:@"bottom_items"]];
-                                   }
+                                   NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
+                                                              NSMakeRange(0,[[responseObject objectForKey:@"bottom_items"] count])];
+                                   [self.allItems insertObjects:[responseObject objectForKey:@"bottom_items"] atIndexes:indexes];
+                                   [self setScrollToBottom:NO];
+                                   [self reloadScreenToIndex:indexes.count];
                                }
                                requestMade = NO;
-                               [self reloadScreen];
+                               if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
+                                   [self incrementPage];
+                               }
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error: %@", [error localizedDescription]);
                                requestMade = NO;
-                               [self reloadScreen];
+                               [self reloadScreenToIndex:self.allItems.count];
                            }
      ];
 
@@ -334,7 +356,9 @@
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil success:^(id responseObject) {} failure:^(NSError* error) {}];
 }
 
-
+- (void) incrementPage {
+    self.page = self.page + 1;
+}
 
 
 # pragma mark helpers
@@ -394,7 +418,7 @@
 
 - (void)keyboardWillShow:(NSNotification *)sender {
     self.scrollToBottom = YES;
-    [self setTableScroll];
+    [self setTableScrollToIndex:self.allItems.count];
     
     NSDictionary *info = [sender userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
