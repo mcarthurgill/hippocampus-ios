@@ -263,7 +263,8 @@
 
         [item saveWithSuccess:^(id responseBlock) {
             NSLog(@"SUCCESS! %@", responseBlock);
-            [self refreshChange];
+            [self addItemToTable:responseBlock];
+            [self reloadScreenToIndex:self.allItems.count];
             [self clearTextField];
         }
                       failure:^(NSError *error) {
@@ -273,6 +274,9 @@
     }
 }
 
+- (void) addItemToTable:(NSDictionary *)item {
+    [self.allItems addObject:item];
+}
 
 - (IBAction)refreshControllerChanged:(id)sender
 {
@@ -443,7 +447,7 @@
     self.bottomConstraint.constant = 0;
 
     //for buckets where tableview.contentSize is small
-    self.tableviewHeightConstraint.constant = self.view.frame.size.height - self.composeView.frame.size.height;
+    self.tableviewHeightConstraint.constant = self.view.frame.size.height - self.saveButton.frame.size.height;
 
     [UIView animateWithDuration:animationDuration animations:^{
         [self.view layoutIfNeeded];
@@ -455,7 +459,7 @@
 
 -(void) setupConstraint {
     self.composeView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.self.composeView];
+    [self.view addSubview:self.composeView];
     
     NSDictionary *views = @{@"view": self.composeView,
                             @"top": self.topLayoutGuide };
