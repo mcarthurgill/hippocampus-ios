@@ -45,6 +45,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //remove extra cell lines
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
     self.serverSearchDictionary = [[NSMutableDictionary alloc] init];
     
@@ -218,12 +222,14 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
     
     UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
+    UIFont* font = note.font;
     float leftMargin = note.frame.origin.x;
     float topMargin = note.frame.origin.y;
     float width = note.frame.size.width;
     [note removeFromSuperview];
     
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[[item objectForKey:@"message"] truncated:320] width:width font:note.font])];
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[[item objectForKey:@"message"] truncated:320] width:width font:font])];
+    [note setFont:font];
     [note setText:[[item objectForKey:@"message"] truncated:320]];
     [note setTag:1];
     [note setNumberOfLines:0];
@@ -257,12 +263,7 @@
         NSDictionary* item = [[self searchArray] objectAtIndex:indexPath.row];
         return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f;
     }
-    return 60.0f;
-    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"] || NULL_TO_NIL([[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"description_text"])) {
-        return 60.0f;
-    } else {
-        return 44.0f;
-    }
+    return 64.0f;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -281,7 +282,7 @@
         }
     } else {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
-            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
             NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:[[self searchArray] objectAtIndex:indexPath.row]];
             [dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
