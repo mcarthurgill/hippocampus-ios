@@ -18,4 +18,6 @@
 
 + (NSString*) timeAgoActualFromDatetime:(NSString*)string;
 
++ (NSString*) formattedDateFromString:(NSString*)string;
+
 @end
