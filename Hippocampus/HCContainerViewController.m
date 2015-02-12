@@ -20,6 +20,8 @@
 @synthesize bucket;
 @synthesize item;
 
+@synthesize smallView;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -36,17 +38,25 @@
 - (void) setupPageControllerView
 {
     pageController = [[HCItemPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
-    [pageController.view setFrame:self.view.frame];
+    [pageController.view setFrame:CGRectMake(0, 0, self.smallView.frame.size.width, self.smallView.frame.size.height)];
     
     [pageController setItems:self.items];
     [pageController setBucket:self.bucket];
     [pageController setItem:self.item];
+    [pageController setNavItem:self.navigationItem];
     
     [pageController handleInitialLoad];
     
     [self addChildViewController:pageController];
-    [self.view addSubview:pageController.view];
+    [self.smallView addSubview:pageController.view];
     [pageController didMoveToParentViewController:self];
+}
+
+
+
+- (IBAction)saveAction:(id)sender
+{
+    [pageController saveAction:sender];
 }
 
 

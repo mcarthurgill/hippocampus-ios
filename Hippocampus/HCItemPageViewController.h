@@ -14,6 +14,9 @@
 @property (strong, nonatomic) NSMutableDictionary* bucket;
 @property (strong, nonatomic) NSMutableDictionary* item;
 
+@property (strong, nonatomic) UINavigationItem* navItem;
+
 - (void) handleInitialLoad;
+- (void) saveAction:(id)sender;
 
 @end

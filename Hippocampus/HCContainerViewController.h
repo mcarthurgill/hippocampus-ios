@@ -17,4 +17,8 @@
 @property (strong, nonatomic) NSMutableDictionary* bucket;
 @property (strong, nonatomic) NSMutableDictionary* item;
 
+@property (strong, nonatomic) IBOutlet UIView *smallView;
+
+- (IBAction)saveAction:(id)sender;
+
 @end

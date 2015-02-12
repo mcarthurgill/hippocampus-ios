@@ -22,9 +22,14 @@
 
 @implementation HCItemTableViewController
 
+@synthesize pageControllerDelegate;
+
 @synthesize item;
+@synthesize originalItem;
 @synthesize saveButton;
 @synthesize sections;
+
+@synthesize messageTextView;
 
 @synthesize mediaDictionary;
 
@@ -41,7 +46,9 @@
 {
     [super viewDidLoad];
     
-    [self.navigationItem setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item objectForKey:@"created_at"]]];
+    [[self navItem] setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item objectForKey:@"created_at"]]];
+    
+    self.originalItem = self.item;
     
     //remove extra cell lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -52,6 +59,9 @@
     savingChanges = NO;
     
     [self updateItemInfo];
+    
+    //[self.tableView setContentInset:UIEdgeInsetsMake(200.0f, 0, 0, 0)];
+    //[self.tableView setContentOffset:CGPointMake(0, 200.0f)];
     
     NSLog(@"content insets: %f, %f, %f, %f", self.tableView.contentInset.top, self.tableView.contentInset.bottom, self.tableView.contentInset.left, self.tableView.contentInset.right);
     NSLog(@"content offsets: %f, %f", self.tableView.contentOffset.x, self.tableView.contentOffset.y);
@@ -80,14 +90,14 @@
 - (void) updateButtonStatus
 {
     if (!unsavedChanges) {
-        [self.navigationItem.rightBarButtonItem  setEnabled:NO];
-        [self.navigationItem.rightBarButtonItem setTitle:@"Saved"];
+        [[self navItem].rightBarButtonItem  setEnabled:NO];
+        [[self navItem].rightBarButtonItem setTitle:@"Saved"];
     } else if (savingChanges) {
-        [self.navigationItem.rightBarButtonItem  setEnabled:NO];
-        [self.navigationItem.rightBarButtonItem setTitle:@"Saving..."];
+        [[self navItem].rightBarButtonItem  setEnabled:NO];
+        [[self navItem].rightBarButtonItem setTitle:@"Saving..."];
     } else {
-        [self.navigationItem.rightBarButtonItem  setEnabled:YES];
-        [self.navigationItem.rightBarButtonItem setTitle:@"Save"];
+        [[self navItem].rightBarButtonItem  setEnabled:YES];
+        [[self navItem].rightBarButtonItem setTitle:@"Save"];
     }
 }
 
@@ -206,6 +216,8 @@
     [note setText:[self.item objectForKey:@"message"]];
     [note setTag:1];
     [cell.contentView addSubview:note];
+    
+    [self setMessageTextView:note];
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
     //[timestamp setText:[NSString stringWithFormat:@"%@%@", [NSDate timeAgoInWordsFromDatetime:[self.item objectForKey:@"created_at"]], (nil ? [NSString stringWithFormat:@" - %@", @""] : @"")]];
@@ -345,6 +357,19 @@
 
 
 
+
+# pragma mark helpers
+
+- (UINavigationItem*) navItem
+{
+    if (self.pageControllerDelegate && self.pageControllerDelegate.navItem)
+        return self.pageControllerDelegate.navItem;
+    return self.navigationItem;
+}
+
+
+
+
 #pragma mark put calls and updates
 
 - (void) saveReminder:(NSString*)reminder withType:(NSString*)type
@@ -377,13 +402,14 @@
 {
     unsavedChanges = YES;
     savingChanges = YES;
-    [self.item setObject:updatedMessage forKey:@"message"];
+    [self.item setObject:[self.messageTextView text] forKey:@"message"];
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"PUT" withParamaters:@{@"item":self.item}
                            success:^(id responseObject) {
                                NSLog(@"successfully updated message");
                                unsavedChanges = NO;
                                savingChanges = NO;
-                               [self reloadScreen];
+                               //[self reloadScreen];
+                               [self updateButtonStatus];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"unsuccessfully updated reminder date");
@@ -392,7 +418,7 @@
                                [self reloadScreen];
                            }
      ];
-    [self reloadScreen];
+    [self updateButtonStatus];
 }
 
 
@@ -424,12 +450,12 @@
     [self reloadScreen];
 }
 
-
-- (IBAction)saveAction:(id)sender
+- (void) saveAction:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    NSLog(@"save hit!");
+    [self saveUpdatedMessage:nil];
+    [self.messageTextView resignFirstResponder];
 }
-
 
 
 
@@ -510,11 +536,15 @@
 # pragma mark textview delegate
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
+{    
     NSString *result = [textView.text stringByReplacingCharactersInRange:range withString:text];
 
     [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
     [self performSelector:@selector(saveUpdatedMessage:) withObject:result afterDelay:1.5];
+    
+    unsavedChanges = YES;
+    savingChanges = NO;
+    [self updateButtonStatus];
     
     return YES;
 }

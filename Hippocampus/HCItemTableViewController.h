@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HCItemPageViewController.h"
 
 @interface HCItemTableViewController : UITableViewController <UITextViewDelegate, UIAlertViewDelegate>
 {
@@ -16,16 +17,21 @@
     MBProgressHUD* hud;
 }
 
+@property (strong, nonatomic) HCItemPageViewController* pageControllerDelegate;
+
 @property (strong, nonatomic) NSMutableDictionary* item;
+@property (strong, nonatomic) NSMutableDictionary* originalItem;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (strong, nonatomic) NSMutableArray* sections;
 
-@property (strong, nonatomic) NSMutableDictionary* mediaDictionary;
+@property (strong, nonatomic) UITextView* messageTextView;
 
-- (IBAction)saveAction:(id)sender;
+@property (strong, nonatomic) NSMutableDictionary* mediaDictionary;
 
 - (void) saveReminder:(NSString*)reminder withType:(NSString*)type;
 - (void) saveUpdatedMessage:(NSString *)updatedMessage;
 - (void) addToStack:(id)stackID;
+
+- (void) saveAction:(id)sender;
 
 @end
