@@ -49,7 +49,7 @@
                   //[self dismissViewControllerAnimated:YES completion:nil];
                   [self hideHUD];
                   if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"]) {
-                      [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Main"];
+                      [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Messages"];
                   } else {
                       [self showAlertViewWithTitle:@"Uh-oh" message:@"Token could not be verified. Try again!"];
                   }

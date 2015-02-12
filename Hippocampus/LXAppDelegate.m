@@ -22,8 +22,11 @@
     
     [[LXSession thisSession] setVariables];
     
-//    if ([self shouldPresentIntroductionViews])
+    if ([self shouldPresentIntroductionViews]) {
+        [self setRootStoryboard:@"Login"];
+    } else {
         [self setRootStoryboard:@"Messages"];
+    }
 //          [self setRootStoryboard:@"Main"];
     return YES;
 }

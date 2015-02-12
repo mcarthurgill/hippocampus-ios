@@ -332,6 +332,16 @@
 
 - (NSMutableDictionary*) currentDictionary
 {
+    if ([self assignMode]) {
+        if ([self.bucketsDictionary objectForKey:@"Recent"] && [[self.bucketsDictionary objectForKey:@"Recent"] count] > 0) {
+            //check to see if the first thread is "All Notes", and get rid of it
+            if (!NULL_TO_NIL([[[self.bucketsDictionary objectForKey:@"Recent"] firstObject] objectForKey:@"id"])) {
+                NSMutableArray* new = [[NSMutableArray alloc] initWithArray:[self.bucketsDictionary objectForKey:@"Recent"]];
+                [new removeObjectAtIndex:0];
+                [self.bucketsDictionary setObject:new forKey:@"Recent"];
+            }
+        }
+    }
     NSString* key = self.searchBar.text ? [self.searchBar.text lowercaseString] : @"";
     if (!key || [key length] == 0) {
         return self.bucketsDictionary;
@@ -399,7 +409,7 @@
     requestMade = YES;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
                            success:^(id responseObject) {
-//                               NSLog(@"response: %@", responseObject);
+                               NSLog(@"response: %@", responseObject);
                                self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
                                requestMade = NO;
                                [self reloadScreen];
