@@ -40,6 +40,12 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self.navigationItem setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item objectForKey:@"created_at"]]];
+    
+    //remove extra cell lines
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     self.mediaDictionary = [[NSMutableDictionary alloc] init];
     
     unsavedChanges = NO;
@@ -199,7 +205,8 @@
     [cell.contentView addSubview:note];
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
-    [timestamp setText:[NSString stringWithFormat:@"%@%@", [NSDate timeAgoInWordsFromDatetime:[self.item objectForKey:@"created_at"]], (nil ? [NSString stringWithFormat:@" - %@", @""] : @"")]];
+    //[timestamp setText:[NSString stringWithFormat:@"%@%@", [NSDate timeAgoInWordsFromDatetime:[self.item objectForKey:@"created_at"]], (nil ? [NSString stringWithFormat:@" - %@", @""] : @"")]];
+    [timestamp setHidden:YES];
     
     return cell;
 }
@@ -209,13 +216,16 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"reminderCell" forIndexPath:indexPath];
     
     UILabel* main =  (UILabel*)[cell.contentView viewWithTag:1];
+    UILabel* direction =  (UILabel*)[cell.contentView viewWithTag:3];
+    
     if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
         [main setText:[NSDate timeAgoActualFromDatetime:[self.item objectForKey:@"reminder_date"]]];
+        [main setTextColor:[UIColor blackColor]];
     } else {
         [main setText:@"No Reminder Set!"];
+        [main setTextColor:direction.textColor];
     }
     
-    UILabel* direction =  (UILabel*)[cell.contentView viewWithTag:3];
     if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
         [direction setText:[NSString stringWithFormat:@"Set to remind you %@. Tap to Change", [self.item objectForKey:@"item_type"]]];
     } else {
@@ -284,8 +294,10 @@
     if ([[self.sections objectAtIndex:section] isEqualToString:@"type"]) {
         return @"Reminder Frequency";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"message"]) {
+        return nil;
         return @"Note";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
+        return nil;
         return @"Images";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"reminder"]) {
         return @"Reminder";

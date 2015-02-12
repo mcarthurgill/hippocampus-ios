@@ -35,6 +35,9 @@
 {
     [super viewDidLoad];
     
+    //remove extra cell lines
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     [self setupProperties];
     
     [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
@@ -142,12 +145,14 @@
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
     
     UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
+    UIFont* font = note.font;
     float leftMargin = note.frame.origin.x;
     float topMargin = note.frame.origin.y;
     float width = note.frame.size.width;
     [note removeFromSuperview];
     
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[[item objectForKey:@"message"] truncated:320] width:width font:note.font])];
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[[item objectForKey:@"message"] truncated:320] width:width font:font])];
+    [note setFont:font];
     [note setText:[[item objectForKey:@"message"] truncated:320]];
     [note setTag:1];
     [note setNumberOfLines:0];
