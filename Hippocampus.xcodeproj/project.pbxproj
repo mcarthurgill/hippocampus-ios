@@ -51,6 +51,8 @@
 		283700901A6F366E00C16E87 /* 122-stats.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008E1A6F366E00C16E87 /* 122-stats.png */; };
 		283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008F1A6F366E00C16E87 /* 122-stats@2x.png */; };
 		283700941A6F371800C16E87 /* LXMoreTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283700931A6F371800C16E87 /* LXMoreTableViewController.m */; };
+		288433BF1A8BD3AA0059FCE1 /* HCItemPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288433BE1A8BD3AA0059FCE1 /* HCItemPageViewController.m */; };
+		288433C21A8BD45E0059FCE1 /* HCContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288433C11A8BD45E0059FCE1 /* HCContainerViewController.m */; };
 		28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A0857B1A700CB200BA1368 /* LXString+NSString.m */; };
 		28BD3EAC196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAB196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m */; };
 		28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */; };
@@ -144,6 +146,10 @@
 		2837008F1A6F366E00C16E87 /* 122-stats@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "122-stats@2x.png"; sourceTree = "<group>"; };
 		283700921A6F371800C16E87 /* LXMoreTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXMoreTableViewController.h; sourceTree = "<group>"; };
 		283700931A6F371800C16E87 /* LXMoreTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXMoreTableViewController.m; sourceTree = "<group>"; };
+		288433BD1A8BD3AA0059FCE1 /* HCItemPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCItemPageViewController.h; sourceTree = "<group>"; };
+		288433BE1A8BD3AA0059FCE1 /* HCItemPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCItemPageViewController.m; sourceTree = "<group>"; };
+		288433C01A8BD45E0059FCE1 /* HCContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCContainerViewController.h; sourceTree = "<group>"; };
+		288433C11A8BD45E0059FCE1 /* HCContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCContainerViewController.m; sourceTree = "<group>"; };
 		28A0857A1A700CB200BA1368 /* LXString+NSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LXString+NSString.h"; sourceTree = "<group>"; };
 		28A0857B1A700CB200BA1368 /* LXString+NSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LXString+NSString.m"; sourceTree = "<group>"; };
 		28BD3EAA196F3F6700BBF5B0 /* HCSelectBucketTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCSelectBucketTableViewController.h; sourceTree = "<group>"; };
@@ -401,6 +407,10 @@
 				2827B8491970B6D900F595D9 /* HCReminderViewController.m */,
 				76BB952419784012002288E0 /* HCEditItemViewController.h */,
 				76BB952519784012002288E0 /* HCEditItemViewController.m */,
+				288433BD1A8BD3AA0059FCE1 /* HCItemPageViewController.h */,
+				288433BE1A8BD3AA0059FCE1 /* HCItemPageViewController.m */,
+				288433C01A8BD45E0059FCE1 /* HCContainerViewController.h */,
+				288433C11A8BD45E0059FCE1 /* HCContainerViewController.m */,
 			);
 			name = Item;
 			sourceTree = "<group>";
@@ -617,6 +627,7 @@
 				76FBBD861A800F4300CAF765 /* HCIntroductionFailureViewController.m in Sources */,
 				281CA929196C2C2900E6BE96 /* HCLoginViewController.m in Sources */,
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
+				288433C21A8BD45E0059FCE1 /* HCContainerViewController.m in Sources */,
 				28BD3EAC196F3F6700BBF5B0 /* HCSelectBucketTableViewController.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				281CA9111951F36700E6BE96 /* Model.xcdatamodeld in Sources */,
@@ -632,6 +643,7 @@
 				281CA9141951F4F800E6BE96 /* HCUser.m in Sources */,
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
 				281CA934196C457500E6BE96 /* HCNotesTableViewController.m in Sources */,
+				288433BF1A8BD3AA0059FCE1 /* HCItemPageViewController.m in Sources */,
 				281CA937196C458400E6BE96 /* HCBucketsTableViewController.m in Sources */,
 				76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */,
 				281CA8D81951EC7E00E6BE96 /* main.m in Sources */,

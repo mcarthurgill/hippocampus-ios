@@ -10,6 +10,7 @@
 #import "HCBucketViewController.h"
 #import "HCItemTableViewController.h"
 #import "HCNewBucketIITableViewController.h"
+#import "HCContainerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "LXRemindersViewController.h"
 
@@ -285,10 +286,12 @@
     } else {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-            HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
+            //HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
+            HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
             NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:[[self searchArray] objectAtIndex:indexPath.row]];
             [dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
             [itvc setItem:dict];
+            [itvc setItems:[self searchArray]];
             [self.navigationController pushViewController:itvc animated:YES];
         } else {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
