@@ -23,6 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationItem setTitle:@"Upcoming Reminders"];
+    requestMade = NO;
     self.allItems = [[NSMutableArray alloc] init];
     [self refreshChange];
 }
@@ -55,6 +56,10 @@
     // Return the number of sections.
     self.sections = [[NSMutableArray alloc] init];
     
+    if (requestMade) {
+        [self.sections addObject:@"requesting"];
+    }
+    
     [self.sections addObject:@"all"];
     
     return self.sections.count;
@@ -65,6 +70,8 @@
     // Return the number of rows in the section.
     if ([[self.sections objectAtIndex:section] isEqualToString:@"all"]) {
         return self.allItems.count;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"]) {
+        return 1;
     }
     return 0;
 }
@@ -74,6 +81,8 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         return [self itemCellForTableView:self.tableView withItem:[self.allItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
+    } else if([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"requesting"]) {
+        return [self indicatorCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -83,16 +92,26 @@
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"reminderCell" forIndexPath:indexPath];
     
     UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
+    UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:2];
+
     [note setText: [item objectForKey:@"message"]];
+    [timestamp setText:[NSString stringWithFormat:@"%@%@", [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"item_type"]], [NSDate formattedDateFromString:[item objectForKey:@"next_reminder_date"]]]];
+
     [note setLineBreakMode:NSLineBreakByWordWrapping];
     [note setNumberOfLines:0];
-    
-    UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:2];
-    [timestamp setText:[NSString stringWithFormat:@"%@%@", [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"item_type"]], [NSDate formattedDateFromString:[item objectForKey:@"next_reminder_date"]]]];
     
     //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
     return cell;
 }
+
+- (UITableViewCell*) indicatorCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"indicatorCell" forIndexPath:indexPath];
+    UIActivityIndicatorView* iav = (UIActivityIndicatorView*) [cell.contentView viewWithTag:10];
+    [iav startAnimating];
+    return cell;
+}
+
 
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {
@@ -115,7 +134,7 @@
         NSDictionary* item = [self.allItems objectAtIndex:indexPath.row];
         return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f;
     }
-    return 44.0;
+    return 60.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

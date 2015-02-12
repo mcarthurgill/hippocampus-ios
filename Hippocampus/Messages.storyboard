@@ -6,7 +6,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--hppcmps-->
+        <!--Hippocampus-->
         <scene sceneID="sDm-ZI-yLb">
             <objects>
                 <tableViewController storyboardIdentifier="bucketsTableViewController" id="qHq-hU-e41" customClass="HCBucketsTableViewController" sceneMemberID="viewController">
@@ -133,8 +133,8 @@
                             <outlet property="delegate" destination="qHq-hU-e41" id="p3j-N1-22r"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="hppcmps" id="z0i-Au-GnR">
-                        <barButtonItem key="leftBarButtonItem" title="Item" image="bell.png" style="plain" id="Unx-6d-ejb">
+                    <navigationItem key="navigationItem" title="Hippocampus" id="z0i-Au-GnR">
+                        <barButtonItem key="leftBarButtonItem" image="122-stats.png" style="plain" id="Unx-6d-ejb">
                             <connections>
                                 <action selector="showReminders:" destination="qHq-hU-e41" id="E5b-ws-bi6"/>
                             </connections>
@@ -203,6 +203,18 @@
                                                 <constraint firstItem="JiD-Ur-Nv2" firstAttribute="leading" secondItem="Vvg-hG-inB" secondAttribute="leadingMargin" constant="13" id="7cN-lP-4C6"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="JiD-Ur-Nv2" secondAttribute="bottom" constant="2" id="HND-Gx-bCt"/>
                                             </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="indicatorCell" id="kP8-bb-6a1">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kP8-bb-6a1" id="B7c-wh-kDW">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <activityIndicatorView opaque="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="t8R-sf-akw">
+                                                    <rect key="frame" x="150" y="21" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                            </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </prototypes>
@@ -294,7 +306,7 @@
                                     <constraint firstAttribute="bottom" secondItem="bUM-CL-Fv8" secondAttribute="bottom" constant="5" id="uBa-fO-tqX"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="529"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -705,7 +717,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="bell.png" width="25" height="25"/>
+        <image name="122-stats.png" width="27" height="19"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
