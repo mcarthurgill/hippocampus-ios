@@ -22,6 +22,17 @@
     return d;
 }
 
++ (NSString*) formattedDateFromString:(NSString*)string
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *d = [formatter dateFromString:string];
+    [formatter setDateFormat:@"EEE, dd MMM yyyy"];
+    return [formatter stringFromDate:d];
+}
+
+
+
 + (NSString*) timeAgoInWords:(double)relativeTimestamp
 {
     double currentTimestamp = [[NSDate date] timeIntervalSince1970];

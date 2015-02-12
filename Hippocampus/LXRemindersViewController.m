@@ -88,7 +88,7 @@
     [note setNumberOfLines:0];
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:2];
-    [timestamp setText:[NSString stringWithFormat:@"%@%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"item_type"]], [NSDate timeWithString:[NSString stringWithFormat:@"%@T00:00:00Z", [item objectForKey:@"next_reminder_date"]]]]];
+    [timestamp setText:[NSString stringWithFormat:@"%@%@", [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"item_type"]], [NSDate formattedDateFromString:[item objectForKey:@"next_reminder_date"]]]];
     
     //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
     return cell;
