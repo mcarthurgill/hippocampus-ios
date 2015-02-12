@@ -17,6 +17,7 @@
 }
 
 @property (strong, nonatomic) NSMutableDictionary* item;
+@property (strong, nonatomic) NSMutableDictionary* originalItem;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (strong, nonatomic) NSMutableArray* sections;
 

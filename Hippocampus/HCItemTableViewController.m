@@ -23,6 +23,7 @@
 @implementation HCItemTableViewController
 
 @synthesize item;
+@synthesize originalItem;
 @synthesize saveButton;
 @synthesize sections;
 
@@ -42,6 +43,8 @@
     [super viewDidLoad];
     
     [self.navigationItem setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item objectForKey:@"created_at"]]];
+    
+    self.originalItem = self.item;
     
     //remove extra cell lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];

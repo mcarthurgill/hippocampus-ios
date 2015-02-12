@@ -97,7 +97,7 @@
 
 - (int) indexForViewController:(id)vc
 {
-    return [self indexForItem:[(HCItemTableViewController*)vc item]];
+    return [self indexForItem:[(HCItemTableViewController*)vc originalItem]];
 }
 
 - (int) indexForItem:(NSMutableDictionary*)i

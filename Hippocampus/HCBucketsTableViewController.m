@@ -286,9 +286,9 @@
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             //HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
             HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
-            NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:[[self searchArray] objectAtIndex:indexPath.row]];
-            [dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
-            [itvc setItem:dict];
+            //NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:[[self searchArray] objectAtIndex:indexPath.row]];
+            //[dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
+            [itvc setItem:[[self searchArray] objectAtIndex:indexPath.row]];
             [itvc setItems:[self searchArray]];
             [self.navigationController pushViewController:itvc animated:YES];
         } else {
@@ -483,7 +483,7 @@
 {
     [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term, @"user_id" : [[HCUser loggedInUser] userID] }
                            success:^(id responseObject) {
-                               [self.serverSearchDictionary setObject:[responseObject objectForKey:@"items"] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
+                               [self.serverSearchDictionary setObject:[self modifiedSearchArrayWithResponseObject:[responseObject objectForKey:@"items"]] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
                                [self reloadScreen];
                            }
                            failure:^(NSError* error) {
@@ -493,6 +493,17 @@
 }
 //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(switchToBookDetailsModeIfShould) object:nil];
 //[self performSelector:@selector(switchToBookDetailsModeIfShould) withObject:nil afterDelay:DETAILS_VIEW_LINGER_TIME];
+
+- (NSMutableArray*) modifiedSearchArrayWithResponseObject:(id)responseObject
+{
+    NSMutableArray* itemsArray = [[NSMutableArray alloc] init];
+    for (NSDictionary* d in responseObject) {
+        NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:d];
+        [dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
+        [itemsArray addObject:dict];
+    }
+    return itemsArray;
+}
 
 
 @end
