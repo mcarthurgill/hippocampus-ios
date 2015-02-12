@@ -196,7 +196,7 @@
     if ([[self.sections objectAtIndex:section] isEqualToString:@"items"] && self.itemsArray.count > 0) {
         return @"Notes";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"] && self.bucketsArray.count > 0) {
-        return @"Stacks";
+        return @"Threads";
     }
     return nil;
 }

@@ -273,7 +273,7 @@
     [blueDot setHidden:YES];
     
     if (indexPath.row == 0) {
-        [label setText:@"Add to Stack"];
+        [label setText:@"Add to Thread"];
         if ([[self.item objectForKey:@"status"] isEqualToString:@"outstanding"]) {
             [blueDot.layer setCornerRadius:4];
             [blueDot setClipsToBounds:YES];
@@ -326,7 +326,7 @@
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"reminder"]) {
         return @"Reminder";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucket"]) {
-        return @"Stacks";
+        return @"Threads";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
     }
@@ -436,7 +436,7 @@
 {
     unsavedChanges = YES;
     savingChanges = YES;
-    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Stack", [bucket objectForKey:@"first_name"]]];
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Thread", [bucket objectForKey:@"first_name"]]];
     [[LXServer shared] requestPath:@"/bucket_item_pairs.json" withMethod:@"POST" withParamaters:@{@"bucket_item_pair":@{@"bucket_id":[bucket objectForKey:@"id"], @"item_id":[self.item objectForKey:@"id"]}}
                            success:^(id responseObject) {
                                //NSLog(@"successfully added to stack: %@", responseObject);

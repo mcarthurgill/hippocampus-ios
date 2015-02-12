@@ -66,7 +66,7 @@
     
     if ([self assignMode]) {
         //[self.navigationController.navigationBar.topItem setTitle:@"Add to Stack"];
-        [self setTitle:@"Add to Stack"];
+        [self setTitle:@"Add to Thread"];
         [self.navigationItem setRightBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:nil];
     }
@@ -183,7 +183,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"newCell" forIndexPath:indexPath];
     UILabel* label = (UILabel*) [cell.contentView viewWithTag:1];
-    [label setText:@"+ New Stack"];
+    [label setText:@"+ New Thread"];
     return cell;
 }
 

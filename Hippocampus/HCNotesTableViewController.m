@@ -228,7 +228,7 @@
     if ([[self.sections objectAtIndex:section] isEqualToString:@"all"]) {
         return @"All Notes";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"outstanding"]) {
-        return @"Notes Not In Stacks";
+        return @"Notes Not In Threads";
     }
     return nil;
 }

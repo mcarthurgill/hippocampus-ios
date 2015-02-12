@@ -14,7 +14,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <searchBar key="tableHeaderView" contentMode="redraw" id="Rft-co-NYV">
+                        <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Search Threads + Notes" id="Rft-co-NYV">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <textInputTraits key="textInputTraits"/>
@@ -685,7 +685,7 @@
             </objects>
             <point key="canvasLocation" x="1865" y="1792"/>
         </scene>
-        <!--New Stack-->
+        <!--New Thread-->
         <scene sceneID="HGb-p0-MI9">
             <objects>
                 <tableViewController storyboardIdentifier="newBucketIITableViewController" id="bTB-5j-foa" customClass="HCNewBucketIITableViewController" sceneMemberID="viewController">
@@ -710,7 +710,7 @@
                                                         <outlet property="delegate" destination="bTB-5j-foa" id="HSU-8f-dRp"/>
                                                     </connections>
                                                 </pickerView>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Stack Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Okl-lW-9hj">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Thread Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Okl-lW-9hj">
                                                     <rect key="frame" x="20" y="165" width="280" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="go"/>
@@ -729,7 +729,7 @@
                             <outlet property="delegate" destination="bTB-5j-foa" id="TzN-b9-2pa"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="New Stack" id="lMC-JN-7YN">
+                    <navigationItem key="navigationItem" title="New Thread" id="lMC-JN-7YN">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="97E-0o-AvF">
                             <connections>
                                 <action selector="saveAction:" destination="bTB-5j-foa" id="nqm-Np-fWj"/>
