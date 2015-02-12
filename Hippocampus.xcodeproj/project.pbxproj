@@ -60,6 +60,8 @@
 		76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76BFE0711A7C0662005AD98C /* Introduction.storyboard */; };
 		76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */; };
 		76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */; };
+		76E6A1F91A8BCF2A00B3669B /* bell.png in Resources */ = {isa = PBXBuildFile; fileRef = 76E6A1F81A8BCF2A00B3669B /* bell.png */; };
+		76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */; };
 		76FBBD861A800F4300CAF765 /* HCIntroductionFailureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76FBBD851A800F4300CAF765 /* HCIntroductionFailureViewController.m */; };
 		76FBBD881A80122A00CAF765 /* Messages.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76FBBD871A80122A00CAF765 /* Messages.storyboard */; };
 		76FBBD8B1A813D7D00CAF765 /* HCBucketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76FBBD8A1A813D7D00CAF765 /* HCBucketViewController.m */; };
@@ -158,6 +160,9 @@
 		76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionViewController.m; sourceTree = "<group>"; };
 		76BFE0771A7C1015005AD98C /* HCIntroductionQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCIntroductionQuestionViewController.h; sourceTree = "<group>"; };
 		76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionQuestionViewController.m; sourceTree = "<group>"; };
+		76E6A1F81A8BCF2A00B3669B /* bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bell.png; sourceTree = "<group>"; };
+		76E6A1FB1A8BCFFA00B3669B /* LXRemindersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXRemindersViewController.h; sourceTree = "<group>"; };
+		76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXRemindersViewController.m; sourceTree = "<group>"; };
 		76FBBD841A800F4300CAF765 /* HCIntroductionFailureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCIntroductionFailureViewController.h; sourceTree = "<group>"; };
 		76FBBD851A800F4300CAF765 /* HCIntroductionFailureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionFailureViewController.m; sourceTree = "<group>"; };
 		76FBBD871A80122A00CAF765 /* Messages.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Messages.storyboard; sourceTree = "<group>"; };
@@ -278,6 +283,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				76E6A1FA1A8BCFE100B3669B /* Reminders */,
 				281CA940196C8DC000E6BE96 /* Bucket */,
 				281CA93C196C8CF700E6BE96 /* Item */,
 				281CA938196C87AA00E6BE96 /* Search */,
@@ -292,6 +298,7 @@
 		281CA9041951EC9700E6BE96 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				76E6A1F81A8BCF2A00B3669B /* bell.png */,
 				76379FD41A8904F700D19E64 /* camera.png */,
 				7615CD8E1A855B40008195B5 /* bluedot.png */,
 				281CA91B196C29D500E6BE96 /* Icons */,
@@ -439,6 +446,15 @@
 			name = Introduction;
 			sourceTree = "<group>";
 		};
+		76E6A1FA1A8BCFE100B3669B /* Reminders */ = {
+			isa = PBXGroup;
+			children = (
+				76E6A1FB1A8BCFFA00B3669B /* LXRemindersViewController.h */,
+				76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */,
+			);
+			name = Reminders;
+			sourceTree = "<group>";
+		};
 		AF8CDA90D5D1600B0FA06D8F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -545,6 +561,7 @@
 				2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */,
+				76E6A1F91A8BCF2A00B3669B /* bell.png in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -607,6 +624,7 @@
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
 				283700941A6F371800C16E87 /* LXMoreTableViewController.m in Sources */,
 				76BB952619784012002288E0 /* HCEditItemViewController.m in Sources */,
+				76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */,
 				281CA949196CA22100E6BE96 /* HCNewItemTableViewController.m in Sources */,
 				281CA92D196C309E00E6BE96 /* HCMainTabBarController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,

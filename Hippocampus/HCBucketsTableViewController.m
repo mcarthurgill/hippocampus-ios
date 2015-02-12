@@ -11,6 +11,7 @@
 #import "HCItemTableViewController.h"
 #import "HCNewBucketIITableViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "LXRemindersViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -62,6 +63,7 @@
         //[self.navigationController.navigationBar.topItem setTitle:@"Add to Stack"];
         [self setTitle:@"Add to Stack"];
         [self.navigationItem setRightBarButtonItem:nil];
+        [self.navigationItem setLeftBarButtonItem:nil];
     }
 }
 
@@ -431,6 +433,12 @@
     [self.composeBucketController setInitializeWithKeyboardUp:YES];
     [self.composeBucketController setScrollToBottom:YES];
     [self.navigationController pushViewController:self.composeBucketController animated:YES];
+}
+
+- (IBAction)showReminders:(id)sender {
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    LXRemindersViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"remindersViewController"];
+    [self.navigationController pushViewController:vc animated:YES]; 
 }
 
 

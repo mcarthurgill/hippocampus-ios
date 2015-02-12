@@ -30,5 +30,6 @@
 - (IBAction)refreshControllerChanged:(id)sender;
 - (IBAction)addAction:(id)sender;
 - (IBAction)composeButtonClicked:(id)sender;
+- (IBAction)showReminders:(id)sender;
 
 @end
