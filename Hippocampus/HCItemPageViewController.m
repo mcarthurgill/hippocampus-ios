@@ -19,6 +19,8 @@
 @synthesize bucket;
 @synthesize item;
 
+@synthesize navItem;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -50,6 +52,11 @@
 - (void) handleInitialLoad
 {
     [self goToItem:self.item animated:NO];
+}
+
+- (void) saveAction:(id)sender
+{
+    [(HCItemPageViewController*)self.viewControllers.lastObject saveAction:sender];
 }
 
 
@@ -92,6 +99,7 @@
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
     HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
     [itvc setItem:i];
+    [itvc setPageControllerDelegate:self];
     return itvc;
 }
 
@@ -102,7 +110,7 @@
 
 - (int) indexForItem:(NSMutableDictionary*)i
 {
-    return [self.items indexOfObject:i];
+    return (int)[self.items indexOfObject:i];
 }
 
 
