@@ -44,6 +44,8 @@
 
 - (IBAction)refreshControllerChanged:(id)sender;
 
+- (void) reloadItems;
+
 
 
 

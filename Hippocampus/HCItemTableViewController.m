@@ -12,6 +12,7 @@
 #import "HCEditItemViewController.h"
 #import "HCBucketViewController.h"
 #import "HCBucketsTableViewController.h"
+#import "HCContainerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
@@ -417,6 +418,7 @@
                                unsavedChanges = NO;
                                savingChanges = NO;
                                //[self reloadScreen];
+                               [self updateBackgroundBucket];
                                [self updateButtonStatus];
                            }
                            failure:^(NSError *error) {
@@ -437,14 +439,13 @@
     [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Stack", [bucket objectForKey:@"first_name"]]];
     [[LXServer shared] requestPath:@"/bucket_item_pairs.json" withMethod:@"POST" withParamaters:@{@"bucket_item_pair":@{@"bucket_id":[bucket objectForKey:@"id"], @"item_id":[self.item objectForKey:@"id"]}}
                            success:^(id responseObject) {
-                               NSLog(@"successfully added to stack: %@", responseObject);
+                               //NSLog(@"successfully added to stack: %@", responseObject);
                                [self.item setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
+                               [self.item setObject:@"assigned" forKey:@"status"];
                                unsavedChanges = NO;
                                savingChanges = NO;
                                [self hideHUD];
-                               if ([[self.item objectForKey:@"buckets"] count] == 1) {
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadItems" object:nil userInfo:nil];
-                               }
+                               [self updateBackgroundBucket];
                                [self reloadScreen];
                            }
                            failure:^(NSError *error) {
@@ -464,6 +465,15 @@
     [self saveUpdatedMessage:nil];
     [self.messageTextView resignFirstResponder];
 }
+
+
+- (void) updateBackgroundBucket
+{
+    if ([(HCContainerViewController*)[self.pageControllerDelegate parentViewController] delegate] && [[(HCContainerViewController*)[self.pageControllerDelegate parentViewController] delegate] respondsToSelector:@selector(reloadItems)]) {
+        [[(HCContainerViewController*)[self.pageControllerDelegate parentViewController] delegate] reloadItems];
+    }
+}
+
 
 
 

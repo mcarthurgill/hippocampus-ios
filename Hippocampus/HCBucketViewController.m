@@ -239,6 +239,7 @@
         [itvc setItem:[self.allItems objectAtIndex:indexPath.row]];
         [itvc setItems:self.allItems];
         [itvc setBucket:self.bucket];
+        [itvc setDelegate:self];
         [self setScrollToBottom:NO];
         [self.navigationController pushViewController:itvc animated:YES];
     }
@@ -309,8 +310,14 @@
     }
 }
 
-- (void) sendRequestForBucketShow {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
+- (void) sendRequestForBucketShow
+{
+    [self sendRequestForBucketShowWithPage:self.page];
+}
+
+- (void) sendRequestForBucketShowWithPage:(int)p
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
                            success:^(id responseObject) {
                                NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
                                                       NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
@@ -334,8 +341,14 @@
      ];
 }
 
-- (void) sendRequestForAllItems {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
+- (void) sendRequestForAllItems
+{
+    [self sendRequestForAllItemsWithPage:self.page];
+}
+
+- (void) sendRequestForAllItemsWithPage:(int)p
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
                            success:^(id responseObject) {
                                if ([responseObject objectForKey:@"items"]) {
                                    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
@@ -352,7 +365,7 @@
                                }
                                if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
                                    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
-                                                              NSMakeRange(0,[[responseObject objectForKey:@"bottom_items"] count])];
+                                                          NSMakeRange(0,[[responseObject objectForKey:@"bottom_items"] count])];
                                    if (indexes.count == 0) {
                                        shouldContinueRequesting = NO;
                                    }
@@ -371,7 +384,7 @@
                                [self reloadScreenToIndex:self.allItems.count];
                            }
      ];
-
+    
 }
 
 - (void) shouldRequestMoreItems
@@ -390,6 +403,15 @@
 
 - (void) incrementPage {
     self.page = self.page + 1;
+}
+
+- (void) reloadItems
+{
+    if (NULL_TO_NIL([self.bucket objectForKey:@"id"])) {
+        [self sendRequestForBucketShowWithPage:0];
+    } else {
+        [self sendRequestForAllItemsWithPage:0];
+    }
 }
 
 

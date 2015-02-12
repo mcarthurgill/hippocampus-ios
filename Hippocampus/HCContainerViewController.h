@@ -11,6 +11,8 @@
 
 @interface HCContainerViewController : UIViewController
 
+@property (strong, nonatomic) id delegate;
+
 @property (strong, nonatomic) HCItemPageViewController* pageController;
 
 @property (strong, nonatomic) NSMutableArray* items;

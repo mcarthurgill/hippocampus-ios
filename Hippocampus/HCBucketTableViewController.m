@@ -184,6 +184,7 @@
         [itvc setItem:[self.allItems objectAtIndex:indexPath.row]];
         [itvc setItems:self.allItems];
         [itvc setBucket:self.bucket];
+        [itvc setDelegate:self];
         [self.navigationController pushViewController:itvc animated:YES];
     }
     

@@ -292,6 +292,7 @@
             //[dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
             [itvc setItem:[[self searchArray] objectAtIndex:indexPath.row]];
             [itvc setItems:[self searchArray]];
+            [itvc setDelegate:self];
             [self.navigationController pushViewController:itvc animated:YES];
         } else {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];

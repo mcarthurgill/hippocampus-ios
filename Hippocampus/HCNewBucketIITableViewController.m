@@ -8,6 +8,7 @@
 
 #import "HCNewBucketIITableViewController.h"
 #import "HCItemTableViewController.h"
+#import "HCItemPageViewController.h"
 
 @interface HCNewBucketIITableViewController ()
 
@@ -68,7 +69,7 @@
                                    [self hideHUD];
                                    NSDictionary* bucket = responseObject;
                                    [self.delegate addToStack:bucket];
-                                   [self.navigationController popToViewController:self.delegate animated:YES];
+                                   [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
                                }
                                failure:^(NSError* error) {
                                    [self hideHUD];

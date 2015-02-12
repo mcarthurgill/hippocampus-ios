@@ -14,6 +14,8 @@
 
 @implementation HCContainerViewController
 
+@synthesize delegate;
+
 @synthesize pageController;
 
 @synthesize items;
