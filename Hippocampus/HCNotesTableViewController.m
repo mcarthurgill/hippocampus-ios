@@ -193,14 +193,14 @@
         if ([item objectForKey:@"media_urls"]) {
             additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item objectForKey:@"media_urls"] count];
         }
-        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f + additional;
+        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 14.0f + additional;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"outstanding"]) {
         NSDictionary* item = [self.outstandingItems objectAtIndex:indexPath.row];
         int additional = 0;
         if ([item objectForKey:@"media_urls"]) {
             additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item objectForKey:@"media_urls"] count];
         }
-        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont systemFontOfSize:17.0]] + 22.0f + 12.0f + 14.0f + additional;
+        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 14.0f + additional;
     }
     return 44.0;
 }
