@@ -52,6 +52,9 @@
     savingChanges = NO;
     
     [self updateItemInfo];
+    
+    NSLog(@"content insets: %f, %f, %f, %f", self.tableView.contentInset.top, self.tableView.contentInset.bottom, self.tableView.contentInset.left, self.tableView.contentInset.right);
+    NSLog(@"content offsets: %f, %f", self.tableView.contentOffset.x, self.tableView.contentOffset.y);
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -439,7 +442,7 @@
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"GET" withParamaters:nil
                            success:^(id responseObject){
                                self.item = [NSMutableDictionary dictionaryWithDictionary:responseObject];
-                               NSLog(@"response: %@", responseObject);
+                               //NSLog(@"response: %@", responseObject);
                                [self getImages];
                                [self reloadScreen];
                            }
@@ -492,7 +495,7 @@
     } else if (buttonIndex == 1) {
         [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil
                                success:^(id responseObject){
-                                   NSLog(@"response: %@", responseObject);
+                                   //NSLog(@"response: %@", responseObject);
                                    [self.navigationController popToRootViewControllerAnimated:YES];
                                }
                                failure:^(NSError *error) {

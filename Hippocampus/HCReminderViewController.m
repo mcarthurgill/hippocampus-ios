@@ -37,13 +37,15 @@
 {
     [super viewDidLoad];
     
-    self.typeOptions = @[@"once", @"yearly", @"monthly", @"weekly", @"daily"];
+    self.typeOptions = @[@"daily", @"weekly", @"monthly", @"yearly", @"once"];
     
     if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
         [self.datePicker setDate:[NSDate timeWithString:[self.item objectForKey:@"reminder_date"]]];
     }
     if (NULL_TO_NIL([self.item objectForKey:@"item_type"])) {
         [self.typePicker selectRow:[self indexOfType:[self.item objectForKey:@"item_type"]] inComponent:0 animated:NO];
+    } else {
+        [self.typePicker selectRow:[self indexOfType:@"once"] inComponent:0 animated:NO];
     }
 }
 

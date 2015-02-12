@@ -9,6 +9,7 @@
 #import "HCBucketTableViewController.h"
 #import "HCItemTableViewController.h"
 #import "HCNewItemTableViewController.h"
+#import "HCContainerViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
@@ -178,8 +179,11 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-        HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
+        //HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
+        HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
         [itvc setItem:[self.allItems objectAtIndex:indexPath.row]];
+        [itvc setItems:self.allItems];
+        [itvc setBucket:self.bucket];
         [self.navigationController pushViewController:itvc animated:YES];
     }
     

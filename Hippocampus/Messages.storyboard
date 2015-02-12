@@ -500,6 +500,24 @@
             </objects>
             <point key="canvasLocation" x="1865" y="1105"/>
         </scene>
+        <!--Container View Controller-->
+        <scene sceneID="mej-Lz-mrg">
+            <objects>
+                <viewController storyboardIdentifier="containerViewController" id="IIe-1S-gbb" customClass="HCContainerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jVG-Or-FoA"/>
+                        <viewControllerLayoutGuide type="bottom" id="dQN-bj-yfu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="4X9-yo-uFM">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IQG-fp-S7a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2276" y="1105"/>
+        </scene>
         <!--Reminder View Controller-->
         <scene sceneID="6yf-5v-quZ">
             <objects>
@@ -529,19 +547,19 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="10" translatesAutoresizingMaskIntoConstraints="NO" id="OtA-OW-PE4">
+                                <rect key="frame" x="0.0" y="63" width="320" height="162"/>
+                                <date key="date" timeIntervalSinceReferenceDate="426817164.55374199">
+                                    <!--2014-07-12 00:19:24 +0000-->
+                                </date>
+                            </datePicker>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wzW-1Y-OD4">
-                                <rect key="frame" x="0.0" y="62" width="320" height="162"/>
+                                <rect key="frame" x="0.0" y="226" width="320" height="162"/>
                                 <connections>
                                     <outlet property="dataSource" destination="IVT-Jv-cUt" id="sVx-gM-isb"/>
                                     <outlet property="delegate" destination="IVT-Jv-cUt" id="CSc-PC-joa"/>
                                 </connections>
                             </pickerView>
-                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="10" translatesAutoresizingMaskIntoConstraints="NO" id="OtA-OW-PE4">
-                                <rect key="frame" x="0.0" y="220" width="320" height="162"/>
-                                <date key="date" timeIntervalSinceReferenceDate="426817164.55374199">
-                                    <!--2014-07-12 00:19:24 +0000-->
-                                </date>
-                            </datePicker>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>

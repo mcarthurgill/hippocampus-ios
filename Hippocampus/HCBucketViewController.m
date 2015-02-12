@@ -8,6 +8,7 @@
 
 #import "HCBucketViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "HCContainerViewController.h"
 
 @interface HCBucketViewController ()
 
@@ -233,7 +234,10 @@
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
+        //HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
         [itvc setItem:[self.allItems objectAtIndex:indexPath.row]];
+        //[itvc setItems:self.allItems];
+        //[itvc setBucket:self.bucket];
         [self setScrollToBottom:NO];
         [self.navigationController pushViewController:itvc animated:YES];
     }
