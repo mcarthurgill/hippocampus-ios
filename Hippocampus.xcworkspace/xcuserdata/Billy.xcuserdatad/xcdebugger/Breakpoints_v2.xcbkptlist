@@ -329,7 +329,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "484"
             endingLineNumber = "484"
-            landmarkName = "-searchWithTerm:"
+            landmarkName = "-searchWithCurrentText"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -345,7 +345,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "486"
             endingLineNumber = "486"
-            landmarkName = "-searchWithTerm:"
+            landmarkName = "-searchWithCurrentText"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
