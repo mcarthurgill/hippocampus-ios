@@ -23,14 +23,20 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.navigationItem setTitle:@"Upcoming Reminders"];
-    requestMade = NO;
-    self.allItems = [[NSMutableArray alloc] init];
+    [self setupProperties];
     [self refreshChange];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) setupProperties {
+    shouldContinueRequesting = YES;
+    requestMade = NO;
+    self.allItems = [[NSMutableArray alloc] init];
+    self.page = 0;
 }
 
 
@@ -168,6 +174,9 @@
                            success:^(id responseObject) {
                                NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
                                                       NSMakeRange(0,[[responseObject objectForKey:@"reminders"] count])];
+                               if (indexes.count == 0) {
+                                   shouldContinueRequesting = NO;
+                               }
                                [self.allItems insertObjects:[responseObject objectForKey:@"reminders"] atIndexes:indexes];
                                requestMade = NO;
                                if ([[responseObject objectForKey:@"reminders"] count] > 0) {
@@ -183,15 +192,15 @@
      ];
 }
 
+
 - (void) shouldRequestMoreItems
 {
     NSArray *visibleRows = [self.tableView indexPathsForVisibleRows];
-    NSIndexPath *firstRow = [visibleRows firstObject];
-    if (firstRow.row == 0 && requestMade == NO) {
+    NSIndexPath *lastRow = [visibleRows lastObject];
+    if (lastRow.row == self.allItems.count && requestMade == NO && shouldContinueRequesting == YES) {
         [self refreshChange];
     }
 }
-
 
 - (void) incrementPage {
     self.page = self.page + 1;

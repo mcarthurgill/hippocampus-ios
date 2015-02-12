@@ -13,6 +13,7 @@
 @interface LXRemindersViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 {
     BOOL requestMade;
+    BOOL shouldContinueRequesting;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
