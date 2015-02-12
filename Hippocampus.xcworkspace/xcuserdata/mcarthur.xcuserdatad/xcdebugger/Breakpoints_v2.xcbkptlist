@@ -42,12 +42,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketViewController.m"
-            timestampString = "445359669.621814"
+            timestampString = "445454529.341726"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "325"
-            endingLineNumber = "325"
-            landmarkName = "-sendRequestForAllItems"
+            startingLineNumber = "329"
+            endingLineNumber = "329"
+            landmarkName = "-sendRequestForBucketShow"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

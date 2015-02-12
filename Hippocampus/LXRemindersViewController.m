@@ -80,6 +80,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
+        [self shouldRequestMoreItems];
         return [self itemCellForTableView:self.tableView withItem:[self.allItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     } else if([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"requesting"]) {
         return [self indicatorCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
@@ -182,6 +183,14 @@
      ];
 }
 
+- (void) shouldRequestMoreItems
+{
+    NSArray *visibleRows = [self.tableView indexPathsForVisibleRows];
+    NSIndexPath *firstRow = [visibleRows firstObject];
+    if (firstRow.row == 0 && requestMade == NO) {
+        [self refreshChange];
+    }
+}
 
 
 - (void) incrementPage {

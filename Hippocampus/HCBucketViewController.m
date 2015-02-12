@@ -64,22 +64,22 @@
 
 - (void) setupProperties {
     requestMade = NO;
+    shouldContinueRequesting = YES;
     [self setScrollToBottom:YES];
     [composeTextView setScrollEnabled:NO];
     [composeTextView.layer setCornerRadius:4.0f];
     [self setPage:0];
     self.allItems = [[NSMutableArray alloc] init];
-    [self setupRefreshControl];
 }
 
-- (void) setupRefreshControl {
-    UITableViewController *tableViewController = [[UITableViewController alloc] init];
-    tableViewController.tableView = self.tableView;
-    
-    self.refreshControl = [[UIRefreshControl alloc] init];
-    [self.refreshControl addTarget:self action:@selector(refreshChange) forControlEvents:UIControlEventValueChanged];
-    tableViewController.refreshControl = self.refreshControl;
-}
+//- (void) setupRefreshControl {
+//    UITableViewController *tableViewController = [[UITableViewController alloc] init];
+//    tableViewController.tableView = self.tableView;
+//    
+//    self.refreshControl = [[UIRefreshControl alloc] init];
+//    [self.refreshControl addTarget:self action:@selector(refreshChange) forControlEvents:UIControlEventValueChanged];
+//    tableViewController.refreshControl = self.refreshControl;
+//}
 
 #pragma mark - Table view data source
 
@@ -136,6 +136,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
+        [self shouldRequestMoreItems];
         return [self itemCellForTableView:self.tableView withItem:[self.allItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     }
     return nil;
@@ -313,6 +314,9 @@
                            success:^(id responseObject) {
                                NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
                                                       NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
+                               if (indexes.count == 0) {
+                                   shouldContinueRequesting = NO;
+                               }
                                [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                requestMade = NO;
                                [self setScrollToBottom:NO];
@@ -336,6 +340,9 @@
                                if ([responseObject objectForKey:@"items"]) {
                                    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
                                                           NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
+                                   if (indexes.count == 0) {
+                                       shouldContinueRequesting = NO;
+                                   }
                                    [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                    [self reloadScreenToIndex:indexes.count];
                                }
@@ -346,6 +353,9 @@
                                if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
                                    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
                                                               NSMakeRange(0,[[responseObject objectForKey:@"bottom_items"] count])];
+                                   if (indexes.count == 0) {
+                                       shouldContinueRequesting = NO;
+                                   }
                                    [self.allItems insertObjects:[responseObject objectForKey:@"bottom_items"] atIndexes:indexes];
                                    [self setScrollToBottom:NO];
                                    [self reloadScreenToIndex:indexes.count];
@@ -363,6 +373,16 @@
      ];
 
 }
+
+- (void) shouldRequestMoreItems
+{
+    NSArray *visibleRows = [self.tableView indexPathsForVisibleRows];
+    NSIndexPath *firstRow = [visibleRows firstObject];
+    if (firstRow.row == 0 && requestMade == NO && shouldContinueRequesting == YES) {
+        [self refreshChange];
+    }
+}
+
 
 - (void) deleteItem:(NSDictionary *)item {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil success:^(id responseObject) {} failure:^(NSError* error) {}];

@@ -17,6 +17,7 @@
 @interface HCBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
 {
     BOOL requestMade;
+    BOOL shouldContinueRequesting;
 }
 
 @property (strong, nonatomic) NSMutableDictionary* bucket;
