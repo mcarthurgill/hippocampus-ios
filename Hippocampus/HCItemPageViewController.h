@@ -19,4 +19,6 @@
 - (void) handleInitialLoad;
 - (void) saveAction:(id)sender;
 
+- (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n;
+
 @end

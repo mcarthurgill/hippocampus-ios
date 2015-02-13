@@ -8,6 +8,8 @@
 
 #import "HCItemPageViewController.h"
 #import "HCItemTableViewController.h"
+#import "HCContainerViewController.h"
+#import "HCBucketViewController.h"
 
 @interface HCItemPageViewController ()
 
@@ -113,5 +115,15 @@
     return (int)[self.items indexOfObject:i];
 }
 
+- (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n
+{
+    int index = [self.items indexOfObject:original];
+    if (index && index < self.items.count) {
+        [self.items replaceObjectAtIndex:index withObject:n];
+    }
+    if ([[(HCContainerViewController*)[self parentViewController] delegate] respondsToSelector:@selector(updateItemsArrayWithOriginal:new:)]) {
+        [[(HCContainerViewController*)[self parentViewController] delegate] updateItemsArrayWithOriginal:original new:n];
+    }
+}
 
 @end

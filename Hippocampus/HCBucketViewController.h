@@ -44,7 +44,8 @@
 
 - (IBAction)refreshControllerChanged:(id)sender;
 
-- (void) reloadItems;
+- (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n;
+- (void) scrollToNote:(NSMutableDictionary*)original;
 
 
 

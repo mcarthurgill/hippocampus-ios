@@ -75,6 +75,13 @@
     [self reloadScreen];
 }
 
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [self scrollUnderlyingControllerToNote];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -418,7 +425,7 @@
                                unsavedChanges = NO;
                                savingChanges = NO;
                                //[self reloadScreen];
-                               [self updateBackgroundBucket];
+                               [self updateBackgroundArrays];
                                [self updateButtonStatus];
                            }
                            failure:^(NSError *error) {
@@ -445,7 +452,7 @@
                                unsavedChanges = NO;
                                savingChanges = NO;
                                [self hideHUD];
-                               [self updateBackgroundBucket];
+                               [self updateBackgroundArrays];
                                [self reloadScreen];
                            }
                            failure:^(NSError *error) {
@@ -467,10 +474,18 @@
 }
 
 
-- (void) updateBackgroundBucket
+- (void) updateBackgroundArrays
 {
-    if ([(HCContainerViewController*)[self.pageControllerDelegate parentViewController] delegate] && [[(HCContainerViewController*)[self.pageControllerDelegate parentViewController] delegate] respondsToSelector:@selector(reloadItems)]) {
-        [[(HCContainerViewController*)[self.pageControllerDelegate parentViewController] delegate] reloadItems];
+    if (self.pageControllerDelegate) {
+        [self.pageControllerDelegate updateItemsArrayWithOriginal:self.originalItem new:self.item];
+        [self setOriginalItem:self.item];
+    }
+}
+
+- (void) scrollUnderlyingControllerToNote
+{
+    if ([(HCContainerViewController*)[self.pageControllerDelegate parentViewController] delegate] && [[(HCContainerViewController*)[self.pageControllerDelegate parentViewController] delegate] respondsToSelector:@selector(scrollToNote:)]) {
+        [[(HCContainerViewController*)[self.pageControllerDelegate parentViewController] delegate] scrollToNote:self.originalItem];
     }
 }
 
@@ -567,10 +582,17 @@
     return YES;
 }
 
-- (void) textViewDidBeginEditing:(UITextView *)textView {
+- (void) textViewDidBeginEditing:(UITextView *)textView
+{
+    [textView setScrollEnabled:YES];
     unsavedChanges = YES;
     savingChanges = NO;
     [self updateButtonStatus];
+}
+
+- (void) textViewDidEndEditing:(UITextView *)textView
+{
+    [textView setScrollEnabled:NO];
 }
 
 @end

@@ -323,8 +323,13 @@
                                                       NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
                                if (indexes.count == 0) {
                                    shouldContinueRequesting = NO;
+                                   if ([[responseObject objectForKey:@"items"] count] > 0) {
+                                       self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
+                                   }
+                                   //SAVE ITEMS TO DISK HERE
+                               } else {
+                                   [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                }
-                               [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                requestMade = NO;
                                [self setScrollToBottom:NO];
                                [self reloadScreenToIndex:indexes.count];
@@ -355,8 +360,13 @@
                                                           NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
                                    if (indexes.count == 0) {
                                        shouldContinueRequesting = NO;
+                                       if ([[responseObject objectForKey:@"items"] count] > 0) {
+                                           self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
+                                       }
+                                       //SAVE HERE
+                                   } else {
+                                       [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                    }
-                                   [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                    [self reloadScreenToIndex:indexes.count];
                                }
                                if ([responseObject objectForKey:@"outstanding_items"] && self.page < 1) {
@@ -405,14 +415,23 @@
     self.page = self.page + 1;
 }
 
-- (void) reloadItems
+- (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n
 {
-    if (NULL_TO_NIL([self.bucket objectForKey:@"id"])) {
-        [self sendRequestForBucketShowWithPage:0];
-    } else {
-        [self sendRequestForAllItemsWithPage:0];
+    int index = [self.allItems indexOfObject:original];
+    if (index && index < self.allItems.count) {
+        [self.allItems replaceObjectAtIndex:index withObject:n];
+    }
+    [self.tableView reloadData];
+}
+
+- (void) scrollToNote:(NSMutableDictionary*)original
+{
+    int index = [self.allItems indexOfObject:original];
+    if (index && index < self.allItems.count) {
+        [self setTableScrollToIndex:index];
     }
 }
+
 
 
 # pragma mark helpers
