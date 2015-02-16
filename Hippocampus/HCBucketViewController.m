@@ -252,7 +252,7 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[[self currentArray] objectAtIndex:indexPath.row] objectForKey:@"id"]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         //HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
         HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
@@ -262,6 +262,27 @@
         [itvc setDelegate:self];
         [self setScrollToBottom:NO];
         [self.navigationController pushViewController:itvc animated:YES];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
+        [self showHUDWithMessage:@"Syncing Note"];
+        [[LXSession thisSession] attemptNoteSave:[[self currentArray] objectAtIndex:indexPath.row]
+                                         success:^(id responseObject) {
+                                             BOOL found = NO;
+                                             for (int i = 0; !found && i < self.allItems.count; ++i) {
+                                                 if ([[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] respondsToSelector:@selector(isEqualToString:)] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] isEqualToString:[responseObject objectForKey:@"device_timestamp"]]) {
+                                                     [self.allItems replaceObjectAtIndex:i withObject:responseObject];
+                                                     found = YES;
+                                                 }
+                                             }
+                                             //[self reloadScreenToIndex:[self currentArray].count animated:YES];
+                                             [self.tableView reloadData];
+                                             [self saveBucket];
+                                             
+                                             [self hideHUD];
+                                         }
+                                         failure:^(NSError* error) {
+                                             [self hideHUD];
+                                         }
+         ];
     }
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -288,9 +309,9 @@
         
         [tempNote setObject:self.composeTextView.text forKey:@"message"];
         [tempNote setObject:@"once" forKey:@"item_type"];
+        [tempNote setObject:[self.bucket objectForKey:@"id"] forKey:@"bucket_id"];
         
         if ([self.bucket objectForKey:@"id"] && [[self.bucket objectForKey:@"id"] integerValue] && [[self.bucket objectForKey:@"id"] integerValue] > 0) {
-            [tempNote setObject:[self.bucket objectForKey:@"id"] forKey:@"bucket_id"];
             [tempNote setObject:@"assigned" forKey:@"status"];
         }
         
@@ -303,8 +324,7 @@
         [self clearTextField:NO];
         [self saveBucket];
         
-        [[LXServer shared] requestPath:@"/items.json" withMethod:@"POST" withParamaters:@{@"item":tempNote}
-                               success:^(id responseObject) {
+        [[LXSession thisSession] attemptNoteSave:tempNote success:^(id responseObject) {
                                    BOOL found = NO;
                                    for (int i = 0; !found && i < self.allItems.count; ++i) {
                                        if ([[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] respondsToSelector:@selector(isEqualToString:)] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] isEqualToString:[responseObject objectForKey:@"device_timestamp"]]) {
@@ -312,7 +332,6 @@
                                            found = YES;
                                        }
                                    }
-                                   [[LXSession thisSession] removeUnsavedNote:responseObject fromBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
                                    [self reloadScreenToIndex:[self currentArray].count animated:YES];
                                    [self saveBucket];
                                }
@@ -365,10 +384,11 @@
                                                       NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
                                if (indexes.count == 0) {
                                    shouldContinueRequesting = NO;
-                                   if ([[responseObject objectForKey:@"items"] count] > 0) {
-                                       self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
-                                   }
-                                   //SAVE ITEMS TO DISK HERE
+                               }
+                               if ([[responseObject objectForKey:@"page"] integerValue] == 0) {
+                                   NSMutableArray* pending = [[LXSession thisSession] unsavedNotesForBucket:[NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]]];
+                                   self.allItems = [[NSMutableArray alloc] initWithArray:(pending ? pending : @[])];
+                                   [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[responseObject objectForKey:@"items"] count])]];
                                } else {
                                    [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                }
@@ -400,15 +420,17 @@
 {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
                            success:^(id responseObject) {
+                               NSLog(@"response: %@", responseObject);
                                if ([responseObject objectForKey:@"items"]) {
                                    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
                                                           NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
                                    if (indexes.count == 0) {
                                        shouldContinueRequesting = NO;
-                                       if ([[responseObject objectForKey:@"items"] count] > 0) {
-                                           self.allItems = [[NSMutableArray alloc] initWithArray:[responseObject objectForKey:@"items"]];
-                                       }
-                                       //SAVE HERE
+                                   }
+                                   if ([[responseObject objectForKey:@"page"] integerValue] == 0) {
+                                       NSMutableArray* pending = [[LXSession thisSession] unsavedNotesForBucket:[NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]]];
+                                       self.allItems = [[NSMutableArray alloc] initWithArray:(pending ? pending : @[])];
+                                       [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[responseObject objectForKey:@"items"] count])]];
                                    } else {
                                        [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                    }
@@ -467,7 +489,7 @@
 
 - (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n
 {
-    int index = [self.allItems indexOfObject:original];
+    int index = (int)[self.allItems indexOfObject:original];
     if (index && index < self.allItems.count) {
         [self.allItems replaceObjectAtIndex:index withObject:n];
     }
@@ -476,7 +498,7 @@
 
 - (void) scrollToNote:(NSMutableDictionary*)original
 {
-    int index = [[self currentArray] indexOfObject:original];
+    int index = (int)[[self currentArray] indexOfObject:original];
     if (index && index < [self currentArray].count) {
         [self setTableScrollToIndex:index animated:NO];
     }
@@ -490,6 +512,7 @@
 {
     if (!self.allItems || [self.allItems count] == 0) {
         if ([[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]) {
+            self.allItems = [[NSMutableArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]];
             return [[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]];
         }
     }
@@ -658,6 +681,21 @@
     
     self.bottomConstraint = [NSLayoutConstraint constraintWithItem:self.composeView attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.bottomLayoutGuide attribute:NSLayoutAttributeTop multiplier:1 constant:0];
     [self.view addConstraint:self.bottomConstraint];
+}
+
+
+
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
+{
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = message;
+}
+
+- (void) hideHUD
+{
+    [hud hide:YES];
 }
 
 @end

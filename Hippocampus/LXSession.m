@@ -8,6 +8,8 @@
 
 #import "LXSession.h"
 
+#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+
 static LXSession* thisSession = nil;
 
 @implementation LXSession
@@ -72,14 +74,17 @@ static LXSession* thisSession = nil;
 - (NSMutableDictionary*) unsavedNotesDictionary
 {
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"unsavedNotes"]) {
-        [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"unsavedNotes"]];
+        return [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"unsavedNotes"]];
     }
     return [[NSMutableDictionary alloc] init];
 }
 
 - (NSMutableArray*) unsavedNotesForBucket:(NSString*)bucketID
 {
-    return [[self unsavedNotesDictionary] objectForKey:bucketID];
+    if ([[self unsavedNotesDictionary] objectForKey:bucketID]) {
+        return [[NSMutableArray alloc] initWithArray:[[self unsavedNotesDictionary] objectForKey:bucketID]];
+    }
+    return nil;
 }
 
 - (void) addUnsavedNote:(NSMutableDictionary*)note toBucket:(NSString*)bucketID
@@ -93,7 +98,6 @@ static LXSession* thisSession = nil;
     [temp setObject:tempArray forKey:bucketID];
     [[NSUserDefaults standardUserDefaults] setObject:temp forKey:@"unsavedNotes"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    NSLog(@"unsaved note: %@", temp);
 }
 
 - (void) removeUnsavedNote:(NSMutableDictionary*)note fromBucket:(NSString*)bucketID
@@ -114,7 +118,84 @@ static LXSession* thisSession = nil;
     }
     [[NSUserDefaults standardUserDefaults] setObject:temp forKey:@"unsavedNotes"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    NSLog(@"unsaved note: %@", temp);
+}
+
+- (void) updateNoteToSaved:(NSDictionary*)newNote inBucket:(NSString*)bucketID
+{
+    NSMutableArray* tempArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:bucketID]];
+    if (tempArray) {
+        for (NSDictionary* dict in tempArray) {
+            if ([[dict objectForKey:@"device_timestamp"] isEqualToString:[newNote objectForKey:@"device_timestamp"]]) {
+                [tempArray replaceObjectAtIndex:[tempArray indexOfObject:dict] withObject:[self cleanDictionary:newNote]];
+            }
+        }
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:tempArray forKey:bucketID];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void) attemptNoteSave:(NSDictionary*)unsavedNote success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"/items.json" withMethod:@"POST" withParamaters:@{@"item":unsavedNote}
+                           success:^(id responseObject) {
+                               [self removeUnsavedNote:responseObject fromBucket:[NSString stringWithFormat:@"%@",[unsavedNote objectForKey:@"bucket_id"]]];
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError* error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (void) attemptUnsavedNoteSaving
+{
+    NSMutableArray* notes = [self unsavedNotes];
+    for (NSDictionary* note in notes) {
+        [self attemptNoteSave:note
+                      success:^(id responseObject) {
+                          [self removeUnsavedNote:responseObject fromBucket:[note objectForKey:@"bucket_id"]];
+                          [self updateNoteToSaved:[NSDictionary dictionaryWithDictionary:responseObject] inBucket:[NSString stringWithFormat:@"%@",[note objectForKey:@"bucket_id"]]];
+                      }
+                      failure:^(NSError* error) {
+                          NSLog(@"couldn't save note!");
+                      }
+         ];
+    }
+}
+
+- (NSMutableDictionary*) cleanDictionary:(NSDictionary*)dictIn
+{
+    NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:dictIn];
+    NSArray* keys = [tDict allKeys];
+    for (NSString* k in keys) {
+        if (!NULL_TO_NIL([tDict objectForKey:k])) {
+            [tDict removeObjectForKey:k];
+        }
+        if ([[tDict objectForKey:k] isKindOfClass:[NSString class]]) {
+            if (!NULL_TO_NIL([tDict objectForKey:k])) {
+                [tDict removeObjectForKey:k];
+            }
+        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]] && [[tDict objectForKey:k] count] == 0) {
+            [tDict removeObjectForKey:k];
+        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]] || [[tDict objectForKey:k] isKindOfClass:[NSMutableArray class]]) {
+            NSMutableArray* temporaryInnerArray = [[NSMutableArray alloc] init];
+            for (id object in [tDict objectForKey:k]) {
+                if ([object isKindOfClass:[NSString class]]) {
+                    [temporaryInnerArray addObject:object];
+                } else {
+                    [temporaryInnerArray addObject:[self cleanDictionary:object]];
+                }
+            }
+            [tDict setObject:temporaryInnerArray forKey:k];
+        } else if ([[tDict objectForKey:k] isKindOfClass:[NSDictionary class]] || [[tDict objectForKey:k] isKindOfClass:[NSMutableDictionary class]]) {
+            return [self cleanDictionary:[tDict objectForKey:k]];
+        }
+    }
+    return tDict;
 }
 
 @end

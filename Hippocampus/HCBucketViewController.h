@@ -18,6 +18,8 @@
 {
     BOOL requestMade;
     BOOL shouldContinueRequesting;
+    
+    MBProgressHUD* hud;
 }
 
 @property (strong, nonatomic) NSMutableDictionary* bucket;

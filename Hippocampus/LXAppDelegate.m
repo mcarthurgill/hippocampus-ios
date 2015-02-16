@@ -74,6 +74,9 @@
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     //[[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [[LXSession thisSession] attemptUnsavedNoteSaving];
+    });
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

@@ -28,4 +28,8 @@
 - (void) addUnsavedNote:(NSMutableDictionary*)note toBucket:(NSString*)bucketID;
 - (void) removeUnsavedNote:(NSMutableDictionary*)note fromBucket:(NSString*)bucketID;
 
+- (void) attemptNoteSave:(NSDictionary*)unsavedNote success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+
+- (void) attemptUnsavedNoteSaving;
+
 @end
