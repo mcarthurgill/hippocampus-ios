@@ -93,6 +93,28 @@ static LXSession* thisSession = nil;
     [temp setObject:tempArray forKey:bucketID];
     [[NSUserDefaults standardUserDefaults] setObject:temp forKey:@"unsavedNotes"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    NSLog(@"unsaved note: %@", temp);
+}
+
+- (void) removeUnsavedNote:(NSMutableDictionary*)note fromBucket:(NSString*)bucketID
+{
+    NSMutableDictionary* temp = [self unsavedNotesDictionary];
+    NSMutableArray* tempArray = [self unsavedNotesForBucket:bucketID];
+    if (tempArray) {
+        for (NSDictionary* dict in tempArray) {
+            if ([[dict objectForKey:@"device_timestamp"] isEqualToString:[note objectForKey:@"device_timestamp"]]) {
+                [tempArray removeObject:dict];
+            }
+        }
+    }
+    if (tempArray && [tempArray count] > 0) {
+        [temp setObject:tempArray forKey:bucketID];
+    } else {
+        [temp removeObjectForKey:bucketID];
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:temp forKey:@"unsavedNotes"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSLog(@"unsaved note: %@", temp);
 }
 
 @end

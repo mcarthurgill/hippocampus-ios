@@ -174,7 +174,12 @@
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
     
-    if ([[item objectForKey:@"status"] isEqualToString:@"outstanding"]) {
+    if ([[item objectForKey:@"status"] isEqualToString:@"outstanding"] || ![item objectForKey:@"id"]) {
+        if (![item objectForKey:@"id"]) {
+            [blueDot setBackgroundColor:[UIColor orangeColor]];
+        } else {
+            [blueDot setBackgroundColor:[UIColor blueColor]];
+        }
         [blueDot.layer setCornerRadius:4];
         [blueDot setClipsToBounds:YES];
         [blueDot setHidden:NO];
@@ -183,7 +188,11 @@
     }
 
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
-    [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
+    if (![item objectForKey:@"id"]) {
+        [timestamp setText:@"syncing with server"];
+    } else {
+        [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
+    }
     
     int i = 0;
     while ([cell.contentView viewWithTag:(200+i)]) {
@@ -285,7 +294,32 @@
             [tempNote setObject:@"assigned" forKey:@"status"];
         }
         
+        [tempNote setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
+        [tempNote setObject:[[[LXSession thisSession] user] userID] forKey:@"user_id"];
         
+        [self addItemToTable:[NSDictionary dictionaryWithDictionary:tempNote]];
+        [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
+        [self reloadScreenToIndex:[self currentArray].count animated:YES];
+        [self clearTextField:NO];
+        [self saveBucket];
+        
+        [[LXServer shared] requestPath:@"/items.json" withMethod:@"POST" withParamaters:@{@"item":tempNote}
+                               success:^(id responseObject) {
+                                   BOOL found = NO;
+                                   for (int i = 0; !found && i < self.allItems.count; ++i) {
+                                       if ([[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] respondsToSelector:@selector(isEqualToString:)] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] isEqualToString:[responseObject objectForKey:@"device_timestamp"]]) {
+                                           [self.allItems replaceObjectAtIndex:i withObject:responseObject];
+                                           found = YES;
+                                       }
+                                   }
+                                   [[LXSession thisSession] removeUnsavedNote:responseObject fromBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
+                                   [self reloadScreenToIndex:[self currentArray].count animated:YES];
+                                   [self saveBucket];
+                               }
+                               failure:^(NSError* error) {
+                                   NSLog(@"error: %@", [error localizedDescription]);
+                               }
+         ];
 
 //        [self addItemToTable:responseBlock];
 //        [self reloadScreenToIndex:[self currentArray].count animated:YES];
@@ -343,7 +377,7 @@
                                if ([[responseObject objectForKey:@"items"] count] > 0) {
                                    [self reloadScreenToIndex:indexes.count animated:NO];
                                }
-                               [self clearTextField];
+                               [self clearTextField:NO];
                                if ([[responseObject objectForKey:@"items"] count] > 0) {
                                    [self incrementPage];
                                }
@@ -471,7 +505,7 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         if ([self.allItems count] > 0) {
-            NSLog(@"array: %@", self.allItems);
+            //NSLog(@"array: %@", self.allItems);
             [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave] forKey:[self currentBucketID]];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
@@ -504,8 +538,18 @@
             if (!NULL_TO_NIL([tDict objectForKey:k])) {
                 [tDict removeObjectForKey:k];
             }
-        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]]) {
+        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]] && [[tDict objectForKey:k] count] == 0) {
             [tDict removeObjectForKey:k];
+        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]] || [[tDict objectForKey:k] isKindOfClass:[NSMutableArray class]]) {
+            NSMutableArray* temporaryInnerArray = [[NSMutableArray alloc] init];
+            for (id object in [tDict objectForKey:k]) {
+                if ([object isKindOfClass:[NSString class]]) {
+                    [temporaryInnerArray addObject:object];
+                } else {
+                    [temporaryInnerArray addObject:[self cleanDictionary:object]];
+                }
+            }
+            [tDict setObject:temporaryInnerArray forKey:k];
         } else if ([[tDict objectForKey:k] isKindOfClass:[NSDictionary class]] || [[tDict objectForKey:k] isKindOfClass:[NSMutableDictionary class]]) {
             return [self cleanDictionary:[tDict objectForKey:k]];
         }
@@ -539,10 +583,16 @@
     [self toggleSaveButton];
 }
 
-- (void) clearTextField {
-    self.composeTextView.text = @"Add Note";
-    self.composeTextView.textColor = [UIColor lightGrayColor];
-    [self.composeTextView resignFirstResponder];
+- (void) clearTextField:(BOOL)dismissKeyboard
+{
+    if (!dismissKeyboard && [self.composeTextView isFirstResponder]) {
+        self.composeTextView.text = @"";
+        self.composeTextView.textColor = [UIColor blackColor];
+    } else {
+        self.composeTextView.text = @"Add Note";
+        self.composeTextView.textColor = [UIColor lightGrayColor];
+        [self.composeTextView resignFirstResponder];
+    }
 }
 
 
