@@ -337,7 +337,9 @@
                                }
                                requestMade = NO;
                                [self setScrollToBottom:NO];
-                               [self reloadScreenToIndex:indexes.count animated:NO];
+                               if ([[responseObject objectForKey:@"items"] count] > 0) {
+                                   [self reloadScreenToIndex:indexes.count animated:NO];
+                               }
                                [self clearTextField];
                                if ([[responseObject objectForKey:@"items"] count] > 0) {
                                    [self incrementPage];
@@ -373,11 +375,15 @@
                                    } else {
                                        [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                    }
-                                   [self reloadScreenToIndex:indexes.count animated:NO];
+                                   if ([[responseObject objectForKey:@"items"] count] > 0) {
+                                       [self reloadScreenToIndex:indexes.count animated:NO];
+                                   }
                                }
                                if ([responseObject objectForKey:@"outstanding_items"] && self.page < 1) {
                                    [self.allItems addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
-                                   [self reloadScreenToIndex:[self currentArray].count animated:NO];
+                                   if ([[responseObject objectForKey:@"outstanding_items"] count] > 0) {
+                                       [self reloadScreenToIndex:[self currentArray].count animated:NO];
+                                   }
                                }
                                if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
                                    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
@@ -478,16 +484,30 @@
 {
     NSMutableArray* temp = [[NSMutableArray alloc] init];
     for (NSDictionary* t in self.allItems) {
-        NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:t];
-        NSArray* keys = [tDict allKeys];
-        for (NSString* k in keys) {
+        [temp addObject:[self cleanDictionary:t]];
+    }
+    return temp;
+}
+
+- (NSMutableDictionary*) cleanDictionary:(NSDictionary*)dictIn
+{
+    NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:dictIn];
+    NSArray* keys = [tDict allKeys];
+    for (NSString* k in keys) {
+        if (!NULL_TO_NIL([tDict objectForKey:k])) {
+            [tDict removeObjectForKey:k];
+        }
+        if ([[tDict objectForKey:k] isKindOfClass:[NSString class]]) {
             if (!NULL_TO_NIL([tDict objectForKey:k])) {
                 [tDict removeObjectForKey:k];
             }
+        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]]) {
+            [tDict removeObjectForKey:k];
+        } else if ([[tDict objectForKey:k] isKindOfClass:[NSDictionary class]] || [[tDict objectForKey:k] isKindOfClass:[NSMutableDictionary class]]) {
+            return [self cleanDictionary:[tDict objectForKey:k]];
         }
-        [temp addObject:tDict];
     }
-    return temp;
+    return tDict;
 }
 
 
