@@ -46,6 +46,8 @@
     [self observeKeyboard];
     
     [self refreshChange];
+    
+    [self setTableScrollToIndex:([self currentArray].count) animated:NO];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -83,22 +85,23 @@
 
 #pragma mark - Table view data source
 
-- (void) reloadScreenToIndex:(NSUInteger)index
+- (void) reloadScreenToIndex:(NSUInteger)index animated:(BOOL)animated
 {
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
-    [self setTableScrollToIndex:index];
+    [self setTableScrollToIndex:index animated:animated];
     [self toggleSaveButton];
 }
 
-- (void) setTableScrollToIndex:(NSInteger)index {
+- (void) setTableScrollToIndex:(NSInteger)index animated:(BOOL)animated
+{
 
-    if (self.allItems.count > 0) {
+    if ([self currentArray].count > 0) {
         NSIndexPath *ipath = [NSIndexPath indexPathForRow:index-1 inSection: 0];
         if (self.scrollToBottom) {
-            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: NO];
+            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: animated];
         } else {
-            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: NO];
+            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: animated];
         }
     }
 }
@@ -127,7 +130,7 @@
 {
     // Return the number of rows in the section.
     if ([[self.sections objectAtIndex:section] isEqualToString:@"all"]) {
-        return self.allItems.count;
+        return [self currentArray].count;
     }
     return 0;
 }
@@ -137,7 +140,7 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         [self shouldRequestMoreItems];
-        return [self itemCellForTableView:self.tableView withItem:[self.allItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
+        return [self itemCellForTableView:self.tableView withItem:[[self currentArray] objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -220,7 +223,7 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-        NSDictionary* item = [self.allItems objectAtIndex:indexPath.row];
+        NSDictionary* item = [[self currentArray] objectAtIndex:indexPath.row];
         int additional = 0;
         if ([item objectForKey:@"media_urls"]) {
             additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item objectForKey:@"media_urls"] count];
@@ -236,8 +239,8 @@
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         //HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
         HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
-        [itvc setItem:[self.allItems objectAtIndex:indexPath.row]];
-        [itvc setItems:self.allItems];
+        [itvc setItem:[[self currentArray] objectAtIndex:indexPath.row]];
+        [itvc setItems:[self currentArray]];
         [itvc setBucket:self.bucket];
         [itvc setDelegate:self];
         [self setScrollToBottom:NO];
@@ -250,10 +253,10 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-            NSDictionary* object = [[self allItems] objectAtIndex:indexPath.row];
+            NSDictionary* object = [[self currentArray] objectAtIndex:indexPath.row];
             [self deleteItem:object];
             [[self allItems] removeObject:object];
-            [self reloadScreenToIndex:indexPath.row];
+            [self reloadScreenToIndex:indexPath.row animated:YES];
         }
     }
 }
@@ -275,7 +278,7 @@
         [item saveWithSuccess:^(id responseBlock) {
             NSLog(@"SUCCESS! %@", responseBlock);
             [self addItemToTable:responseBlock];
-            [self reloadScreenToIndex:self.allItems.count];
+            [self reloadScreenToIndex:[self currentArray].count animated:YES];
             [self clearTextField];
         }
                       failure:^(NSError *error) {
@@ -303,7 +306,7 @@
     if (requestMade)
         return;
     requestMade = YES;
-    if (NULL_TO_NIL([self.bucket objectForKey:@"id"])) {
+    if (NULL_TO_NIL([self.bucket objectForKey:@"id"]) && [[self.bucket objectForKey:@"id"] integerValue] > 0) {
         [self sendRequestForBucketShow];
     } else {
         [self sendRequestForAllItems];
@@ -332,16 +335,17 @@
                                }
                                requestMade = NO;
                                [self setScrollToBottom:NO];
-                               [self reloadScreenToIndex:indexes.count];
+                               [self reloadScreenToIndex:indexes.count animated:NO];
                                [self clearTextField];
                                if ([[responseObject objectForKey:@"items"] count] > 0) {
                                    [self incrementPage];
                                }
+                               [self saveBucket];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error: %@", [error localizedDescription]);
                                requestMade = NO;
-                               [self reloadScreenToIndex:self.allItems.count];
+                               //[self reloadScreenToIndex:[self currentArray].count animated:NO];
                            }
      ];
 }
@@ -367,11 +371,11 @@
                                    } else {
                                        [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
                                    }
-                                   [self reloadScreenToIndex:indexes.count];
+                                   [self reloadScreenToIndex:indexes.count animated:NO];
                                }
                                if ([responseObject objectForKey:@"outstanding_items"] && self.page < 1) {
                                    [self.allItems addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
-                                   [self reloadScreenToIndex:self.allItems.count];
+                                   [self reloadScreenToIndex:[self currentArray].count animated:NO];
                                }
                                if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
                                    NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
@@ -381,17 +385,18 @@
                                    }
                                    [self.allItems insertObjects:[responseObject objectForKey:@"bottom_items"] atIndexes:indexes];
                                    [self setScrollToBottom:NO];
-                                   [self reloadScreenToIndex:indexes.count];
+                                   [self reloadScreenToIndex:indexes.count animated:NO];
                                }
                                requestMade = NO;
                                if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
                                    [self incrementPage];
                                }
+                               [self saveBucket];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error: %@", [error localizedDescription]);
                                requestMade = NO;
-                               [self reloadScreenToIndex:self.allItems.count];
+                               //[self reloadScreenToIndex:[self currentArray].count animated:NO];
                            }
      ];
     
@@ -426,9 +431,9 @@
 
 - (void) scrollToNote:(NSMutableDictionary*)original
 {
-    int index = [self.allItems indexOfObject:original];
-    if (index && index < self.allItems.count) {
-        [self setTableScrollToIndex:index];
+    int index = [[self currentArray] indexOfObject:original];
+    if (index && index < [self currentArray].count) {
+        [self setTableScrollToIndex:index animated:NO];
     }
 }
 
@@ -436,12 +441,50 @@
 
 # pragma mark helpers
 
+- (NSMutableArray*) currentArray
+{
+    if (!self.allItems || [self.allItems count] == 0) {
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]) {
+            return [[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]];
+        }
+    }
+    return self.allItems;
+}
+
 - (BOOL) canSaveNote
 {
     return self.composeTextView.text && [self.composeTextView.text length] > 0 && [self.composeTextView.textColor isEqual:[UIColor blackColor]];
 }
 
+- (void) saveBucket
+{
+    if ([self.allItems count] > 0) {
+        NSLog(@"array: %@", self.allItems);
+        [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave] forKey:[self currentBucketID]];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
 
+- (NSString*) currentBucketID
+{
+    return [NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]];
+}
+
+- (NSMutableArray*) itemsToSave
+{
+    NSMutableArray* temp = [[NSMutableArray alloc] init];
+    for (NSDictionary* t in self.allItems) {
+        NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:t];
+        NSArray* keys = [tDict allKeys];
+        for (NSString* k in keys) {
+            if (!NULL_TO_NIL([tDict objectForKey:k])) {
+                [tDict removeObjectForKey:k];
+            }
+        }
+        [temp addObject:tDict];
+    }
+    return temp;
+}
 
 
 # pragma mark Textview
@@ -491,7 +534,7 @@
 
 - (void) keyboardWillShow:(NSNotification *)sender {
     self.scrollToBottom = YES;
-    [self setTableScrollToIndex:self.allItems.count];
+    [self setTableScrollToIndex:[self currentArray].count animated:YES];
     
     NSDictionary *info = [sender userInfo];
     NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
