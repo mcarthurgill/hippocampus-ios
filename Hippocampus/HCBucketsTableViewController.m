@@ -334,23 +334,30 @@
 - (NSMutableDictionary*) currentDictionary
 {
     if ([self assignMode]) {
-        if ([self.bucketsDictionary objectForKey:@"Recent"] && [[self.bucketsDictionary objectForKey:@"Recent"] count] > 0) {
+        if ([[self drawFromDictionary] objectForKey:@"Recent"] && [[[self drawFromDictionary] objectForKey:@"Recent"] count] > 0) {
             //check to see if the first thread is "All Notes", and get rid of it
             if (!NULL_TO_NIL([[[self.bucketsDictionary objectForKey:@"Recent"] firstObject] objectForKey:@"id"])) {
-                NSMutableArray* new = [[NSMutableArray alloc] initWithArray:[self.bucketsDictionary objectForKey:@"Recent"]];
+                NSMutableArray* new = [[NSMutableArray alloc] initWithArray:[[self drawFromDictionary] objectForKey:@"Recent"]];
                 [new removeObjectAtIndex:0];
-                [self.bucketsDictionary setObject:new forKey:@"Recent"];
+                [[self drawFromDictionary] setObject:new forKey:@"Recent"];
             }
         }
     }
     NSString* key = self.searchBar.text ? [self.searchBar.text lowercaseString] : @"";
     if (!key || [key length] == 0) {
-        return self.bucketsDictionary;
+        return [self drawFromDictionary];
     }
     if (![self.bucketsSearchDictionary objectForKey:key]) {
         [self.bucketsSearchDictionary setObject:[self searchedDictionaryWithTerm:key] forKey:key];
     }
     return [self.bucketsSearchDictionary objectForKey:key];
+}
+
+- (NSMutableDictionary*) drawFromDictionary
+{
+    if (!self.bucketsDictionary || [[self.bucketsDictionary allKeys] count] == 0)
+        return [[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"];
+    return self.bucketsDictionary;
 }
 
 - (NSMutableDictionary*) searchedDictionaryWithTerm:(NSString*)term
@@ -414,6 +421,7 @@
                                self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
                                requestMade = NO;
                                [self reloadScreen];
+                               [self saveBucket];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error: %@", [error localizedDescription]);
@@ -524,6 +532,43 @@
         [itemsArray addObject:dict];
     }
     return itemsArray;
+}
+
+
+# pragma mark saving mechanism
+
+- (void) saveBucket
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (self.bucketsDictionary) {
+            [[NSUserDefaults standardUserDefaults] setObject:[self bucketToSave] forKey:@"buckets"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    });
+}
+
+- (NSMutableDictionary*) bucketToSave
+{
+    NSMutableDictionary* temp = [[NSMutableDictionary alloc] init];
+    
+    NSArray* keys = [self.bucketsDictionary allKeys];
+    for (NSString* k in keys) {
+        NSMutableArray* cur = [self.bucketsDictionary objectForKey:k];
+        NSMutableArray* new = [[NSMutableArray alloc] init];
+        for (NSDictionary* t in cur) {
+            NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:t];
+            NSArray* keys = [tDict allKeys];
+            for (NSString* k in keys) {
+                if (!NULL_TO_NIL([tDict objectForKey:k])) {
+                    [tDict removeObjectForKey:k];
+                }
+            }
+            [new addObject:tDict];
+        }
+        [temp setObject:new forKey:k];
+    }
+    
+    return temp;
 }
 
 

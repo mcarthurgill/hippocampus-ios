@@ -458,11 +458,13 @@
 
 - (void) saveBucket
 {
-    if ([self.allItems count] > 0) {
-        NSLog(@"array: %@", self.allItems);
-        [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave] forKey:[self currentBucketID]];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if ([self.allItems count] > 0) {
+            NSLog(@"array: %@", self.allItems);
+            [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave] forKey:[self currentBucketID]];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    });
 }
 
 - (NSString*) currentBucketID
