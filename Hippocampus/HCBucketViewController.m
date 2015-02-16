@@ -48,6 +48,9 @@
     [self refreshChange];
     
     [self setTableScrollToIndex:([self currentArray].count) animated:NO];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self setTableScrollToIndex:([self currentArray].count) animated:NO];
+    });
 }
 
 - (void) viewWillAppear:(BOOL)animated

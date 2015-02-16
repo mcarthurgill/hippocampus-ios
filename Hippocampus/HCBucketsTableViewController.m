@@ -428,7 +428,7 @@
     requestMade = YES;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
                            success:^(id responseObject) {
-                               NSLog(@"response: %@", responseObject);
+                               //NSLog(@"response: %@", responseObject);
                                self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
                                requestMade = NO;
                                [self reloadScreen];
