@@ -56,5 +56,43 @@ static LXSession* thisSession = nil;
 }
 
 
+# pragma mark unsaved notes dictionary
+
+
+- (NSMutableArray*) unsavedNotes
+{
+    NSMutableArray* temp = [[NSMutableArray alloc] init];
+    NSArray* keys = [[self unsavedNotesDictionary] allKeys];
+    for (NSString* k in keys) {
+        [temp addObjectsFromArray:[[self unsavedNotesDictionary] objectForKey:k]];
+    }
+    return temp;
+}
+
+- (NSMutableDictionary*) unsavedNotesDictionary
+{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"unsavedNotes"]) {
+        [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"unsavedNotes"]];
+    }
+    return [[NSMutableDictionary alloc] init];
+}
+
+- (NSMutableArray*) unsavedNotesForBucket:(NSString*)bucketID
+{
+    return [[self unsavedNotesDictionary] objectForKey:bucketID];
+}
+
+- (void) addUnsavedNote:(NSMutableDictionary*)note toBucket:(NSString*)bucketID
+{
+    NSMutableDictionary* temp = [self unsavedNotesDictionary];
+    NSMutableArray* tempArray = [self unsavedNotesForBucket:bucketID];
+    if (!tempArray) {
+        tempArray = [[NSMutableArray alloc] init];
+    }
+    [tempArray addObject:note];
+    [temp setObject:tempArray forKey:bucketID];
+    [[NSUserDefaults standardUserDefaults] setObject:temp forKey:@"unsavedNotes"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 @end

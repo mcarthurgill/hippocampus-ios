@@ -95,9 +95,11 @@
 
 - (void) setTableScrollToIndex:(NSInteger)index animated:(BOOL)animated
 {
-
-    if ([self currentArray].count > 0) {
-        NSIndexPath *ipath = [NSIndexPath indexPathForRow:index-1 inSection: 0];
+    if (index >= [[self currentArray] count]) {
+        --index;
+    }
+    if ([self currentArray].count > 0 && index < [self currentArray].count) {
+        NSIndexPath *ipath = [NSIndexPath indexPathForRow:index inSection: 0];
         if (self.scrollToBottom) {
             [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: animated];
         } else {
@@ -129,8 +131,11 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    if ([[self.sections objectAtIndex:section] isEqualToString:@"all"]) {
-        return [self currentArray].count;
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"all"])
+    {
+        if ([[self currentArray] respondsToSelector:@selector(count)]) {
+            return [[self currentArray] count];
+        }
     }
     return 0;
 }
@@ -267,24 +272,21 @@
 - (IBAction)addAction:(id)sender
 {
     if (self.composeTextView.text.length > 0) {
-        HCItem* item = [[HCItem alloc] create];
-        [item setMessage:self.composeTextView.text];
-        [item setItemType:@"once"];
-        if (NULL_TO_NIL([self.bucket objectForKey:@"id"])) {
-            [item setBucketID:[[self.bucket objectForKey:@"id"] stringValue]];
-            [item setStatus:@"assigned"];
+        NSMutableDictionary* tempNote = [[NSMutableDictionary alloc] init];
+        
+        [tempNote setObject:self.composeTextView.text forKey:@"message"];
+        [tempNote setObject:@"once" forKey:@"item_type"];
+        
+        if ([self.bucket objectForKey:@"id"] && [[self.bucket objectForKey:@"id"] integerValue] && [[self.bucket objectForKey:@"id"] integerValue] > 0) {
+            [tempNote setObject:[self.bucket objectForKey:@"id"] forKey:@"bucket_id"];
+            [tempNote setObject:@"assigned" forKey:@"status"];
         }
+        
+        
 
-        [item saveWithSuccess:^(id responseBlock) {
-            NSLog(@"SUCCESS! %@", responseBlock);
-            [self addItemToTable:responseBlock];
-            [self reloadScreenToIndex:[self currentArray].count animated:YES];
-            [self clearTextField];
-        }
-                      failure:^(NSError *error) {
-                          NSLog(@"Error! %@", [error localizedDescription]);
-                      }
-         ];
+//        [self addItemToTable:responseBlock];
+//        [self reloadScreenToIndex:[self currentArray].count animated:YES];
+//        [self clearTextField];
     }
 }
 

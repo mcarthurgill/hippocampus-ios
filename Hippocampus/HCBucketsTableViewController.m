@@ -32,6 +32,7 @@
 @synthesize bucketsDictionary;
 @synthesize bucketsSearchDictionary;
 @synthesize serverSearchDictionary;
+@synthesize cachedDiskDictionary;
 
 @synthesize composeBucketController;
 
@@ -79,6 +80,12 @@
     //[self refreshChange];
 }
 
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.searchBar resignFirstResponder];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -107,7 +114,7 @@
         [self.sections addObject:@"new"];
     }
     
-    if (requestMade && !self.refreshControl.isRefreshing) {
+    if (requestMade && !self.refreshControl.isRefreshing && (![self currentDictionary] || [[[self currentDictionary] allKeys] count] == 0)) {
         [self.sections addObject:@"requesting"];
     }
     
@@ -355,8 +362,12 @@
 
 - (NSMutableDictionary*) drawFromDictionary
 {
-    if (!self.bucketsDictionary || [[self.bucketsDictionary allKeys] count] == 0)
-        return [[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"];
+    if (!self.bucketsDictionary || [[self.bucketsDictionary allKeys] count] == 0) {
+        if (!self.cachedDiskDictionary) {
+            self.cachedDiskDictionary = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"]];
+        }
+        return self.cachedDiskDictionary;
+    }
     return self.bucketsDictionary;
 }
 

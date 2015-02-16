@@ -21,4 +21,10 @@
 
 - (void) setVariables;
 
+- (NSMutableArray*) unsavedNotes;
+- (NSMutableDictionary*) unsavedNotesDictionary;
+- (NSMutableArray*) unsavedNotesForBucket:(NSString*)bucketID;
+
+- (void) addUnsavedNote:(NSMutableDictionary*)note toBucket:(NSString*)bucketID;
+
 @end
