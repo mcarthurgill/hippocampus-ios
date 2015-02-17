@@ -61,11 +61,6 @@
     
     [self updateItemInfo];
     
-    //[self.tableView setContentInset:UIEdgeInsetsMake(200.0f, 0, 0, 0)];
-    //[self.tableView setContentOffset:CGPointMake(0, 200.0f)];
-    
-    NSLog(@"content insets: %f, %f, %f, %f", self.tableView.contentInset.top, self.tableView.contentInset.bottom, self.tableView.contentInset.left, self.tableView.contentInset.right);
-    NSLog(@"content offsets: %f, %f", self.tableView.contentOffset.x, self.tableView.contentOffset.y);
 }
 
 - (void) viewWillAppear:(BOOL)animated

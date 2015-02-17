@@ -126,7 +126,7 @@ static LXSession* thisSession = nil;
     if (tempArray) {
         for (NSDictionary* dict in tempArray) {
             if ([[dict objectForKey:@"device_timestamp"] isEqualToString:[newNote objectForKey:@"device_timestamp"]]) {
-                [tempArray replaceObjectAtIndex:[tempArray indexOfObject:dict] withObject:[self cleanDictionary:newNote]];
+                [tempArray replaceObjectAtIndex:[tempArray indexOfObject:dict] withObject:[newNote cleanDictionary]];
             }
         }
     }
@@ -165,37 +165,6 @@ static LXSession* thisSession = nil;
                       }
          ];
     }
-}
-
-- (NSMutableDictionary*) cleanDictionary:(NSDictionary*)dictIn
-{
-    NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:dictIn];
-    NSArray* keys = [tDict allKeys];
-    for (NSString* k in keys) {
-        if (!NULL_TO_NIL([tDict objectForKey:k])) {
-            [tDict removeObjectForKey:k];
-        }
-        if ([[tDict objectForKey:k] isKindOfClass:[NSString class]]) {
-            if (!NULL_TO_NIL([tDict objectForKey:k])) {
-                [tDict removeObjectForKey:k];
-            }
-        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]] && [[tDict objectForKey:k] count] == 0) {
-            [tDict removeObjectForKey:k];
-        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]] || [[tDict objectForKey:k] isKindOfClass:[NSMutableArray class]]) {
-            NSMutableArray* temporaryInnerArray = [[NSMutableArray alloc] init];
-            for (id object in [tDict objectForKey:k]) {
-                if ([object isKindOfClass:[NSString class]]) {
-                    [temporaryInnerArray addObject:object];
-                } else {
-                    [temporaryInnerArray addObject:[self cleanDictionary:object]];
-                }
-            }
-            [tDict setObject:temporaryInnerArray forKey:k];
-        } else if ([[tDict objectForKey:k] isKindOfClass:[NSDictionary class]] || [[tDict objectForKey:k] isKindOfClass:[NSMutableDictionary class]]) {
-            return [self cleanDictionary:[tDict objectForKey:k]];
-        }
-    }
-    return tDict;
 }
 
 @end

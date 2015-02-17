@@ -60,13 +60,17 @@
     [self refreshChange];
     
     [self cacheComposeBucketController];
+    
+    //reload data to make sure it's catching assign mode
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self reloadScreen];
+    });
 }
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
     if ([self assignMode]) {
-        //[self.navigationController.navigationBar.topItem setTitle:@"Add to Stack"];
         [self setTitle:@"Add to Thread"];
         [self.navigationItem setRightBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:nil];
@@ -210,13 +214,13 @@
     if (NULL_TO_NIL([bucket objectForKey:@"description_text"])) {
         [description setText:[bucket objectForKey:@"description_text"]];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
-        [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"created_at"]], ([self assignMode] ? @" - Tap to Add Note" : @"")]];
+        [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket createdAt]], ([self assignMode] ? @" - Tap to Add Note" : @"")]];
     } else {
-        [description setText:[NSString stringWithFormat:@"%@ Notes %@%@", [bucket objectForKey:@"items_count"], NULL_TO_NIL([bucket objectForKey:@"id"]) ? @"" : @"Outstanding", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket objectForKey:@"updated_at"]]])]];
+        [description setText:[NSString stringWithFormat:@"%@ Notes %@%@", [bucket itemsCount], ![bucket hasID] ? @"" : @"Outstanding", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket updatedAt]]])]];
     }
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
-    if (!NULL_TO_NIL([bucket objectForKey:@"id"]) && [[bucket objectForKey:@"items_count"] integerValue] > 0) {
+    if ([bucket isAllNotesBucket] && [bucket hasItems]) {
         [blueDot.layer setCornerRadius:4];
         [blueDot setClipsToBounds:YES];
         [blueDot setHidden:NO];
@@ -238,18 +242,17 @@
     float width = note.frame.size.width;
     [note removeFromSuperview];
     
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[[item objectForKey:@"message"] truncated:320] width:width font:font])];
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font])];
     [note setFont:font];
-    [note setText:[[item objectForKey:@"message"] truncated:320]];
+    [note setText:[item truncatedMessage]];
     [note setTag:1];
     [note setNumberOfLines:0];
     [note setLineBreakMode:NSLineBreakByWordWrapping];
     [cell.contentView addSubview:note];
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
-    [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at_server"]]]];
+    [timestamp setText:[NSString stringWithFormat:@"%@%@", ([item hasBucketsString] ? [NSString stringWithFormat:@"%@ - ", [item bucketsString]] : @""), [NSDate timeAgoInWordsFromDatetime:[item createdAt]]]];
     
-    //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
     return cell;
 }
 
@@ -265,48 +268,57 @@
     return rect.size.height;
 }
 
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"requesting"] || [[self.sections objectAtIndex:indexPath.section] isEqualToString:@"new"]) {
+        
         return 44.0f;
+        
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
+        
         NSDictionary* item = [[self searchArray] objectAtIndex:indexPath.row];
-        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f;
+        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f;
+        
     }
+    
     return 64.0f;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([self assignMode]) {
+        
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"new"]) {
-            NSLog(@"NEW STACK!");
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCNewBucketIITableViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"newBucketIITableViewController"];
             [btvc setDelegate:self.delegate];
             [self.navigationController pushViewController:btvc animated:YES];
-        } else if([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Recent"] && !NULL_TO_NIL([[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] objectForKey:@"id"])) {
+        
+        } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Recent"] && !([[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] hasID])) {
+        
         } else {
             [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
             [self.navigationController popViewControllerAnimated:YES];
         }
+    
     } else {
+        
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-            //HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
             HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
-            //NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:[[self searchArray] objectAtIndex:indexPath.row]];
-            //[dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
             [itvc setItem:[[self searchArray] objectAtIndex:indexPath.row]];
             [itvc setItems:[self searchArray]];
             [itvc setDelegate:self];
             [self.navigationController pushViewController:itvc animated:YES];
+        
         } else {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
             [btvc setBucket:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
             [self.navigationController pushViewController:btvc animated:YES];
         }
+    
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -341,14 +353,7 @@
 - (NSMutableDictionary*) currentDictionary
 {
     if ([self assignMode]) {
-        if ([[self drawFromDictionary] objectForKey:@"Recent"] && [[[self drawFromDictionary] objectForKey:@"Recent"] count] > 0) {
-            //check to see if the first thread is "All Notes", and get rid of it
-            if (!NULL_TO_NIL([[[self.bucketsDictionary objectForKey:@"Recent"] firstObject] objectForKey:@"id"])) {
-                NSMutableArray* new = [[NSMutableArray alloc] initWithArray:[[self drawFromDictionary] objectForKey:@"Recent"]];
-                [new removeObjectAtIndex:0];
-                [[self drawFromDictionary] setObject:new forKey:@"Recent"];
-            }
-        }
+        [self removeAllNotesOptionFromDictionaries];
     }
     NSString* key = self.searchBar.text ? [self.searchBar.text lowercaseString] : @"";
     if (!key || [key length] == 0) {
@@ -358,6 +363,20 @@
         [self.bucketsSearchDictionary setObject:[self searchedDictionaryWithTerm:key] forKey:key];
     }
     return [self.bucketsSearchDictionary objectForKey:key];
+}
+
+- (void) removeAllNotesOptionFromDictionaries
+{
+    if (self.bucketsDictionary && [self.bucketsDictionary objectForKey:@"Recent"] && [[self.bucketsDictionary objectForKey:@"Recent"] count] > 0 && [[[self.bucketsDictionary objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
+        NSMutableArray* new = [[NSMutableArray alloc] initWithArray:[self.bucketsDictionary objectForKey:@"Recent"]];
+        [new removeObjectAtIndex:0];
+        [self.bucketsDictionary setObject:new forKey:@"Recent"];
+    }
+    if (self.cachedDiskDictionary && [self.cachedDiskDictionary objectForKey:@"Recent"] && [[self.cachedDiskDictionary objectForKey:@"Recent"] count] > 0 && [[[self.cachedDiskDictionary objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
+        NSMutableArray* new = [[NSMutableArray alloc] initWithArray:[self.cachedDiskDictionary objectForKey:@"Recent"]];
+        [new removeObjectAtIndex:0];
+        [self.cachedDiskDictionary setObject:new forKey:@"Recent"];
+    }
 }
 
 - (NSMutableDictionary*) drawFromDictionary
@@ -432,7 +451,9 @@
                                self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
                                requestMade = NO;
                                [self reloadScreen];
-                               [self saveBucket];
+                               if (![self assignMode]) {
+                                   [self saveBucket];
+                               }
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error: %@", [error localizedDescription]);
@@ -529,8 +550,7 @@
                            }
      ];
 }
-//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(switchToBookDetailsModeIfShould) object:nil];
-//[self performSelector:@selector(switchToBookDetailsModeIfShould) withObject:nil afterDelay:DETAILS_VIEW_LINGER_TIME];
+
 
 - (NSMutableArray*) modifiedSearchArrayWithResponseObject:(id)responseObject
 {
