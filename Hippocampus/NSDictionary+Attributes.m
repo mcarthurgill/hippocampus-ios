@@ -49,6 +49,13 @@
     return [self objectForKey:@"updated_at"];
 }
 
+- (NSMutableArray*) buckets
+{
+    if ([self objectForKey:@"buckets"] && [[self objectForKey:@"buckets"] respondsToSelector:@selector(count)])
+        return [[NSMutableArray alloc] initWithArray:[self objectForKey:@"buckets"]];
+    return nil;
+}
+
 - (NSString*) bucketsString
 {
     return [self objectForKey:@"buckets_string"];
@@ -144,6 +151,21 @@
 - (BOOL) hasMediaURLs
 {
     return [self mediaURLs] && [[self mediaURLs] count] > 0;
+}
+
+- (BOOL) hasMessage
+{
+    return [self message] && [[self message] length] > 0;
+}
+
+- (BOOL) hasReminder
+{
+    return [self reminderDate] && NULL_TO_NIL([self objectForKey:@"reminder_date"]);
+}
+
+- (BOOL) hasBuckets
+{
+    return [self buckets] && [[self buckets] count] > 0;
 }
 
 - (BOOL) equalsObjectBasedOnTimestamp:(NSDictionary*)other

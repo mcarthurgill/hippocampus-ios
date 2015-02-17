@@ -22,6 +22,8 @@
 
 - (NSString*) updatedAt;
 
+- (NSMutableArray*) buckets;
+
 - (NSString*) bucketsString;
 
 - (NSString*) deviceTimestamp;
@@ -59,6 +61,12 @@
 - (BOOL) isOutstanding;
 
 - (BOOL) hasMediaURLs;
+
+- (BOOL) hasMessage;
+
+- (BOOL) hasReminder;
+
+- (BOOL) hasBuckets;
 
 - (BOOL) equalsObjectBasedOnTimestamp:(NSDictionary*)other;
 
