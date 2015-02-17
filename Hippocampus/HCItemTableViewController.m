@@ -8,8 +8,6 @@
 
 #import "HCItemTableViewController.h"
 #import "HCReminderViewController.h"
-#import "HCBucketTableViewController.h"
-#import "HCEditItemViewController.h"
 #import "HCBucketViewController.h"
 #import "HCBucketsTableViewController.h"
 #import "HCContainerViewController.h"
@@ -47,7 +45,7 @@
 {
     [super viewDidLoad];
     
-    [[self navItem] setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item objectForKey:@"created_at"]]];
+    [[self navItem] setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item createdAt]]];
     
     self.originalItem = self.item;
     
@@ -61,11 +59,6 @@
     
     [self updateItemInfo];
     
-    //[self.tableView setContentInset:UIEdgeInsetsMake(200.0f, 0, 0, 0)];
-    //[self.tableView setContentOffset:CGPointMake(0, 200.0f)];
-    
-    NSLog(@"content insets: %f, %f, %f, %f", self.tableView.contentInset.top, self.tableView.contentInset.bottom, self.tableView.contentInset.left, self.tableView.contentInset.right);
-    NSLog(@"content offsets: %f, %f", self.tableView.contentOffset.x, self.tableView.contentOffset.y);
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -113,20 +106,20 @@
 {
     self.sections = [[NSMutableArray alloc] init];
     
-    if ([self.item objectForKey:@"message"] && [[self.item objectForKey:@"message"] length] > 0) {
+    if ([self.item hasMessage]) {
         [self.sections addObject:@"message"];
     }
     
-    if ([self.item objectForKey:@"media_urls"] && [[self.item objectForKey:@"media_urls"] count] > 0) {
+    if ([self.item hasMediaURLs]) {
         [self.sections addObject:@"media"];
     }
     
     [self.sections addObject:@"reminder"];
-    if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
+    if ([self.item hasReminder]) {
         //[self.sections addObject:@"type"];
     }
     
-    if ([self.item objectForKey:@"buckets"] && [[self.item objectForKey:@"buckets"] count] > 0) {
+    if ([self.item hasBuckets]) {
         [self.sections addObject:@"bucket"];
     }
     
@@ -138,20 +131,20 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if ([[self.sections objectAtIndex:section] isEqualToString:@"type"]) {
-        if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
+        if ([self.item hasReminder]) {
             return 1;
         }
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"message"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
-        if ([self.item objectForKey:@"media_urls"] && [[self.item objectForKey:@"media_urls"] count] > 0) {
-            return [[self.item objectForKey:@"media_urls"] count];
+        if ([self.item hasMediaURLs]) {
+            return [[self.item mediaURLs] count];
         }
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"reminder"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucket"]) {
-        if ([self.item objectForKey:@"buckets"] && [[self.item objectForKey:@"buckets"] count] > 0) {
-            return [[self.item objectForKey:@"buckets"] count];
+        if ([self.item hasBuckets]) {
+            return [[self.item buckets] count];
         }
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return 2;
@@ -183,7 +176,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"labelCell" forIndexPath:indexPath];
     
     UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
-    [label setText:[self.item objectForKey:@"item_type"]];
+    [label setText:[self.item itemType]];
     
     return cell;
 }
@@ -196,7 +189,7 @@
     [aiv startAnimating];
     
     UIImageView* iv = (UIImageView*)[cell.contentView viewWithTag:1];
-    NSString* url = [[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row];
+    NSString* url = [[self.item mediaURLs] objectAtIndex:indexPath.row];
     
     if ([self.mediaDictionary objectForKey:url]) {
         UIImage* i = [self.mediaDictionary objectForKey:url];
@@ -221,14 +214,13 @@
     note.textContainerInset = UIEdgeInsetsZero;
 
     note.delegate = self;
-    [note setText:[self.item objectForKey:@"message"]];
+    [note setText:[self.item message]];
     [note setTag:1];
     [cell.contentView addSubview:note];
     
     [self setMessageTextView:note];
     
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
-    //[timestamp setText:[NSString stringWithFormat:@"%@%@", [NSDate timeAgoInWordsFromDatetime:[self.item objectForKey:@"created_at"]], (nil ? [NSString stringWithFormat:@" - %@", @""] : @"")]];
     [timestamp setHidden:YES];
     
     return cell;
@@ -241,17 +233,13 @@
     UILabel* main =  (UILabel*)[cell.contentView viewWithTag:1];
     UILabel* direction =  (UILabel*)[cell.contentView viewWithTag:3];
     
-    if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
-        [main setText:[NSDate timeAgoActualFromDatetime:[self.item objectForKey:@"reminder_date"]]];
+    if ([self.item hasReminder]) {
+        [main setText:[NSDate timeAgoActualFromDatetime:[self.item reminderDate]]];
         [main setTextColor:[UIColor blackColor]];
+        [direction setText:[NSString stringWithFormat:@"Set to remind you %@. Tap to Change", [self.item objectForKey:@"item_type"]]];
     } else {
         [main setText:@"No Reminder Set!"];
         [main setTextColor:direction.textColor];
-    }
-    
-    if (NULL_TO_NIL([self.item objectForKey:@"reminder_date"])) {
-        [direction setText:[NSString stringWithFormat:@"Set to remind you %@. Tap to Change", [self.item objectForKey:@"item_type"]]];
-    } else {
         [direction setText:@"Tap to Set"];
     }
     
@@ -262,10 +250,10 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"bucketSelectCell" forIndexPath:indexPath];
     
-    NSDictionary* bucket = [[self.item objectForKey:@"buckets"] objectAtIndex:indexPath.row];
+    NSDictionary* bucket = [[self.item buckets] objectAtIndex:indexPath.row];
     
     UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
-    [label setText:[bucket objectForKey:@"first_name"]];
+    [label setText:[bucket firstName]];
     
     return cell;
 }
@@ -281,7 +269,7 @@
     
     if (indexPath.row == 0) {
         [label setText:@"Add to Thread"];
-        if ([[self.item objectForKey:@"status"] isEqualToString:@"outstanding"]) {
+        if ([self.item isOutstanding]) {
             [blueDot.layer setCornerRadius:4];
             [blueDot setClipsToBounds:YES];
             [blueDot setHidden:NO];
@@ -296,23 +284,24 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
-        return [self heightForText:[self.item objectForKey:@"message"] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 36.0f;
+        return [self heightForText:[self.item message] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 36.0f;
+    
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return 56.0f;
+    
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
-        if ([self.mediaDictionary objectForKey:[[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row]]) {
-            UIImage* i = [self.mediaDictionary objectForKey:[[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row]];
+        if ([self.mediaDictionary objectForKey:[[self.item mediaURLs] objectAtIndex:indexPath.row]]) {
+            UIImage* i = [self.mediaDictionary objectForKey:[[self.item mediaURLs] objectAtIndex:indexPath.row]];
             return 16 + i.size.height*(304/i.size.width);
         }
     }
+    
     return 44.0f;
 }
 
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {
     NSDictionary *attributes = @{NSFontAttributeName: font};
-    // NSString class method: boundingRectWithSize:options:attributes:context is
-    // available only on ios7.0 sdk.
     CGRect rect = [text boundingRectWithSize:CGSizeMake(width, 100000)
                                      options:NSStringDrawingUsesLineFragmentOrigin
                                   attributes:attributes
@@ -348,15 +337,19 @@
         [itvc setItem:self.item];
         [itvc setDelegate:self];
         [self presentViewController:itvc animated:YES completion:nil];
+    
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucket"]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCBucketViewController* itvc = (HCBucketViewController *)[storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
-        [itvc setBucket:[[self.item objectForKey:@"buckets"] objectAtIndex:indexPath.row]];
+        [itvc setBucket:[[self.item buckets] objectAtIndex:indexPath.row]];
         [self.navigationController pushViewController:itvc animated:YES];
+    
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         
+    
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[self.item objectForKey:@"media_urls"] objectAtIndex:indexPath.row]]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[self.item mediaURLs] objectAtIndex:indexPath.row]]];
+    
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         if (indexPath.row == 0) {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
@@ -368,6 +361,7 @@
             [self showAlertViewWithTitle:@"Are you sure?" message:@"Deleting this note means it is gone forever."];
         }
     }
+    
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
@@ -501,7 +495,6 @@
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"GET" withParamaters:nil
                            success:^(id responseObject){
                                self.item = [NSMutableDictionary dictionaryWithDictionary:responseObject];
-                               //NSLog(@"response: %@", responseObject);
                                [self getImages];
                                [self reloadScreen];
                            }
@@ -514,8 +507,8 @@
 
 - (void) getImages
 {
-    if ([self.item objectForKey:@"media_urls"] && [[self.item objectForKey:@"media_urls"] count] > 0) {
-        for (NSString* url in [self.item objectForKey:@"media_urls"]) {
+    if ([self.item hasMediaURLs]) {
+        for (NSString* url in [self.item mediaURLs]) {
             [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
                 [self.mediaDictionary setObject:image forKey:url];
                 [self reloadScreen];
@@ -554,7 +547,6 @@
     } else if (buttonIndex == 1) {
         [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil
                                success:^(id responseObject){
-                                   //NSLog(@"response: %@", responseObject);
                                    [self.navigationController popToRootViewControllerAnimated:YES];
                                }
                                failure:^(NSError *error) {
@@ -600,6 +592,5 @@
 {
     [textView setScrollEnabled:NO];
 }
-
 
 @end

@@ -25,4 +25,5 @@
     #import "NSArray+Alphabet.h"
     #import "LXString+NSString.h"
     #import "SGImageCache.h"
+    #import "NSDictionary+Attributes.h"
 #endif
