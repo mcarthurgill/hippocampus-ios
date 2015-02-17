@@ -66,6 +66,8 @@
 
 - (BOOL) hasReminder;
 
+- (BOOL) hasItemType;
+
 - (BOOL) hasBuckets;
 
 - (BOOL) equalsObjectBasedOnTimestamp:(NSDictionary*)other;

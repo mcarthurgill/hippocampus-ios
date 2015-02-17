@@ -163,6 +163,11 @@
     return [self reminderDate] && NULL_TO_NIL([self objectForKey:@"reminder_date"]);
 }
 
+- (BOOL) hasItemType
+{
+    return [self itemType] && NULL_TO_NIL([self objectForKey:@"item_type"]);
+}
+
 - (BOOL) hasBuckets
 {
     return [self buckets] && [[self buckets] count] > 0;
