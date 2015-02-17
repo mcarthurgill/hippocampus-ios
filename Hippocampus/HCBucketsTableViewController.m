@@ -480,8 +480,6 @@
     for (NSDictionary* d in responseObject) {
         NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:d];
         [dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
-        [dict setObject:[dict objectForKey:@"created_at_server"] forKey:@"created_at"];
-        [dict setObject:[dict objectForKey:@"updated_at_server"] forKey:@"updated_at"];
         [itemsArray addObject:dict];
     }
     return itemsArray;
