@@ -14,7 +14,6 @@
 		281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8D41951EC7E00E6BE96 /* InfoPlist.strings */; };
 		281CA8D81951EC7E00E6BE96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8D71951EC7E00E6BE96 /* main.m */; };
 		281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */; };
-		281CA8DF1951EC7E00E6BE96 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8DD1951EC7E00E6BE96 /* Main.storyboard */; };
 		281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8E61951EC7E00E6BE96 /* Images.xcassets */; };
 		281CA8EE1951EC7E00E6BE96 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8ED1951EC7E00E6BE96 /* XCTest.framework */; };
 		281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CB1951EC7E00E6BE96 /* Foundation.framework */; };
@@ -93,7 +92,6 @@
 		281CA8D91951EC7E00E6BE96 /* Hippocampus-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Hippocampus-Prefix.pch"; sourceTree = "<group>"; };
 		281CA8DA1951EC7E00E6BE96 /* LXAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXAppDelegate.h; sourceTree = "<group>"; };
 		281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LXAppDelegate.m; sourceTree = "<group>"; };
-		281CA8DE1951EC7E00E6BE96 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		281CA8E61951EC7E00E6BE96 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HippocampusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		281CA8ED1951EC7E00E6BE96 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -250,7 +248,6 @@
 				76FBBD871A80122A00CAF765 /* Messages.storyboard */,
 				76BFE0711A7C0662005AD98C /* Introduction.storyboard */,
 				281CA924196C2B9100E6BE96 /* Login.storyboard */,
-				281CA8DD1951EC7E00E6BE96 /* Main.storyboard */,
 				281CA8DA1951EC7E00E6BE96 /* LXAppDelegate.h */,
 				281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */,
 				281CA94D196DB60C00E6BE96 /* Helpers */,
@@ -577,7 +574,6 @@
 				281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
 				28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */,
-				281CA8DF1951EC7E00E6BE96 /* Main.storyboard in Resources */,
 				283700901A6F366E00C16E87 /* 122-stats.png in Resources */,
 				28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */,
 				2837008D1A6F34F000C16E87 /* 06-magnify@2x.png in Resources */,
@@ -699,14 +695,6 @@
 				281CA8D51951EC7E00E6BE96 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		281CA8DD1951EC7E00E6BE96 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				281CA8DE1951EC7E00E6BE96 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */ = {

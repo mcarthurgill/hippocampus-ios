@@ -96,11 +96,10 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) cacheComposeBucketController
-{
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-    self.composeBucketController = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
-}
+
+
+
+
 
 #pragma mark - Table view data source
 
@@ -334,6 +333,9 @@
 }
 
 
+
+
+
 # pragma mark helpers
 
 - (BOOL) assignMode
@@ -346,6 +348,187 @@
     NSString* key = self.searchBar.text ? [self.searchBar.text lowercaseString] : @"";
     return key && [key length] > 0;
 }
+
+
+
+
+
+
+
+
+
+# pragma mark refresh controller
+
+- (void) refreshChange
+{
+    if (requestMade)
+        return;
+    requestMade = YES;
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
+                           success:^(id responseObject) {
+                               self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
+                               requestMade = NO;
+                               [self reloadScreen];
+                               if (![self assignMode]) {
+                                   [self saveBucket];
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               requestMade = NO;
+                               [self reloadScreen];
+                           }
+     ];
+}
+
+- (IBAction)refreshControllerChanged:(id)sender
+{
+    if (self.refreshControl.isRefreshing) {
+        [self refreshChange];
+    }
+}
+
+
+
+
+
+# pragma mark toolbar actions
+
+- (IBAction)addAction:(id)sender
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
+}
+
+- (IBAction)composeButtonClicked:(id)sender
+{
+    if (!self.composeBucketController) {
+        [self cacheComposeBucketController];
+    }
+    [self.composeBucketController setBucket:[[[self currentDictionary] objectForKey:@"Recent"] objectAtIndex:0]];
+    [self.composeBucketController setInitializeWithKeyboardUp:YES];
+    [self.composeBucketController setScrollToBottom:YES];
+    [self.navigationController pushViewController:self.composeBucketController animated:YES];
+}
+
+- (IBAction)showReminders:(id)sender {
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    LXRemindersViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"remindersViewController"];
+    [self.navigationController pushViewController:vc animated:YES]; 
+}
+
+
+
+
+
+# pragma mark search bar delegate
+
+- (BOOL) searchBarShouldBeginEditing:(UISearchBar *)sB
+{
+    return YES;
+}
+
+- (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    if (![self assignMode]) {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(searchWithCurrentText) object:nil];
+        [self performSelector:@selector(searchWithCurrentText) withObject:nil afterDelay:SEARCH_DELAY];
+    }
+    [self reloadScreen];
+}
+
+- (void) searchBarCancelButtonClicked:(UISearchBar *)sB
+{
+    [sB resignFirstResponder];
+}
+
+- (void) searchBarSearchButtonClicked:(UISearchBar *)sB
+{
+    [sB resignFirstResponder];
+    if (![self assignMode]) {
+        [self searchWithCurrentText];
+    }
+    [self reloadScreen];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.searchBar resignFirstResponder];
+}
+
+- (void) searchWithCurrentText
+{
+    [self searchWithTerm:[self.searchBar.text lowercaseString]];
+}
+
+- (void) searchWithTerm:(NSString*)term
+{
+    [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term, @"user_id" : [[HCUser loggedInUser] userID] }
+                           success:^(id responseObject) {
+                               [self.serverSearchDictionary setObject:[self modifiedSearchArrayWithResponseObject:[responseObject objectForKey:@"items"]] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
+                               [self reloadScreen];
+                           }
+                           failure:^(NSError* error) {
+                               [self reloadScreen];
+                           }
+     ];
+}
+
+
+- (NSMutableArray*) modifiedSearchArrayWithResponseObject:(id)responseObject
+{
+    NSMutableArray* itemsArray = [[NSMutableArray alloc] init];
+    for (NSDictionary* d in responseObject) {
+        NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:d];
+        [dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
+        [dict setObject:[dict objectForKey:@"created_at_server"] forKey:@"created_at"];
+        [dict setObject:[dict objectForKey:@"updated_at_server"] forKey:@"updated_at"];
+        [itemsArray addObject:dict];
+    }
+    return itemsArray;
+}
+
+
+
+
+
+# pragma mark saving mechanism
+
+- (void) saveBucket
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if (self.bucketsDictionary) {
+            [[NSUserDefaults standardUserDefaults] setObject:[self bucketToSave] forKey:@"buckets"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    });
+}
+
+- (NSMutableDictionary*) bucketToSave
+{
+    NSMutableDictionary* temp = [[NSMutableDictionary alloc] init];
+    
+    NSArray* keys = [self.bucketsDictionary allKeys];
+    for (NSString* k in keys) {
+        NSMutableArray* cur = [self.bucketsDictionary objectForKey:k];
+        NSMutableArray* new = [[NSMutableArray alloc] init];
+        for (NSDictionary* t in cur) {
+            NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:t];
+            NSArray* keys = [tDict allKeys];
+            for (NSString* k in keys) {
+                if (!NULL_TO_NIL([tDict objectForKey:k])) {
+                    [tDict removeObjectForKey:k];
+                }
+            }
+            [new addObject:tDict];
+        }
+        [temp setObject:new forKey:k];
+    }
+    
+    return temp;
+}
+
+
+
 
 
 # pragma mark dictionary helpers
@@ -437,169 +620,10 @@
     return tempKey;
 }
 
-
-# pragma mark refresh controller
-
-- (void) refreshChange
+- (void) cacheComposeBucketController
 {
-    if (requestMade)
-        return;
-    requestMade = YES;
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
-                           success:^(id responseObject) {
-                               //NSLog(@"response: %@", responseObject);
-                               self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
-                               requestMade = NO;
-                               [self reloadScreen];
-                               if (![self assignMode]) {
-                                   [self saveBucket];
-                               }
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error: %@", [error localizedDescription]);
-                               requestMade = NO;
-                               [self reloadScreen];
-                           }
-     ];
-}
-
-- (IBAction)refreshControllerChanged:(id)sender
-{
-    if (self.refreshControl.isRefreshing) {
-        //Make server call here.
-        [self refreshChange];
-    }
-}
-
-
-# pragma mark toolbar actions
-
-- (IBAction)addAction:(id)sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
-}
-
-- (IBAction)composeButtonClicked:(id)sender
-{
-    if (!self.composeBucketController) {
-        [self cacheComposeBucketController];
-    }
-    [self.composeBucketController setBucket:[[[self currentDictionary] objectForKey:@"Recent"] objectAtIndex:0]];
-    [self.composeBucketController setInitializeWithKeyboardUp:YES];
-    [self.composeBucketController setScrollToBottom:YES];
-    [self.navigationController pushViewController:self.composeBucketController animated:YES];
-}
-
-- (IBAction)showReminders:(id)sender {
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-    LXRemindersViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"remindersViewController"];
-    [self.navigationController pushViewController:vc animated:YES]; 
-}
-
-
-# pragma mark search bar delegate
-
-- (BOOL) searchBarShouldBeginEditing:(UISearchBar *)sB
-{
-    return YES;
-}
-
-- (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    if (![self assignMode]) {
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(searchWithCurrentText) object:nil];
-        [self performSelector:@selector(searchWithCurrentText) withObject:nil afterDelay:SEARCH_DELAY];
-    }
-    [self reloadScreen];
-}
-
-- (void) searchBarCancelButtonClicked:(UISearchBar *)sB
-{
-    [sB resignFirstResponder];
-}
-
-- (void) searchBarSearchButtonClicked:(UISearchBar *)sB
-{
-    NSLog(@"Go!");
-    [sB resignFirstResponder];
-    if (![self assignMode]) {
-        [self searchWithCurrentText];
-    }
-    [self reloadScreen];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.searchBar resignFirstResponder];
-}
-
-- (void) searchWithCurrentText
-{
-    [self searchWithTerm:[self.searchBar.text lowercaseString]];
-}
-
-- (void) searchWithTerm:(NSString*)term
-{
-    [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term, @"user_id" : [[HCUser loggedInUser] userID] }
-                           success:^(id responseObject) {
-                               [self.serverSearchDictionary setObject:[self modifiedSearchArrayWithResponseObject:[responseObject objectForKey:@"items"]] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
-                               [self reloadScreen];
-                           }
-                           failure:^(NSError* error) {
-                               [self reloadScreen];
-                           }
-     ];
-}
-
-
-- (NSMutableArray*) modifiedSearchArrayWithResponseObject:(id)responseObject
-{
-    NSMutableArray* itemsArray = [[NSMutableArray alloc] init];
-    for (NSDictionary* d in responseObject) {
-        NSMutableDictionary* dict = [[NSMutableDictionary alloc] initWithDictionary:d];
-        [dict setObject:[dict objectForKey:@"item_id"] forKey:@"id"];
-        [dict setObject:[dict objectForKey:@"created_at_server"] forKey:@"created_at"];
-        [dict setObject:[dict objectForKey:@"updated_at_server"] forKey:@"updated_at"];
-        [itemsArray addObject:dict];
-    }
-    return itemsArray;
-}
-
-
-# pragma mark saving mechanism
-
-- (void) saveBucket
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (self.bucketsDictionary) {
-            [[NSUserDefaults standardUserDefaults] setObject:[self bucketToSave] forKey:@"buckets"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-    });
-}
-
-- (NSMutableDictionary*) bucketToSave
-{
-    NSMutableDictionary* temp = [[NSMutableDictionary alloc] init];
-    
-    NSArray* keys = [self.bucketsDictionary allKeys];
-    for (NSString* k in keys) {
-        NSMutableArray* cur = [self.bucketsDictionary objectForKey:k];
-        NSMutableArray* new = [[NSMutableArray alloc] init];
-        for (NSDictionary* t in cur) {
-            NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:t];
-            NSArray* keys = [tDict allKeys];
-            for (NSString* k in keys) {
-                if (!NULL_TO_NIL([tDict objectForKey:k])) {
-                    [tDict removeObjectForKey:k];
-                }
-            }
-            [new addObject:tDict];
-        }
-        [temp setObject:new forKey:k];
-    }
-    
-    return temp;
+    self.composeBucketController = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
 }
 
 
