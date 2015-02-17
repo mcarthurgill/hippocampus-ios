@@ -601,8 +601,5 @@
     [textView setScrollEnabled:NO];
 }
 
-- (void) textViewDidChange:(UITextView *)textView {
-
-}
 
 @end

@@ -14,7 +14,7 @@
 #define PICTURE_HEIGHT 128
 #define PICTURE_MARGIN_TOP 8
 
-@interface HCBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate>
+@interface HCBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 {
     BOOL requestMade;
     BOOL shouldContinueRequesting;
@@ -43,6 +43,7 @@
 
 
 - (IBAction)addAction:(id)sender;
+- (IBAction)uploadImage:(id)sender;
 
 - (IBAction)refreshControllerChanged:(id)sender;
 

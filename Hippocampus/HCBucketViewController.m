@@ -307,7 +307,7 @@
     if (self.composeTextView.text.length > 0) {
         NSMutableDictionary* tempNote = [[NSMutableDictionary alloc] init];
         
-        [tempNote setObject:self.composeTextView.text forKey:@"message"];
+        [tempNote setObject:self.composeTextView.attributedText.string forKey:@"message"];
         [tempNote setObject:@"once" forKey:@"item_type"];
         [tempNote setObject:[self.bucket objectForKey:@"id"] forKey:@"bucket_id"];
         
@@ -344,6 +344,19 @@
 //        [self reloadScreenToIndex:[self currentArray].count animated:YES];
 //        [self clearTextField];
     }
+
+
+    //potentially use some of this code for accessing the images
+//    [self.composeTextView.attributedText enumerateAttribute:NSAttachmentAttributeName
+//                            inRange:NSMakeRange(0, self.composeTextView.attributedText.length)
+//                            options:0
+//                         usingBlock:^(id value, NSRange range, BOOL *stop)
+//     {
+//         NSTextAttachment* attachment = (NSTextAttachment*)value;
+//         NSFileWrapper* attachmentWrapper = attachment.fileWrapper;
+//         [attachmentWrapper writeToURL:outputURL options:NSFileWrapperWritingAtomic originalContentsURL:nil error:nil];
+//         (*stop) = YES; // stop so we only write the first attachment
+//     }];
 }
 
 - (void) addItemToTable:(NSDictionary *)item {
@@ -521,7 +534,23 @@
 
 - (BOOL) canSaveNote
 {
-    return self.composeTextView.text && [self.composeTextView.text length] > 0 && [self.composeTextView.textColor isEqual:[UIColor blackColor]];
+    return (self.composeTextView.attributedText.string && [self.composeTextView.attributedText.string length] > 0 && [self.composeTextView.textColor isEqual:[UIColor blackColor]]) || [self hasUploadedImageFromLibrary];
+}
+
+- (BOOL) hasUploadedImageFromLibrary {
+    __block BOOL attached = NO;
+    [self.composeTextView.attributedText enumerateAttribute:NSAttachmentAttributeName
+                                 inRange:NSMakeRange(0, self.composeTextView.attributedText.length)
+                                 options:0
+                              usingBlock:^(id value, NSRange range, BOOL *stop)
+          {
+              NSTextAttachment* attachment = (NSTextAttachment*)value;
+              if (attachment) {
+                  attached = YES;
+              }
+              (*stop) = YES; // stop after the first attachment
+          }];
+    return attached;
 }
 
 - (void) saveBucket
@@ -696,6 +725,49 @@
 - (void) hideHUD
 {
     [hud hide:YES];
+}
+
+
+# pragma mark upload images
+
+- (IBAction)uploadImage:(id)sender {
+    UIImagePickerController *pickerController = [[UIImagePickerController alloc]
+                                                 init];
+    pickerController.delegate = self;
+    [self presentViewController:pickerController animated:YES completion:nil];
+}
+
+- (void) imagePickerController:(UIImagePickerController *)picker
+         didFinishPickingImage:(UIImage *)image
+                   editingInfo:(NSDictionary *)editingInfo
+{
+    [self textViewDidBeginEditing:self.composeTextView];
+    [self.saveButton setEnabled:YES];
+    
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\r%@", self.composeTextView.text]];
+    NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
+    textAttachment.image = image;
+    
+    CGFloat oldWidth = textAttachment.image.size.width;
+    CGFloat scaleFactor = oldWidth / (self.composeTextView.frame.size.width - 30); //subtract 30 for padding inside textview
+    
+    textAttachment.image = [UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]];
+    NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
+    [attributedString replaceCharactersInRange:NSMakeRange(0, 0) withAttributedString:attrStringWithImage];
+    self.composeTextView.attributedText = attributedString;
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (UIImageOrientation) properOrientationForImage:(UIImage *)image {
+    if (image.imageOrientation == 1) {
+        return UIImageOrientationDown;
+    } else if (image.imageOrientation == 2) {
+        return UIImageOrientationLeft;
+    } else if (image.imageOrientation == 3) {
+        return UIImageOrientationRight;
+    }
+    return UIImageOrientationUp;
 }
 
 @end
