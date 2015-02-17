@@ -7,7 +7,6 @@
 //
 
 #import "LXAppDelegate.h"
-#import "HCMainTabBarController.h"
 
 @implementation LXAppDelegate
 
@@ -85,12 +84,6 @@
 }
 
 
-# pragma mark login methods
-
-- (void) presentLoginViews:(BOOL)animated
-{
-    [(HCMainTabBarController*)self.window.rootViewController presentLoginViews:animated];
-}
 
 
 # pragma mark managed object context

@@ -32,16 +32,18 @@
 @synthesize page;
 @synthesize initializeWithKeyboardUp;
 
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    //remove extra cell lines
+    //remove extra table view lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [self setupProperties];
     
-    [self.navigationItem setTitle:[self.bucket objectForKey:@"first_name"]];
+    [self.navigationItem setTitle:[self.bucket firstName]];
     [self setupConstraint];
     [self observeKeyboard];
     
@@ -56,15 +58,19 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //[self refreshChange];
-    //[self reloadScreen];
     [self shouldSetKeyboardAsFirstResponder];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self setInitializeWithKeyboardUp:NO];
+    [self.composeTextView resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void) setupProperties {
@@ -77,14 +83,9 @@
     self.allItems = [[NSMutableArray alloc] init];
 }
 
-//- (void) setupRefreshControl {
-//    UITableViewController *tableViewController = [[UITableViewController alloc] init];
-//    tableViewController.tableView = self.tableView;
-//    
-//    self.refreshControl = [[UIRefreshControl alloc] init];
-//    [self.refreshControl addTarget:self action:@selector(refreshChange) forControlEvents:UIControlEventValueChanged];
-//    tableViewController.refreshControl = self.refreshControl;
-//}
+
+
+
 
 #pragma mark - Table view data source
 
@@ -164,9 +165,9 @@
     float width = note.frame.size.width;
     [note removeFromSuperview];
     
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[[item objectForKey:@"message"] truncated:320] width:width font:font])];
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font])];
     [note setFont:font];
-    [note setText:[[item objectForKey:@"message"] truncated:320]];
+    [note setText:[item truncatedMessage]];
     [note setTag:1];
     [note setNumberOfLines:0];
     [note setLineBreakMode:NSLineBreakByWordWrapping];
@@ -174,12 +175,8 @@
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
     
-    if ([[item objectForKey:@"status"] isEqualToString:@"outstanding"] || ![item objectForKey:@"id"]) {
-        if (![item objectForKey:@"id"]) {
-            [blueDot setBackgroundColor:[UIColor orangeColor]];
-        } else {
-            [blueDot setBackgroundColor:[UIColor blueColor]];
-        }
+    if ([item isOutstanding] || ![item hasID]) {
+        [blueDot setBackgroundColor:([item hasID] ? [UIColor blueColor] : [UIColor orangeColor])];
         [blueDot.layer setCornerRadius:4];
         [blueDot setClipsToBounds:YES];
         [blueDot setHidden:NO];
@@ -188,11 +185,7 @@
     }
 
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
-    if (![item objectForKey:@"id"]) {
-        [timestamp setText:@"syncing with server"];
-    } else {
-        [timestamp setText:[NSString stringWithFormat:@"%@%@", (NULL_TO_NIL([item objectForKey:@"buckets_string"]) ? [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"buckets_string"]] : @""), [NSDate timeAgoInWordsFromDatetime:[item objectForKey:@"created_at"]]]];
-    }
+    [timestamp setText:([item hasID] ? [NSString stringWithFormat:@"%@%@", ([item hasBucketsString] ? [NSString stringWithFormat:@"%@ - ", [item bucketsString]] : @""), [NSDate timeAgoInWordsFromDatetime:[item createdAt]]] : @"syncing with server")];
     
     int i = 0;
     while ([cell.contentView viewWithTag:(200+i)]) {
@@ -200,9 +193,9 @@
         ++i;
     }
     
-    if ([item objectForKey:@"media_urls"] && [[item objectForKey:@"media_urls"] count] > 0) {
+    if ([item hasMediaURLs]) {
         int j = 0;
-        for (NSString* url in [item objectForKey:@"media_urls"]) {
+        for (NSString* url in [item mediaURLs]) {
             UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*j, 280, PICTURE_HEIGHT)];
             [iv setTag:(200+j)];
             [iv setContentMode:UIViewContentModeScaleAspectFill];
@@ -218,7 +211,6 @@
         }
     }
     
-    //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
     return cell;
 }
 
@@ -228,8 +220,6 @@
         return 0.0f;
     }
     NSDictionary *attributes = @{NSFontAttributeName: font};
-    // NSString class method: boundingRectWithSize:options:attributes:context is
-    // available only on ios7.0 sdk.
     CGRect rect = [text boundingRectWithSize:CGSizeMake(width, 100000)
                                      options:NSStringDrawingUsesLineFragmentOrigin
                                   attributes:attributes
@@ -242,19 +232,19 @@
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         NSDictionary* item = [[self currentArray] objectAtIndex:indexPath.row];
         int additional = 0;
-        if ([item objectForKey:@"media_urls"]) {
-            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item objectForKey:@"media_urls"] count];
+        if ([item hasMediaURLs]) {
+            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
         }
-        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 14.0f + additional;
+        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 14.0f + additional;
     }
     return 44.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[[self currentArray] objectAtIndex:indexPath.row] objectForKey:@"id"]) {
+    
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[[self currentArray] objectAtIndex:indexPath.row] hasID]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-        //HCItemTableViewController* itvc = (HCItemTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"itemTableViewController"];
         HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
         [itvc setItem:[[self currentArray] objectAtIndex:indexPath.row]];
         [itvc setItems:[self currentArray]];
@@ -262,21 +252,13 @@
         [itvc setDelegate:self];
         [self setScrollToBottom:NO];
         [self.navigationController pushViewController:itvc animated:YES];
+
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         [self showHUDWithMessage:@"Syncing Note"];
         [[LXSession thisSession] attemptNoteSave:[[self currentArray] objectAtIndex:indexPath.row]
                                          success:^(id responseObject) {
-                                             BOOL found = NO;
-                                             for (int i = 0; !found && i < self.allItems.count; ++i) {
-                                                 if ([[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] respondsToSelector:@selector(isEqualToString:)] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] isEqualToString:[responseObject objectForKey:@"device_timestamp"]]) {
-                                                     [self.allItems replaceObjectAtIndex:i withObject:responseObject];
-                                                     found = YES;
-                                                 }
-                                             }
-                                             //[self reloadScreenToIndex:[self currentArray].count animated:YES];
+                                             [self replacingWithItem:responseObject];
                                              [self.tableView reloadData];
-                                             [self saveBucket];
-                                             
                                              [self hideHUD];
                                          }
                                          failure:^(NSError* error) {
@@ -311,7 +293,7 @@
         [tempNote setObject:@"once" forKey:@"item_type"];
         [tempNote setObject:[self.bucket objectForKey:@"id"] forKey:@"bucket_id"];
         
-        if ([self.bucket objectForKey:@"id"] && [[self.bucket objectForKey:@"id"] integerValue] && [[self.bucket objectForKey:@"id"] integerValue] > 0) {
+        if (![self.bucket isAllNotesBucket]) {
             [tempNote setObject:@"assigned" forKey:@"status"];
         }
         
@@ -324,26 +306,28 @@
         [self clearTextField:NO];
         [self saveBucket];
         
-        [[LXSession thisSession] attemptNoteSave:tempNote success:^(id responseObject) {
-                                   BOOL found = NO;
-                                   for (int i = 0; !found && i < self.allItems.count; ++i) {
-                                       if ([[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] respondsToSelector:@selector(isEqualToString:)] && [[[self.allItems objectAtIndex:i] objectForKey:@"device_timestamp"] isEqualToString:[responseObject objectForKey:@"device_timestamp"]]) {
-                                           [self.allItems replaceObjectAtIndex:i withObject:responseObject];
-                                           found = YES;
-                                       }
-                                   }
-                                   [self reloadScreenToIndex:[self currentArray].count animated:YES];
-                                   [self saveBucket];
+        [[LXSession thisSession] attemptNoteSave:tempNote
+                                         success:^(id responseObject) {
+                                             [self replacingWithItem:responseObject];
+                                             [self reloadScreenToIndex:[self currentArray].count animated:YES];
                                }
-                               failure:^(NSError* error) {
+                                         failure:^(NSError* error) {
                                    NSLog(@"error: %@", [error localizedDescription]);
                                }
          ];
-
-//        [self addItemToTable:responseBlock];
-//        [self reloadScreenToIndex:[self currentArray].count animated:YES];
-//        [self clearTextField];
     }
+}
+
+- (void) replacingWithItem:(NSDictionary*)replacement
+{
+    BOOL found = NO;
+    for (int i = 0; !found && i < self.allItems.count; ++i) {
+        if ([[self.allItems objectAtIndex:i] equalsObjectBasedOnTimestamp:replacement]) {
+            [self.allItems replaceObjectAtIndex:i withObject:replacement];
+            found = YES;
+        }
+    }
+    [self saveBucket];
 }
 
 - (void) addItemToTable:(NSDictionary *)item {
@@ -353,7 +337,6 @@
 - (IBAction)refreshControllerChanged:(id)sender
 {
     if (self.refreshControl.isRefreshing) {
-        //Make server call here.
         [self refreshChange];
     }
 }
@@ -364,10 +347,10 @@
     if (requestMade)
         return;
     requestMade = YES;
-    if (NULL_TO_NIL([self.bucket objectForKey:@"id"]) && [[self.bucket objectForKey:@"id"] integerValue] > 0) {
-        [self sendRequestForBucketShow];
-    } else {
+    if ([self.bucket isAllNotesBucket]) {
         [self sendRequestForAllItems];
+    } else {
+        [self sendRequestForBucketShow];
     }
 }
 
@@ -380,33 +363,12 @@
 {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
                            success:^(id responseObject) {
-                               NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
-                                                      NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
-                               if (indexes.count == 0) {
-                                   shouldContinueRequesting = NO;
-                               }
-                               if ([[responseObject objectForKey:@"page"] integerValue] == 0) {
-                                   NSMutableArray* pending = [[LXSession thisSession] unsavedNotesForBucket:[NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]]];
-                                   self.allItems = [[NSMutableArray alloc] initWithArray:(pending ? pending : @[])];
-                                   [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[responseObject objectForKey:@"items"] count])]];
-                               } else {
-                                   [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
-                               }
-                               requestMade = NO;
-                               [self setScrollToBottom:NO];
-                               if ([[responseObject objectForKey:@"items"] count] > 0) {
-                                   [self reloadScreenToIndex:indexes.count animated:NO];
-                               }
-                               [self clearTextField:NO];
-                               if ([[responseObject objectForKey:@"items"] count] > 0) {
-                                   [self incrementPage];
-                               }
+                               [self refreshWithResponseObject:responseObject];
                                [self saveBucket];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error: %@", [error localizedDescription]);
                                requestMade = NO;
-                               //[self reloadScreenToIndex:[self currentArray].count animated:NO];
                            }
      ];
 }
@@ -420,52 +382,63 @@
 {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
                            success:^(id responseObject) {
-                               NSLog(@"response: %@", responseObject);
-                               if ([responseObject objectForKey:@"items"]) {
-                                   NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
-                                                          NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
-                                   if (indexes.count == 0) {
-                                       shouldContinueRequesting = NO;
-                                   }
-                                   if ([[responseObject objectForKey:@"page"] integerValue] == 0) {
-                                       NSMutableArray* pending = [[LXSession thisSession] unsavedNotesForBucket:[NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]]];
-                                       self.allItems = [[NSMutableArray alloc] initWithArray:(pending ? pending : @[])];
-                                       [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[responseObject objectForKey:@"items"] count])]];
-                                   } else {
-                                       [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
-                                   }
-                                   if ([[responseObject objectForKey:@"items"] count] > 0) {
-                                       [self reloadScreenToIndex:indexes.count animated:NO];
-                                   }
-                               }
-                               if ([responseObject objectForKey:@"outstanding_items"] && self.page < 1) {
-                                   [self.allItems addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
-                                   if ([[responseObject objectForKey:@"outstanding_items"] count] > 0) {
-                                       [self reloadScreenToIndex:[self currentArray].count animated:NO];
-                                   }
-                               }
-                               if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
-                                   NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
-                                                          NSMakeRange(0,[[responseObject objectForKey:@"bottom_items"] count])];
-                                   if (indexes.count == 0) {
-                                       shouldContinueRequesting = NO;
-                                   }
-                                   [self.allItems insertObjects:[responseObject objectForKey:@"bottom_items"] atIndexes:indexes];
-                                   [self setScrollToBottom:NO];
-                                   [self reloadScreenToIndex:indexes.count animated:NO];
-                               }
-                               requestMade = NO;
-                               if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
-                                   [self incrementPage];
-                               }
+                               [self refreshWithResponseObject:responseObject];
                                [self saveBucket];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error: %@", [error localizedDescription]);
                                requestMade = NO;
-                               //[self reloadScreenToIndex:[self currentArray].count animated:NO];
                            }
      ];
+    
+}
+
+- (void) refreshWithResponseObject:(NSDictionary*)responseObject
+{
+    if ([responseObject objectForKey:@"items"]) {
+        NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
+                               NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
+        if (indexes.count == 0) {
+            shouldContinueRequesting = NO;
+        }
+        if ([[responseObject objectForKey:@"page"] integerValue] == 0) {
+            NSMutableArray* pending = [[LXSession thisSession] unsavedNotesForBucket:[NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]]];
+            self.allItems = [[NSMutableArray alloc] initWithArray:(pending ? pending : @[])];
+            [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[responseObject objectForKey:@"items"] count])]];
+        } else {
+            [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
+        }
+        if ([[responseObject objectForKey:@"items"] count] > 0) {
+            [self reloadScreenToIndex:indexes.count animated:NO];
+        }
+    }
+    
+    if ([responseObject objectForKey:@"outstanding_items"] && self.page < 1) {
+        [self.allItems addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
+        if ([[responseObject objectForKey:@"outstanding_items"] count] > 0) {
+            [self reloadScreenToIndex:[self currentArray].count animated:NO];
+        }
+    }
+    
+    if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
+        NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
+                               NSMakeRange(0,[[responseObject objectForKey:@"bottom_items"] count])];
+        if (indexes.count == 0) {
+            shouldContinueRequesting = NO;
+        }
+        [self.allItems insertObjects:[responseObject objectForKey:@"bottom_items"] atIndexes:indexes];
+        [self setScrollToBottom:NO];
+        [self reloadScreenToIndex:indexes.count animated:NO];
+    }
+    
+    requestMade = NO;
+    //[self setScrollToBottom:NO];
+    if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
+        [self incrementPage];
+        //[self reloadScreenToIndex:indexes.count animated:NO];
+    }
+    
+    [self clearTextField:NO];
     
 }
 
@@ -537,7 +510,7 @@
 
 - (NSString*) currentBucketID
 {
-    return [NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]];
+    return [NSString stringWithFormat:@"%@", [self.bucket ID]];
 }
 
 - (NSMutableArray*) itemsToSave

@@ -136,6 +136,21 @@
     return [self bucketsString] && NULL_TO_NIL([self objectForKey:@"buckets_string"]);
 }
 
+- (BOOL) isOutstanding
+{
+    return [self status] && [[self status] isEqualToString:@"outstanding"];
+}
+
+- (BOOL) hasMediaURLs
+{
+    return [self mediaURLs] && [[self mediaURLs] count] > 0;
+}
+
+- (BOOL) equalsObjectBasedOnTimestamp:(NSDictionary*)other
+{
+    return [self deviceTimestamp] && [[self deviceTimestamp] respondsToSelector:@selector(isEqualToString:)] && [[self deviceTimestamp] isEqualToString:[other deviceTimestamp]];
+}
+
 
 # pragma mark other dictionary helpers
 

@@ -8,8 +8,6 @@
 
 #import "HCItemTableViewController.h"
 #import "HCReminderViewController.h"
-#import "HCBucketTableViewController.h"
-#import "HCEditItemViewController.h"
 #import "HCBucketViewController.h"
 #import "HCBucketsTableViewController.h"
 #import "HCContainerViewController.h"

@@ -56,6 +56,12 @@
 
 - (BOOL) hasBucketsString;
 
+- (BOOL) isOutstanding;
+
+- (BOOL) hasMediaURLs;
+
+- (BOOL) equalsObjectBasedOnTimestamp:(NSDictionary*)other;
+
 - (NSMutableDictionary*) cleanDictionary;
 
 @end
