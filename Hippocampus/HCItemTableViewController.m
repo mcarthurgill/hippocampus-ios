@@ -565,15 +565,15 @@
 }
 
 
-
 # pragma mark textview delegate
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{    
+{
     NSString *result = [textView.text stringByReplacingCharactersInRange:range withString:text];
 
     [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(saveUpdatedMessage:) withObject:result afterDelay:1.5];
+    [self performSelector:@selector(saveUpdatedMessage:) withObject:result afterDelay:0.3];
+    [self performSelector:@selector(updateTableViewCellSizes:) withObject:textView afterDelay:0];
     
     unsavedChanges = YES;
     savingChanges = NO;
@@ -582,9 +582,15 @@
     return YES;
 }
 
+- (void) updateTableViewCellSizes:(UITextView *)textView {
+    [textView invalidateIntrinsicContentSize];
+    [self.tableView beginUpdates];
+    [self.tableView endUpdates];
+}
+
 - (void) textViewDidBeginEditing:(UITextView *)textView
 {
-    [textView setScrollEnabled:YES];
+    [textView setScrollEnabled:NO];
     unsavedChanges = YES;
     savingChanges = NO;
     [self updateButtonStatus];
@@ -593,6 +599,10 @@
 - (void) textViewDidEndEditing:(UITextView *)textView
 {
     [textView setScrollEnabled:NO];
+}
+
+- (void) textViewDidChange:(UITextView *)textView {
+
 }
 
 @end

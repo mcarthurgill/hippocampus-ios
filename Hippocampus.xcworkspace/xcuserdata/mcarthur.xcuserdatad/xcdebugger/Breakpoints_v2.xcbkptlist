@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "483"
             endingLineNumber = "483"
-            landmarkName = "-alertView:clickedButtonAtIndex:"
+            landmarkName = "-updateBackgroundArrays"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -47,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "329"
             endingLineNumber = "329"
-            landmarkName = "-sendRequestForBucketShow"
+            landmarkName = "-addAction:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
