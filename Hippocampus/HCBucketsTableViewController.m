@@ -403,11 +403,6 @@
 
 # pragma mark toolbar actions
 
-- (IBAction)addAction:(id)sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
-}
-
 - (IBAction)composeButtonClicked:(id)sender
 {
     if (!self.composeBucketController) {
