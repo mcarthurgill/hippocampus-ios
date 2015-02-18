@@ -403,20 +403,17 @@
 
 # pragma mark toolbar actions
 
-- (IBAction)addAction:(id)sender
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"openNewItemScreen" object:nil];
-}
-
 - (IBAction)composeButtonClicked:(id)sender
 {
     if (!self.composeBucketController) {
         [self cacheComposeBucketController];
     }
-    [self.composeBucketController setBucket:[[[self currentDictionary] objectForKey:@"Recent"] objectAtIndex:0]];
-    [self.composeBucketController setInitializeWithKeyboardUp:YES];
-    [self.composeBucketController setScrollToBottom:YES];
-    [self.navigationController pushViewController:self.composeBucketController animated:YES];
+    if ([[self drawFromDictionary] objectForKey:@"Recent"] && [[[[self drawFromDictionary] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
+        [self.composeBucketController setBucket:[[[self drawFromDictionary] objectForKey:@"Recent"] firstObject]];
+        [self.composeBucketController setInitializeWithKeyboardUp:YES];
+        [self.composeBucketController setScrollToBottom:YES];
+        [self.navigationController pushViewController:self.composeBucketController animated:YES];
+    }
 }
 
 - (IBAction)showReminders:(id)sender {
