@@ -49,13 +49,7 @@
 {
     [super viewDidLoad];
     
-    //remove extra cell lines
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
-    self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
-    self.serverSearchDictionary = [[NSMutableDictionary alloc] init];
-    
-    requestMade = NO;
+    [self setupProperties];
     
     [self refreshChange];
     
@@ -97,7 +91,22 @@
 }
 
 
-
+- (void) setupProperties {
+    //remove extra cell lines
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
+    self.serverSearchDictionary = [[NSMutableDictionary alloc] init];
+    
+    requestMade = NO;
+    
+    //change back button text when new VC gets popped on the stack
+    self.navigationItem.backBarButtonItem =
+    [[UIBarButtonItem alloc] initWithTitle:@"hppcmps"
+                                      style:UIBarButtonItemStyleBordered
+                                     target:nil
+                                     action:nil];
+}
 
 
 
