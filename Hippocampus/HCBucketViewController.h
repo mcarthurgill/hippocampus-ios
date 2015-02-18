@@ -28,9 +28,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *composeTextView;
 @property BOOL scrollToBottom;
 @property BOOL initializeWithKeyboardUp;
-@property int page; 
-
-@property (strong, nonatomic) IBOutlet UIRefreshControl *refreshControl;
+@property int page;
 
 @property (strong, nonatomic) NSMutableArray* sections;
 @property (strong, nonatomic) NSMutableArray* allItems;
@@ -44,8 +42,7 @@
 
 - (IBAction)addAction:(id)sender;
 - (IBAction)uploadImage:(id)sender;
-
-- (IBAction)refreshControllerChanged:(id)sender;
+- (IBAction)detailsAction:(id)sender;
 
 - (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n;
 - (void) scrollToNote:(NSMutableDictionary*)original;
