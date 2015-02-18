@@ -64,6 +64,8 @@
     
     if (requestMade) {
         [self.sections addObject:@"requesting"];
+    } else if (self.allItems.count == 0) {
+        [self.sections addObject:@"explanation"];
     }
     
     [self.sections addObject:@"all"];
@@ -78,6 +80,8 @@
         return self.allItems.count;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"]) {
         return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"explanation"]) {
+        return 1;
     }
     return 0;
 }
@@ -90,6 +94,8 @@
         return [self itemCellForTableView:self.tableView withItem:[self.allItems objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     } else if([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"requesting"]) {
         return [self indicatorCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+    } else if([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
+        return [self explanationCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -119,6 +125,15 @@
     return cell;
 }
 
+- (UITableViewCell*) explanationCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"explanationCell" forIndexPath:indexPath];
+    UILabel* explanation = (UILabel*)[cell.contentView viewWithTag:1];
+    [explanation setText:@"You have not set any reminders. Tap a note you've made and set one."];
+    
+    return cell;
+}
+
 
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {
@@ -140,6 +155,8 @@
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         NSDictionary* item = [self.allItems objectAtIndex:indexPath.row];
         return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 14.0f;
+    }else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
+        return 90.0;
     }
     return 60.0;
 }
@@ -172,13 +189,14 @@
 - (void) getReminders {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/reminders.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
                            success:^(id responseObject) {
+                               requestMade = NO;
                                NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
                                                       NSMakeRange(0,[[responseObject objectForKey:@"reminders"] count])];
                                if (indexes.count == 0) {
                                    shouldContinueRequesting = NO;
+                                   [self shouldShowExplanationCell];
                                }
                                [self.allItems insertObjects:[responseObject objectForKey:@"reminders"] atIndexes:indexes];
-                               requestMade = NO;
                                if ([[responseObject objectForKey:@"reminders"] count] > 0) {
                                    [self incrementPage];
                                    [self reloadScreenToIndex:0];
@@ -192,6 +210,11 @@
      ];
 }
 
+- (void) shouldShowExplanationCell {
+    if (self.allItems.count == 0) {
+        [self.tableView reloadData]; 
+    }
+}
 
 - (void) shouldRequestMoreItems
 {

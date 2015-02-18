@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="4lK-2R-yNE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="4lK-2R-yNE">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
@@ -217,6 +217,27 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="explanationCell" id="8mv-Hd-EzL">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8mv-Hd-EzL" id="smx-IQ-Tde">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97o-b2-qDl">
+                                                    <rect key="frame" x="23" y="17" width="274" height="29"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="97o-b2-qDl" secondAttribute="trailing" constant="15" id="S3m-72-qaX"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="97o-b2-qDl" secondAttribute="bottom" constant="8" id="TZt-No-zFR"/>
+                                                <constraint firstItem="97o-b2-qDl" firstAttribute="top" secondItem="smx-IQ-Tde" secondAttribute="topMargin" constant="9" id="pG9-Qe-hWH"/>
+                                                <constraint firstItem="97o-b2-qDl" firstAttribute="leading" secondItem="smx-IQ-Tde" secondAttribute="leadingMargin" constant="15" id="sO9-V1-5SP"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="E3g-FQ-DzD" id="0wH-VC-E5h"/>
@@ -233,7 +254,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VOd-an-RMb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1000" y="1784"/>
+            <point key="canvasLocation" x="1000" y="1778"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="mLZ-YD-xpE">
