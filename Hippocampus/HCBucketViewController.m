@@ -9,6 +9,7 @@
 #import "HCBucketViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "HCContainerViewController.h"
+#import "HCBucketDetailsViewController.h"
 
 @interface HCBucketViewController ()
 
@@ -16,7 +17,6 @@
 
 @implementation HCBucketViewController
 
-@synthesize refreshControl;
 @synthesize bucket;
 @synthesize sections;
 @synthesize allItems;
@@ -81,6 +81,16 @@
     [composeTextView.layer setCornerRadius:4.0f];
     [self setPage:0];
     self.allItems = [[NSMutableArray alloc] init];
+    if ([self.bucket isAllNotesBucket]) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+    
+    //change back button text when new VC gets popped on the stack
+    self.navigationItem.backBarButtonItem =
+    [[UIBarButtonItem alloc] initWithTitle:@""
+                                     style:UIBarButtonItemStyleBordered
+                                    target:nil
+                                    action:nil];
 }
 
 
@@ -91,7 +101,6 @@
 
 - (void) reloadScreenToIndex:(NSUInteger)index animated:(BOOL)animated
 {
-    [self.refreshControl endRefreshing];
     [self.tableView reloadData];
     [self setTableScrollToIndex:index animated:animated];
     [self toggleSaveButton];
@@ -284,6 +293,14 @@
 
 # pragma  mark actions
 
+- (IBAction)detailsAction:(id)sender {
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];
+    [dvc setBucket:[self.bucket mutableCopy]];
+    [self.navigationController pushViewController:dvc animated:YES];
+
+}
+
 - (IBAction)addAction:(id)sender
 {
     if (self.composeTextView.text.length > 0) {
@@ -333,14 +350,6 @@
 - (void) addItemToTable:(NSDictionary *)item {
     [self.allItems addObject:item];
 }
-
-- (IBAction)refreshControllerChanged:(id)sender
-{
-    if (self.refreshControl.isRefreshing) {
-        [self refreshChange];
-    }
-}
-
 
 - (void) refreshChange
 {
@@ -432,10 +441,8 @@
     }
     
     requestMade = NO;
-    //[self setScrollToBottom:NO];
     if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
         [self incrementPage];
-        //[self reloadScreenToIndex:indexes.count animated:NO];
     }
     
     [self clearTextField:NO];
@@ -698,5 +705,6 @@
     }
     return UIImageOrientationUp;
 }
+
 
 @end

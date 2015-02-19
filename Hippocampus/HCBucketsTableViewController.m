@@ -102,7 +102,7 @@
     
     //change back button text when new VC gets popped on the stack
     self.navigationItem.backBarButtonItem =
-    [[UIBarButtonItem alloc] initWithTitle:@"hppcmps"
+    [[UIBarButtonItem alloc] initWithTitle:@""
                                       style:UIBarButtonItemStyleBordered
                                      target:nil
                                      action:nil];
