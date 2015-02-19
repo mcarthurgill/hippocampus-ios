@@ -32,4 +32,8 @@
 
 - (void) attemptUnsavedNoteSaving;
 
++ (NSString*) documentsPathForFileName:(NSString*) name;
+
++ (NSString*) writeImageToDocumentsFolder:(UIImage*)image;
+
 @end

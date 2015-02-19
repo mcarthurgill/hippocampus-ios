@@ -134,9 +134,17 @@ static LXSession* thisSession = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void) attemptNoteSave:(NSDictionary*)unsavedNote success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+- (void) attemptNoteSave:(NSDictionary*)note success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
+    NSMutableDictionary* unsavedNote = [[NSMutableDictionary alloc] initWithDictionary:note];
+    NSMutableArray* mediaURLS = [[NSMutableArray alloc] initWithArray:[unsavedNote objectForKey:@"media_urls"]];
+    [unsavedNote removeObjectForKey:@"media_urls"];
     [[LXServer shared] requestPath:@"/items.json" withMethod:@"POST" withParamaters:@{@"item":unsavedNote}
+         constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+             if (mediaURLS && [mediaURLS count] > 0) {
+                 [formData appendPartWithFileData:[NSData dataWithContentsOfFile:[mediaURLS firstObject]] name:@"file" fileName:@"image.jpg" mimeType:@"image/jpeg"];
+             }
+         }
                            success:^(id responseObject) {
                                [self removeUnsavedNote:responseObject fromBucket:[NSString stringWithFormat:@"%@",[unsavedNote objectForKey:@"bucket_id"]]];
                                if (successCallback) {
@@ -165,6 +173,25 @@ static LXSession* thisSession = nil;
                       }
          ];
     }
+}
+
++ (NSString*) documentsPathForFileName:(NSString*) name
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsPath = [paths objectAtIndex:0];
+    
+    return [documentsPath stringByAppendingPathComponent:name];
+}
+
++ (NSString*) writeImageToDocumentsFolder:(UIImage *)image
+{
+    // Get image data. Here you can use UIImagePNGRepresentation if you need transparency
+    NSData *imageData = UIImageJPEGRepresentation(image, 1);
+    // Get image path in user's folder and store file with name image_CurrentTimestamp.jpg (see documentsPathForFileName below)
+    NSString *imagePath = [self documentsPathForFileName:[NSString stringWithFormat:@"image_%f.jpg", [NSDate timeIntervalSinceReferenceDate]]];
+    // Write image data to user's folder
+    [imageData writeToFile:imagePath atomically:YES];
+    return imagePath;
 }
 
 @end

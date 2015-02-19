@@ -25,6 +25,7 @@
 @synthesize composeTextView;
 @synthesize composeView;
 @synthesize saveButton;
+@synthesize imageAttachments;
 @synthesize bottomConstraint;
 @synthesize tableviewHeightConstraint;
 @synthesize textViewHeightConstraint;
@@ -210,11 +211,15 @@
             [iv setContentMode:UIViewContentModeScaleAspectFill];
             [iv setClipsToBounds:YES];
             [iv.layer setCornerRadius:8.0f];
-            [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
-                if (image) {
-                    iv.image = image;
-                }
-            }];
+            if ([item hasID]) {
+                [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                    if (image) {
+                        iv.image = image;
+                    }
+                }];
+            } else {
+                iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
+            }
             [cell.contentView addSubview:iv];
             ++j;
         }
@@ -316,6 +321,17 @@
         
         [tempNote setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
         [tempNote setObject:[[[LXSession thisSession] user] userID] forKey:@"user_id"];
+        
+        NSLog(@"%@", self.composeTextView.attributedText.string);
+        
+        if (self.imageAttachments && [self.imageAttachments count] > 0) {
+            NSMutableArray* mediaURLS = [[NSMutableArray alloc] init];
+            for (UIImage* i in self.imageAttachments) {
+                NSString* path = [LXSession writeImageToDocumentsFolder:i];
+                [mediaURLS addObject:path];
+            }
+            [tempNote setObject:mediaURLS forKey:@"media_urls"];
+        }
         
         [self addItemToTable:[NSDictionary dictionaryWithDictionary:tempNote]];
         [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
@@ -686,6 +702,9 @@
     
     CGFloat oldWidth = textAttachment.image.size.width;
     CGFloat scaleFactor = oldWidth / (self.composeTextView.frame.size.width - 30); //subtract 30 for padding inside textview
+    
+    self.imageAttachments = [[NSMutableArray alloc] init];
+    [self.imageAttachments addObject:[UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]]];
     
     textAttachment.image = [UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]];
     NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
