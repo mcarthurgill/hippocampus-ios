@@ -224,7 +224,7 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
         [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket createdAt]], ([self assignMode] ? @" - Tap to Add Note" : @"")]];
     } else {
-        [description setText:[NSString stringWithFormat:@"%@ Notes %@%@", [bucket itemsCount], ![bucket hasID] ? @"" : @"Outstanding", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket updatedAt]]])]];
+        [description setText:[NSString stringWithFormat:@"%@ Notes %@%@", [bucket itemsCount], [bucket isAllNotesBucket] ? @"Outstanding" : @"", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket updatedAt]]])]];
     }
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
