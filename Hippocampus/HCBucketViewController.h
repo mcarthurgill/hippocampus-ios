@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "HCItemTableViewController.h"
 
+@protocol HCSendRequestForUpdatedBuckets <NSObject>
+-(void)sendRequestForUpdatedBucket;
+@end
+
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
 #define PICTURE_HEIGHT 128
@@ -29,6 +33,8 @@
 @property BOOL scrollToBottom;
 @property BOOL initializeWithKeyboardUp;
 @property int page;
+
+@property (nonatomic,assign) id delegate;
 
 @property (strong, nonatomic) NSMutableArray* sections;
 @property (strong, nonatomic) NSMutableArray* allItems;

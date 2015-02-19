@@ -32,6 +32,7 @@
 @synthesize scrollToBottom;
 @synthesize page;
 @synthesize initializeWithKeyboardUp;
+@synthesize delegate;
 
 
 
@@ -60,6 +61,7 @@
 {
     [super viewWillAppear:animated];
     [self shouldSetKeyboardAsFirstResponder];
+    [self.navigationItem setTitle:[self.bucket firstName]];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -85,7 +87,6 @@
     if ([self.bucket isAllNotesBucket]) {
         self.navigationItem.rightBarButtonItem = nil;
     }
-    
     //change back button text when new VC gets popped on the stack
     self.navigationItem.backBarButtonItem =
     [[UIBarButtonItem alloc] initWithTitle:@""
@@ -93,8 +94,6 @@
                                     target:nil
                                     action:nil];
 }
-
-
 
 
 
@@ -302,6 +301,7 @@
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
     HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];
     [dvc setBucket:[self.bucket mutableCopy]];
+    [dvc setDelegate:self]; 
     [self.navigationController pushViewController:dvc animated:YES];
 
 }
@@ -696,7 +696,7 @@
     [self textViewDidBeginEditing:self.composeTextView];
     [self.saveButton setEnabled:YES];
     
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\r%@", self.composeTextView.text]];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\r%@", self.composeTextView.attributedText.string]];
     NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
     textAttachment.image = image;
     
@@ -726,4 +726,10 @@
 }
 
 
+# pragma mark - HCUpdateBucketDelegate
+
+-(void)updateBucket:(NSMutableDictionary *)updatedBucket {
+    self.bucket = updatedBucket;
+    [self.delegate sendRequestForUpdatedBucket];
+}
 @end

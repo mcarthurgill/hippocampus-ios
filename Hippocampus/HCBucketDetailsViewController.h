@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol HCUpdateBucketDelegate <NSObject>
+-(void)updateBucket:(NSMutableDictionary *)updatedBucket;
+@end
+
 @interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate>
 {
     BOOL unsavedChanges;
@@ -18,5 +22,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray* sections;
 @property (strong, nonatomic) NSString *updatedBucketName;
+@property (nonatomic,assign) id delegate;
 
 @end

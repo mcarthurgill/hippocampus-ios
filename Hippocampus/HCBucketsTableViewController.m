@@ -324,6 +324,7 @@
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
             [btvc setBucket:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
+            [btvc setDelegate:self];
             [self.navigationController pushViewController:btvc animated:YES];
         }
     
@@ -628,6 +629,12 @@
 {
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
     self.composeBucketController = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+}
+
+
+# pragma mark - HCSendRequestForUpdatedBuckets
+- (void) sendRequestForUpdatedBucket {
+    [self refreshChange];
 }
 
 

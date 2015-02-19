@@ -18,6 +18,7 @@
 @synthesize tableView;
 @synthesize sections;
 @synthesize updatedBucketName;
+@synthesize delegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -107,6 +108,7 @@
                                unsavedChanges = NO;
                                savingChanges = NO;
                                [self reloadScreen];
+                               [self.delegate updateBucket:self.bucket]; 
                            }
                            failure:^(NSError *error) {
                                unsavedChanges = YES;
