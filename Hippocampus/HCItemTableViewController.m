@@ -561,7 +561,6 @@
         if (buttonIndex == 1) {
             NSLog(@"remove!!!!");
             [self destroyBucketItemPair];
-            //update bucket/item through delegates and stufffffff
         }
     } else {
         if (buttonIndex == 1) {
@@ -572,9 +571,16 @@
 }
 
 - (void) destroyBucketItemPair {
+    [self showHUDWithMessage:@"Updating..."];
     [[LXServer shared] requestPath:@"/destroy_with_bucket_and_item.json" withMethod:@"DELETE" withParamaters:@{@"bucket_id":[bucketToRemove ID], @"item_id":[self.item ID]}
                            success:^(id responseObject){
-                               NSLog(@"woooohooooo");
+                               [self.item setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
+                               [self.item setObject:[responseObject objectForKey:@"status"] forKey:@"status"];
+                               unsavedChanges = NO;
+                               savingChanges = NO;
+                               [self hideHUD];
+                               [self updateBackgroundArrays];
+                               [self reloadScreen];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error! %@", [error localizedDescription]);
