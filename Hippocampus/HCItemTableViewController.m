@@ -27,6 +27,7 @@
 @synthesize originalItem;
 @synthesize saveButton;
 @synthesize sections;
+@synthesize bucketToRemove;
 
 @synthesize messageTextView;
 
@@ -51,6 +52,8 @@
     
     //remove extra cell lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [self setLongPressGestureToRemoveBucket];
     
     self.mediaDictionary = [[NSMutableDictionary alloc] init];
     
@@ -533,7 +536,19 @@
 }
 
 
-# pragma mark alert
+# pragma  mark - AlertView Delegate
+
+- (void) alertForRemovalFromBucket:(NSMutableDictionary *)bucket {
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Are you sure?"
+                                                     message:[NSString stringWithFormat:@"Do you want you remove this note from the %@ thread?", [bucket firstName]]
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles: nil];
+    [alert addButtonWithTitle:@"Remove"];
+    [alert setTag:2];
+    [self setBucketToRemove:bucket];
+    [alert show];
+}
 
 - (void) showAlertViewWithTitle:(NSString*)title message:(NSString*)message
 {
@@ -542,20 +557,42 @@
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0) {
-        //do nothing. note was not deleted
-    } else if (buttonIndex == 1) {
-        [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil
-                               success:^(id responseObject){
-                                   [self.navigationController popToRootViewControllerAnimated:YES];
-                               }
-                               failure:^(NSError *error) {
-                                   NSLog(@"error! %@", [error localizedDescription]);
-                               }
-         ];
+    if (alertView.tag == 2) {
+        if (buttonIndex == 1) {
+            NSLog(@"remove!!!!");
+            [self destroyBucketItemPair];
+            //update bucket/item through delegates and stufffffff
+        }
+    } else {
+        if (buttonIndex == 1) {
+            [self deleteItem];
+        }
+
     }
 }
 
+- (void) destroyBucketItemPair {
+    [[LXServer shared] requestPath:@"/destroy_with_bucket_and_item.json" withMethod:@"DELETE" withParamaters:@{@"bucket_id":[bucketToRemove ID], @"item_id":[self.item ID]}
+                           success:^(id responseObject){
+                               NSLog(@"woooohooooo");
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error! %@", [error localizedDescription]);
+                           }
+     ];
+    [self setBucketToRemove:nil];
+}
+
+- (void) deleteItem {
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil
+                           success:^(id responseObject){
+                               [self.navigationController popToRootViewControllerAnimated:YES];
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error! %@", [error localizedDescription]);
+                           }
+     ];
+}
 
 # pragma mark textview delegate
 
@@ -592,5 +629,29 @@
 {
     [textView setScrollEnabled:NO];
 }
+
+
+# pragma mark - Gesture Recognizers
+
+- (void) setLongPressGestureToRemoveBucket {
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 0.5; //seconds
+    lpgr.delegate = self;
+    [self.tableView addGestureRecognizer:lpgr];
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucket"] && [[self.item buckets] objectAtIndex:indexPath.row]) {
+            [self alertForRemovalFromBucket:[[self.item buckets] objectAtIndex:indexPath.row]];
+        }
+    }
+}
+
 
 @end

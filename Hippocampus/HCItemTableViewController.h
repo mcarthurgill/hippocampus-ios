@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HCItemPageViewController.h"
 
-@interface HCItemTableViewController : UITableViewController <UITextViewDelegate, UIAlertViewDelegate>
+@interface HCItemTableViewController : UITableViewController <UITextViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
 {
     BOOL unsavedChanges;
     BOOL savingChanges;
@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSMutableDictionary* originalItem;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (strong, nonatomic) NSMutableArray* sections;
+@property (strong, nonatomic) NSMutableDictionary* bucketToRemove; 
 
 @property (strong, nonatomic) UITextView* messageTextView;
 
