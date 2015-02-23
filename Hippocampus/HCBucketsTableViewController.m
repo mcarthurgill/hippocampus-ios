@@ -583,7 +583,7 @@
     term = [term lowercaseString];
     
     NSMutableDictionary* newDictionary = [[NSMutableDictionary alloc] init];
-    NSMutableDictionary* oldDictionary = [term length] > 1 && [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] ? [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] : self.bucketsDictionary;
+    NSMutableDictionary* oldDictionary = [term length] > 1 && [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] ? [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] : [self drawFromDictionary];
     
     for (NSString* key in [oldDictionary allKeys]) {
         NSArray* buckets = [oldDictionary objectForKey:key];
