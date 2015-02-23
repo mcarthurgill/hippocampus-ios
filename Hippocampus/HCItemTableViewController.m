@@ -584,6 +584,10 @@
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error! %@", [error localizedDescription]);
+                               unsavedChanges = YES;
+                               savingChanges = NO;
+                               [self hideHUD];
+                               [self reloadScreen];
                            }
      ];
     [self setBucketToRemove:nil];
