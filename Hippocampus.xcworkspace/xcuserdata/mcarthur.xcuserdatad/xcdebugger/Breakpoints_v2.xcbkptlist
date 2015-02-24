@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCItemTableViewController.m"
-            timestampString = "446501989.146969"
+            timestampString = "446502425.123509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "488"
-            endingLineNumber = "488"
+            startingLineNumber = "489"
+            endingLineNumber = "489"
             landmarkName = "-scrollUnderlyingControllerToNote"
             landmarkType = "5">
          </BreakpointContent>

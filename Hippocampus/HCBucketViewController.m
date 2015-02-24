@@ -644,21 +644,24 @@
 
 - (void) keyboardDidChangeFrame:(NSNotification *)sender
 {
-    NSDictionary *info = [sender userInfo];
-    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
-    self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
-    NSLog(@"bottom constraint: %f", self.bottomConstraint.constant);
-    
-    //for buckets where tableview.contentSize is small
-    if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
-        self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
+    if (self.isViewLoaded && self.view.window) {
+
+        NSDictionary *info = [sender userInfo];
+        NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
+        self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
+        NSLog(@"bottom constraint: %f", self.bottomConstraint.constant);
+        
+        //for buckets where tableview.contentSize is small
+        if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
+            self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
+        }
+        
+        [UIView animateWithDuration:animationDuration animations:^{
+            [self.view layoutIfNeeded];
+        }];
     }
-    
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.view layoutIfNeeded];
-    }];
 }
 
 

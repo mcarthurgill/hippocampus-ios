@@ -61,7 +61,6 @@
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
     [self refreshChange];
 
     if ([self assignMode]) {
