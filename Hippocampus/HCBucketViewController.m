@@ -80,7 +80,6 @@
     requestMade = NO;
     shouldContinueRequesting = YES;
     [self setScrollToBottom:YES];
-    NSLog(@"******SCROLLING TO BOTTOM******");
     [composeTextView setScrollEnabled:NO];
     [composeTextView.layer setCornerRadius:4.0f];
     [self setPage:0];
@@ -114,8 +113,6 @@
 
 - (void) setTableScrollToIndex:(NSInteger)index animated:(BOOL)animated
 {
-    NSLog(@"****set table scroll to index = %ld", (long)index);
-    NSLog(@"****set table scroll to index = %@", self.scrollToBottom ? @"true" : @"false");
     if (index >= [[self currentArray] count]) {
         --index;
     }
