@@ -51,8 +51,6 @@
     
     [self setupProperties];
     
-    [self refreshChange];
-    
     [self cacheComposeBucketController];
     
     //reload data to make sure it's catching assign mode
@@ -64,6 +62,8 @@
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
+    [self refreshChange];
+
     if ([self assignMode]) {
         [self setTitle:@"Add to Thread"];
         [self.navigationItem setRightBarButtonItem:nil];
