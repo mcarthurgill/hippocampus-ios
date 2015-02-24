@@ -434,7 +434,7 @@
         if ([[responseObject objectForKey:@"page"] integerValue] == 0) {
             NSMutableArray* pending = [[LXSession thisSession] unsavedNotesForBucket:[NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]]];
             self.allItems = [[NSMutableArray alloc] initWithArray:(pending ? pending : @[])];
-            [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, [[responseObject objectForKey:@"items"] count])]];
+            [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
         } else {
             [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
         }
@@ -511,7 +511,7 @@
 
 - (NSMutableArray*) currentArray
 {
-    if (!self.allItems || [self.allItems count] == 0) {
+    if (!self.allItems) {
         if ([[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]) {
             self.allItems = [[NSMutableArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]];
             return [[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]];
