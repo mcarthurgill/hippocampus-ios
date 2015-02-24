@@ -611,9 +611,11 @@
 - (void) observeKeyboard {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
-- (void) keyboardWillShow:(NSNotification *)sender {
+- (void) keyboardWillShow:(NSNotification *)sender
+{
     self.scrollToBottom = YES;
     [self setTableScrollToIndex:[self currentArray].count animated:YES];
     
@@ -622,6 +624,25 @@
     CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
     self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
+    
+    //for buckets where tableview.contentSize is small
+    if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
+        self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
+    }
+    
+    [UIView animateWithDuration:animationDuration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void) keyboardDidChangeFrame:(NSNotification *)sender
+{
+    NSDictionary *info = [sender userInfo];
+    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
+    self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
+    NSLog(@"bottom constraint: %f", self.bottomConstraint.constant);
     
     //for buckets where tableview.contentSize is small
     if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
@@ -706,12 +727,17 @@
     self.imageAttachments = [[NSMutableArray alloc] init];
     [self.imageAttachments addObject:[UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]]];
     
+    [attributedString setAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0] forKey:NSFontAttributeName] range:NSMakeRange(0, attributedString.length)];
+    
     textAttachment.image = [UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]];
     NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
     [attributedString replaceCharactersInRange:NSMakeRange(0, 0) withAttributedString:attrStringWithImage];
+    
     self.composeTextView.attributedText = attributedString;
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^(void){
+        [self.composeTextView becomeFirstResponder];
+    }];
 }
 
 - (UIImageOrientation) properOrientationForImage:(UIImage *)image {
