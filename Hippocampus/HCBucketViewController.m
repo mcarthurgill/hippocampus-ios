@@ -33,7 +33,7 @@
 @synthesize page;
 @synthesize initializeWithKeyboardUp;
 @synthesize delegate;
-
+@synthesize pickerController;
 
 
 - (void)viewDidLoad
@@ -93,8 +93,13 @@
                                      style:UIBarButtonItemStyleBordered
                                     target:nil
                                     action:nil];
+    [self cacheImagePickerController];
 }
 
+-(void) cacheImagePickerController {
+    self.pickerController = [[UIImagePickerController alloc]
+                                                 init];
+}
 
 
 #pragma mark - Table view data source
@@ -683,10 +688,9 @@
 # pragma mark upload images
 
 - (IBAction)uploadImage:(id)sender {
-    UIImagePickerController *pickerController = [[UIImagePickerController alloc]
-                                                 init];
-    pickerController.delegate = self;
-    [self presentViewController:pickerController animated:YES completion:nil];
+
+    self.pickerController.delegate = self;
+    [self presentViewController:self.pickerController animated:YES completion:nil];
 }
 
 - (void) imagePickerController:(UIImagePickerController *)picker

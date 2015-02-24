@@ -45,7 +45,7 @@
 @property (nonatomic, strong) NSLayoutConstraint *bottomConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableviewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
-
+@property (strong, nonatomic) UIImagePickerController *pickerController; 
 
 - (IBAction)addAction:(id)sender;
 - (IBAction)uploadImage:(id)sender;
