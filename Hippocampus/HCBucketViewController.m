@@ -80,6 +80,7 @@
     requestMade = NO;
     shouldContinueRequesting = YES;
     [self setScrollToBottom:YES];
+    NSLog(@"******SCROLLING TO BOTTOM******");
     [composeTextView setScrollEnabled:NO];
     [composeTextView.layer setCornerRadius:4.0f];
     [self setPage:0];
@@ -113,6 +114,8 @@
 
 - (void) setTableScrollToIndex:(NSInteger)index animated:(BOOL)animated
 {
+    NSLog(@"****set table scroll to index = %ld", (long)index);
+    NSLog(@"****set table scroll to index = %@", self.scrollToBottom ? @"true" : @"false");
     if (index >= [[self currentArray] count]) {
         --index;
     }
@@ -121,7 +124,7 @@
         if (self.scrollToBottom) {
             [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: animated];
         } else {
-            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: animated];
+//            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: animated];
         }
     }
 }
@@ -619,38 +622,42 @@
 }
 
 - (void) keyboardWillShow:(NSNotification *)sender {
-    self.scrollToBottom = YES;
-    [self setTableScrollToIndex:[self currentArray].count animated:YES];
-    
-    NSDictionary *info = [sender userInfo];
-    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
-    self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
-    
-    //for buckets where tableview.contentSize is small
-    if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
-        self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
+    if (self.isViewLoaded && self.view.window) {
+        [self setScrollToBottom:YES];
+        [self setTableScrollToIndex:[self currentArray].count animated:YES];
+        
+        NSDictionary *info = [sender userInfo];
+        NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
+        self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
+        
+        //for buckets where tableview.contentSize is small
+        if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
+            self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
+        }
+        
+        [UIView animateWithDuration:animationDuration animations:^{
+            [self.view layoutIfNeeded];
+        }];
     }
-    
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.view layoutIfNeeded];
-    }];
 }
 
 
 - (void) keyboardWillHide:(NSNotification *)sender {
-    NSDictionary *info = [sender userInfo];
-    NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    
-    self.bottomConstraint.constant = 0;
+    if (self.isViewLoaded && self.view.window) {
+        NSDictionary *info = [sender userInfo];
+        NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        
+        self.bottomConstraint.constant = 0;
 
-    //for buckets where tableview.contentSize is small
-    self.tableviewHeightConstraint.constant = self.view.frame.size.height - self.saveButton.frame.size.height;
+        //for buckets where tableview.contentSize is small
+        self.tableviewHeightConstraint.constant = self.view.frame.size.height - self.saveButton.frame.size.height;
 
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.view layoutIfNeeded];
-    }];
+        [UIView animateWithDuration:animationDuration animations:^{
+            [self.view layoutIfNeeded];
+        }];
+    }
 }
 
 
