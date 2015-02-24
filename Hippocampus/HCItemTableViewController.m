@@ -391,6 +391,8 @@
     savingChanges = YES;
     [self.item setObject:reminder forKey:@"reminder_date"];
     [self.item setObject:type forKey:@"item_type"];
+    [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
+    
     [self showHUDWithMessage:[NSString stringWithFormat:@"Saving Reminder"]];
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"PUT" withParamaters:@{@"item":self.item}
                            success:^(id responseObject) {
@@ -416,6 +418,8 @@
     unsavedChanges = YES;
     savingChanges = YES;
     [self.item setObject:[self.messageTextView text] forKey:@"message"];
+    [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
+    
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"PUT" withParamaters:@{@"item":self.item}
                            success:^(id responseObject) {
                                NSLog(@"successfully updated message");
@@ -426,7 +430,7 @@
                                [self updateButtonStatus];
                            }
                            failure:^(NSError *error) {
-                               NSLog(@"unsuccessfully updated reminder date");
+                               NSLog(@"unsuccessfully updated message");
                                unsavedChanges = YES;
                                savingChanges = NO;
                                [self reloadScreen];
@@ -460,7 +464,6 @@
                                [self reloadScreen];
                            }
      ];
-    [self reloadScreen];
 }
 
 - (void) saveAction:(id)sender
