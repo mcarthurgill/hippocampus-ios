@@ -84,7 +84,7 @@
     [composeTextView.layer setCornerRadius:4.0f];
     [self setScrollToPosition:@"bottom"];
     [self setPage:0];
-    self.allItems = [[NSMutableArray alloc] init];
+    
     if ([self.bucket isAllNotesBucket]) {
         self.navigationItem.rightBarButtonItem = nil;
     }
@@ -428,6 +428,10 @@
 
 - (void) refreshWithResponseObject:(NSDictionary*)responseObject
 {
+    if (!self.allItems) {
+        self.allItems = [[NSMutableArray alloc] init];
+    }
+    
     if ([responseObject objectForKey:@"items"]) {
         NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
                                NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
@@ -518,7 +522,8 @@
     if (!self.allItems) {
         if ([[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]) {
             self.allItems = [[NSMutableArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]];
-            return [[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]];
+            NSLog(@"all items: %@", self.allItems);
+            //return [[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]];
         }
     }
     return self.allItems;
