@@ -29,7 +29,7 @@
 @synthesize bottomConstraint;
 @synthesize tableviewHeightConstraint;
 @synthesize textViewHeightConstraint;
-@synthesize scrollToBottom;
+@synthesize scrollToPosition;
 @synthesize page;
 @synthesize initializeWithKeyboardUp;
 @synthesize delegate;
@@ -79,9 +79,10 @@
 - (void) setupProperties {
     requestMade = NO;
     shouldContinueRequesting = YES;
-    [self setScrollToBottom:YES];
+    
     [composeTextView setScrollEnabled:NO];
     [composeTextView.layer setCornerRadius:4.0f];
+    [self setScrollToPosition:@"bottom"];
     [self setPage:0];
     self.allItems = [[NSMutableArray alloc] init];
     if ([self.bucket isAllNotesBucket]) {
@@ -118,10 +119,12 @@
     }
     if ([self currentArray].count > 0 && index < [self currentArray].count) {
         NSIndexPath *ipath = [NSIndexPath indexPathForRow:index inSection: 0];
-        if (self.scrollToBottom) {
+        if ([self.scrollToPosition isEqualToString:@"bottom"]) {
             [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: animated];
-        } else {
-//            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: animated];
+        } else if ([self.scrollToPosition isEqualToString:@"top"]){
+            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: animated];
+        } else if ([self.scrollToPosition isEqualToString:@"note"]) {
+            //do nothing
         }
     }
 }
@@ -268,7 +271,7 @@
         [itvc setItems:[self currentArray]];
         [itvc setBucket:self.bucket];
         [itvc setDelegate:self];
-        [self setScrollToBottom:NO];
+        [self setScrollToPosition:@"note"];
         [self.navigationController pushViewController:itvc animated:YES];
 
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
@@ -457,7 +460,7 @@
             shouldContinueRequesting = NO;
         }
         [self.allItems insertObjects:[responseObject objectForKey:@"bottom_items"] atIndexes:indexes];
-        [self setScrollToBottom:NO];
+        [self setScrollToPosition:@"top"];
         [self reloadScreenToIndex:indexes.count animated:NO];
     }
     
@@ -499,6 +502,7 @@
 
 - (void) scrollToNote:(NSMutableDictionary*)original
 {
+    [self setScrollToPosition:@"note"];
     int index = (int)[[self currentArray] indexOfObject:original];
     if (index && index < [self currentArray].count) {
         [self setTableScrollToIndex:index animated:NO];
@@ -622,7 +626,7 @@
 
 - (void) keyboardWillShow:(NSNotification *)sender {
     if (self.isViewLoaded && self.view.window) {
-        [self setScrollToBottom:YES];
+        [self setScrollToPosition:@"bottom"];
         [self setTableScrollToIndex:[self currentArray].count animated:YES];
         
         NSDictionary *info = [sender userInfo];

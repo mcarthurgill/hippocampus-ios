@@ -411,7 +411,7 @@
     if ([[self drawFromDictionary] objectForKey:@"Recent"] && [[[[self drawFromDictionary] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
         [self.composeBucketController setBucket:[[[self drawFromDictionary] objectForKey:@"Recent"] firstObject]];
         [self.composeBucketController setInitializeWithKeyboardUp:YES];
-        [self.composeBucketController setScrollToBottom:YES];
+        [self.composeBucketController setScrollToPosition:@"bottom"];
         [self.navigationController pushViewController:self.composeBucketController animated:YES];
     }
 }
