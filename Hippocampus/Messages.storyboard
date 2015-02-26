@@ -1049,15 +1049,18 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dwe-mM-Ljx">
-                                                    <rect key="frame" x="0.0" y="-11" width="320" height="162"/>
+                                                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dwe-mM-Ljx">
+                                                    <rect key="frame" x="0.0" y="8" width="600" height="162"/>
                                                     <connections>
                                                         <outlet property="dataSource" destination="bTB-5j-foa" id="viU-v8-foj"/>
                                                         <outlet property="delegate" destination="bTB-5j-foa" id="HSU-8f-dRp"/>
                                                     </connections>
                                                 </pickerView>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Thread Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Okl-lW-9hj">
-                                                    <rect key="frame" x="20" y="165" width="280" height="30"/>
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Thread Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Okl-lW-9hj">
+                                                    <rect key="frame" x="160" y="178" width="280" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="280" id="pOj-Yx-1ee"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="go"/>
                                                     <connections>
@@ -1065,6 +1068,23 @@
                                                     </connections>
                                                 </textField>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Okl-lW-9hj" firstAttribute="top" secondItem="dwe-mM-Ljx" secondAttribute="bottom" constant="4" id="AZO-MV-dn6"/>
+                                                <constraint firstItem="dwe-mM-Ljx" firstAttribute="top" secondItem="8fh-8u-0a2" secondAttribute="topMargin" id="YKW-TJ-cew"/>
+                                                <constraint firstItem="dwe-mM-Ljx" firstAttribute="leading" secondItem="8fh-8u-0a2" secondAttribute="leading" id="acD-B7-plV"/>
+                                                <constraint firstItem="dwe-mM-Ljx" firstAttribute="centerX" secondItem="Okl-lW-9hj" secondAttribute="centerX" id="akb-0I-Ffx"/>
+                                                <constraint firstAttribute="centerX" secondItem="Okl-lW-9hj" secondAttribute="centerX" id="drF-Pz-lrK"/>
+                                                <constraint firstItem="Okl-lW-9hj" firstAttribute="top" secondItem="dwe-mM-Ljx" secondAttribute="bottom" constant="8" symbolic="YES" id="ghA-zW-IGb"/>
+                                                <constraint firstAttribute="centerY" secondItem="Okl-lW-9hj" secondAttribute="centerY" constant="-27.5" id="krW-2k-jYQ"/>
+                                                <constraint firstAttribute="trailing" secondItem="dwe-mM-Ljx" secondAttribute="trailing" id="x8c-cV-6PP"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="AZO-MV-dn6"/>
+                                                    <exclude reference="drF-Pz-lrK"/>
+                                                    <exclude reference="krW-2k-jYQ"/>
+                                                </mask>
+                                            </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -1090,7 +1110,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W6q-6h-Djh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4250.625" y="1892.9577464788731"/>
+            <point key="canvasLocation" x="4250" y="1890"/>
         </scene>
     </scenes>
 </document>
