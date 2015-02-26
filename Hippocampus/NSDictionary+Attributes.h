@@ -30,6 +30,8 @@
 
 - (NSMutableArray*) mediaURLs;
 
+- (NSMutableArray*) croppedMediaURLs;
+
 - (NSString*) message;
 
 - (NSString*) truncatedMessage;

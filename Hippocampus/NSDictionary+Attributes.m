@@ -73,6 +73,20 @@
     return nil;
 }
 
+- (NSMutableArray*) croppedMediaURLs
+{
+    if ([self mediaURLs]) {
+        NSMutableArray* cropped = [[NSMutableArray alloc] initWithArray:[self mediaURLs]];
+        int i = 0;
+        for (NSString* edited in cropped) {
+            [cropped replaceObjectAtIndex:i withObject:[edited stringByReplacingOccurrencesOfString:@"upload/" withString:@"upload/c_scale,w_640/"]];
+            ++i;
+        }
+        return cropped;
+    }
+    return nil;
+}
+
 - (NSString*) message
 {
     return [self objectForKey:@"message"];

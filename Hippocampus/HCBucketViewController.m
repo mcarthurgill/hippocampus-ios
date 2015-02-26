@@ -11,6 +11,8 @@
 #import "HCContainerViewController.h"
 #import "HCBucketDetailsViewController.h"
 
+#define IMAGE_FADE_IN_TIME 0.2f
+
 @interface HCBucketViewController ()
 
 @end
@@ -210,9 +212,9 @@
         ++i;
     }
     
-    if ([item hasMediaURLs]) {
+    if ([item croppedMediaURLs]) {
         int j = 0;
-        for (NSString* url in [item mediaURLs]) {
+        for (NSString* url in [item croppedMediaURLs]) {
             UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*j, 280, PICTURE_HEIGHT)];
             [iv setTag:(200+j)];
             [iv setContentMode:UIViewContentModeScaleAspectFill];
@@ -221,11 +223,20 @@
             if ([item hasID]) {
                 [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
                     if (image) {
+                        [iv setAlpha:0.0f];
                         iv.image = image;
+                        [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+                            [iv setAlpha:1.0f];
+                        }];
                     }
                 }];
             } else {
+                [iv setAlpha:0.0f];
                 iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
+                [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+                    [iv setAlpha:1.0f];
+                }];
+                
             }
             [cell.contentView addSubview:iv];
             ++j;

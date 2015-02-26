@@ -14,6 +14,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+#define IMAGE_FADE_IN_TIME 0.2f
 
 @interface HCItemTableViewController ()
 
@@ -141,7 +142,7 @@
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         if ([self.item hasMediaURLs]) {
-            return [[self.item mediaURLs] count];
+            return [[self.item croppedMediaURLs] count];
         }
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"reminder"]) {
         return 1;
@@ -192,12 +193,18 @@
     [aiv startAnimating];
     
     UIImageView* iv = (UIImageView*)[cell.contentView viewWithTag:1];
-    NSString* url = [[self.item mediaURLs] objectAtIndex:indexPath.row];
+    NSString* url = [[self.item croppedMediaURLs] objectAtIndex:indexPath.row];
     
     if ([self.mediaDictionary objectForKey:url]) {
         UIImage* i = [self.mediaDictionary objectForKey:url];
         [iv setFrame:CGRectMake(iv.frame.origin.x, iv.frame.origin.y, iv.frame.size.width, i.size.height*(iv.frame.size.width/i.size.width))];
         [iv setImage:[self.mediaDictionary objectForKey:url]];
+        
+        [iv setAlpha:0.0f];
+        [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+            [iv setAlpha:1.0f];
+        }];
+        
         [iv setClipsToBounds:YES];
         [iv.layer setCornerRadius:8.0f];
     } else {
@@ -293,8 +300,8 @@
         return 56.0f;
     
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
-        if ([self.mediaDictionary objectForKey:[[self.item mediaURLs] objectAtIndex:indexPath.row]]) {
-            UIImage* i = [self.mediaDictionary objectForKey:[[self.item mediaURLs] objectAtIndex:indexPath.row]];
+        if ([self.mediaDictionary objectForKey:[[self.item croppedMediaURLs] objectAtIndex:indexPath.row]]) {
+            UIImage* i = [self.mediaDictionary objectForKey:[[self.item croppedMediaURLs] objectAtIndex:indexPath.row]];
             return 16 + i.size.height*(304/i.size.width);
         }
     }
@@ -513,11 +520,13 @@
 
 - (void) getImages
 {
-    if ([self.item hasMediaURLs]) {
-        for (NSString* url in [self.item mediaURLs]) {
+    if ([self.item croppedMediaURLs]) {
+        for (NSString* url in [self.item croppedMediaURLs]) {
             [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
-                [self.mediaDictionary setObject:image forKey:url];
-                [self reloadScreen];
+                if (![self.mediaDictionary objectForKey:url]) {
+                    [self.mediaDictionary setObject:image forKey:url];
+                    [self reloadScreen];
+                }
             }];
         }
     }
