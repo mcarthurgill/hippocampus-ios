@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface NSDictionary (Attributes)
 
@@ -52,6 +53,8 @@
 
 - (NSString*) bucketType;
 
+- (CLLocation*) location;
+
 - (BOOL) hasID;
 
 - (BOOL) isAllNotesBucket;
@@ -59,6 +62,8 @@
 - (BOOL) hasItems;
 
 - (BOOL) hasBucketsString;
+
+- (BOOL) hasLocation;
 
 - (BOOL) isOutstanding;
 

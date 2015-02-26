@@ -12,6 +12,7 @@
 #import "HCBucketsTableViewController.h"
 #import "HCContainerViewController.h"
 #import <QuartzCore/QuartzCore.h>
+@import MapKit;
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define IMAGE_FADE_IN_TIME 0.3f
@@ -129,6 +130,10 @@
     
     [self.sections addObject:@"actions"];
     
+    if ([self.item hasLocation]) {
+        [self.sections addObject:@"location"];
+    }
+    
     return self.sections.count;
 }
 
@@ -152,6 +157,8 @@
         }
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return 2;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"location"]) {
+        return 1;
     }
     return 0;
 }
@@ -171,6 +178,8 @@
         return [self tableView:tableView bucketCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         return [self tableView:tableView actionCellForIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"location"]) {
+        return [self tableView:tableView mapCellForIndexPath:indexPath];
     }
     return nil;
 }
@@ -291,6 +300,27 @@
     return cell;
 }
 
+- (UITableViewCell*) tableView:(UITableView*)tableView mapCellForIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"mapCell" forIndexPath:indexPath];
+    
+    MKMapView* mv = (MKMapView*)[cell.contentView viewWithTag:1];
+    
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    [annotation setCoordinate:[self.item location].coordinate];
+    [annotation setTitle:[NSString stringWithFormat:@"%f, %f", [self.item location].coordinate.latitude, [self.item location].coordinate.longitude]];
+    [mv addAnnotation:annotation];
+    
+    MKMapRect zoomRect = MKMapRectNull;
+    MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
+    MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
+    zoomRect = MKMapRectUnion(zoomRect, pointRect);
+    
+    [mv setVisibleMapRect:zoomRect animated:NO];
+    
+    return cell;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
@@ -304,6 +334,9 @@
             UIImage* i = [self.mediaDictionary objectForKey:[[self.item croppedMediaURLs] objectAtIndex:indexPath.row]];
             return 16 + i.size.height*(304/i.size.width);
         }
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"location"]) {
+        return 200.0f;
+        
     }
     
     return 44.0f;
@@ -335,6 +368,8 @@
         return @"Threads";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"location"]) {
+        return @"Note Location";
     }
     return nil;
 }

@@ -341,6 +341,11 @@
         [tempNote setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
         [tempNote setObject:[[[LXSession thisSession] user] userID] forKey:@"user_id"];
         
+        if ([[LXSession thisSession] hasLocation]) {
+            [tempNote setObject:[NSNumber numberWithDouble:[[LXSession currentLocation] coordinate].latitude]  forKey:@"latitude"];
+            [tempNote setObject:[NSNumber numberWithDouble:[[LXSession currentLocation] coordinate].longitude]  forKey:@"longitude"];
+        }
+        
         NSLog(@"%@", self.composeTextView.attributedText.string);
         
         if (self.imageAttachments && [self.imageAttachments count] > 0) {

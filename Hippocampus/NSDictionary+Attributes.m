@@ -137,6 +137,14 @@
     return [self objectForKey:@"bucket_type"];
 }
 
+- (CLLocation*) location
+{
+    if ([self hasLocation]) {
+        return [[CLLocation alloc] initWithLatitude:[[self objectForKey:@"latitude"] doubleValue] longitude:[[self objectForKey:@"longitude"] doubleValue]];
+    }
+    return nil;
+}
+
 - (BOOL) hasID
 {
     return [self objectForKey:@"id"] && NULL_TO_NIL([self objectForKey:@"id"]);
@@ -155,6 +163,11 @@
 - (BOOL) hasBucketsString
 {
     return [self bucketsString] && NULL_TO_NIL([self objectForKey:@"buckets_string"]);
+}
+
+- (BOOL) hasLocation
+{
+    return [self objectForKey:@"latitude"] && NULL_TO_NIL([self objectForKey:@"latitude"]) && [self objectForKey:@"longitude"] && NULL_TO_NIL([self objectForKey:@"longitude"]);
 }
 
 - (BOOL) isOutstanding
