@@ -20,6 +20,8 @@ static LXSession* thisSession = nil;
 @synthesize managedObjectContext;
 @synthesize persistentStoreCoordinator;
 
+@synthesize locationManager;
+
 //constructor
 -(id) init
 {
@@ -193,5 +195,75 @@ static LXSession* thisSession = nil;
     [imageData writeToFile:imagePath atomically:YES];
     return imagePath;
 }
+
+
+
+
++ (CLLocation*) currentLocation
+{
+    if ([[LXSession thisSession] locationManager]) {
+        return [[[LXSession thisSession] locationManager] location];
+    }
+    return nil;
+}
+
+- (BOOL) hasLocation
+{
+    return ([self locationManager] && [[self locationManager] location]);
+}
+
++ (BOOL) locationPermissionDetermined
+{
+    if ([CLLocationManager locationServicesEnabled]) {
+        NSLog(@"Location Services Enabled");
+        if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied) {
+            NSLog(@"locationDenied!");
+        } else if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorized) {
+            NSLog(@"location authorized!");
+        } else if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorizedAlways || [CLLocationManager authorizationStatus] ==kCLAuthorizationStatusAuthorizedWhenInUse) {
+            NSLog(@"new location authorized!");
+        } else {
+            NSLog(@"indeterminate!");
+            return NO;
+        }
+    }
+    return YES;
+}
+
+- (void) startLocationUpdates
+{
+    if (nil == locationManager)
+        locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    
+    if ([LXSession locationPermissionDetermined]) {
+        [self getCurrentLocation];
+    } else {
+        [locationManager requestWhenInUseAuthorization];
+    }
+}
+
+- (void) getCurrentLocation
+{
+    NSLog(@"getting current location!");
+    locationManager.distanceFilter = 50.0;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [locationManager startUpdatingLocation];
+}
+
+- (void) locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorizedAlways || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [self getCurrentLocation];
+    }
+}
+
+- (void) locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLLocation *myLocation = [locations lastObject];
+    //[manager stopUpdatingLocation];
+    NSLog(@"LATITUDE, LONGITUDE: %f, %f", myLocation.coordinate.latitude, myLocation.coordinate.longitude);
+}
+
 
 @end

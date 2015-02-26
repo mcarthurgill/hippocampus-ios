@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import "HCUser.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface LXSession : NSObject
+@interface LXSession : NSObject <CLLocationManagerDelegate>
 
 +(LXSession*) thisSession;
 
@@ -18,6 +19,8 @@
 @property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
+
+@property (strong, nonatomic) CLLocationManager* locationManager;
 
 - (void) setVariables;
 
@@ -35,5 +38,15 @@
 + (NSString*) documentsPathForFileName:(NSString*) name;
 
 + (NSString*) writeImageToDocumentsFolder:(UIImage*)image;
+
+
+
++ (CLLocation*) currentLocation;
+
+- (BOOL) hasLocation;
+
++ (BOOL) locationPermissionDetermined;
+
+- (void) startLocationUpdates;
 
 @end

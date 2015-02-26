@@ -27,6 +27,9 @@
         [self setRootStoryboard:@"Messages"];
     }
 //          [self setRootStoryboard:@"Main"];
+    
+    [[LXSession thisSession] startLocationUpdates];
+    
     return YES;
 }
 

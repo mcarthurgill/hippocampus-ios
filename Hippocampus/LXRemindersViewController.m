@@ -154,7 +154,7 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         NSDictionary* item = [self.allItems objectAtIndex:indexPath.row];
-        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 14.0f;
+        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f;
     }else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
         return 90.0;
     }

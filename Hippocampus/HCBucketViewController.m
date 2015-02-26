@@ -11,7 +11,7 @@
 #import "HCContainerViewController.h"
 #import "HCBucketDetailsViewController.h"
 
-#define IMAGE_FADE_IN_TIME 0.2f
+#define IMAGE_FADE_IN_TIME 0.3f
 
 @interface HCBucketViewController ()
 
@@ -267,7 +267,7 @@
         if ([item hasMediaURLs]) {
             additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
         }
-        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 14.0f + additional;
+        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional;
     }
     return 44.0;
 }
@@ -587,6 +587,8 @@
 }
 
 
+
+
 # pragma mark Textview
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -758,7 +760,7 @@
     self.imageAttachments = [[NSMutableArray alloc] init];
     [self.imageAttachments addObject:[UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]]];
     
-    [attributedString setAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0] forKey:NSFontAttributeName] range:NSMakeRange(0, attributedString.length)];
+    [attributedString setAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f] forKey:NSFontAttributeName] range:NSMakeRange(0, attributedString.length)];
     
     textAttachment.image = [UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]];
     NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];

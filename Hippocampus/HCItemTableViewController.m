@@ -14,7 +14,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
-#define IMAGE_FADE_IN_TIME 0.2f
+#define IMAGE_FADE_IN_TIME 0.3f
 
 @interface HCItemTableViewController ()
 
@@ -294,7 +294,7 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
-        return [self heightForText:[self.item message] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f + 36.0f;
+        return [self heightForText:[self.item message] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 36.0f;
     
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return 56.0f;
@@ -398,7 +398,7 @@
     savingChanges = YES;
     [self.item setObject:reminder forKey:@"reminder_date"];
     [self.item setObject:type forKey:@"item_type"];
-    [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
+    [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_request_timestamp"];
     
     [self showHUDWithMessage:[NSString stringWithFormat:@"Saving Reminder"]];
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"PUT" withParamaters:@{@"item":self.item}
@@ -425,7 +425,7 @@
     unsavedChanges = YES;
     savingChanges = YES;
     [self.item setObject:[self.messageTextView text] forKey:@"message"];
-    [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
+    [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_request_timestamp"];
     
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"PUT" withParamaters:@{@"item":self.item}
                            success:^(id responseObject) {
@@ -623,7 +623,7 @@
     NSString *result = [textView.text stringByReplacingCharactersInRange:range withString:text];
 
     [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(saveUpdatedMessage:) withObject:result afterDelay:0.3];
+    [self performSelector:@selector(saveUpdatedMessage:) withObject:result afterDelay:0.5];
     [self performSelector:@selector(updateTableViewCellSizes:) withObject:textView afterDelay:0];
     
     unsavedChanges = YES;
@@ -635,8 +635,12 @@
 
 - (void) updateTableViewCellSizes:(UITextView *)textView {
     [textView invalidateIntrinsicContentSize];
-    [self.tableView beginUpdates];
-    [self.tableView endUpdates];
+    if (![self.item hasMessage]) {
+        [self.tableView reloadData];
+    } else {
+        [self.tableView beginUpdates];
+        [self.tableView endUpdates];
+    }
 }
 
 - (void) textViewDidBeginEditing:(UITextView *)textView

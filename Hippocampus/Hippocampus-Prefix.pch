@@ -26,4 +26,5 @@
     #import "LXString+NSString.h"
     #import "SGImageCache.h"
     #import "NSDictionary+Attributes.h"
+    #import "UIFont+HCFonts.h"
 #endif

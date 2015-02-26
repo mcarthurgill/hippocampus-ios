@@ -285,7 +285,7 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
         
         NSDictionary* item = [[self searchArray] objectAtIndex:indexPath.row];
-        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont fontWithName:@"HelveticaNeue-Light" size:17.0f]] + 22.0f + 12.0f;
+        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f;
         
     }
     
