@@ -18,7 +18,7 @@
 #define PICTURE_HEIGHT 280
 #define PICTURE_MARGIN_TOP 8
 
-@interface HCBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface HCBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
 {
     BOOL requestMade;
     BOOL shouldContinueRequesting;
@@ -47,6 +47,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
 @property (strong, nonatomic) UIImagePickerController *pickerController;
 @property (strong, nonatomic) NSMutableDictionary* metadata;
+@property (strong, nonatomic) NSMutableDictionary *itemForDeletion;
 
 - (IBAction)addAction:(id)sender;
 - (IBAction)uploadImage:(id)sender;

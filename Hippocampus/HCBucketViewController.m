@@ -39,6 +39,7 @@
 @synthesize delegate;
 @synthesize pickerController;
 @synthesize metadata;
+@synthesize itemForDeletion; 
 
 
 - (void)viewDidLoad
@@ -53,7 +54,7 @@
     [self.navigationItem setTitle:[self.bucket firstName]];
     [self setupConstraint];
     [self observeKeyboard];
-    
+    [self setLongPressGestureToRemoveItem];
     [self refreshChange];
     
     [self setTableScrollToIndex:([self currentArray].count) animated:NO];
@@ -105,6 +106,7 @@
                                     target:nil
                                     action:nil];
     [self cacheImagePickerController];
+    self.itemForDeletion = [[NSMutableDictionary alloc] init];
 }
 
 -(void) cacheImagePickerController {
@@ -189,7 +191,7 @@
     UIFont* font = note.font;
     float leftMargin = note.frame.origin.x;
     float topMargin = note.frame.origin.y;
-    float width = note.frame.size.width;
+    float width = self.view.frame.size.width - 25.0 - 10.0; //for leading and trailing edges
     [note removeFromSuperview];
     
     note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font])];
@@ -314,9 +316,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
             NSDictionary* object = [[self currentArray] objectAtIndex:indexPath.row];
-            [self deleteItem:object];
-            [[self allItems] removeObject:object];
-            [self reloadScreenToIndex:indexPath.row animated:YES];
+            [self deleteItemFromServerAndTable:object];
         }
     }
 }
@@ -373,8 +373,9 @@
         
         [self addItemToTable:[NSDictionary dictionaryWithDictionary:tempNote]];
         [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
+        [self setScrollToPosition:@"bottom"];
         [self reloadScreenToIndex:[self currentArray].count animated:YES];
-        [self clearTextField:NO];
+        [self clearTextField:YES];
         [self saveBucket];
         
         [[LXSession thisSession] attemptNoteSave:tempNote
@@ -517,6 +518,13 @@
 }
 
 
+- (void) deleteItemFromServerAndTable:(NSDictionary *)item {
+    [self deleteItem:item];
+    NSInteger index = [[self allItems] indexOfObject:item];
+    [[self allItems] removeObject:item];
+    [self reloadScreenToIndex:index animated:YES];
+}
+
 - (void) deleteItem:(NSDictionary *)item {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil success:^(id responseObject) {} failure:^(NSError* error) {}];
 }
@@ -552,7 +560,6 @@
     if (!self.allItems) {
         if ([[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]) {
             self.allItems = [[NSMutableArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]];
-            NSLog(@"all items: %@", self.allItems);
             //return [[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]];
         }
     }
@@ -630,6 +637,11 @@
 
 - (void) textViewDidChange:(UITextView *)textView
 {
+    self.textViewHeightConstraint.constant = textView.intrinsicContentSize.height;
+    
+    [UIView animateWithDuration:0.0 animations:^{
+        [self.view layoutIfNeeded];
+    }];
     [self toggleSaveButton];
     if (self.composeTextView.text.length == 0) {
         [self.composeTextView setText:@""];
@@ -639,6 +651,8 @@
 
 - (void) clearTextField:(BOOL)dismissKeyboard
 {
+    self.textViewHeightConstraint.constant = self.saveButton.frame.size.height - 8; //8 for the top and bottom space between textview + view
+    
     if (!dismissKeyboard && [self.composeTextView isFirstResponder]) {
         self.composeTextView.text = @"";
         self.composeTextView.textColor = [UIColor blackColor];
@@ -661,13 +675,12 @@
 - (void) observeKeyboard {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 
 - (void) keyboardWillShow:(NSNotification *)sender {
     if (self.isViewLoaded && self.view.window) {
-        [self setScrollToPosition:@"bottom"];
+        [self setScrollToPosition:@"note"];
         [self setTableScrollToIndex:[self currentArray].count animated:YES];
         
         NSDictionary *info = [sender userInfo];
@@ -686,29 +699,6 @@
         }];
     }
 }
-
-- (void) keyboardDidChangeFrame:(NSNotification *)sender
-{
-    if (self.isViewLoaded && self.view.window) {
-
-        NSDictionary *info = [sender userInfo];
-        NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-        CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-        CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
-        self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
-        NSLog(@"bottom constraint: %f", self.bottomConstraint.constant);
-        
-        //for buckets where tableview.contentSize is small
-        if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
-            self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
-        }
-        
-        [UIView animateWithDuration:animationDuration animations:^{
-            [self.view layoutIfNeeded];
-        }];
-    }
-}
-
 
 - (void) keyboardWillHide:(NSNotification *)sender {
     if (self.isViewLoaded && self.view.window) {
@@ -760,10 +750,11 @@
 
 # pragma mark upload images
 
-- (IBAction) uploadImage:(id)sender
-{
+- (IBAction)uploadImage:(id)sender {
+    [self showHUDWithMessage:@"Loading pictures"];
     self.pickerController.delegate = self;
     [self presentViewController:self.pickerController animated:YES completion:nil];
+    [self hideHUD];
 }
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -839,4 +830,51 @@
     self.bucket = updatedBucket;
     [self.delegate sendRequestForUpdatedBucket];
 }
+
+
+# pragma  mark - AlertView Delegate
+
+- (void) alertForDeletion {
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Are you sure?"
+                                                     message:@"Do you want to delete this note?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles: nil];
+    [alert addButtonWithTitle:@"Delete"];
+    [alert show];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        if(self.itemForDeletion) {
+            [self deleteItemFromServerAndTable:self.itemForDeletion];
+        }
+    }
+}
+
+
+# pragma mark - Gesture Recognizers
+
+- (void) setLongPressGestureToRemoveItem {
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 0.7; //seconds
+    lpgr.delegate = self;
+    [self.tableView addGestureRecognizer:lpgr];
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[self currentArray] objectAtIndex:indexPath.row]) {
+            [self setItemForDeletion:[[self currentArray] objectAtIndex:indexPath.row]];
+            [self alertForDeletion];
+        }
+    }
+}
+
 @end
