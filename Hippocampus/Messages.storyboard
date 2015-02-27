@@ -430,6 +430,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="560"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="QGJ-4x-mh1"/>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="560" id="bMG-Uy-8l7"/>
                                     <constraint firstAttribute="height" constant="564" id="qaP-pr-pKQ"/>
                                 </constraints>
@@ -526,6 +527,7 @@
                                 </prototypes>
                                 <variation key="default">
                                     <mask key="constraints">
+                                        <exclude reference="QGJ-4x-mh1"/>
                                         <exclude reference="qaP-pr-pKQ"/>
                                     </mask>
                                 </variation>
