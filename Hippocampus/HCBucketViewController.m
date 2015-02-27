@@ -743,9 +743,10 @@
 # pragma mark upload images
 
 - (IBAction)uploadImage:(id)sender {
-
+    [self showHUDWithMessage:@"Loading pictures"];
     self.pickerController.delegate = self;
     [self presentViewController:self.pickerController animated:YES completion:nil];
+    [self hideHUD];
 }
 
 - (void) imagePickerController:(UIImagePickerController *)picker
