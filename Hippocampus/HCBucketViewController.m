@@ -36,6 +36,7 @@
 @synthesize initializeWithKeyboardUp;
 @synthesize delegate;
 @synthesize pickerController;
+@synthesize itemForDeletion; 
 
 
 - (void)viewDidLoad
@@ -50,7 +51,7 @@
     [self.navigationItem setTitle:[self.bucket firstName]];
     [self setupConstraint];
     [self observeKeyboard];
-    
+    [self setLongPressGestureToRemoveItem];
     [self refreshChange];
     
     [self setTableScrollToIndex:([self currentArray].count) animated:NO];
@@ -97,6 +98,7 @@
                                     target:nil
                                     action:nil];
     [self cacheImagePickerController];
+    self.itemForDeletion = [[NSMutableDictionary alloc] init];
 }
 
 -(void) cacheImagePickerController {
@@ -306,9 +308,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
             NSDictionary* object = [[self currentArray] objectAtIndex:indexPath.row];
-            [self deleteItem:object];
-            [[self allItems] removeObject:object];
-            [self reloadScreenToIndex:indexPath.row animated:YES];
+            [self deleteItemFromServerAndTable:object];
         }
     }
 }
@@ -504,6 +504,13 @@
 }
 
 
+- (void) deleteItemFromServerAndTable:(NSDictionary *)item {
+    [self deleteItem:item];
+    NSInteger index = [[self allItems] indexOfObject:item];
+    [[self allItems] removeObject:item];
+    [self reloadScreenToIndex:index animated:YES];
+}
+
 - (void) deleteItem:(NSDictionary *)item {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil success:^(id responseObject) {} failure:^(NSError* error) {}];
 }
@@ -539,7 +546,6 @@
     if (!self.allItems) {
         if ([[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]) {
             self.allItems = [[NSMutableArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]];
-            NSLog(@"all items: %@", self.allItems);
             //return [[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]];
         }
     }
@@ -781,4 +787,51 @@
     self.bucket = updatedBucket;
     [self.delegate sendRequestForUpdatedBucket];
 }
+
+
+# pragma  mark - AlertView Delegate
+
+- (void) alertForDeletion {
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Are you sure?"
+                                                     message:@"Do you want to delete this note?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles: nil];
+    [alert addButtonWithTitle:@"Delete"];
+    [alert show];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        if(self.itemForDeletion) {
+            [self deleteItemFromServerAndTable:self.itemForDeletion];
+        }
+    }
+}
+
+
+# pragma mark - Gesture Recognizers
+
+- (void) setLongPressGestureToRemoveItem {
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 0.7; //seconds
+    lpgr.delegate = self;
+    [self.tableView addGestureRecognizer:lpgr];
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[self currentArray] objectAtIndex:indexPath.row]) {
+            [self setItemForDeletion:[[self currentArray] objectAtIndex:indexPath.row]];
+            [self alertForDeletion];
+        }
+    }
+}
+
 @end

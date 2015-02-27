@@ -54,7 +54,8 @@
     
     //remove extra cell lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
+
     [self setLongPressGestureToRemoveBucket];
     
     self.mediaDictionary = [[NSMutableDictionary alloc] init];
@@ -587,7 +588,7 @@
 
 - (void) alertForRemovalFromBucket:(NSMutableDictionary *)bucket {
     UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Are you sure?"
-                                                     message:[NSString stringWithFormat:@"Do you want you remove this note from the %@ thread?", [bucket firstName]]
+                                                     message:[NSString stringWithFormat:@"Do you want to remove this note from the %@ thread?", [bucket firstName]]
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles: nil];
