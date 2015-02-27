@@ -359,6 +359,7 @@
         
         [self addItemToTable:[NSDictionary dictionaryWithDictionary:tempNote]];
         [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
+        [self setScrollToPosition:@"bottom"];
         [self reloadScreenToIndex:[self currentArray].count animated:YES];
         [self clearTextField:NO];
         [self saveBucket];
@@ -649,7 +650,7 @@
 
 - (void) keyboardWillShow:(NSNotification *)sender {
     if (self.isViewLoaded && self.view.window) {
-        [self setScrollToPosition:@"bottom"];
+        [self setScrollToPosition:@"note"];
         [self setTableScrollToIndex:[self currentArray].count animated:YES];
         
         NSDictionary *info = [sender userInfo];
