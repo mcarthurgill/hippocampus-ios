@@ -361,7 +361,7 @@
         [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
         [self setScrollToPosition:@"bottom"];
         [self reloadScreenToIndex:[self currentArray].count animated:YES];
-        [self clearTextField:NO];
+        [self clearTextField:YES];
         [self saveBucket];
         
         [[LXSession thisSession] attemptNoteSave:tempNote
@@ -617,11 +617,18 @@
 
 - (void) textViewDidChange:(UITextView *)textView
 {
+    self.textViewHeightConstraint.constant = textView.intrinsicContentSize.height;
+    
+    [UIView animateWithDuration:0.0 animations:^{
+        [self.view layoutIfNeeded];
+    }];
     [self toggleSaveButton];
 }
 
 - (void) clearTextField:(BOOL)dismissKeyboard
 {
+    self.textViewHeightConstraint.constant = self.saveButton.frame.size.height - 8; //8 for the top and bottom space between textview + view
+    
     if (!dismissKeyboard && [self.composeTextView isFirstResponder]) {
         self.composeTextView.text = @"";
         self.composeTextView.textColor = [UIColor blackColor];
@@ -644,7 +651,6 @@
 - (void) observeKeyboard {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 
@@ -669,29 +675,6 @@
         }];
     }
 }
-
-- (void) keyboardDidChangeFrame:(NSNotification *)sender
-{
-    if (self.isViewLoaded && self.view.window) {
-
-        NSDictionary *info = [sender userInfo];
-        NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-        CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-        CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
-        self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
-        NSLog(@"bottom constraint: %f", self.bottomConstraint.constant);
-        
-        //for buckets where tableview.contentSize is small
-        if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
-            self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
-        }
-        
-        [UIView animateWithDuration:animationDuration animations:^{
-            [self.view layoutIfNeeded];
-        }];
-    }
-}
-
 
 - (void) keyboardWillHide:(NSNotification *)sender {
     if (self.isViewLoaded && self.view.window) {

@@ -426,10 +426,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" keyboardDismissMode="interactive" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="3q9-fo-byX">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="560"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
+                                    <constraint firstAttribute="height" relation="lessThanOrEqual" constant="560" id="bMG-Uy-8l7"/>
                                     <constraint firstAttribute="height" constant="564" id="qaP-pr-pKQ"/>
                                 </constraints>
                                 <prototypes>
@@ -533,10 +534,10 @@
                                     <outlet property="delegate" destination="NRV-Pe-zK1" id="Tzh-OY-tpS"/>
                                 </connections>
                             </tableView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xd3-CD-40J">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xd3-CD-40J">
                                 <rect key="frame" x="0.0" y="560" width="600" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
                                         <rect key="frame" x="541" y="0.0" width="59" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="Xhe-E5-quE"/>
@@ -549,7 +550,7 @@
                                             <action selector="addAction:" destination="NRV-Pe-zK1" eventType="touchUpInside" id="M2n-Aq-MSH"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDx-XO-QSU">
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDx-XO-QSU">
                                         <rect key="frame" x="0.0" y="0.0" width="34" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="BlD-ql-ysK"/>
@@ -563,12 +564,12 @@
                                             <action selector="uploadImage:" destination="NRV-Pe-zK1" eventType="touchUpInside" id="gmc-2S-rel"/>
                                         </connections>
                                     </button>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Add Note" translatesAutoresizingMaskIntoConstraints="NO" id="bUM-CL-Fv8">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" text="Add Note" translatesAutoresizingMaskIntoConstraints="NO" id="bUM-CL-Fv8">
                                         <rect key="frame" x="34" y="4" width="506" height="32"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="201" id="ZY6-ZM-wrB"/>
-                                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="24" id="Zxe-fW-utz"/>
+                                            <constraint firstAttribute="height" constant="32" id="Zxe-fW-utz"/>
                                         </constraints>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
@@ -623,8 +624,11 @@
                             <mask key="constraints">
                                 <exclude reference="EdP-8I-bVl"/>
                                 <exclude reference="RU0-Vu-dut"/>
+                                <exclude reference="XLp-cP-ZgA"/>
+                                <exclude reference="feF-wa-9lt"/>
                                 <exclude reference="pNr-wi-OPb"/>
                                 <exclude reference="U5z-13-Tcq"/>
+                                <exclude reference="yTx-v0-TMU"/>
                             </mask>
                         </variation>
                     </view>
@@ -640,8 +644,8 @@
                         <outlet property="composeView" destination="xd3-CD-40J" id="tGS-tI-OsI"/>
                         <outlet property="saveButton" destination="suh-LO-BkZ" id="HKQ-h5-ObB"/>
                         <outlet property="tableView" destination="3q9-fo-byX" id="6PM-gN-Sun"/>
-                        <outlet property="tableviewHeightConstraint" destination="qaP-pr-pKQ" id="0Wh-ad-v4t"/>
-                        <outlet property="textViewHeightConstraint" destination="Zxe-fW-utz" id="Rf9-hv-8pE"/>
+                        <outlet property="tableviewHeightConstraint" destination="bMG-Uy-8l7" id="FDx-Sr-agq"/>
+                        <outlet property="textViewHeightConstraint" destination="Zxe-fW-utz" id="ScX-n9-kLU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xhS-hH-joO" userLabel="First Responder" sceneMemberID="firstResponder"/>
