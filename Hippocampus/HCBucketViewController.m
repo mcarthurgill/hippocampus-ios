@@ -11,6 +11,8 @@
 #import "HCContainerViewController.h"
 #import "HCBucketDetailsViewController.h"
 
+@import AssetsLibrary;
+
 #define IMAGE_FADE_IN_TIME 0.3f
 
 @interface HCBucketViewController ()
@@ -36,6 +38,7 @@
 @synthesize initializeWithKeyboardUp;
 @synthesize delegate;
 @synthesize pickerController;
+@synthesize metadata;
 @synthesize itemForDeletion; 
 
 
@@ -71,6 +74,11 @@
 {
     [super viewWillDisappear:animated];
     [self setInitializeWithKeyboardUp:NO];
+}
+
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
     [self.composeTextView resignFirstResponder];
 }
 
@@ -330,7 +338,10 @@
     if (self.composeTextView.text.length > 0) {
         NSMutableDictionary* tempNote = [[NSMutableDictionary alloc] init];
         
-        [tempNote setObject:self.composeTextView.attributedText.string forKey:@"message"];
+        NSString* s = self.imageAttachments && self.imageAttachments.count > 0 && [[self.composeTextView.attributedText.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] < 2 ? @"" : self.composeTextView.attributedText.string;
+        
+        
+        [tempNote setObject:s forKey:@"message"];
         [tempNote setObject:@"once" forKey:@"item_type"];
         [tempNote setObject:[self.bucket objectForKey:@"id"] forKey:@"bucket_id"];
         
@@ -341,7 +352,10 @@
         [tempNote setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
         [tempNote setObject:[[[LXSession thisSession] user] userID] forKey:@"user_id"];
         
-        if ([[LXSession thisSession] hasLocation]) {
+        if (metadata && [metadata hasLocation]) {
+            [tempNote setObject:[metadata objectForKey:@"latitude"]  forKey:@"latitude"];
+            [tempNote setObject:[metadata objectForKey:@"longitude"]  forKey:@"longitude"];
+        } else if ([[LXSession thisSession] hasLocation]) {
             [tempNote setObject:[NSNumber numberWithDouble:[[LXSession currentLocation] coordinate].latitude]  forKey:@"latitude"];
             [tempNote setObject:[NSNumber numberWithDouble:[[LXSession currentLocation] coordinate].longitude]  forKey:@"longitude"];
         }
@@ -629,6 +643,10 @@
         [self.view layoutIfNeeded];
     }];
     [self toggleSaveButton];
+    if (self.composeTextView.text.length == 0) {
+        [self.composeTextView setText:@""];
+        [self.composeTextView setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f]];
+    }
 }
 
 - (void) clearTextField:(BOOL)dismissKeyboard
@@ -739,13 +757,40 @@
     [self hideHUD];
 }
 
-- (void) imagePickerController:(UIImagePickerController *)picker
-         didFinishPickingImage:(UIImage *)image
-                   editingInfo:(NSDictionary *)editingInfo
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     [self textViewDidBeginEditing:self.composeTextView];
     [self.saveButton setEnabled:YES];
     
+    
+    metadata = [[NSMutableDictionary alloc] init];
+    
+    NSURL* tempURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+    if (tempURL) {
+        ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *myAsset) {
+            CLLocation* l = [myAsset valueForProperty:ALAssetPropertyLocation];
+            if (l && [l coordinate].latitude && [l coordinate].longitude) {
+                NSLog(@"location: %@", l);
+                NSLog(@"coordinates: %f, %f", [l coordinate].latitude, [l coordinate].longitude);
+                [metadata setObject:[NSNumber numberWithDouble:[l coordinate].latitude] forKey:@"latitude"];
+                [metadata setObject:[NSNumber numberWithDouble:[l coordinate].longitude] forKey:@"longitude"];
+            } else {
+                metadata = [[NSMutableDictionary alloc] init];
+            }
+        };
+        ALAssetsLibrary *assetsLib = [[ALAssetsLibrary alloc] init];
+        [assetsLib assetForURL:tempURL resultBlock:resultBlock failureBlock:nil];
+    }
+    
+    [self updateComposeViewWithImage:[info objectForKey:UIImagePickerControllerOriginalImage]];
+    
+    [self dismissViewControllerAnimated:YES completion:^(void){
+        [self.composeTextView becomeFirstResponder];
+    }];
+}
+
+- (void) updateComposeViewWithImage:(UIImage*)image
+{
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\r%@", self.composeTextView.attributedText.string]];
     NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
     textAttachment.image = image;
@@ -770,7 +815,8 @@
     }];
 }
 
-- (UIImageOrientation) properOrientationForImage:(UIImage *)image {
+- (UIImageOrientation) properOrientationForImage:(UIImage *)image
+{
     if (image.imageOrientation == 1) {
         return UIImageOrientationDown;
     } else if (image.imageOrientation == 2) {
@@ -784,7 +830,8 @@
 
 # pragma mark - HCUpdateBucketDelegate
 
--(void)updateBucket:(NSMutableDictionary *)updatedBucket {
+-(void)updateBucket:(NSMutableDictionary *)updatedBucket
+{
     self.bucket = updatedBucket;
     [self.delegate sendRequestForUpdatedBucket];
 }
