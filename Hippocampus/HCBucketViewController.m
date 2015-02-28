@@ -763,7 +763,8 @@
     [attributedString replaceCharactersInRange:NSMakeRange(0, 0) withAttributedString:attrStringWithImage];
     
     self.composeTextView.attributedText = attributedString;
-    
+    self.textViewHeightConstraint.constant = self.composeTextView.intrinsicContentSize.height;
+
     [self dismissViewControllerAnimated:YES completion:^(void){
         [self.composeTextView becomeFirstResponder];
     }];
