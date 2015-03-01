@@ -528,6 +528,7 @@
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="QGJ-4x-mh1"/>
+                                        <exclude reference="bMG-Uy-8l7"/>
                                         <exclude reference="qaP-pr-pKQ"/>
                                     </mask>
                                 </variation>
