@@ -225,7 +225,7 @@
     if ([item croppedMediaURLs]) {
         int j = 0;
         for (NSString* url in [item croppedMediaURLs]) {
-            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*j, 280, PICTURE_HEIGHT)];
+            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*j, cell.contentView.frame.size.width-40.0f, PICTURE_HEIGHT)];
             [iv setTag:(200+j)];
             [iv setContentMode:UIViewContentModeScaleAspectFill];
             [iv setClipsToBounds:YES];

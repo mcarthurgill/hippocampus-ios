@@ -79,8 +79,8 @@
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vSb-r3-dmZ" id="Uex-7J-nTZ">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DnI-cQ-nyv">
-                                            <rect key="frame" x="18" y="13" width="537" height="25"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DnI-cQ-nyv">
+                                            <rect key="frame" x="18" y="14" width="537" height="25"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="281" id="Rud-lS-bco"/>
                                                 <constraint firstAttribute="height" constant="25" id="WkI-r9-qC9"/>
@@ -96,7 +96,7 @@
                                                 </mask>
                                             </variation>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="akl-57-fyj">
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="akl-57-fyj">
                                             <rect key="frame" x="563" y="22" width="8" height="8"/>
                                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
@@ -107,8 +107,8 @@
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gE-Wp-zoN">
-                                            <rect key="frame" x="18" y="38" width="537" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9gE-Wp-zoN">
+                                            <rect key="frame" x="18" y="35" width="537" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="1ai-HG-Aa5"/>
                                                 <constraint firstAttribute="width" constant="281" id="2oh-Fe-VDS"/>
@@ -124,7 +124,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="9gE-Wp-zoN" firstAttribute="top" secondItem="DnI-cQ-nyv" secondAttribute="bottom" id="M9v-oi-QJ3"/>
+                                        <constraint firstItem="9gE-Wp-zoN" firstAttribute="top" secondItem="DnI-cQ-nyv" secondAttribute="bottom" constant="-4" id="M9v-oi-QJ3"/>
                                         <constraint firstItem="akl-57-fyj" firstAttribute="leading" secondItem="DnI-cQ-nyv" secondAttribute="trailing" constant="8" id="P8A-l0-YGI"/>
                                         <constraint firstItem="akl-57-fyj" firstAttribute="centerY" secondItem="DnI-cQ-nyv" secondAttribute="centerY" id="Qv1-YJ-318"/>
                                         <constraint firstItem="akl-57-fyj" firstAttribute="leading" secondItem="DnI-cQ-nyv" secondAttribute="leading" id="X3c-Ba-4Lh"/>
