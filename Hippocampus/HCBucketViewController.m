@@ -619,6 +619,9 @@
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
+    [self setScrollToPosition:@"bottom"];
+    [self setTableScrollToIndex:[[self currentArray] count] animated:YES];
+    
     if ([textView.text isEqualToString:@"Add Note"]) {
         textView.text = @"";
         textView.textColor = [UIColor blackColor];
@@ -689,10 +692,7 @@
 //        CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
         self.bottomConstraint.constant = frame.origin.y - CGRectGetHeight(self.view.frame);
         
-        //for buckets where tableview.contentSize is small
-        if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
-            self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
-        }
+        self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
         
         [UIView animateWithDuration:animationDuration animations:^{
             [self.view layoutIfNeeded];
