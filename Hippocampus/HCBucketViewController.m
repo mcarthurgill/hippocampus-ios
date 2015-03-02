@@ -194,7 +194,7 @@
     float width = self.view.frame.size.width - 25.0 - 10.0; //for leading and trailing edges
     [note removeFromSuperview];
     
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font])];
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font]+4.0f)];
     [note setFont:font];
     [note setText:[item truncatedMessage]];
     [note setTag:1];
@@ -375,7 +375,7 @@
         [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
         [self setScrollToPosition:@"bottom"];
         [self reloadScreenToIndex:[self currentArray].count animated:YES];
-        [self clearTextField:YES];
+        [self clearTextField:NO];
         [self saveBucket];
         
         [[LXSession thisSession] attemptNoteSave:tempNote

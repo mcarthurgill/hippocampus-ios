@@ -459,7 +459,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0r-MJ-5Ia">
-                                                    <rect key="frame" x="18" y="37" width="549" height="18"/>
+                                                    <rect key="frame" x="18" y="37" width="549" height="23.5"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="286" id="4rk-Af-D5t"/>
                                                         <constraint firstAttribute="height" constant="22" id="G35-K5-WF7"/>
@@ -518,7 +518,7 @@
                                                 <constraint firstItem="DaH-67-hFJ" firstAttribute="top" secondItem="wAD-2j-Iod" secondAttribute="topMargin" constant="6" id="e68-Hd-vT2"/>
                                                 <constraint firstItem="UYX-8J-7DJ" firstAttribute="leading" secondItem="B0r-MJ-5Ia" secondAttribute="leading" id="hl1-ey-6I6"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="B0r-MJ-5Ia" secondAttribute="trailing" constant="25" id="jmM-uo-gq2"/>
-                                                <constraint firstAttribute="bottomMargin" secondItem="B0r-MJ-5Ia" secondAttribute="bottom" constant="6" id="pvv-fF-1Wd"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="B0r-MJ-5Ia" secondAttribute="bottom" constant="1" id="pvv-fF-1Wd"/>
                                                 <constraint firstItem="DaH-67-hFJ" firstAttribute="centerY" secondItem="UYX-8J-7DJ" secondAttribute="centerY" id="suS-2N-V1o"/>
                                             </constraints>
                                             <variation key="default">

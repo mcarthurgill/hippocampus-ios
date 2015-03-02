@@ -208,12 +208,14 @@
     if ([self.mediaDictionary objectForKey:url]) {
         UIImage* i = [self.mediaDictionary objectForKey:url];
         [iv setFrame:CGRectMake(iv.frame.origin.x, iv.frame.origin.y, iv.frame.size.width, i.size.height*(iv.frame.size.width/i.size.width))];
-        [iv setImage:[self.mediaDictionary objectForKey:url]];
         
-        [iv setAlpha:0.0f];
-        [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
-            [iv setAlpha:1.0f];
-        }];
+        if (![iv image]) {
+            [iv setImage:[self.mediaDictionary objectForKey:url]];
+            [iv setAlpha:0.0f];
+            [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+                [iv setAlpha:1.0f];
+            }];
+        }
         
         [iv setClipsToBounds:YES];
         [iv.layer setCornerRadius:8.0f];
