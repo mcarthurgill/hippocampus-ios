@@ -246,7 +246,7 @@
     UIFont* font = note.font;
     float leftMargin = note.frame.origin.x;
     float topMargin = note.frame.origin.y;
-    float width = note.frame.size.width;
+    float width = self.view.frame.size.width - 25.0 - 10.0; //for leading and trailing edges
     [note removeFromSuperview];
     
     note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font])];
