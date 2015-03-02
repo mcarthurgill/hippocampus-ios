@@ -39,7 +39,7 @@
 @synthesize delegate;
 @synthesize pickerController;
 @synthesize metadata;
-@synthesize itemForDeletion; 
+@synthesize itemForDeletion;
 
 
 - (void)viewDidLoad
@@ -640,15 +640,23 @@
 
 - (void) textViewDidChange:(UITextView *)textView
 {
-    self.textViewHeightConstraint.constant = textView.intrinsicContentSize.height;
-    
-    [UIView animateWithDuration:0.0 animations:^{
-        [self.view layoutIfNeeded];
-    }];
+    [self updateConstraintsForTextView:textView];
     [self toggleSaveButton];
     if (self.composeTextView.text.length == 0) {
         [self.composeTextView setText:@""];
         [self.composeTextView setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f]];
+    }
+}
+
+- (void) updateConstraintsForTextView:(UITextView *)textView {
+    float difference = textView.intrinsicContentSize.height - self.textViewHeightConstraint.constant;
+    if (difference > 0.0) {
+        self.textViewHeightConstraint.constant = textView.intrinsicContentSize.height;
+        self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - difference - 8; //8 for the top and bottom space between textview + view
+        [UIView animateWithDuration:0.0 animations:^{
+            [self.view layoutIfNeeded];
+        }];
+        [self setTableScrollToIndex:[[self currentArray] count] animated:YES];
     }
 }
 
