@@ -125,14 +125,15 @@ static LXSession* thisSession = nil;
 - (void) updateNoteToSaved:(NSDictionary*)newNote inBucket:(NSString*)bucketID
 {
     NSMutableArray* tempArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:bucketID]];
+    NSMutableArray* copyArray = [NSMutableArray arrayWithArray:tempArray];
     if (tempArray) {
         for (NSDictionary* dict in tempArray) {
             if ([[dict objectForKey:@"device_timestamp"] isEqualToString:[newNote objectForKey:@"device_timestamp"]]) {
-                [tempArray replaceObjectAtIndex:[tempArray indexOfObject:dict] withObject:[newNote cleanDictionary]];
+                [copyArray replaceObjectAtIndex:[tempArray indexOfObject:dict] withObject:[newNote cleanDictionary]];
             }
         }
     }
-    [[NSUserDefaults standardUserDefaults] setObject:tempArray forKey:bucketID];
+    [[NSUserDefaults standardUserDefaults] setObject:copyArray forKey:bucketID];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -144,7 +145,9 @@ static LXSession* thisSession = nil;
     [[LXServer shared] requestPath:@"/items.json" withMethod:@"POST" withParamaters:@{@"item":unsavedNote}
          constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
              if (mediaURLS && [mediaURLS count] > 0) {
-                 [formData appendPartWithFileData:[NSData dataWithContentsOfFile:[mediaURLS firstObject]] name:@"file" fileName:@"image.jpg" mimeType:@"image/jpeg"];
+                 if ([NSData dataWithContentsOfFile:[mediaURLS firstObject]]) {
+                     [formData appendPartWithFileData:[NSData dataWithContentsOfFile:[mediaURLS firstObject]] name:@"file" fileName:@"image.jpg" mimeType:@"image/jpeg"];
+                 }
              }
          }
                            success:^(id responseObject) {
