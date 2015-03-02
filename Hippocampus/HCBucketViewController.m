@@ -656,6 +656,16 @@
 {
     self.textViewHeightConstraint.constant = self.saveButton.frame.size.height - 8; //8 for the top and bottom space between textview + view
     
+    if ([self.composeTextView attributedText] && [[self.composeTextView attributedText] length] > 0) {
+        [self.composeTextView setAttributedText:[[NSAttributedString alloc] initWithString:@""]];
+        [self.composeTextView setText:@""];
+        [self.composeTextView setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f]];
+    }
+    
+    if (self.imageAttachments && [self.imageAttachments count] > 0) {
+        self.imageAttachments = [[NSMutableArray alloc] init];
+    }
+    
     if (!dismissKeyboard && [self.composeTextView isFirstResponder]) {
         self.composeTextView.text = @"";
         self.composeTextView.textColor = [UIColor blackColor];
