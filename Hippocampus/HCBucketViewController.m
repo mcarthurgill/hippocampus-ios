@@ -194,7 +194,7 @@
     float width = self.view.frame.size.width - 25.0 - 10.0; //for leading and trailing edges
     [note removeFromSuperview];
     
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font])];
+    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font]+4.0f)];
     [note setFont:font];
     [note setText:[item truncatedMessage]];
     [note setTag:1];
@@ -375,7 +375,7 @@
         [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
         [self setScrollToPosition:@"bottom"];
         [self reloadScreenToIndex:[self currentArray].count animated:YES];
-        [self clearTextField:YES];
+        [self clearTextField:NO];
         [self saveBucket];
         
         [[LXSession thisSession] attemptNoteSave:tempNote
@@ -663,6 +663,16 @@
 - (void) clearTextField:(BOOL)dismissKeyboard
 {
     self.textViewHeightConstraint.constant = self.saveButton.frame.size.height - 8; //8 for the top and bottom space between textview + view
+    
+    if ([self.composeTextView attributedText] && [[self.composeTextView attributedText] length] > 0) {
+        [self.composeTextView setAttributedText:[[NSAttributedString alloc] initWithString:@""]];
+        [self.composeTextView setText:@""];
+        [self.composeTextView setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f]];
+    }
+    
+    if (self.imageAttachments && [self.imageAttachments count] > 0) {
+        self.imageAttachments = [[NSMutableArray alloc] init];
+    }
     
     if (!dismissKeyboard && [self.composeTextView isFirstResponder]) {
         self.composeTextView.text = @"";
