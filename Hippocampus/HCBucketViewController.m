@@ -680,14 +680,14 @@
 
 - (void) keyboardWillShow:(NSNotification *)sender {
     if (self.isViewLoaded && self.view.window) {
-        [self setScrollToPosition:@"note"];
+        [self setScrollToPosition:@"bottom"];
         [self setTableScrollToIndex:[self currentArray].count animated:YES];
         
         NSDictionary *info = [sender userInfo];
         NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-        CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
-        self.bottomConstraint.constant = newFrame.origin.y - CGRectGetHeight(self.view.frame);
+//        CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
+        self.bottomConstraint.constant = frame.origin.y - CGRectGetHeight(self.view.frame);
         
         //for buckets where tableview.contentSize is small
         if (self.tableView.contentSize.height < (self.tableviewHeightConstraint.constant - frame.size.height)) {
