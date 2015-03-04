@@ -425,7 +425,7 @@
 
 - (void) sendRequestForBucketShowWithPage:(int)p
 {
-    [[LXServer shared] getBucketShowWithPage:p bucketID:[self.bucket objectForKey:@"id"]
+    [[LXServer shared] getBucketShowWithPage:p bucketID:[self.bucket ID]
                                      success:^(id responseObject) {
                                          [self refreshWithResponseObject:responseObject];
                                          requestMade = NO;
@@ -514,18 +514,21 @@
 }
 
 
-- (void) deleteItemFromServerAndTable:(NSDictionary *)item {
+- (void) deleteItemFromServerAndTable:(NSDictionary *)item
+{
     [self deleteItem:item];
     NSInteger index = [[self allItems] indexOfObject:item];
     [[self allItems] removeObject:item];
     [self reloadScreenToIndex:index animated:YES];
 }
 
-- (void) deleteItem:(NSDictionary *)item {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil success:^(id responseObject) {} failure:^(NSError* error) {}];
+- (void) deleteItem:(NSDictionary *)item
+{
+    [item deleteItemWithSuccess:nil failure:nil];
 }
 
-- (void) incrementPage {
+- (void) incrementPage
+{
     self.page = self.page + 1;
 }
 

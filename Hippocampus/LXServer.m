@@ -236,7 +236,7 @@
                            success:^(id responseObject) {
                                if ([responseObject objectForKey:@"page"] && [[responseObject objectForKey:@"page"] integerValue] == 0) {
                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                       [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:[responseObject objectForKey:@"items"]] forKey:bucketID];
+                                       [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:[responseObject objectForKey:@"items"]] forKey:[NSString stringWithFormat:@"%i",[bucketID integerValue]]];
                                        [[NSUserDefaults standardUserDefaults] synchronize];
                                    });
                                }
@@ -259,8 +259,8 @@
                            success:^(id responseObject) {
                                if ([responseObject objectForKey:@"page"] && [[responseObject objectForKey:@"page"] integerValue] == 0) {
                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                       NSMutableArray* saveArray = [NSMutableArray arrayWithArray:[responseObject objectForKey:@"outstanding_items"]];
-                                       [saveArray addObjectsFromArray:[responseObject objectForKey:@"items"]];
+                                       NSMutableArray* saveArray = [NSMutableArray arrayWithArray:[responseObject objectForKey:@"items"]];
+                                       [saveArray addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
                                        [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:saveArray] forKey:@"0"];
                                        [[NSUserDefaults standardUserDefaults] synchronize];
                                    });

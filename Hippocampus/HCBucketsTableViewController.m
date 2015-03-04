@@ -61,6 +61,10 @@
 
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    self.bucketsDictionary = nil;
+    self.cachedDiskDictionary = nil;
+    
     [self refreshChange];
     [self reloadScreen];
 
@@ -339,7 +343,7 @@
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
         return [NSString stringWithFormat:@"Notes With \"%@\"", [self searchTerm]];
     }
-    return [self.sections objectAtIndex:section];
+    return [NSString stringWithFormat:@"%@ Threads",[self.sections objectAtIndex:section]];
 }
 
 
