@@ -201,4 +201,116 @@
     }
 }
 
+
+
+
+
+# pragma mark specific callbacks
+- (void) getAllBucketsWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
+                           success:^(id responseObject) {
+                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                   NSMutableDictionary* bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
+                                   if (bucketsDictionary) {
+                                       [[NSUserDefaults standardUserDefaults] setObject:[self bucketToSave:bucketsDictionary] forKey:@"buckets"];
+                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                   }
+                               });
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (void) getBucketShowWithPage:(int)p bucketID:(NSString*)bucketID success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", bucketID] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
+                           success:^(id responseObject) {
+                               if ([responseObject objectForKey:@"page"] && [[responseObject objectForKey:@"page"] integerValue] == 0) {
+                                   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                       [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:[responseObject objectForKey:@"items"]] forKey:bucketID];
+                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                   });
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (void) getAllItemsWithPage:(int)p success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
+                           success:^(id responseObject) {
+                               if ([responseObject objectForKey:@"page"] && [[responseObject objectForKey:@"page"] integerValue] == 0) {
+                                   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                       NSMutableArray* saveArray = [NSMutableArray arrayWithArray:[responseObject objectForKey:@"outstanding_items"]];
+                                       [saveArray addObjectsFromArray:[responseObject objectForKey:@"items"]];
+                                       [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:saveArray] forKey:@"0"];
+                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                   });
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (NSMutableDictionary*) bucketToSave:(NSMutableDictionary*)incomingDictionary
+{
+    NSMutableDictionary* temp = [[NSMutableDictionary alloc] init];
+    
+    NSArray* keys = [incomingDictionary allKeys];
+    for (NSString* k in keys) {
+        NSMutableArray* cur = [incomingDictionary objectForKey:k];
+        NSMutableArray* new = [[NSMutableArray alloc] init];
+        for (NSDictionary* t in cur) {
+            NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:t];
+            NSArray* keys = [tDict allKeys];
+            for (NSString* k in keys) {
+                if (!NULL_TO_NIL([tDict objectForKey:k])) {
+                    [tDict removeObjectForKey:k];
+                }
+            }
+            [new addObject:tDict];
+        }
+        [temp setObject:new forKey:k];
+    }
+    
+    return temp;
+}
+
+- (NSMutableArray*) itemsToSave:(NSArray*)items
+{
+    NSMutableArray* temp = [[NSMutableArray alloc] init];
+    for (NSDictionary* t in items) {
+        [temp addObject:[t cleanDictionary]];
+    }
+    return temp;
+}
+
+
+
 @end

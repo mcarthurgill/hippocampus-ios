@@ -62,6 +62,7 @@
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self refreshChange];
+    [self reloadScreen];
 
     if ([self assignMode]) {
         [self setTitle:@"Add to Thread"];
@@ -373,21 +374,15 @@
     if (requestMade)
         return;
     requestMade = YES;
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
-                           success:^(id responseObject) {
-                               self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
-                               requestMade = NO;
-                               [self reloadScreen];
-                               if (![self assignMode]) {
-                                   [self saveBucket];
-                               }
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error: %@", [error localizedDescription]);
-                               requestMade = NO;
-                               [self reloadScreen];
-                           }
-     ];
+    [[LXServer shared] getAllBucketsWithSuccess:^(id responseObject) {
+            self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
+            requestMade = NO;
+            [self reloadScreen];
+    } failure:^(NSError *error) {
+        NSLog(@"error: %@", [error localizedDescription]);
+        requestMade = NO;
+        [self reloadScreen];
+    }];
 }
 
 - (IBAction)refreshControllerChanged:(id)sender
@@ -492,44 +487,6 @@
 }
 
 
-
-
-
-# pragma mark saving mechanism
-
-- (void) saveBucket
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        if (self.bucketsDictionary) {
-            [[NSUserDefaults standardUserDefaults] setObject:[self bucketToSave] forKey:@"buckets"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-    });
-}
-
-- (NSMutableDictionary*) bucketToSave
-{
-    NSMutableDictionary* temp = [[NSMutableDictionary alloc] init];
-    
-    NSArray* keys = [self.bucketsDictionary allKeys];
-    for (NSString* k in keys) {
-        NSMutableArray* cur = [self.bucketsDictionary objectForKey:k];
-        NSMutableArray* new = [[NSMutableArray alloc] init];
-        for (NSDictionary* t in cur) {
-            NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:t];
-            NSArray* keys = [tDict allKeys];
-            for (NSString* k in keys) {
-                if (!NULL_TO_NIL([tDict objectForKey:k])) {
-                    [tDict removeObjectForKey:k];
-                }
-            }
-            [new addObject:tDict];
-        }
-        [temp setObject:new forKey:k];
-    }
-    
-    return temp;
-}
 
 
 
