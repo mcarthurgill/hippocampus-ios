@@ -19,6 +19,7 @@
 @synthesize sections;
 @synthesize updatedBucketName;
 @synthesize delegate;
+@synthesize typeOptions;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -40,7 +41,8 @@
                                       action:@selector(saveInfo)];
     unsavedChanges = NO;
     savingChanges = NO;
-    [self updateButtonStatus]; 
+    self.typeOptions = @[@"Other", @"Person", @"Event", @"Place"];
+    [self updateButtonStatus];
 }
 
 - (void) reloadScreen
@@ -57,6 +59,7 @@
     self.sections = [[NSMutableArray alloc] init];
     
     [self.sections addObject:@"bucketName"];
+    [self.sections addObject:@"bucketType"];
     
     return self.sections.count;
 }
@@ -65,6 +68,8 @@
 {
     // Return the number of rows in the section.
     if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketName"]) {
+        return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
         return 1;
     }
     return 0;
@@ -75,6 +80,8 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
         return [self bucketNameCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+    }else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
+        return [self bucketTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -87,12 +94,22 @@
     return cell;
 }
 
+- (UITableViewCell*) bucketTypeCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"bucketTypeCell" forIndexPath:indexPath];
+    UIPickerView* picker = (UIPickerView*)[cell.contentView viewWithTag:1];
+    [picker selectRow:[self.typeOptions indexOfObject:[self.bucket bucketType]] inComponent:0 animated:NO];
+    return cell;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
         return 50.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
+        return 200.0f;
     }
-    
+
     return 44.0f;
 }
 
@@ -101,7 +118,6 @@
 - (void) saveInfo {
     unsavedChanges = YES;
     savingChanges = YES;
-    [self updateBucketName];
     
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket ID]] withMethod:@"PUT" withParamaters:@{@"bucket":self.bucket}
                            success:^(id responseObject) {
@@ -120,6 +136,7 @@
 
 - (void) updateBucketName {
     [self.bucket setObject:self.updatedBucketName forKey:@"first_name"];
+    [self saveInfo];
 }
 
 # pragma mark TextField Delegate
@@ -130,7 +147,7 @@
     [self.navigationItem setTitle:self.updatedBucketName];
     
     [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(saveInfo) withObject:nil afterDelay:2.0];
+    [self performSelector:@selector(updateBucketName) withObject:nil afterDelay:2.0];
     
     unsavedChanges = YES;
     savingChanges = NO;
@@ -159,4 +176,34 @@
         [self.navigationItem.rightBarButtonItem setTitle:@"Save"];
     }
 }
+
+
+
+# pragma mark picker view delegate data source
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [self.typeOptions count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return [self.typeOptions objectAtIndex:row];
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    unsavedChanges = YES;
+    savingChanges = NO;
+    [self updateButtonStatus];
+    [self.bucket setObject:[self.typeOptions objectAtIndex:row] forKey:@"bucket_type"];
+    [self saveInfo]; 
+}
+
 @end

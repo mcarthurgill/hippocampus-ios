@@ -1048,6 +1048,34 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="bucketTypeCell" rowHeight="184" id="BEi-Yn-Nqf">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BEi-Yn-Nqf" id="N3Q-VN-Qug">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ziR-JG-XEI">
+                                                    <rect key="frame" x="8" y="11" width="584" height="162"/>
+                                                    <connections>
+                                                        <outlet property="dataSource" destination="4T6-jH-5BP" id="QBC-6K-6VE"/>
+                                                        <outlet property="delegate" destination="4T6-jH-5BP" id="jJW-pb-mx8"/>
+                                                    </connections>
+                                                </pickerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="ziR-JG-XEI" firstAttribute="leading" secondItem="N3Q-VN-Qug" secondAttribute="leadingMargin" id="1RY-Wv-78s"/>
+                                                <constraint firstAttribute="centerX" secondItem="ziR-JG-XEI" secondAttribute="centerX" id="49T-zw-erw"/>
+                                                <constraint firstItem="ziR-JG-XEI" firstAttribute="top" secondItem="N3Q-VN-Qug" secondAttribute="topMargin" constant="3" id="GCN-qo-Xu9"/>
+                                                <constraint firstItem="ziR-JG-XEI" firstAttribute="trailing" secondItem="N3Q-VN-Qug" secondAttribute="trailingMargin" id="K1M-hC-FNY"/>
+                                                <constraint firstAttribute="centerY" secondItem="ziR-JG-XEI" secondAttribute="centerY" id="KOa-65-oEt"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="GCN-qo-Xu9"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <variation key="default">
                                     <mask key="constraints">
