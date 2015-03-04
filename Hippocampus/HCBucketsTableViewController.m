@@ -16,6 +16,9 @@
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
+#define IMAGE_FADE_IN_TIME 0.3f
+#define PICTURE_HEIGHT 280
+#define PICTURE_MARGIN_TOP 8
 
 @interface HCBucketsTableViewController ()
 
@@ -265,6 +268,43 @@
     UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:3];
     [timestamp setText:[NSString stringWithFormat:@"%@%@", ([item hasBucketsString] ? [NSString stringWithFormat:@"%@ - ", [item bucketsString]] : @""), [NSDate timeAgoInWordsFromDatetime:[item createdAt]]]];
     
+    int i = 0;
+    while ([cell.contentView viewWithTag:(200+i)]) {
+        [[cell.contentView viewWithTag:(200+i)] removeFromSuperview];
+        ++i;
+    }
+    
+    if ([item croppedMediaURLs]) {
+        int j = 0;
+        for (NSString* url in [item croppedMediaURLs]) {
+            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*j, cell.contentView.frame.size.width-40.0f, PICTURE_HEIGHT)];
+            [iv setTag:(200+j)];
+            [iv setContentMode:UIViewContentModeScaleAspectFill];
+            [iv setClipsToBounds:YES];
+            [iv.layer setCornerRadius:8.0f];
+            if ([item hasID]) {
+                [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                    if (image) {
+                        [iv setAlpha:0.0f];
+                        iv.image = image;
+                        [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+                            [iv setAlpha:1.0f];
+                        }];
+                    }
+                }];
+            } else {
+                [iv setAlpha:0.0f];
+                iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
+                [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+                    [iv setAlpha:1.0f];
+                }];
+                
+            }
+            [cell.contentView addSubview:iv];
+            ++j;
+        }
+    }
+    
     return cell;
 }
 
@@ -290,7 +330,11 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
         
         NSDictionary* item = [[self searchArray] objectAtIndex:indexPath.row];
-        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f;
+        int additional = 0;
+        if ([item hasMediaURLs]) {
+            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
+        }
+        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + additional;
         
     }
     
@@ -469,6 +513,7 @@
 {
     [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term, @"user_id" : [[HCUser loggedInUser] userID] }
                            success:^(id responseObject) {
+                               NSLog(@"items: %@", [responseObject objectForKey:@"items"]);
                                [self.serverSearchDictionary setObject:[self modifiedSearchArrayWithResponseObject:[responseObject objectForKey:@"items"]] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
                                [self reloadScreen];
                            }
