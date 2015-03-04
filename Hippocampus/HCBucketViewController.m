@@ -141,6 +141,7 @@
 
 - (void) toggleSaveButton
 {
+    NSLog(@"***inside toggle save = %@", [self canSaveNote] ? @"enabled" : @"not enabled");
     if ([self canSaveNote]) {
         [self.saveButton setEnabled:YES];
     } else {
@@ -566,7 +567,11 @@
 
 - (BOOL) canSaveNote
 {
-    return (self.composeTextView.attributedText.string && [self.composeTextView.attributedText.string length] > 0 && [self.composeTextView.textColor isEqual:[UIColor blackColor]]) || [self hasUploadedImageFromLibrary];
+    NSLog(@"****has uploaded = %@", [self hasUploadedImageFromLibrary] ? @"yeah, you?" : @"no");
+    NSLog(@"****string = %@", self.composeTextView.attributedText.string);
+        NSLog(@"****length = %lu", (unsigned long)self.composeTextView.attributedText.string.length);
+    NSLog(@"****color = %@", [self.composeTextView.textColor isEqual:[UIColor blackColor]] ? @"black" : @"gray");
+    return (self.composeTextView.text && self.composeTextView.text.length > 0 && [self.composeTextView.textColor isEqual:[UIColor blackColor]]) || [self hasUploadedImageFromLibrary];
 }
 
 - (BOOL) hasUploadedImageFromLibrary {
@@ -579,8 +584,9 @@
               NSTextAttachment* attachment = (NSTextAttachment*)value;
               if (attachment) {
                   attached = YES;
+              } else {
+                  [self.imageAttachments removeAllObjects];
               }
-              (*stop) = YES; // stop after the first attachment
           }];
     return attached;
 }
@@ -641,9 +647,11 @@
 {
     [self updateConstraintsForTextView:textView];
     [self toggleSaveButton];
-    if (self.composeTextView.text.length == 0) {
-        [self.composeTextView setText:@""];
-        [self.composeTextView setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f]];
+    if (textView.text.length == 0) {
+        [textView setText:@""];
+        [textView setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f]];
+    } else {
+        textView.textColor = [UIColor blackColor];
     }
 }
 
@@ -658,6 +666,7 @@
         [self setTableScrollToIndex:[[self currentArray] count] animated:YES];
     }
 }
+
 
 - (void) clearTextField:(BOOL)dismissKeyboard
 {
