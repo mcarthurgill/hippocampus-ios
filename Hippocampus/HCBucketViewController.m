@@ -33,6 +33,8 @@
 @synthesize bottomConstraint;
 @synthesize tableviewHeightConstraint;
 @synthesize textViewHeightConstraint;
+@synthesize textViewBottomVerticalSpaceConstraint;
+@synthesize textViewTopVerticalSpaceConstraint;
 @synthesize scrollToPosition;
 @synthesize page;
 @synthesize initializeWithKeyboardUp;
@@ -40,6 +42,7 @@
 @synthesize pickerController;
 @synthesize metadata;
 @synthesize itemForDeletion;
+
 
 
 - (void)viewDidLoad
@@ -99,12 +102,7 @@
     if ([self.bucket isAllNotesBucket]) {
         self.navigationItem.rightBarButtonItem = nil;
     }
-    //change back button text when new VC gets popped on the stack
-    self.navigationItem.backBarButtonItem =
-    [[UIBarButtonItem alloc] initWithTitle:@""
-                                     style:UIBarButtonItemStyleBordered
-                                    target:nil
-                                    action:nil];
+
     [self cacheImagePickerController];
     self.itemForDeletion = [[NSMutableDictionary alloc] init];
 }
@@ -191,7 +189,8 @@
     UIFont* font = note.font;
     float leftMargin = note.frame.origin.x;
     float topMargin = note.frame.origin.y;
-    float width = self.view.frame.size.width - 25.0 - 10.0; //for leading and trailing edges
+    
+    float width = self.view.frame.size.width - 10 - 25;
     [note removeFromSuperview];
     
     note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font]+4.0f)];
@@ -631,6 +630,7 @@
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
+    [self updateConstraintsForTextView:textView];
     if ([textView.text isEqualToString:@""]) {
         textView.text = @"Add Note";
         textView.textColor = [UIColor lightGrayColor];
@@ -650,9 +650,9 @@
 
 - (void) updateConstraintsForTextView:(UITextView *)textView {
     float difference = textView.intrinsicContentSize.height - self.textViewHeightConstraint.constant;
-    if (difference > 0.0) {
+    if (difference != 0.0) {
         self.textViewHeightConstraint.constant = textView.intrinsicContentSize.height;
-        self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - difference - 8; //8 for the top and bottom space between textview + view
+        self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - difference - self.textViewTopVerticalSpaceConstraint.constant - self.textViewBottomVerticalSpaceConstraint.constant;
         [UIView animateWithDuration:0.0 animations:^{
             [self.view layoutIfNeeded];
         }];
@@ -662,7 +662,7 @@
 
 - (void) clearTextField:(BOOL)dismissKeyboard
 {
-    self.textViewHeightConstraint.constant = self.saveButton.frame.size.height - 8; //8 for the top and bottom space between textview + view
+    self.textViewHeightConstraint.constant = self.saveButton.frame.size.height - self.textViewTopVerticalSpaceConstraint.constant - self.textViewBottomVerticalSpaceConstraint.constant;
     
     if ([self.composeTextView attributedText] && [[self.composeTextView attributedText] length] > 0) {
         [self.composeTextView setAttributedText:[[NSAttributedString alloc] initWithString:@""]];
@@ -707,7 +707,6 @@
         NSDictionary *info = [sender userInfo];
         NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-//        CGRect newFrame = [self.view convertRect:frame fromView:[[UIApplication sharedApplication] delegate].window];
         self.bottomConstraint.constant = frame.origin.y - CGRectGetHeight(self.view.frame);
         
         self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
@@ -814,7 +813,7 @@
     textAttachment.image = image;
     
     CGFloat oldWidth = textAttachment.image.size.width;
-    CGFloat scaleFactor = oldWidth / (self.composeTextView.frame.size.width - 30); //subtract 30 for padding inside textview
+    CGFloat scaleFactor = oldWidth / (self.composeTextView.frame.size.width - 30); //subtract 30 (arbitrary) for padding inside textview
     
     self.imageAttachments = [[NSMutableArray alloc] init];
     [self.imageAttachments addObject:[UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]]];

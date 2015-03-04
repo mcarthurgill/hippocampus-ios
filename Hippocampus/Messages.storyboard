@@ -459,7 +459,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0r-MJ-5Ia">
-                                                    <rect key="frame" x="18" y="37" width="549" height="23.5"/>
+                                                    <rect key="frame" x="18" y="37" width="549" height="23"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="286" id="4rk-Af-D5t"/>
                                                         <constraint firstAttribute="height" constant="22" id="G35-K5-WF7"/>
@@ -658,7 +658,9 @@
                         <outlet property="saveButton" destination="suh-LO-BkZ" id="HKQ-h5-ObB"/>
                         <outlet property="tableView" destination="3q9-fo-byX" id="6PM-gN-Sun"/>
                         <outlet property="tableviewHeightConstraint" destination="bMG-Uy-8l7" id="FDx-Sr-agq"/>
+                        <outlet property="textViewBottomVerticalSpaceConstraint" destination="uBa-fO-tqX" id="QN0-vB-VHv"/>
                         <outlet property="textViewHeightConstraint" destination="Zxe-fW-utz" id="ScX-n9-kLU"/>
+                        <outlet property="textViewTopVerticalSpaceConstraint" destination="StE-3d-WWJ" id="cpd-bU-UXO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xhS-hH-joO" userLabel="First Responder" sceneMemberID="firstResponder"/>
