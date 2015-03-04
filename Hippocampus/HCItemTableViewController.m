@@ -297,7 +297,7 @@
             [blueDot setHidden:NO];
         }
     } else if (indexPath.row == 1) {
-        [label setText:@"Delete"];
+        [label setText:@"Delete Note"];
     }
     
     return cell;
@@ -490,7 +490,7 @@
     unsavedChanges = YES;
     savingChanges = YES;
     [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Thread", [bucket objectForKey:@"first_name"]]];
-    [[LXServer shared] requestPath:@"/bucket_item_pairs.json" withMethod:@"POST" withParamaters:@{@"bucket_item_pair":@{@"bucket_id":[bucket objectForKey:@"id"], @"item_id":[self.item objectForKey:@"id"]}}
+    [[LXServer shared] requestPath:@"/bucket_item_pairs.json" withMethod:@"POST" withParamaters:@{@"bucket_item_pair":@{@"bucket_id":[bucket ID], @"item_id":[self.item ID]}}
                            success:^(id responseObject) {
                                //NSLog(@"successfully added to stack: %@", responseObject);
                                [self.item setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
@@ -500,6 +500,7 @@
                                [self hideHUD];
                                [self updateBackgroundArrays];
                                [self reloadScreen];
+                               [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:nil failure:nil];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"unsuccessfully added to stack");
@@ -631,6 +632,7 @@
                                [self hideHUD];
                                [self updateBackgroundArrays];
                                [self reloadScreen];
+                               [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucketToRemove ID] success:nil failure:nil];
                            }
                            failure:^(NSError *error) {
                                NSLog(@"error! %@", [error localizedDescription]);
@@ -644,14 +646,11 @@
 }
 
 - (void) deleteItem {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil
-                           success:^(id responseObject){
-                               [self.navigationController popToRootViewControllerAnimated:YES];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error! %@", [error localizedDescription]);
-                           }
-     ];
+    [self.item deleteItemWithSuccess:^(id responseObject) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    } failure:^(NSError* error) {
+         NSLog(@"error! %@", [error localizedDescription]);
+    }];
 }
 
 # pragma mark textview delegate

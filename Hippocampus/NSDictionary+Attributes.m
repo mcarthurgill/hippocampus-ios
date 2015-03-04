@@ -239,4 +239,23 @@
     return tDict;
 }
 
+
+# pragma mark actions
+
+- (void) deleteItemWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self ID]] withMethod:@"DELETE" withParamaters:nil
+                           success:^(id responseObject) {
+                               [[LXServer shared] getAllItemsWithPage:0 success:nil failure:nil];
+                               if ([self hasBuckets]) {
+                                   for (NSDictionary* bucket in [self buckets]) {
+                                       [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:nil failure:nil];
+                                   }
+                               }
+                           }
+                           failure:^(NSError* error) {
+                           }
+     ];
+}
+
 @end

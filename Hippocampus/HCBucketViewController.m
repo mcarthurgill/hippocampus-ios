@@ -424,15 +424,14 @@
 
 - (void) sendRequestForBucketShowWithPage:(int)p
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket objectForKey:@"id"]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
-                           success:^(id responseObject) {
-                               [self refreshWithResponseObject:responseObject];
-                               [self saveBucket];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error: %@", [error localizedDescription]);
-                               requestMade = NO;
-                           }
+    [[LXServer shared] getBucketShowWithPage:p bucketID:[self.bucket ID]
+                                     success:^(id responseObject) {
+                                         [self refreshWithResponseObject:responseObject];
+                                         requestMade = NO;
+                                     }
+                                     failure:^(NSError* error) {
+                                         requestMade = NO;
+                                     }
      ];
 }
 
@@ -443,17 +442,15 @@
 
 - (void) sendRequestForAllItemsWithPage:(int)p
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
-                           success:^(id responseObject) {
-                               [self refreshWithResponseObject:responseObject];
-                               [self saveBucket];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error: %@", [error localizedDescription]);
-                               requestMade = NO;
-                           }
+    [[LXServer shared] getAllItemsWithPage:p
+                                   success:^(id responseObject) {
+                                       [self refreshWithResponseObject:responseObject];
+                                       requestMade = NO;
+                                   }
+                                   failure:^(NSError* error) {
+                                       requestMade = NO;
+                                   }
      ];
-    
 }
 
 - (void) refreshWithResponseObject:(NSDictionary*)responseObject
@@ -498,7 +495,6 @@
         [self reloadScreenToIndex:indexes.count animated:NO];
     }
     
-    requestMade = NO;
     if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
         [self incrementPage];
     }
@@ -517,18 +513,21 @@
 }
 
 
-- (void) deleteItemFromServerAndTable:(NSDictionary *)item {
+- (void) deleteItemFromServerAndTable:(NSDictionary *)item
+{
     [self deleteItem:item];
     NSInteger index = [[self allItems] indexOfObject:item];
     [[self allItems] removeObject:item];
     [self reloadScreenToIndex:index animated:YES];
 }
 
-- (void) deleteItem:(NSDictionary *)item {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [item objectForKey:@"id"]] withMethod:@"DELETE" withParamaters:nil success:^(id responseObject) {} failure:^(NSError* error) {}];
+- (void) deleteItem:(NSDictionary *)item
+{
+    [item deleteItemWithSuccess:nil failure:nil];
 }
 
-- (void) incrementPage {
+- (void) incrementPage
+{
     self.page = self.page + 1;
 }
 

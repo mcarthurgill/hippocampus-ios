@@ -81,4 +81,9 @@
 
 - (NSMutableDictionary*) cleanDictionary;
 
+
+// actions
+
+- (void) deleteItemWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+
 @end
