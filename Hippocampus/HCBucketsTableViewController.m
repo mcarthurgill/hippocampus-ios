@@ -55,7 +55,9 @@
     [self setupProperties];
     
     [self cacheComposeBucketController];
-    
+
+    [[LXSession thisSession] startLocationUpdates];
+
     //reload data to make sure it's catching assign mode
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self reloadScreen];
