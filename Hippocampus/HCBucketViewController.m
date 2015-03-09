@@ -141,7 +141,6 @@
 
 - (void) toggleSaveButton
 {
-    NSLog(@"***inside toggle save = %@", [self canSaveNote] ? @"enabled" : @"not enabled");
     if ([self canSaveNote]) {
         [self.saveButton setEnabled:YES];
     } else {
@@ -567,10 +566,6 @@
 
 - (BOOL) canSaveNote
 {
-    NSLog(@"****has uploaded = %@", [self hasUploadedImageFromLibrary] ? @"yeah, you?" : @"no");
-    NSLog(@"****string = %@", self.composeTextView.attributedText.string);
-        NSLog(@"****length = %lu", (unsigned long)self.composeTextView.attributedText.string.length);
-    NSLog(@"****color = %@", [self.composeTextView.textColor isEqual:[UIColor blackColor]] ? @"black" : @"gray");
     return (self.composeTextView.text && self.composeTextView.text.length > 0 && [self.composeTextView.textColor isEqual:[UIColor blackColor]]) || [self hasUploadedImageFromLibrary];
 }
 
@@ -587,6 +582,7 @@
               } else {
                   [self.imageAttachments removeAllObjects];
               }
+              (*stop) = YES; // stop after the first attachment
           }];
     return attached;
 }
@@ -821,7 +817,7 @@
     textAttachment.image = image;
     
     CGFloat oldWidth = textAttachment.image.size.width;
-    CGFloat scaleFactor = oldWidth / (self.composeTextView.frame.size.width - 30); //subtract 30 (arbitrary) for padding inside textview
+    CGFloat scaleFactor = oldWidth / (self.composeTextView.frame.size.width - 100); //subtract 30 (arbitrary) for padding inside textview
     
     self.imageAttachments = [[NSMutableArray alloc] init];
     [self.imageAttachments addObject:[UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]]];
