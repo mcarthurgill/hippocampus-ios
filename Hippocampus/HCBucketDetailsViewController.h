@@ -12,10 +12,11 @@
 -(void)updateBucket:(NSMutableDictionary *)updatedBucket;
 @end
 
-@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
+@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate>
 {
     BOOL unsavedChanges;
     BOOL savingChanges;
+    MBProgressHUD* hud;
 }
 
 @property (strong, nonatomic) NSMutableDictionary* bucket;
