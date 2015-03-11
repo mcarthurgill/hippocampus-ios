@@ -236,7 +236,7 @@
                            success:^(id responseObject) {
                                if ([responseObject objectForKey:@"page"] && [[responseObject objectForKey:@"page"] integerValue] == 0) {
                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                       [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:[responseObject objectForKey:@"items"]] forKey:[NSString stringWithFormat:@"%i",[bucketID integerValue]]];
+                                       [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:[responseObject objectForKey:@"items"]] forKey:[NSString stringWithFormat:@"%li",(long)[bucketID integerValue]]];
                                        [[NSUserDefaults standardUserDefaults] synchronize];
                                    });
                                }
@@ -277,6 +277,7 @@
                            }
      ];
 }
+
 
 - (NSMutableDictionary*) bucketToSave:(NSMutableDictionary*)incomingDictionary
 {

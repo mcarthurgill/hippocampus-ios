@@ -31,9 +31,11 @@
 }
 
 - (id) rand {
-    id obj = [self objectAtIndex:arc4random_uniform((uint32_t)[self count])];
-    if (obj) {
-        return obj;
+    if (self.count > 0) {
+        id obj = [self objectAtIndex:arc4random_uniform((uint32_t)[self count])];
+        if (obj) {
+            return obj;
+        }
     }
     return nil;
 }
