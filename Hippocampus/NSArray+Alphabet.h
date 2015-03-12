@@ -18,4 +18,5 @@
 
 + (NSArray*) alphabetUppercaseWithOther;
 
+- (id) rand;
 @end

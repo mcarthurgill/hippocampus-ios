@@ -10,6 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "HCContainerViewController.h"
 #import "HCBucketDetailsViewController.h"
+#import "LXString+NSString.h"
 
 @import AssetsLibrary;
 
@@ -42,7 +43,7 @@
 @synthesize pickerController;
 @synthesize metadata;
 @synthesize itemForDeletion;
-
+@synthesize congratsView;
 
 
 - (void)viewDidLoad
@@ -102,6 +103,8 @@
     if ([self.bucket isAllNotesBucket]) {
         self.navigationItem.rightBarButtonItem = nil;
     }
+    
+    [self buildCongrats];
 
     [self cacheImagePickerController];
     self.itemForDeletion = [[NSMutableDictionary alloc] init];
@@ -335,6 +338,8 @@
 - (IBAction)addAction:(id)sender
 {
     if (self.composeTextView.text.length > 0) {
+        [self displayCongrats];
+
         NSMutableDictionary* tempNote = [[NSMutableDictionary alloc] init];
         
         NSString* s = self.imageAttachments && self.imageAttachments.count > 0 && [[self.composeTextView.attributedText.string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] length] < 2 ? @"" : self.composeTextView.attributedText.string;
@@ -728,7 +733,6 @@
         
         self.bottomConstraint.constant = 0;
 
-        //for buckets where tableview.contentSize is small
         self.tableviewHeightConstraint.constant = self.view.frame.size.height - self.saveButton.frame.size.height;
 
         [UIView animateWithDuration:animationDuration animations:^{
@@ -901,6 +905,37 @@
             [self alertForDeletion];
         }
     }
+}
+
+
+# pragma mark - Congratulations Notifications
+
+- (void) buildCongrats {
+    self.congratsView = [[UIView alloc] initWithFrame:CGRectMake(10, self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, self.view.frame.size.width - 20, 44)];
+    UILabel *congratsLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width - 20, 44)];
+    [congratsLabel setText: [NSString randomCongratulations]];
+    [congratsLabel setTag:1];
+    [congratsLabel setTextAlignment:NSTextAlignmentCenter];
+    [self.congratsView addSubview:congratsLabel];
+    [self.congratsView setBackgroundColor:[UIColor colorWithRed:137.0/255.0 green:198.0/255.0 blue:199.0/255.0 alpha:1]];
+    [self.congratsView setAlpha:0.0];
+    [self.view addSubview:self.congratsView];
+}
+
+- (void) displayCongrats {
+    UILabel *lbl = (UILabel *)[self.congratsView viewWithTag:1];
+    [lbl setText:[NSString randomCongratulations]];
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.congratsView setAlpha:1.0];
+    }];
+    
+    [self performSelector:@selector(hideCongrats) withObject:nil afterDelay:1.0];
+}
+
+- (void) hideCongrats {
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.congratsView setAlpha:0.0];
+    }];
 }
 
 @end

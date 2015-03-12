@@ -34,6 +34,7 @@
 - (void) setup {
     [self.navigationItem setTitle:[self.bucket firstName]];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
     self.navigationItem.rightBarButtonItem =
                                     [[UIBarButtonItem alloc] initWithTitle:@"Save"
                                       style:UIBarButtonItemStylePlain
@@ -60,6 +61,7 @@
     
     [self.sections addObject:@"bucketName"];
     [self.sections addObject:@"bucketType"];
+    [self.sections addObject:@"deleteBucket"];
     
     return self.sections.count;
 }
@@ -71,6 +73,8 @@
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
         return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {
+        return 1;
     }
     return 0;
 }
@@ -80,8 +84,10 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
         return [self bucketNameCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
-    }else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
         return [self bucketTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
+        return [self deleteBucketCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -102,16 +108,50 @@
     return cell;
 }
 
+- (UITableViewCell*) deleteBucketCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"deleteBucketCell" forIndexPath:indexPath];
+    UILabel* deleteLabel = (UILabel*)[cell.contentView viewWithTag:1];
+    [deleteLabel setText:@"Delete Thread"];
+    return cell;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
-        return 50.0f;
+        return 75.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
-        return 200.0f;
+        return 150.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
+        return 50.0f;
     }
 
     return 44.0f;
 }
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
+        [self alertForDeletion];
+    }
+    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketName"]) {
+        return @"Thread Name";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
+        return @"Thread Type";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {
+        return @"Actions";
+    }
+    return nil;
+}
+
+
 
 # pragma mark - Actions
 
@@ -205,5 +245,57 @@
     [self.bucket setObject:[self.typeOptions objectAtIndex:row] forKey:@"bucket_type"];
     [self saveInfo]; 
 }
+
+
+# pragma  mark - AlertView Delegate
+
+- (void) alertForDeletion {
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete this thread?"
+                                                     message:@"This will also delete all notes that only belong to this thread."
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles: nil];
+    [alert addButtonWithTitle:@"Delete Thread"];
+    [alert show];
+}
+
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1) {
+        [self deleteBucket];
+    }
+}
+
+
+- (void) deleteBucket {
+    [self showHUDWithMessage:@"Deleting Thread..."];
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket ID]] withMethod:@"DELETE" withParamaters:nil
+                           success:^(id responseObject){
+                               [self.navigationController popToRootViewControllerAnimated:YES];
+                               [self hideHUD];
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error! %@", [error localizedDescription]);
+                               [self hideHUD];
+                           }
+     ];
+}
+
+
+
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
+{
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = message;
+}
+
+- (void) hideHUD
+{
+    [hud hide:YES];
+}
+
+
 
 @end

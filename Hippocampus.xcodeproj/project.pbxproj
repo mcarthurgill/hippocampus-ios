@@ -55,6 +55,7 @@
 		28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A0857B1A700CB200BA1368 /* LXString+NSString.m */; };
 		28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */; };
 		76379FD51A8904F700D19E64 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 76379FD41A8904F700D19E64 /* camera.png */; };
+		765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */; };
 		768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */; };
 		76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76BFE0711A7C0662005AD98C /* Introduction.storyboard */; };
 		76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */; };
@@ -146,6 +147,8 @@
 		28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Alphabet.m"; sourceTree = "<group>"; };
 		48B234900A21648A78B84A3E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		76379FD41A8904F700D19E64 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
+		765B3D711AAF944700E599F3 /* HCRandomItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCRandomItemViewController.h; sourceTree = "<group>"; };
+		765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCRandomItemViewController.m; sourceTree = "<group>"; };
 		768D348F1A94FDAA00D340C0 /* HCBucketDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCBucketDetailsViewController.h; sourceTree = "<group>"; };
 		768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCBucketDetailsViewController.m; sourceTree = "<group>"; };
 		76BFE0711A7C0662005AD98C /* Introduction.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Introduction.storyboard; sourceTree = "<group>"; };
@@ -276,7 +279,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				76E6A1FA1A8BCFE100B3669B /* Reminders */,
+				76E6A1FA1A8BCFE100B3669B /* More */,
 				281CA940196C8DC000E6BE96 /* Bucket */,
 				281CA93C196C8CF700E6BE96 /* Item */,
 				281CA926196C2C0B00E6BE96 /* Login */,
@@ -409,13 +412,15 @@
 			name = Introduction;
 			sourceTree = "<group>";
 		};
-		76E6A1FA1A8BCFE100B3669B /* Reminders */ = {
+		76E6A1FA1A8BCFE100B3669B /* More */ = {
 			isa = PBXGroup;
 			children = (
 				76E6A1FB1A8BCFFA00B3669B /* LXRemindersViewController.h */,
 				76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */,
+				765B3D711AAF944700E599F3 /* HCRandomItemViewController.h */,
+				765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */,
 			);
-			name = Reminders;
+			name = More;
 			sourceTree = "<group>";
 		};
 		AF8CDA90D5D1600B0FA06D8F /* Pods */ = {
@@ -587,6 +592,7 @@
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				281CA9111951F36700E6BE96 /* Model.xcdatamodeld in Sources */,
 				281CA930196C3C9400E6BE96 /* HCBucket.m in Sources */,
+				765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */,
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
 				76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,

@@ -13,6 +13,7 @@
 #import "HCContainerViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "LXRemindersViewController.h"
+#import "HCRandomItemViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -443,9 +444,6 @@
 }
 
 
-
-
-
 # pragma mark toolbar actions
 
 - (IBAction)composeButtonClicked:(id)sender
@@ -461,13 +459,21 @@
     }
 }
 
-- (IBAction)showReminders:(id)sender {
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-    LXRemindersViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"remindersViewController"];
-    [self.navigationController pushViewController:vc animated:YES]; 
+- (IBAction)moreButtonClicked:(id)sender {
+    NSString *other1 = @"Upcoming Reminders";
+    NSString *other2 = @"Notes Near Current Location";
+    NSString *other3 = @"Random Note";
+    NSString *cancelTitle = @"Cancel";
+    
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:nil
+                                  delegate:self
+                                  cancelButtonTitle:cancelTitle
+                                  destructiveButtonTitle:nil
+                                  otherButtonTitles:other1, other2, other3, nil];
+    
+    [actionSheet showInView:self.view];
 }
-
-
 
 
 
@@ -642,6 +648,29 @@
 # pragma mark - HCSendRequestForUpdatedBuckets
 - (void) sendRequestForUpdatedBucket {
     [self refreshChange];
+}
+
+
+
+# pragma mark - Action Sheet Delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        LXRemindersViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"remindersViewController"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (buttonIndex == 1) {
+
+    }
+    if (buttonIndex == 2) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCRandomItemViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"randomItemViewController"];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (buttonIndex == 3) {
+        NSLog(@"Cancel pressed --> Cancel ActionSheet");
+    }
 }
 
 

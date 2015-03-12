@@ -30,4 +30,14 @@
     return  @[@"A", @"B", @"C", @"D", @"E", @"F", @"G", @"H", @"I", @"J", @"K", @"L", @"M", @"N", @"O", @"P", @"Q", @"R", @"S", @"T", @"U", @"V", @"W", @"X", @"Y", @"Z", @"#"];
 }
 
+- (id) rand {
+    if (self.count > 0) {
+        id obj = [self objectAtIndex:arc4random_uniform((uint32_t)[self count])];
+        if (obj) {
+            return obj;
+        }
+    }
+    return nil;
+}
+
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HCBucketViewController.h"
 
-@interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate>
+@interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate, UIActionSheetDelegate>
 {
     BOOL requestMade;
 }
@@ -30,6 +30,6 @@
 
 - (IBAction)refreshControllerChanged:(id)sender;
 - (IBAction)composeButtonClicked:(id)sender;
-- (IBAction)showReminders:(id)sender;
+- (IBAction)moreButtonClicked:(id)sender;
 
 @end

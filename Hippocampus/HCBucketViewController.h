@@ -30,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UIView *composeView;
 @property (weak, nonatomic) IBOutlet UITextView *composeTextView;
+@property (strong, nonatomic) UIView *congratsView;
+
 @property (strong, nonatomic) NSString *scrollToPosition;
 @property BOOL initializeWithKeyboardUp;
 @property int page;

@@ -12,4 +12,6 @@
 
 - (NSString*) truncated:(int)length;
 
++ (NSString*) randomCongratulations;
+
 @end

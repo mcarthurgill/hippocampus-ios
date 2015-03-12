@@ -646,11 +646,8 @@
 }
 
 - (void) deleteItem {
-    [self.item deleteItemWithSuccess:^(id responseObject) {
-        [self.navigationController popToRootViewControllerAnimated:YES];
-    } failure:^(NSError* error) {
-         NSLog(@"error! %@", [error localizedDescription]);
-    }];
+    [self.item deleteItemWithSuccess:nil failure:nil];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 # pragma mark textview delegate
