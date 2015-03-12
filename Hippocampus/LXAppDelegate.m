@@ -26,7 +26,6 @@
     } else {
         [self setRootStoryboard:@"Messages"];
     }
-//          [self setRootStoryboard:@"Main"];
         
     return YES;
 }

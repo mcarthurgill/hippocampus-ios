@@ -242,7 +242,9 @@ static LXSession* thisSession = nil;
     if ([LXSession locationPermissionDetermined]) {
         [self getCurrentLocation];
     } else {
-        [locationManager requestWhenInUseAuthorization];
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
+            [self.locationManager requestWhenInUseAuthorization];
+        }
     }
 }
 

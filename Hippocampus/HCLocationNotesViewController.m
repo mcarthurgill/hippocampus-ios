@@ -48,17 +48,16 @@
 - (void) setupMapView {
     
     MKMapView* mv = (MKMapView*)[self.view viewWithTag:19];
-    
     [self setupMapAndTableConstraints];
     [self addAnnotationsToMapView:mv];
-    [self makeMapView:mv visibleWithZoom:[self setMapZoom]];
+    [self makeMapViewVisible:mv];
 }
 
 - (void) addAnnotationsToMapView:(MKMapView*)mv {
     for (NSDictionary*item in self.allItems) {
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
         [annotation setCoordinate:[item location].coordinate];
-        [annotation setTitle:[[item message] truncated:20]];
+        [annotation setTitle:[[item message] truncated:25]];
         [mv addAnnotation:annotation];
     }
 }
@@ -73,16 +72,8 @@
     
 }
 
-- (MKMapRect) setMapZoom {
-    MKMapRect zoomRect = MKMapRectNull;
-    MKMapPoint annotationPoint = MKMapPointForCoordinate([[LXSession currentLocation] coordinate]);
-    MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
-    zoomRect = MKMapRectUnion(zoomRect, pointRect);
-    return zoomRect;
-}
-
-- (void) makeMapView:(MKMapView *)mv visibleWithZoom:(MKMapRect)zoomRect {
-    [mv setVisibleMapRect:zoomRect animated:NO];
+- (void) makeMapViewVisible:(MKMapView *)mv {
+    [mv showAnnotations:mv.annotations animated:YES];
 }
 
 # pragma mark - TableView Delegate
@@ -94,10 +85,10 @@
     
     if (requestMade) {
         [self.sections addObject:@"requesting"];
-    } else if (self.allItems.count == 0) {
-        [self.sections addObject:@"explanation"];
-    } else {
+    } else if ([[LXSession thisSession] hasLocation] && self.allItems.count > 0){
         [self.sections addObject:@"all"];
+    } else {
+        [self.sections addObject:@"explanation"];
     }
     
     return self.sections.count;
@@ -239,8 +230,6 @@
             additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
         }
         return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional;
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
-        return 90.0;
     }
     return 44.0;
 }
@@ -267,7 +256,6 @@
     CLLocationCoordinate2D loc = [LXSession currentLocation].coordinate;
     [[LXServer shared] requestPath:@"/items/near_location.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"latitude": [NSString stringWithFormat:@"%f", loc.latitude], @"longitude": [NSString stringWithFormat:@"%f", loc.longitude] }
                            success:^(id responseObject) {
-                               NSLog(@"response = %@", responseObject);
                                self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
                                [self setupMapView];
                                requestMade = NO;

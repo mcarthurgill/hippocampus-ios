@@ -33,7 +33,7 @@
 
 - (void) setupProperties {
     requestMade = NO;
-    [self.navigationItem setTitle:@"Random Note"];
+    [self.navigationItem setTitle:@"Random Notes"];
     UIBarButtonItem *randButton = [[UIBarButtonItem alloc]
                                                     initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh
                                                     target:self
