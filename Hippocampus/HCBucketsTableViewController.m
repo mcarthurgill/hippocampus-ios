@@ -14,6 +14,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "LXRemindersViewController.h"
 #import "HCRandomItemViewController.h"
+#import "HCLocationNotesViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -462,7 +463,7 @@
 - (IBAction)moreButtonClicked:(id)sender {
     NSString *other1 = @"Upcoming Reminders";
     NSString *other2 = @"Notes Near Current Location";
-    NSString *other3 = @"Random Note";
+    NSString *other3 = @"Random Notes";
     NSString *cancelTitle = @"Cancel";
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc]
@@ -661,7 +662,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     if (buttonIndex == 1) {
-
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCLocationNotesViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"locationNotesViewController"];
+        [self.navigationController pushViewController:vc animated:YES];
     }
     if (buttonIndex == 2) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
