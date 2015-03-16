@@ -58,6 +58,7 @@
 		765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */; };
 		768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */; };
 		76B57C2C1AB0D65A00A67DE0 /* HCLocationNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B57C2B1AB0D65A00A67DE0 /* HCLocationNotesViewController.m */; };
+		76BE801B1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BE801A1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m */; };
 		76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76BFE0711A7C0662005AD98C /* Introduction.storyboard */; };
 		76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */; };
 		76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */; };
@@ -154,6 +155,8 @@
 		768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCBucketDetailsViewController.m; sourceTree = "<group>"; };
 		76B57C2A1AB0D65A00A67DE0 /* HCLocationNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCLocationNotesViewController.h; sourceTree = "<group>"; };
 		76B57C2B1AB0D65A00A67DE0 /* HCLocationNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCLocationNotesViewController.m; sourceTree = "<group>"; };
+		76BE80191AB7559F006262CB /* HCDetailsPhotoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCDetailsPhotoTableViewCell.h; sourceTree = "<group>"; };
+		76BE801A1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCDetailsPhotoTableViewCell.m; sourceTree = "<group>"; };
 		76BFE0711A7C0662005AD98C /* Introduction.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Introduction.storyboard; sourceTree = "<group>"; };
 		76BFE0741A7C0FA8005AD98C /* HCIntroductionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCIntroductionViewController.h; sourceTree = "<group>"; };
 		76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionViewController.m; sourceTree = "<group>"; };
@@ -239,12 +242,13 @@
 				281CA924196C2B9100E6BE96 /* Login.storyboard */,
 				281CA8DA1951EC7E00E6BE96 /* LXAppDelegate.h */,
 				281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */,
+				281CA8E61951EC7E00E6BE96 /* Images.xcassets */,
 				281CA94D196DB60C00E6BE96 /* Helpers */,
 				281CA9061951ECA000E6BE96 /* Session */,
 				281CA9051951EC9C00E6BE96 /* Models */,
 				281CA9041951EC9700E6BE96 /* Assets */,
 				281CA9031951EC8E00E6BE96 /* View Controllers */,
-				281CA8E61951EC7E00E6BE96 /* Images.xcassets */,
+				76BE80181AB75546006262CB /* Table Cells */,
 				281CA8D21951EC7E00E6BE96 /* Supporting Files */,
 			);
 			path = Hippocampus;
@@ -400,6 +404,15 @@
 				286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		76BE80181AB75546006262CB /* Table Cells */ = {
+			isa = PBXGroup;
+			children = (
+				76BE80191AB7559F006262CB /* HCDetailsPhotoTableViewCell.h */,
+				76BE801A1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m */,
+			);
+			name = "Table Cells";
 			sourceTree = "<group>";
 		};
 		76BFE0731A7C0F5B005AD98C /* Introduction */ = {
@@ -610,6 +623,7 @@
 				76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */,
 				281CA8D81951EC7E00E6BE96 /* main.m in Sources */,
 				28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */,
+				76BE801B1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m in Sources */,
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
 				281CA94C196D9EE100E6BE96 /* HCNewBucketIITableViewController.m in Sources */,
 				76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */,
