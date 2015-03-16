@@ -41,6 +41,8 @@
 
 - (NSString*) reminderDate;
 
+- (NSString*) nextReminderDate;
+
 - (NSString*) status;
 
 - (NSString*) inputMethod;
@@ -72,6 +74,8 @@
 - (BOOL) hasMessage;
 
 - (BOOL) hasReminder;
+
+- (BOOL) hasNextReminderDate;
 
 - (BOOL) hasItemType;
 

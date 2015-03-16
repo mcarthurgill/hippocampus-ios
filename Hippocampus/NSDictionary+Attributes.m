@@ -107,6 +107,11 @@
     return [self objectForKey:@"reminder_date"];
 }
 
+- (NSString*) nextReminderDate
+{
+    return [self objectForKey:@"next_reminder_date"];
+}
+
 - (NSString*) status
 {
     return [self objectForKey:@"status"];
@@ -188,6 +193,11 @@
 - (BOOL) hasReminder
 {
     return [self reminderDate] && NULL_TO_NIL([self objectForKey:@"reminder_date"]);
+}
+
+- (BOOL) hasNextReminderDate
+{
+    return [self nextReminderDate] && NULL_TO_NIL([self objectForKey:@"next_reminder_date"]);
 }
 
 - (BOOL) hasItemType

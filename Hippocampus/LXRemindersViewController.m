@@ -9,6 +9,7 @@
 #import "LXRemindersViewController.h"
 #import "HCItemTableViewController.h"
 #import "HCContainerViewController.h"
+#import "HCItemTableViewCell.h"
 
 @interface LXRemindersViewController ()
 
@@ -103,18 +104,8 @@
 
 - (UITableViewCell*) itemCellForTableView:(UITableView*)tableView withItem:(NSDictionary*)item cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"reminderCell" forIndexPath:indexPath];
-    
-    UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
-    UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:2];
-
-    [note setText: [item objectForKey:@"message"]];
-    [timestamp setText:[NSString stringWithFormat:@"%@%@", [NSString stringWithFormat:@"%@ - ", [item objectForKey:@"item_type"]], [NSDate formattedDateFromString:[item objectForKey:@"next_reminder_date"]]]];
-
-    [note setLineBreakMode:NSLineBreakByWordWrapping];
-    [note setNumberOfLines:0];
-    
-    //NSLog(@"INFO ON ITEM:\n%@\n%@\n%@", item.message, item.itemID, item.bucketID);
+    HCItemTableViewCell *cell = (HCItemTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:@"reminderCell" forIndexPath:indexPath];
+    [cell configureWithItem:item];
     return cell;
 }
 
