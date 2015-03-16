@@ -16,7 +16,7 @@
 }
 
 + (NSString *) randomCongratulations {
-    NSArray *arr = [NSArray arrayWithObjects:@"Awesome Note!", @"Not going to forget that!", @"Way to go!", @"You're crushing it!", @"Nice memory!", @"You're getting smarter!", @"Great memory!", @"It's the details that matter", @"Memory game strong!", nil];
+    NSArray *arr = [NSArray arrayWithObjects:@"Awesome note.", @"Incredible.", @"You're crushing it.", @"Nice memory!", @"You're getting smarter.", @"Great memory!", @"Details matter.", @"Memory game strong!", @"Killing it.", @"Impressive.", nil];
     return [arr rand];
 }
 

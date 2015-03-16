@@ -11,6 +11,7 @@
 #import "HCContainerViewController.h"
 #import "HCBucketDetailsViewController.h"
 #import "LXString+NSString.h"
+#import "LXAppDelegate.h"
 
 @import AssetsLibrary;
 
@@ -911,25 +912,39 @@
 # pragma mark - Congratulations Notifications
 
 - (void) buildCongrats {
-    self.congratsView = [[UIView alloc] initWithFrame:CGRectMake(10, self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height, self.view.frame.size.width - 20, 44)];
-    UILabel *congratsLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width - 20, 44)];
+    //self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height
+    self.congratsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height)];
+    
+    UILabel *congratsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, [UIApplication sharedApplication].statusBarFrame.size.height, self.congratsView.frame.size.width, self.navigationController.navigationBar.frame.size.height)];
+    
     [congratsLabel setText: [NSString randomCongratulations]];
     [congratsLabel setTag:1];
     [congratsLabel setTextAlignment:NSTextAlignmentCenter];
+    congratsLabel.layer.cornerRadius = 8.0f;
+    [congratsLabel setClipsToBounds:YES];
+    [congratsLabel setBackgroundColor:[UIColor clearColor]];
+    [congratsLabel setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:16.0f]];
+    
     [self.congratsView addSubview:congratsLabel];
-    [self.congratsView setBackgroundColor:[UIColor colorWithRed:137.0/255.0 green:198.0/255.0 blue:199.0/255.0 alpha:1]];
+    [self.congratsView setBackgroundColor:[UIColor whiteColor]];
     [self.congratsView setAlpha:0.0];
-    [self.view addSubview:self.congratsView];
+    
+    LXAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    [appDelegate.window addSubview:self.congratsView];
+    
+    //[self.view addSubview:self.congratsView];
 }
 
 - (void) displayCongrats {
     UILabel *lbl = (UILabel *)[self.congratsView viewWithTag:1];
+    
+    
     [lbl setText:[NSString randomCongratulations]];
     [UIView animateWithDuration:0.5 animations:^{
         [self.congratsView setAlpha:1.0];
     }];
     
-    [self performSelector:@selector(hideCongrats) withObject:nil afterDelay:1.0];
+    [self performSelector:@selector(hideCongrats) withObject:nil afterDelay:2.0];
 }
 
 - (void) hideCongrats {
