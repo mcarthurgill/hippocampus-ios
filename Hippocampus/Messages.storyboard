@@ -1241,9 +1241,64 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="mediaCell" rowHeight="178" id="ZYN-qU-Kyc">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZYN-qU-Kyc" id="WwG-WT-7Bd">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView tag="1" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iKU-Ku-cd8">
+                                                    <rect key="frame" x="8" y="8" width="290" height="162"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="162" id="CLP-fv-TMF"/>
+                                                        <constraint firstAttribute="height" constant="162" placeholder="YES" id="E0r-Yy-cz7"/>
+                                                        <constraint firstAttribute="width" constant="290" placeholder="YES" id="hGl-61-8hf"/>
+                                                        <constraint firstAttribute="width" constant="290" id="hGw-hk-41T"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="CLP-fv-TMF"/>
+                                                            <exclude reference="hGw-hk-41T"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
+                                                <imageView tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9Ai-jI-RIM">
+                                                    <rect key="frame" x="302" y="8" width="290" height="162"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="290" placeholder="YES" id="V4Q-qY-VL8"/>
+                                                        <constraint firstAttribute="height" constant="162" placeholder="YES" id="VWW-Q3-QU8"/>
+                                                        <constraint firstAttribute="height" constant="162" id="a52-43-5jF"/>
+                                                        <constraint firstAttribute="width" constant="290" id="ftN-YI-Ypv"/>
+                                                    </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="VWW-Q3-QU8"/>
+                                                            <exclude reference="a52-43-5jF"/>
+                                                            <exclude reference="ftN-YI-Ypv"/>
+                                                        </mask>
+                                                    </variation>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="iKU-Ku-cd8" firstAttribute="top" secondItem="WwG-WT-7Bd" secondAttribute="topMargin" id="5xN-4F-7Z7"/>
+                                                <constraint firstItem="9Ai-jI-RIM" firstAttribute="leading" secondItem="iKU-Ku-cd8" secondAttribute="trailing" constant="4" id="CW2-HQ-Bqh"/>
+                                                <constraint firstItem="9Ai-jI-RIM" firstAttribute="bottom" secondItem="WwG-WT-7Bd" secondAttribute="bottomMargin" id="Dno-rC-z5t"/>
+                                                <constraint firstItem="9Ai-jI-RIM" firstAttribute="trailing" secondItem="WwG-WT-7Bd" secondAttribute="trailingMargin" id="FG3-Ex-rxq"/>
+                                                <constraint firstItem="iKU-Ku-cd8" firstAttribute="bottom" secondItem="WwG-WT-7Bd" secondAttribute="bottomMargin" id="Sga-CA-IFg"/>
+                                                <constraint firstItem="iKU-Ku-cd8" firstAttribute="leading" secondItem="WwG-WT-7Bd" secondAttribute="leadingMargin" id="TRt-mO-Gac"/>
+                                                <constraint firstItem="9Ai-jI-RIM" firstAttribute="top" secondItem="WwG-WT-7Bd" secondAttribute="topMargin" id="una-UW-h4h"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="FG3-Ex-rxq"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </prototypes>
                                 <variation key="default">
                                     <mask key="constraints">
+                                        <exclude reference="PHh-bT-WpF"/>
                                         <exclude reference="aJV-Pg-1o3"/>
                                     </mask>
                                 </variation>
@@ -1263,6 +1318,7 @@
                             <constraint firstItem="pN0-TX-Wkg" firstAttribute="bottom" secondItem="hGT-5S-uaP" secondAttribute="top" id="OBb-wb-r17"/>
                             <constraint firstAttribute="trailing" secondItem="pN0-TX-Wkg" secondAttribute="trailing" id="beB-jn-sHt"/>
                             <constraint firstItem="pN0-TX-Wkg" firstAttribute="bottom" secondItem="hGT-5S-uaP" secondAttribute="bottom" id="bxN-gp-tRL"/>
+                            <constraint firstItem="pN0-TX-Wkg" firstAttribute="bottom" secondItem="hGT-5S-uaP" secondAttribute="top" id="cS5-XK-sai"/>
                             <constraint firstItem="pN0-TX-Wkg" firstAttribute="top" secondItem="BMP-xG-7yh" secondAttribute="bottom" constant="-20" id="dbs-V1-E7G"/>
                             <constraint firstItem="pN0-TX-Wkg" firstAttribute="top" secondItem="syX-s7-H6d" secondAttribute="top" id="eqv-7G-bYK"/>
                             <constraint firstItem="pN0-TX-Wkg" firstAttribute="leading" secondItem="syX-s7-H6d" secondAttribute="leadingMargin" id="s1a-m4-fPb"/>

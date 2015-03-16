@@ -20,6 +20,8 @@
 @synthesize updatedBucketName;
 @synthesize delegate;
 @synthesize typeOptions;
+@synthesize mediaUrls;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,7 +36,7 @@
 - (void) setup {
     [self.navigationItem setTitle:[self.bucket firstName]];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleSingleLine];
+    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     self.navigationItem.rightBarButtonItem =
                                     [[UIBarButtonItem alloc] initWithTitle:@"Save"
                                       style:UIBarButtonItemStylePlain
@@ -44,6 +46,9 @@
     savingChanges = NO;
     self.typeOptions = @[@"Other", @"Person", @"Event", @"Place"];
     [self updateButtonStatus];
+    self.mediaUrls = [[NSMutableArray alloc] init];
+    [self getMediaUrls];
+    isFullScreen = false;
 }
 
 - (void) reloadScreen
@@ -62,6 +67,9 @@
     [self.sections addObject:@"bucketName"];
     [self.sections addObject:@"bucketType"];
     [self.sections addObject:@"deleteBucket"];
+    if ([self bucketHasMediaUrls]) {
+        [self.sections addObject:@"media"];
+    }
     
     return self.sections.count;
 }
@@ -75,6 +83,8 @@
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {
         return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
+        return (self.mediaUrls.count%2 == 0) ? self.mediaUrls.count/2 : self.mediaUrls.count/2 + 1;
     }
     return 0;
 }
@@ -88,6 +98,8 @@
         return [self bucketTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
         return [self deleteBucketCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
+        return [self mediaCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -116,6 +128,65 @@
     return cell;
 }
 
+- (UITableViewCell*) mediaCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"mediaCell" forIndexPath:indexPath];
+    UIImageView *leftImage = (UIImageView*)[cell.contentView viewWithTag:1];
+    UIImageView *rightImage = (UIImageView*)[cell.contentView viewWithTag:2];
+    
+    [leftImage setClipsToBounds:YES];
+    [rightImage setClipsToBounds:YES];
+    [leftImage setContentMode:UIViewContentModeScaleAspectFill];
+    [rightImage setContentMode:UIViewContentModeScaleAspectFill];
+    [leftImage.layer setCornerRadius:8.0f];
+    [rightImage.layer setCornerRadius:8.0f];
+    
+    UITapGestureRecognizer *ltapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+    ltapped.delegate = self;
+    ltapped.numberOfTapsRequired = 1;
+    [leftImage addGestureRecognizer:ltapped];
+    
+    UITapGestureRecognizer *rtapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+    rtapped.delegate = self;
+    rtapped.numberOfTapsRequired = 1;
+    [rightImage addGestureRecognizer:rtapped];
+    
+    [SGImageCache getImageForURL:[self.mediaUrls objectAtIndex:(indexPath.row)*2]  thenDo:^(UIImage* image) {
+        if (image) {
+            leftImage.image = image;
+            [self setConstraintsForImageView:leftImage];
+        }
+    }];
+    
+    if ((indexPath.row)*2 + 1 < self.mediaUrls.count) {
+        [SGImageCache getImageForURL:[self.mediaUrls objectAtIndex:(indexPath.row)*2 + 1]  thenDo:^(UIImage* image) {
+            if (image) {
+                rightImage.image = image;
+                [self setConstraintsForImageView:rightImage];
+            }
+        }];
+    } else {
+        [rightImage setImage:nil];
+    }
+    
+    return cell;
+}
+
+- (void) setConstraintsForImageView:(UIImageView *)imageView {
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    NSDictionary *imageViewDict = @{@"imageView":imageView};
+
+    float width = imageView.image.size.width;
+    
+    width = self.view.frame.size.width*0.5;
+    
+    NSArray *constraint_H = [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[imageView(%f)]", width - 8.0] //margins
+                                                                    options:0
+                                                                    metrics:nil
+                                                                      views:imageViewDict];
+    [imageView addConstraints:constraint_H];
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
@@ -124,6 +195,8 @@
         return 150.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
         return 50.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
+        return 200.0f;
     }
 
     return 44.0f;
@@ -147,6 +220,8 @@
         return @"Thread Type";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {
         return @"Actions";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
+        return @"Media";
     }
     return nil;
 }
@@ -174,10 +249,71 @@
      ];
 }
 
+- (void) deleteBucket {
+    [self showHUDWithMessage:@"Deleting Thread..."];
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket ID]] withMethod:@"DELETE" withParamaters:nil
+                           success:^(id responseObject){
+                               [self.navigationController popToRootViewControllerAnimated:YES];
+                               [self hideHUD];
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error! %@", [error localizedDescription]);
+                               [self hideHUD];
+                           }
+     ];
+}
+
 - (void) updateBucketName {
     [self.bucket setObject:self.updatedBucketName forKey:@"first_name"];
     [self saveInfo];
 }
+
+- (void) getMediaUrls {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self askServerForMediaUrls];
+    });
+}
+
+- (void) askServerForMediaUrls {
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/media_urls.json", [self.bucket ID]] withMethod:@"GET" withParamaters:@{@"user_id": [[HCUser loggedInUser] userID]}
+                           success:^(id responseObject){
+                               [self.mediaUrls addObjectsFromArray:[responseObject objectForKey:@"media_urls"]];
+                               NSLog(@"mediaURLS = %@", self.mediaUrls);
+                               NSLog(@"count = %lu", (unsigned long)[self.mediaUrls count]);
+                               [self.tableView reloadData];
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error! %@", [error localizedDescription]);
+                           }
+     ];
+}
+
+- (void)imageTapped:(UIGestureRecognizer *)gestureRecognizer
+{
+    UIView *parentCell = gestureRecognizer.view.superview;
+    
+    while (![parentCell isKindOfClass:[UITableViewCell class]]) {
+        parentCell = parentCell.superview;
+    }
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:(UITableViewCell *)parentCell];
+    NSString *mediaUrl;
+    UIImageView *imageView = (UIImageView*)[[[self.tableView cellForRowAtIndexPath:indexPath] contentView] viewWithTag:gestureRecognizer.view.tag];
+    
+    if (imageView.image) {
+        if (gestureRecognizer.view.tag == 1) {
+            mediaUrl = [self.mediaUrls objectAtIndex:(indexPath.row)*2];
+        } else {
+            mediaUrl = [self.mediaUrls objectAtIndex:(indexPath.row)*2 + 1];
+        }
+        [self openImageWithUrl:mediaUrl];
+    }
+}
+
+-(void)openImageWithUrl:(NSString *)mediaUrl {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:mediaUrl]];
+}
+
 
 # pragma mark TextField Delegate
 
@@ -267,21 +403,6 @@
 }
 
 
-- (void) deleteBucket {
-    [self showHUDWithMessage:@"Deleting Thread..."];
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket ID]] withMethod:@"DELETE" withParamaters:nil
-                           success:^(id responseObject){
-                               [self.navigationController popToRootViewControllerAnimated:YES];
-                               [self hideHUD];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error! %@", [error localizedDescription]);
-                               [self hideHUD];
-                           }
-     ];
-}
-
-
 
 # pragma mark hud delegate
 
@@ -296,6 +417,12 @@
     [hud hide:YES];
 }
 
+
+# pragma mark - Helpers
+
+- (BOOL) bucketHasMediaUrls {
+    return self.mediaUrls && self.mediaUrls.count > 0;
+}
 
 
 @end
