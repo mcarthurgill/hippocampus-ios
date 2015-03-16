@@ -8,15 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
+#define PICTURE_HEIGHT 180
+#define PICTURE_MARGIN_TOP 4
+
 @protocol HCUpdateBucketDelegate <NSObject>
 -(void)updateBucket:(NSMutableDictionary *)updatedBucket;
 @end
 
-@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate>
+@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 {
     BOOL unsavedChanges;
     BOOL savingChanges;
     MBProgressHUD* hud;
+    BOOL isFullScreen;
+    CGRect prevFrame;
 }
 
 @property (strong, nonatomic) NSMutableDictionary* bucket;
@@ -26,5 +31,6 @@
 @property (nonatomic,assign) id delegate;
 
 @property (strong, nonatomic) NSArray* typeOptions;
+@property (strong, nonatomic) NSMutableArray *mediaUrls;
 
 @end

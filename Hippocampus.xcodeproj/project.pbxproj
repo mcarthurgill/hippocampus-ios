@@ -57,6 +57,7 @@
 		76379FD51A8904F700D19E64 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 76379FD41A8904F700D19E64 /* camera.png */; };
 		765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */; };
 		768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */; };
+		76B57C2C1AB0D65A00A67DE0 /* HCLocationNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B57C2B1AB0D65A00A67DE0 /* HCLocationNotesViewController.m */; };
 		76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76BFE0711A7C0662005AD98C /* Introduction.storyboard */; };
 		76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */; };
 		76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */; };
@@ -151,6 +152,8 @@
 		765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCRandomItemViewController.m; sourceTree = "<group>"; };
 		768D348F1A94FDAA00D340C0 /* HCBucketDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCBucketDetailsViewController.h; sourceTree = "<group>"; };
 		768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCBucketDetailsViewController.m; sourceTree = "<group>"; };
+		76B57C2A1AB0D65A00A67DE0 /* HCLocationNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCLocationNotesViewController.h; sourceTree = "<group>"; };
+		76B57C2B1AB0D65A00A67DE0 /* HCLocationNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCLocationNotesViewController.m; sourceTree = "<group>"; };
 		76BFE0711A7C0662005AD98C /* Introduction.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Introduction.storyboard; sourceTree = "<group>"; };
 		76BFE0741A7C0FA8005AD98C /* HCIntroductionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCIntroductionViewController.h; sourceTree = "<group>"; };
 		76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionViewController.m; sourceTree = "<group>"; };
@@ -419,6 +422,8 @@
 				76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */,
 				765B3D711AAF944700E599F3 /* HCRandomItemViewController.h */,
 				765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */,
+				76B57C2A1AB0D65A00A67DE0 /* HCLocationNotesViewController.h */,
+				76B57C2B1AB0D65A00A67DE0 /* HCLocationNotesViewController.m */,
 			);
 			name = More;
 			sourceTree = "<group>";
@@ -588,6 +593,7 @@
 				281CA929196C2C2900E6BE96 /* HCLoginViewController.m in Sources */,
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
 				288433C21A8BD45E0059FCE1 /* HCContainerViewController.m in Sources */,
+				76B57C2C1AB0D65A00A67DE0 /* HCLocationNotesViewController.m in Sources */,
 				768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				281CA9111951F36700E6BE96 /* Model.xcdatamodeld in Sources */,
