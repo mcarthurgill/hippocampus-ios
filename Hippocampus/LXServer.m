@@ -263,6 +263,7 @@
                                        [saveArray addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
                                        [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:saveArray] forKey:@"0"];
                                        [[NSUserDefaults standardUserDefaults] synchronize];
+                                       //SET THE BADGE
                                    });
                                }
                                if (successCallback) {
