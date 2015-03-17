@@ -9,6 +9,9 @@
 #import "HCLocationNotesViewController.h"
 #import "HCContainerViewController.h"
 #import "HCItemTableViewCell.h"
+#import "HCIndicatorTableViewCell.h"
+#import "HCExplanationTableViewCell.h"
+
 @import MapKit;
 
 #define IMAGE_FADE_IN_TIME 0.1f
@@ -131,21 +134,16 @@
 
 - (UITableViewCell*) indicatorCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"indicatorCell" forIndexPath:indexPath];
-    UIActivityIndicatorView* iav = (UIActivityIndicatorView*) [cell.contentView viewWithTag:10];
-    [iav startAnimating];
+    HCIndicatorTableViewCell *cell = (HCIndicatorTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:@"indicatorCell" forIndexPath:indexPath];
+    [cell configureAndBeginAnimation];
     return cell;
 }
 
 - (UITableViewCell*) explanationCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"explanationCell" forIndexPath:indexPath];
-    UILabel* explanation = (UILabel*)[cell.contentView viewWithTag:1];
-    if ([[LXSession thisSession] hasLocation]) {
-        [explanation setText:@"You haven't created any notes near your current location."];
-    } else {
-        [explanation setText:@"You need to give us location permission for this feature. Settings > Privacy > Location Services > Hippocampus"];
-    }
+    HCExplanationTableViewCell *cell = (HCExplanationTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:@"explanationCell" forIndexPath:indexPath];
+    NSString *text = [[LXSession thisSession] hasLocation] ? @"You haven't created any notes near your current location." : @"You need to give us location permission for this feature. Settings > Privacy > Location Services > Hippocampus";
+    [cell configureWithText:text];
     return cell;
 }
 
@@ -196,20 +194,15 @@
 
 - (void) getLocationBasedItems {
     requestMade = YES;
-    CLLocationCoordinate2D loc = [LXSession currentLocation].coordinate;
-    [[LXServer shared] requestPath:@"/items/near_location.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"latitude": [NSString stringWithFormat:@"%f", loc.latitude], @"longitude": [NSString stringWithFormat:@"%f", loc.longitude] }
-                           success:^(id responseObject) {
-                               self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
-                               [self setupMapView];
-                               requestMade = NO;
-                               [self.tableView reloadData];
-                           }
-                           failure:^(NSError *error) {
-                               requestMade = NO;
-                               [self.tableView reloadData];
-                               NSLog(@"error: %@", [error localizedDescription]);
-                           }
-     ];
+    [[LXServer shared] getNotesNearCurrentLocation success:^(id responseObject) {
+        self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
+        [self setupMapView];
+        requestMade = NO;
+        [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        requestMade = NO;
+        [self.tableView reloadData];
+    }];
 }
 
 - (NSMutableArray*) itemsSortedByDistance:(NSMutableArray*)items {

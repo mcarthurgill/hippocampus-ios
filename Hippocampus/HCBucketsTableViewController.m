@@ -16,6 +16,7 @@
 #import "HCRandomItemViewController.h"
 #import "HCLocationNotesViewController.h"
 #import "HCItemTableViewCell.h"
+#import "HCIndicatorTableViewCell.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -204,9 +205,8 @@
 
 - (UITableViewCell*) indicatorCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"indicatorCell" forIndexPath:indexPath];
-    UIActivityIndicatorView* iav = (UIActivityIndicatorView*) [cell.contentView viewWithTag:10];
-    [iav startAnimating];
+    HCIndicatorTableViewCell *cell = (HCIndicatorTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"indicatorCell" forIndexPath:indexPath];
+    [cell configureAndBeginAnimation];
     return cell;
 }
 

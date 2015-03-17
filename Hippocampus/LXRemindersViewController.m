@@ -10,6 +10,8 @@
 #import "HCItemTableViewController.h"
 #import "HCContainerViewController.h"
 #import "HCItemTableViewCell.h"
+#import "HCIndicatorTableViewCell.h"
+#import "HCExplanationTableViewCell.h"
 
 @interface LXRemindersViewController ()
 
@@ -111,18 +113,15 @@
 
 - (UITableViewCell*) indicatorCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"indicatorCell" forIndexPath:indexPath];
-    UIActivityIndicatorView* iav = (UIActivityIndicatorView*) [cell.contentView viewWithTag:10];
-    [iav startAnimating];
+    HCIndicatorTableViewCell *cell = (HCIndicatorTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:@"indicatorCell" forIndexPath:indexPath];
+    [cell configureAndBeginAnimation];
     return cell;
 }
 
 - (UITableViewCell*) explanationCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"explanationCell" forIndexPath:indexPath];
-    UILabel* explanation = (UILabel*)[cell.contentView viewWithTag:1];
-    [explanation setText:@"You have not set any reminders. Tap a note you've made and set one."];
-    
+    HCExplanationTableViewCell *cell = (HCExplanationTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:@"explanationCell" forIndexPath:indexPath];
+    [cell configureWithText:@"You have not set any reminders. Tap a note you've made and set one."]; 
     return cell;
 }
 
