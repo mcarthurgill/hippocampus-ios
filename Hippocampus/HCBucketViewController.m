@@ -498,6 +498,8 @@
 - (NSMutableArray*) currentArray
 {
     if (!self.allItems) {
+        NSLog(@"**%@", [[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]);
+
         if ([[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]) {
             self.allItems = [[NSMutableArray alloc] initWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]]];
             //return [[NSUserDefaults standardUserDefaults] objectForKey:[self currentBucketID]];

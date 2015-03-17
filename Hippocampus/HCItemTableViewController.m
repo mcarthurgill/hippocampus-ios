@@ -489,7 +489,7 @@
                            [self hideHUD];
                            [self updateBackgroundArrays];
                            [self reloadScreen];
-                           [self updateBucketInBackground:bucket]; 
+                           [self updateBucketInBackground:bucket];
                        }failure:^(NSError *error){
                             NSLog(@"unsuccessfully added to stack");
                             [self setUnsavedChanges:YES andSavingChanges:NO];
@@ -630,9 +630,7 @@
 - (void) updateBucketInBackground:(NSDictionary*)bucket {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:^(id responseObject){
-            if ([[self.bucketToRemove ID] isEqualToString:[bucket ID]]) {
-                self.bucketToRemove = nil;
-            }
+            self.bucketToRemove = nil;
         }failure:nil];
     });
 }

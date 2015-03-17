@@ -26,7 +26,9 @@
     } else {
         [self setRootStoryboard:@"Messages"];
     }
-        
+    
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+
     return YES;
 }
 
@@ -60,8 +62,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+//    [self setBadgeIcon];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -80,11 +81,8 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
 }
-
-
-
 
 # pragma mark managed object context
 
@@ -139,5 +137,36 @@
 - (NSString *)applicationDocumentsDirectory {
     return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
 }
+
+
+
+# pragma mark - Background Fetch
+
+-(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
+    [[LXServer shared] getAllItemsWithPage:0
+                                   success:^(id responseObject){
+//                                       [self setBadgeIcon];
+                                   }failure:^(NSError *error){
+//                                       [self setBadgeIcon];
+                                   }];
+    
+    [[LXServer shared] getAllBucketsWithSuccess:^(id responseObject){
+//        [self setBadgeIcon];
+    }failure:^(NSError *error){
+//        [self setBadgeIcon];
+    }];
+}
+
+
+
+# pragma mark - Notifications
+
+//- (void) setBadgeIcon {
+//    if ([[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
+//        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] objectForKey:@"items_count"] integerValue]];
+//    } else {
+//        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+//    }
+//}
 
 @end
