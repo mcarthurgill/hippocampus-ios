@@ -15,13 +15,11 @@
 -(void)updateBucket:(NSMutableDictionary *)updatedBucket;
 @end
 
-@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
+@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate>
 {
     BOOL unsavedChanges;
     BOOL savingChanges;
     MBProgressHUD* hud;
-    BOOL isFullScreen;
-    CGRect prevFrame;
 }
 
 @property (strong, nonatomic) NSMutableDictionary* bucket;

@@ -8,7 +8,7 @@
 
 #import "HCRandomItemViewController.h"
 #import "HCContainerViewController.h"
-
+#import "HCItemTableViewCell.h"
 #define IMAGE_FADE_IN_TIME 0.1f
 
 @interface HCRandomItemViewController ()
@@ -94,65 +94,8 @@
 
 - (UITableViewCell*) itemCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
-    
-    UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
-    UIFont* font = note.font;
-    float leftMargin = note.frame.origin.x;
-    float topMargin = note.frame.origin.y;
-    
-    float width = self.view.frame.size.width - 10 - 25;
-    [note removeFromSuperview];
-    
-    note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font]+4.0f)];
-    [note setFont:font];
-    [note setText:[item truncatedMessage]];
-    [note setTag:1];
-    [note setNumberOfLines:0];
-    [note setLineBreakMode:NSLineBreakByWordWrapping];
-    [cell.contentView addSubview:note];
-    
-    UILabel* timestamp = (UILabel*)[cell.contentView viewWithTag:2];
-    [timestamp setText:([self.item hasID] ? [NSString stringWithFormat:@"%@%@", ([self.item hasBucketsString] ? [NSString stringWithFormat:@"%@ - ", [self.item bucketsString]] : @""), [NSDate timeAgoInWordsFromDatetime:[self.item createdAt]]] : @"syncing with server")];
-    
-    int i = 0;
-    while ([cell.contentView viewWithTag:(200+i)]) {
-        [[cell.contentView viewWithTag:(200+i)] removeFromSuperview];
-        ++i;
-    }
-    
-    if ([self.item croppedMediaURLs]) {
-        int j = 0;
-        for (NSString* url in [self.item croppedMediaURLs]) {
-            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*j, cell.contentView.frame.size.width-40.0f, PICTURE_HEIGHT)];
-            [iv setTag:(200+j)];
-            [iv setContentMode:UIViewContentModeScaleAspectFill];
-            [iv setClipsToBounds:YES];
-            [iv.layer setCornerRadius:8.0f];
-            if ([self.item hasID]) {
-                [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
-                    if (image) {
-                        [iv setAlpha:0.0f];
-                        iv.image = image;
-                        [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
-                            [iv setAlpha:1.0f];
-                        }];
-                    }
-                }];
-            } else {
-                [iv setAlpha:0.0f];
-                iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
-                [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
-                    [iv setAlpha:1.0f];
-                }];
-                
-            }
-            [cell.contentView addSubview:iv];
-            ++j;
-        }
-    }
-
-    
+    HCItemTableViewCell *cell = (HCItemTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
+    [cell configureWithItem:item];
     return cell;
 }
 

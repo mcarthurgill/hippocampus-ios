@@ -278,6 +278,56 @@
      ];
 }
 
+- (void) savebucketWithBucketID:(NSString*)bucketID andBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", bucketID] withMethod:@"PUT" withParamaters: @{ @"bucket":bucket}
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (void) getMediaUrlsForBucketID:(NSString *)bucketID success:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/media_urls.json", bucketID] withMethod:@"GET" withParamaters:@{@"user_id": [[HCUser loggedInUser] userID]}
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (void) deleteBucketWithBucketID:(NSString*)bucketID success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", bucketID] withMethod:@"DELETE" withParamaters:nil
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
 
 - (NSMutableDictionary*) bucketToSave:(NSMutableDictionary*)incomingDictionary
 {

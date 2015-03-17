@@ -7,6 +7,7 @@
 //
 
 #import "HCBucketDetailsViewController.h"
+#import "HCDetailsPhotoTableViewCell.h"
 
 @interface HCBucketDetailsViewController ()
 
@@ -42,13 +43,10 @@
                                       style:UIBarButtonItemStylePlain
                                       target:self
                                       action:@selector(saveInfo)];
-    unsavedChanges = NO;
-    savingChanges = NO;
+    [self setUnsavedChanges:NO andSavingChanges:NO];
     self.typeOptions = @[@"Other", @"Person", @"Event", @"Place"];
-    [self updateButtonStatus];
     self.mediaUrls = [[NSMutableArray alloc] init];
     [self getMediaUrls];
-    isFullScreen = false;
 }
 
 - (void) reloadScreen
@@ -130,46 +128,35 @@
 
 - (UITableViewCell*) mediaCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"mediaCell" forIndexPath:indexPath];
+    
+    HCDetailsPhotoTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"mediaCell" forIndexPath:indexPath];
+
     UIImageView *leftImage = (UIImageView*)[cell.contentView viewWithTag:1];
     UIImageView *rightImage = (UIImageView*)[cell.contentView viewWithTag:2];
     
-    [leftImage setClipsToBounds:YES];
-    [rightImage setClipsToBounds:YES];
-    [leftImage setContentMode:UIViewContentModeScaleAspectFill];
-    [rightImage setContentMode:UIViewContentModeScaleAspectFill];
-    [leftImage.layer setCornerRadius:8.0f];
-    [rightImage.layer setCornerRadius:8.0f];
-    
-    UITapGestureRecognizer *ltapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
-    ltapped.delegate = self;
-    ltapped.numberOfTapsRequired = 1;
-    [leftImage addGestureRecognizer:ltapped];
-    
-    UITapGestureRecognizer *rtapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
-    rtapped.delegate = self;
-    rtapped.numberOfTapsRequired = 1;
-    [rightImage addGestureRecognizer:rtapped];
-    
-    [SGImageCache getImageForURL:[self.mediaUrls objectAtIndex:(indexPath.row)*2]  thenDo:^(UIImage* image) {
-        if (image) {
-            leftImage.image = image;
-            [self setConstraintsForImageView:leftImage];
-        }
-    }];
-    
+    [cell configureWithMediaUrl:[self.mediaUrls objectAtIndex:(indexPath.row)*2] andImageView:leftImage];
+    [self finishConfigurationForImageView:leftImage];
+
     if ((indexPath.row)*2 + 1 < self.mediaUrls.count) {
-        [SGImageCache getImageForURL:[self.mediaUrls objectAtIndex:(indexPath.row)*2 + 1]  thenDo:^(UIImage* image) {
-            if (image) {
-                rightImage.image = image;
-                [self setConstraintsForImageView:rightImage];
-            }
-        }];
+        [cell configureWithMediaUrl:[self.mediaUrls objectAtIndex:(indexPath.row)*2 + 1] andImageView:rightImage];
+        [self finishConfigurationForImageView:rightImage];
     } else {
         [rightImage setImage:nil];
     }
     
     return cell;
+}
+
+- (void) finishConfigurationForImageView:(UIImageView*)imageView {
+    [self addTapGestureToImageView:imageView];
+    [self setConstraintsForImageView:imageView];
+}
+
+- (void) addTapGestureToImageView:(UIImageView *)imageView {
+    UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
+    tapped.delegate = self;
+    tapped.numberOfTapsRequired = 1;
+    [imageView addGestureRecognizer:tapped];
 }
 
 - (void) setConstraintsForImageView:(UIImageView *)imageView {
@@ -231,36 +218,26 @@
 # pragma mark - Actions
 
 - (void) saveInfo {
-    unsavedChanges = YES;
-    savingChanges = YES;
+    [self setUnsavedChanges:YES andSavingChanges:YES];
     
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket ID]] withMethod:@"PUT" withParamaters:@{@"bucket":self.bucket}
-                           success:^(id responseObject) {
-                               unsavedChanges = NO;
-                               savingChanges = NO;
-                               [self reloadScreen];
-                               [self.delegate updateBucket:self.bucket]; 
-                           }
-                           failure:^(NSError *error) {
-                               unsavedChanges = YES;
-                               savingChanges = NO;
-                               [self reloadScreen];
-                           }
-     ];
+    [[LXServer shared] savebucketWithBucketID:[self.bucket ID] andBucket:self.bucket success:^(id responseObject) {
+        [self setUnsavedChanges:NO andSavingChanges:NO];
+        [self reloadScreen];
+        [self.delegate updateBucket:self.bucket];
+    } failure:^(NSError *error) {
+        [self setUnsavedChanges:YES andSavingChanges:NO];
+        [self reloadScreen];
+    }];
 }
 
 - (void) deleteBucket {
     [self showHUDWithMessage:@"Deleting Thread..."];
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@.json", [self.bucket ID]] withMethod:@"DELETE" withParamaters:nil
-                           success:^(id responseObject){
-                               [self.navigationController popToRootViewControllerAnimated:YES];
-                               [self hideHUD];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error! %@", [error localizedDescription]);
-                               [self hideHUD];
-                           }
-     ];
+    [[LXServer shared] deleteBucketWithBucketID:[self.bucket ID] success:^(id responseObject) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self hideHUD];
+    }failure:^(NSError *error){
+        [self hideHUD];
+    }];
 }
 
 - (void) updateBucketName {
@@ -268,25 +245,23 @@
     [self saveInfo];
 }
 
+- (void)setUnsavedChanges:(BOOL)updatedUnsavedChanges andSavingChanges:(BOOL)updatedSavingChanges {
+    unsavedChanges = updatedUnsavedChanges;
+    savingChanges = updatedSavingChanges;
+    [self updateButtonStatus];
+}
+
 - (void) getMediaUrls {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self askServerForMediaUrls];
+        [[LXServer shared] getMediaUrlsForBucketID:[self.bucket ID] success:^(id responseObject) {
+            [self.mediaUrls addObjectsFromArray:[responseObject objectForKey:@"media_urls"]];
+            [self.tableView reloadData];
+        } failure:^(NSError *error) {
+            NSLog(@"error!");
+        }];
     });
 }
 
-- (void) askServerForMediaUrls {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/media_urls.json", [self.bucket ID]] withMethod:@"GET" withParamaters:@{@"user_id": [[HCUser loggedInUser] userID]}
-                           success:^(id responseObject){
-                               [self.mediaUrls addObjectsFromArray:[responseObject objectForKey:@"media_urls"]];
-                               NSLog(@"mediaURLS = %@", self.mediaUrls);
-                               NSLog(@"count = %lu", (unsigned long)[self.mediaUrls count]);
-                               [self.tableView reloadData];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error! %@", [error localizedDescription]);
-                           }
-     ];
-}
 
 - (void)imageTapped:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -325,18 +300,14 @@
     [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
     [self performSelector:@selector(updateBucketName) withObject:nil afterDelay:2.0];
     
-    unsavedChanges = YES;
-    savingChanges = NO;
-    [self updateButtonStatus];
+    [self setUnsavedChanges:YES andSavingChanges:NO];
     
     return YES;
 }
 
 - (void) textFieldDidBeginEditing:(UITextField *)textField
 {
-    unsavedChanges = YES;
-    savingChanges = NO;
-    [self updateButtonStatus];
+    [self setUnsavedChanges:YES andSavingChanges:NO];
 }
 
 - (void) updateButtonStatus
@@ -375,9 +346,7 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    unsavedChanges = YES;
-    savingChanges = NO;
-    [self updateButtonStatus];
+    [self setUnsavedChanges:YES andSavingChanges:NO];
     [self.bucket setObject:[self.typeOptions objectAtIndex:row] forKey:@"bucket_type"];
     [self saveInfo]; 
 }
