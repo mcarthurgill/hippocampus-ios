@@ -60,8 +60,7 @@
     
     self.mediaDictionary = [[NSMutableDictionary alloc] init];
     
-    unsavedChanges = NO;
-    savingChanges = NO;
+    [self setUnsavedChanges:NO andSavingChanges:NO];
     
     [self updateItemInfo];
     
@@ -91,9 +90,14 @@
 - (void) reloadScreen
 {
     [self.tableView reloadData];
-    [self updateButtonStatus];
 }
 
+- (void) setUnsavedChanges:(BOOL)updatedUnsavedChanges andSavingChanges:(BOOL)updatedSavingChanges
+{
+    unsavedChanges = updatedUnsavedChanges;
+    savingChanges = updatedSavingChanges;
+    [self updateButtonStatus];
+}
 - (void) updateButtonStatus
 {
     if (!unsavedChanges) {
@@ -432,89 +436,70 @@
 
 - (void) saveReminder:(NSString*)reminder withType:(NSString*)type
 {
-    unsavedChanges = YES;
-    savingChanges = YES;
+    [self setUnsavedChanges:YES andSavingChanges:YES];
+
     [self.item setObject:reminder forKey:@"reminder_date"];
     [self.item setObject:type forKey:@"item_type"];
     [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_request_timestamp"];
     
     [self showHUDWithMessage:[NSString stringWithFormat:@"Saving Reminder"]];
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"PUT" withParamaters:@{@"item":self.item}
-                           success:^(id responseObject) {
-                               NSLog(@"successfully updated reminder date");
-                               unsavedChanges = NO;
-                               savingChanges = NO;
-                               [self hideHUD];
-                               [self reloadScreen];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"unsuccessfully updated reminder date");
-                               unsavedChanges = YES;
-                               savingChanges = NO;
-                               [self hideHUD];
-                               [self reloadScreen];
-                           }
-     ];
-    [self reloadScreen];
+
+    [[LXServer shared] saveReminderForItem:self.item
+                                        success:^(id responseObject) {
+                                            NSLog(@"successfully updated reminder date");
+                                            [self setUnsavedChanges:NO andSavingChanges:NO];
+                                            [self hideHUD];
+                                            [self reloadScreen];
+                                        }failure:^(NSError *error){
+                                            NSLog(@"unsuccessfully updated reminder date");
+                                            [self setUnsavedChanges:YES andSavingChanges:NO];
+                                            [self hideHUD];
+                                            [self reloadScreen];
+    }];
 }
 
 - (void) saveUpdatedMessage:(NSString*)updatedMessage
 {
-    unsavedChanges = YES;
-    savingChanges = YES;
+    [self setUnsavedChanges:YES andSavingChanges:YES];
     [self.item setObject:[self.messageTextView text] forKey:@"message"];
     [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_request_timestamp"];
     
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"PUT" withParamaters:@{@"item":self.item}
-                           success:^(id responseObject) {
-                               NSLog(@"successfully updated message");
-                               unsavedChanges = NO;
-                               savingChanges = NO;
-                               //[self reloadScreen];
-                               [self updateBackgroundArrays];
-                               [self updateButtonStatus];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"unsuccessfully updated message");
-                               unsavedChanges = YES;
-                               savingChanges = NO;
-                               [self reloadScreen];
-                           }
-     ];
-    [self updateButtonStatus];
+    [[LXServer shared] saveUpdatedMessageForItem:self.item
+                                         success:^(id responseObject){
+                                            [self setUnsavedChanges:NO andSavingChanges:NO];
+                                            [self updateBackgroundArrays];
+                                        }failure:^(NSError *error) {
+                                            [self setUnsavedChanges:YES andSavingChanges:NO];
+                                            [self reloadScreen];
+                                        }];
 }
 
 
 - (void) addToStack:(NSDictionary*)bucket
 {
-    unsavedChanges = YES;
-    savingChanges = YES;
+    [self setUnsavedChanges:YES andSavingChanges:YES];
+
     [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Thread", [bucket objectForKey:@"first_name"]]];
-    [[LXServer shared] requestPath:@"/bucket_item_pairs.json" withMethod:@"POST" withParamaters:@{@"bucket_item_pair":@{@"bucket_id":[bucket ID], @"item_id":[self.item ID]}}
-                           success:^(id responseObject) {
-                               //NSLog(@"successfully added to stack: %@", responseObject);
-                               [self.item setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
-                               [self.item setObject:@"assigned" forKey:@"status"];
-                               unsavedChanges = NO;
-                               savingChanges = NO;
-                               [self hideHUD];
-                               [self updateBackgroundArrays];
-                               [self reloadScreen];
-                               [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:nil failure:nil];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"unsuccessfully added to stack");
-                               unsavedChanges = YES;
-                               savingChanges = NO;
-                               [self hideHUD];
-                               [self reloadScreen];
-                           }
-     ];
+    
+    [[LXServer shared] addItem:self.item toBucket:bucket
+                       success:^(id responseObject){
+                           [self.item setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
+                           [self.item setObject:@"assigned" forKey:@"status"];
+                           [self setUnsavedChanges:NO andSavingChanges:NO];
+                           [self hideHUD];
+                           [self updateBackgroundArrays];
+                           [self reloadScreen];
+                           [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:nil failure:nil];
+                        }failure:^(NSError *error){
+                            NSLog(@"unsuccessfully added to stack");
+                            [self setUnsavedChanges:YES andSavingChanges:NO];
+                            [self hideHUD];
+                            [self reloadScreen];
+                        }];
 }
 
 - (void) saveAction:(id)sender
 {
-    NSLog(@"save hit!");
     [self saveUpdatedMessage:nil];
     [self.messageTextView resignFirstResponder];
 }
@@ -544,16 +529,16 @@
 - (void) updateItemInfo
 {
     [self getImages];
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self.item objectForKey:@"id"]] withMethod:@"GET" withParamaters:nil
-                           success:^(id responseObject){
-                               self.item = [NSMutableDictionary dictionaryWithDictionary:responseObject];
-                               [self getImages];
-                               [self reloadScreen];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error! %@", [error localizedDescription]);
-                           }
-     ];
+    
+    [[LXServer shared] updateItemInfoWithItem:self.item
+                                      success:^(id responseObject){
+                                          self.item = [NSMutableDictionary dictionaryWithDictionary:responseObject];
+                                          [self getImages];
+                                          [self reloadScreen];
+                                      }
+                                      failure:^(NSError *error){
+                                          NSLog(@"error! %@", [error localizedDescription]);
+                                      }];
 }
 
 
@@ -622,29 +607,33 @@
 }
 
 - (void) destroyBucketItemPair {
+    [self setUnsavedChanges:YES andSavingChanges:YES];
     [self showHUDWithMessage:@"Updating..."];
-    [[LXServer shared] requestPath:@"/destroy_with_bucket_and_item.json" withMethod:@"DELETE" withParamaters:@{@"bucket_id":[bucketToRemove ID], @"item_id":[self.item ID]}
-                           success:^(id responseObject){
-                               [self.item setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
-                               [self.item setObject:[responseObject objectForKey:@"status"] forKey:@"status"];
-                               unsavedChanges = NO;
-                               savingChanges = NO;
-                               [self hideHUD];
-                               [self updateBackgroundArrays];
-                               [self reloadScreen];
-                               [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucketToRemove ID] success:nil failure:nil];
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error! %@", [error localizedDescription]);
-                               unsavedChanges = YES;
-                               savingChanges = NO;
-                               [self hideHUD];
-                               [self reloadScreen];
-                           }
-     ];
-    [self setBucketToRemove:nil];
+    
+    [[LXServer shared] removeItem:self.item fromBucket:self.bucketToRemove
+                          success:^(id responseObject){
+                              [self.item setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
+                              [self.item setObject:[responseObject objectForKey:@"status"] forKey:@"status"];
+                              [self setUnsavedChanges:NO andSavingChanges:NO];
+                              [self hideHUD];
+                              [self updateBackgroundArrays];
+                              [self reloadScreen];
+                              [self updateBucketInBackground];
+                          }failure:^(NSError *error) {
+                              NSLog(@"error! %@", [error localizedDescription]);
+                              [self setUnsavedChanges:YES andSavingChanges:NO];
+                              [self hideHUD];
+                              [self reloadScreen];
+                          }];
 }
 
+- (void) updateBucketInBackground {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucketToRemove ID] success:^(id responseObject){
+            [self setBucketToRemove:nil];
+        }failure:nil];
+    });
+}
 - (void) deleteItem {
     [self.item deleteItemWithSuccess:nil failure:nil];
     [self.navigationController popToRootViewControllerAnimated:YES];
@@ -660,9 +649,8 @@
     [self performSelector:@selector(saveUpdatedMessage:) withObject:result afterDelay:0.5];
     [self performSelector:@selector(updateTableViewCellSizes:) withObject:textView afterDelay:0];
     
-    unsavedChanges = YES;
-    savingChanges = NO;
-    [self updateButtonStatus];
+    [self setUnsavedChanges:YES andSavingChanges:NO];
+
     
     return YES;
 }
@@ -680,9 +668,7 @@
 - (void) textViewDidBeginEditing:(UITextView *)textView
 {
     [textView setScrollEnabled:NO];
-    unsavedChanges = YES;
-    savingChanges = NO;
-    [self updateButtonStatus];
+    [self setUnsavedChanges:YES andSavingChanges:NO];
 }
 
 - (void) textViewDidEndEditing:(UITextView *)textView

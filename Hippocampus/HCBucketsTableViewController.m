@@ -466,16 +466,14 @@
 
 - (void) searchWithTerm:(NSString*)term
 {
-    [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term, @"user_id" : [[HCUser loggedInUser] userID] }
-                           success:^(id responseObject) {
-                               NSLog(@"items: %@", [responseObject objectForKey:@"items"]);
-                               [self.serverSearchDictionary setObject:[self modifiedSearchArrayWithResponseObject:[responseObject objectForKey:@"items"]] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
-                               [self reloadScreen];
-                           }
-                           failure:^(NSError* error) {
-                               [self reloadScreen];
-                           }
-     ];
+    [[LXServer shared] getSearchResults:term
+                                success:^(id responseObject) {
+                                    [self.serverSearchDictionary setObject:[self modifiedSearchArrayWithResponseObject:[responseObject objectForKey:@"items"]] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
+                                    [self reloadScreen];
+                                }
+                                failure:^(NSError* error) {
+                                    [self reloadScreen];
+                                }];
 }
 
 
@@ -489,11 +487,6 @@
     }
     return itemsArray;
 }
-
-
-
-
-
 
 
 # pragma mark dictionary helpers

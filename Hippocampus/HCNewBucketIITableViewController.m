@@ -63,21 +63,18 @@
         
         [self.firstName resignFirstResponder];
         [self showHUDWithMessage:@"Creating Thread"];
-        [[LXServer shared] requestPath:@"buckets.json" withMethod:@"POST"
-                         withParamaters:@{@"bucket" : @{@"first_name": self.firstName.text, @"user_id": [[[LXSession thisSession] user] userID], @"bucket_type": [self.typeOptions objectAtIndex:[self.typePicker selectedRowInComponent:0]] } }
-                               success:^(id responseObject) {
-                                   [self hideHUD];
-                                   NSDictionary* bucket = responseObject;
-                                   [self.delegate addToStack:bucket];
-                                   [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
-                               }
-                               failure:^(NSError* error) {
-                                   [self hideHUD];
-                                   UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the thread." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
-                                   [av show];
-                               }
-         ];
-
+        
+        [[LXServer shared] createBucketWithFirstName:self.firstName.text andBucketType:[self.typeOptions objectAtIndex:[self.typePicker selectedRowInComponent:0]]
+                                             success:^(id responseObject) {
+                                                [self hideHUD];
+                                                NSDictionary* bucket = responseObject;
+                                                [self.delegate addToStack:bucket];
+                                                [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
+                                            }failure:^(NSError* error) {
+                                                [self hideHUD];
+                                                UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the thread." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                                                [av show];
+                                            }];
     } else {
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You must enter a Thread name!" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [av show];
