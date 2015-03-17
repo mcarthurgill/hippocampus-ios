@@ -20,4 +20,9 @@
     return [arr rand];
 }
 
+- (NSString*) croppedImageURLToScreenWidth
+{
+    return [self stringByReplacingOccurrencesOfString:@"upload/" withString:[NSString stringWithFormat:@"upload/c_scale,w_%@/", [NSNumber numberWithInt:(int)[[UIScreen mainScreen] bounds].size.width*[UIScreen mainScreen].scale]]];
+}
+
 @end

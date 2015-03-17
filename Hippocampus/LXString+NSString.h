@@ -14,4 +14,6 @@
 
 + (NSString*) randomCongratulations;
 
+- (NSString*) croppedImageURLToScreenWidth;
+
 @end

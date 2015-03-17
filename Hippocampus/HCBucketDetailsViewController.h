@@ -15,7 +15,7 @@
 -(void)updateBucket:(NSMutableDictionary *)updatedBucket;
 @end
 
-@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate>
+@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 {
     BOOL unsavedChanges;
     BOOL savingChanges;

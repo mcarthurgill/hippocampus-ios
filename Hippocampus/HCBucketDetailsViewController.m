@@ -34,16 +34,17 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) setup {
+- (void) setup
+{
     [self.navigationItem setTitle:[self.bucket firstName]];
+
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    self.navigationItem.rightBarButtonItem =
-                                    [[UIBarButtonItem alloc] initWithTitle:@"Save"
-                                      style:UIBarButtonItemStylePlain
-                                      target:self
-                                      action:@selector(saveInfo)];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveInfo)];
+    
     [self setUnsavedChanges:NO andSavingChanges:NO];
+    
     self.typeOptions = @[@"Other", @"Person", @"Event", @"Place"];
     self.mediaUrls = [[NSMutableArray alloc] init];
     [self getMediaUrls];
@@ -147,30 +148,33 @@
     return cell;
 }
 
-- (void) finishConfigurationForImageView:(UIImageView*)imageView {
+
+- (void) finishConfigurationForImageView:(UIImageView*)imageView
+{
     [self addTapGestureToImageView:imageView];
     [self setConstraintsForImageView:imageView];
 }
 
+
 - (void) addTapGestureToImageView:(UIImageView *)imageView {
+    
     UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     tapped.delegate = self;
     tapped.numberOfTapsRequired = 1;
     [imageView addGestureRecognizer:tapped];
 }
 
-- (void) setConstraintsForImageView:(UIImageView *)imageView {
+
+- (void) setConstraintsForImageView:(UIImageView *)imageView
+{
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     NSDictionary *imageViewDict = @{@"imageView":imageView};
 
     float width = imageView.image.size.width;
-    
     width = self.view.frame.size.width*0.5;
     
-    NSArray *constraint_H = [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[imageView(%f)]", width - 8.0] //margins
-                                                                    options:0
-                                                                    metrics:nil
-                                                                      views:imageViewDict];
+    NSArray *constraint_H = [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[imageView(%f)]", width - 10.0]options:0 metrics:nil views:imageViewDict];
+    
     [imageView addConstraints:constraint_H];
 }
 
@@ -217,7 +221,8 @@
 
 # pragma mark - Actions
 
-- (void) saveInfo {
+- (void) saveInfo
+{
     [self setUnsavedChanges:YES andSavingChanges:YES];
     
     [[LXServer shared] savebucketWithBucketID:[self.bucket ID] andBucket:self.bucket success:^(id responseObject) {
@@ -230,7 +235,8 @@
     }];
 }
 
-- (void) deleteBucket {
+- (void) deleteBucket
+{
     [self showHUDWithMessage:@"Deleting Thread..."];
     [[LXServer shared] deleteBucketWithBucketID:[self.bucket ID] success:^(id responseObject) {
         [self.navigationController popToRootViewControllerAnimated:YES];
@@ -240,18 +246,21 @@
     }];
 }
 
-- (void) updateBucketName {
+- (void) updateBucketName
+{
     [self.bucket setObject:self.updatedBucketName forKey:@"first_name"];
     [self saveInfo];
 }
 
-- (void)setUnsavedChanges:(BOOL)updatedUnsavedChanges andSavingChanges:(BOOL)updatedSavingChanges {
+- (void)setUnsavedChanges:(BOOL)updatedUnsavedChanges andSavingChanges:(BOOL)updatedSavingChanges
+{
     unsavedChanges = updatedUnsavedChanges;
     savingChanges = updatedSavingChanges;
     [self updateButtonStatus];
 }
 
-- (void) getMediaUrls {
+- (void) getMediaUrls
+{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[LXServer shared] getMediaUrlsForBucketID:[self.bucket ID] success:^(id responseObject) {
             [self.mediaUrls addObjectsFromArray:[responseObject objectForKey:@"media_urls"]];
@@ -285,14 +294,16 @@
     }
 }
 
--(void)openImageWithUrl:(NSString *)mediaUrl {
+-(void)openImageWithUrl:(NSString *)mediaUrl
+{
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:mediaUrl]];
 }
 
 
 # pragma mark TextField Delegate
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
     self.updatedBucketName = [textField.text stringByReplacingCharactersInRange:range withString:string];
     
     [self.navigationItem setTitle:self.updatedBucketName];
@@ -354,7 +365,8 @@
 
 # pragma  mark - AlertView Delegate
 
-- (void) alertForDeletion {
+- (void) alertForDeletion
+{
     UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete this thread?"
                                                      message:@"This will also delete all notes that only belong to this thread."
                                                     delegate:self
@@ -365,7 +377,8 @@
 }
 
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 1) {
         [self deleteBucket];
     }
@@ -389,7 +402,8 @@
 
 # pragma mark - Helpers
 
-- (BOOL) bucketHasMediaUrls {
+- (BOOL) bucketHasMediaUrls
+{
     return self.mediaUrls && self.mediaUrls.count > 0;
 }
 

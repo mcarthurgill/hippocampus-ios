@@ -21,15 +21,26 @@
 }
 
 - (void)configureWithMediaUrl:(NSString*)mediaUrl andImageView:(UIImageView*)imageView {
+
+    mediaUrl = [mediaUrl croppedImageURLToScreenWidth];
+    NSLog(@"mediaURL: %@", mediaUrl);
+    
     [imageView setClipsToBounds:YES];
     [imageView setContentMode:UIViewContentModeScaleAspectFill];
-    [imageView.layer setCornerRadius:8.0f];
+    [imageView.layer setCornerRadius:4.0f];
     
-    [SGImageCache getImageForURL:mediaUrl thenDo:^(UIImage* image) {
-        if (image) {
-            imageView.image = image;
-        }
-    }];
+    if (![SGImageCache haveImageForURL:mediaUrl] || ![imageView.image isEqual:[SGImageCache imageForURL:mediaUrl]]) {
+        imageView.image = nil;
+        [imageView setAlpha:0.0f];
+        [SGImageCache getImageForURL:mediaUrl thenDo:^(UIImage* image) {
+            if (image) {
+                imageView.image = image;
+                [UIView animateWithDuration:0.4f animations:^(void){
+                    [imageView setAlpha:1.0f];
+                }];
+            }
+        }];
+    }
 }
 
 @end
