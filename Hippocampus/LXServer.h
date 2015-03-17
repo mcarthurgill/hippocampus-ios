@@ -30,6 +30,6 @@
 - (void) savebucketWithBucketID:(NSString*)bucketID andBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) getMediaUrlsForBucketID:(NSString*)bucketID success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) deleteBucketWithBucketID:(NSString*)bucketID success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
-- (void) getNotesNearCurrentLocation success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (void) getNotesNearCurrentLocation:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 @end

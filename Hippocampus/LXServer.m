@@ -328,16 +328,21 @@
                            }
      ];
 }
-- (void) getNotesNearCurrentLocation success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+
+- (void) getNotesNearCurrentLocation:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     CLLocationCoordinate2D loc = [LXSession currentLocation].coordinate;
     [[LXServer shared] requestPath:@"/items/near_location.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"latitude": [NSString stringWithFormat:@"%f", loc.latitude], @"longitude": [NSString stringWithFormat:@"%f", loc.longitude] }
                            success:^(id responseObject) {
-
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
                            }
                            failure:^(NSError *error) {
-
                                NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
                            }
      ];
 }

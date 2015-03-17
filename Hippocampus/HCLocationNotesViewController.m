@@ -194,7 +194,7 @@
 
 - (void) getLocationBasedItems {
     requestMade = YES;
-    [[LXServer shared] getNotesNearCurrentLocation success:^(id responseObject) {
+    [[LXServer shared] getNotesNearCurrentLocation:^(id responseObject) {
         self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
         [self setupMapView];
         requestMade = NO;
