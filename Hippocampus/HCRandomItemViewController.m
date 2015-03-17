@@ -165,20 +165,18 @@
                                    
 - (void) askServerForRandomItemsWithLimit:(int)limit {
     requestMade = YES;
-    [[LXServer shared] requestPath:@"/items/random.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"limit": [NSString stringWithFormat:@"%d", limit]}
-                           success:^(id responseObject) {
-                               BOOL first = [self firstRequest];
-                               [self.allItems addObjectsFromArray:[responseObject objectForKey:@"items"]];
-                               [self setRandomItemAndReplace:first];
-                               requestMade = NO;
-                               [self.tableView reloadData];
-                           }
-                           failure:^(NSError *error) {
-                               requestMade = NO;
-                               [self.tableView reloadData];
-                               NSLog(@"error: %@", [error localizedDescription]);
-                           }
-     ];
+    [[LXServer shared] getRandomItemsWithLimit:limit
+                success:^(id responseObject){
+                    BOOL first = [self firstRequest];
+                    [self.allItems addObjectsFromArray:[responseObject objectForKey:@"items"]];
+                    [self setRandomItemAndReplace:first];
+                    requestMade = NO;
+                    [self.tableView reloadData];
+                } failure:^(NSError *error){
+                    requestMade = NO;
+                    [self.tableView reloadData];
+                    NSLog(@"error: %@", [error localizedDescription]);
+                }];
 }
 
 - (BOOL) firstRequest {

@@ -180,32 +180,30 @@
 }
 
 - (void) getReminders {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/reminders.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", self.page]}
-                           success:^(id responseObject) {
-                               requestMade = NO;
-                               NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
-                                                      NSMakeRange(0,[[responseObject objectForKey:@"reminders"] count])];
-                               if (indexes.count == 0) {
-                                   shouldContinueRequesting = NO;
-                                   [self shouldShowExplanationCell];
-                               }
-                               [self.allItems insertObjects:[responseObject objectForKey:@"reminders"] atIndexes:indexes];
-                               if ([[responseObject objectForKey:@"reminders"] count] > 0) {
-                                   [self incrementPage];
-                                   [self reloadScreenToIndex:0];
-                               }
-                           }
-                           failure:^(NSError *error) {
-                               NSLog(@"error: %@", [error localizedDescription]);
-                               requestMade = NO;
-                               [self reloadScreenToIndex:0];
-                           }
-     ];
+    [[LXServer shared] getUpcomingRemindersWithPage:self.page
+        success:^(id responseObject){
+            requestMade = NO;
+            NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
+                                   NSMakeRange(0,[[responseObject objectForKey:@"reminders"] count])];
+            if (indexes.count == 0) {
+                shouldContinueRequesting = NO;
+                [self shouldShowExplanationCell];
+            }
+            [self.allItems insertObjects:[responseObject objectForKey:@"reminders"] atIndexes:indexes];
+            if ([[responseObject objectForKey:@"reminders"] count] > 0) {
+                [self incrementPage];
+                [self reloadScreenToIndex:0];
+            }
+        } failure:^(NSError *error){
+            NSLog(@"error: %@", [error localizedDescription]);
+            requestMade = NO;
+            [self reloadScreenToIndex:0];
+        }];
 }
 
 - (void) shouldShowExplanationCell {
     if (self.allItems.count == 0) {
-        [self.tableView reloadData]; 
+        [self.tableView reloadData];
     }
 }
 
