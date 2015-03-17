@@ -489,8 +489,8 @@
                            [self hideHUD];
                            [self updateBackgroundArrays];
                            [self reloadScreen];
-                           [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:nil failure:nil];
-                        }failure:^(NSError *error){
+                           [self updateBucketInBackground:bucket]; 
+                       }failure:^(NSError *error){
                             NSLog(@"unsuccessfully added to stack");
                             [self setUnsavedChanges:YES andSavingChanges:NO];
                             [self hideHUD];
@@ -618,7 +618,7 @@
                               [self hideHUD];
                               [self updateBackgroundArrays];
                               [self reloadScreen];
-                              [self updateBucketInBackground];
+                              [self updateBucketInBackground:self.bucketToRemove];
                           }failure:^(NSError *error) {
                               NSLog(@"error! %@", [error localizedDescription]);
                               [self setUnsavedChanges:YES andSavingChanges:NO];
@@ -627,13 +627,16 @@
                           }];
 }
 
-- (void) updateBucketInBackground {
+- (void) updateBucketInBackground:(NSDictionary*)bucket {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucketToRemove ID] success:^(id responseObject){
-            [self setBucketToRemove:nil];
+        [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:^(id responseObject){
+            if ([[self.bucketToRemove ID] isEqualToString:[bucket ID]]) {
+                self.bucketToRemove = nil;
+            }
         }failure:nil];
     });
 }
+
 - (void) deleteItem {
     [self.item deleteItemWithSuccess:nil failure:nil];
     [self.navigationController popToRootViewControllerAnimated:YES];
