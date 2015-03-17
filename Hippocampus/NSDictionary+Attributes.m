@@ -79,7 +79,7 @@
         NSMutableArray* cropped = [[NSMutableArray alloc] initWithArray:[self mediaURLs]];
         int i = 0;
         for (NSString* edited in cropped) {
-            [cropped replaceObjectAtIndex:i withObject:[edited stringByReplacingOccurrencesOfString:@"upload/" withString:[NSString stringWithFormat:@"upload/c_scale,w_%@/", [NSNumber numberWithInt:(int)[[UIScreen mainScreen] bounds].size.width]]]];
+            [cropped replaceObjectAtIndex:i withObject:[edited stringByReplacingOccurrencesOfString:@"upload/" withString:[NSString stringWithFormat:@"upload/c_scale,w_%@/", [NSNumber numberWithInt:(int)[[UIScreen mainScreen] bounds].size.width*[UIScreen mainScreen].scale]]]];
             ++i;
         }
         return cropped;
