@@ -17,8 +17,8 @@
 @import AssetsLibrary;
 
 #define IMAGE_FADE_IN_TIME 0.3f
-#define PICTURE_HEIGHT 280
-#define PICTURE_MARGIN_TOP 8
+#define PICTURE_HEIGHT_IN_CELL 280
+#define PICTURE_MARGIN_TOP_IN_CELL 8
 
 @interface HCBucketViewController ()
 
@@ -214,7 +214,7 @@
         NSDictionary* item = [[self currentArray] objectAtIndex:indexPath.row];
         int additional = 0;
         if ([item hasMediaURLs]) {
-            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
+            additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*[[item mediaURLs] count];
         }
         return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional;
     }

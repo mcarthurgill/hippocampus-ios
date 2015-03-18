@@ -8,7 +8,7 @@
 
 #import "HCItemTableViewCell.h"
 
-#define IMAGE_FADE_IN_TIME 0.3f
+#define IMAGE_FADE_IN_TIME 0.4f
 #define PICTURE_HEIGHT 280
 #define PICTURE_MARGIN_TOP 8
 
@@ -58,40 +58,51 @@
     [timestamp setText:([item hasID] ? [NSString stringWithFormat:@"%@%@", ([item hasBucketsString] ? [NSString stringWithFormat:@"%@ - ", [item bucketsString]] : @""), [self dateToDisplayForItem:item]] : @"syncing with server")];
     
     int i = 0;
-    while ([self.contentView viewWithTag:(200+i)]) {
-        [[self.contentView viewWithTag:(200+i)] removeFromSuperview];
-        ++i;
-    }
-    
     if ([item croppedMediaURLs]) {
-        int j = 0;
         for (NSString* url in [item croppedMediaURLs]) {
-            UIImageView* iv = [[UIImageView alloc] initWithFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*j, self.contentView.frame.size.width-40.0f, PICTURE_HEIGHT)];
-            [iv setTag:(200+j)];
+            
+            UIImageView* iv = [self.contentView viewWithTag:(200+i)] ? (UIImageView*)[self.contentView viewWithTag:(200+i)] : [[UIImageView alloc] init];
+            [iv setFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*i, self.contentView.frame.size.width-40.0f, PICTURE_HEIGHT)];
+            [iv setTag:(200+i)];
+            ++i;
+            
             [iv setContentMode:UIViewContentModeScaleAspectFill];
             [iv setClipsToBounds:YES];
             [iv.layer setCornerRadius:8.0f];
             if ([item hasID]) {
-                [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
-                    if (image) {
-                        [iv setAlpha:0.0f];
-                        iv.image = image;
-                        [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
-                            [iv setAlpha:1.0f];
-                        }];
-                    }
-                }];
-            } else {
-                [iv setAlpha:0.0f];
-                iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
-                [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
-                    [iv setAlpha:1.0f];
-                }];
                 
+                if (![SGImageCache haveImageForURL:url] || ![iv.image isEqual:[SGImageCache imageForURL:url]]) {
+                    iv.image = nil;
+                    [iv setAlpha:0.0f];
+                    [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                        if (image) {
+                            iv.image = image;
+                            [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
+                                [iv setAlpha:1.0f];
+                            }];
+                        }
+                    }];
+                }
+                
+
+            } else {
+                if (![iv.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
+                    [iv setAlpha:0.0f];
+                    iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
+                    [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+                        [iv setAlpha:1.0f];
+                    }];
+                }
             }
-            [self.contentView addSubview:iv];
-            ++j;
+            if (!iv.superview) {
+                [self.contentView addSubview:iv];
+            }
         }
+    }
+    
+    while ([self.contentView viewWithTag:(200+i)]) {
+        [[self.contentView viewWithTag:(200+i)] removeFromSuperview];
+        ++i;
     }
 }
 
