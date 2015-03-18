@@ -55,7 +55,9 @@
     if (![moc save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
     }
-    [[LXServer shared] getAllBucketsWithSuccess:nil failure:nil];
+    if ([HCUser loggedInUser]) {
+        [[LXServer shared] getAllBucketsWithSuccess:nil failure:nil];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application

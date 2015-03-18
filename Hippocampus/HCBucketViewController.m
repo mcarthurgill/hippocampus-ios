@@ -328,8 +328,26 @@
                                    NSLog(@"error: %@", [error localizedDescription]);
                                }
          ];
+        [self incrementNoteCreatedInApp];
     }
 }
+
+- (void) incrementNoteCreatedInApp {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        if ([userDefaults objectForKey:@"noteCreatedInApp"]) {
+            NSInteger createdNotes = [userDefaults integerForKey:@"noteCreatedInApp"];
+            [userDefaults setInteger:createdNotes+1 forKey:@"noteCreatedInApp"];
+            if ([userDefaults integerForKey:@"noteCreatedInApp"] == 4) {
+                [[LXSession thisSession] startLocationUpdates];
+            }
+        } else {
+            [userDefaults setInteger:1 forKey:@"noteCreatedInApp"];
+        }
+        [userDefaults synchronize];
+    });
+}
+
 
 - (void) replacingWithItem:(NSDictionary*)replacement
 {
@@ -848,7 +866,6 @@
 # pragma mark - Congratulations Notifications
 
 - (void) buildCongrats {
-    //self.navigationController.navigationBar.frame.size.height + [UIApplication sharedApplication].statusBarFrame.size.height
     self.congratsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height)];
     
     UILabel *congratsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, [UIApplication sharedApplication].statusBarFrame.size.height, self.congratsView.frame.size.width, self.navigationController.navigationBar.frame.size.height)];
@@ -867,8 +884,6 @@
     
     LXAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
     [appDelegate.window addSubview:self.congratsView];
-    
-    //[self.view addSubview:self.congratsView];
 }
 
 - (void) displayCongrats {
