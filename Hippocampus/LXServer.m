@@ -331,10 +331,27 @@
      ];
 }
 
-- (void) getNotesNearCurrentLocation:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+- (void) getItemsNearCenterX:(CGFloat)centerX andCenterY:(CGFloat)centerY andDX:(CGFloat)dx andDY:(CGFloat)dy success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    CLLocationCoordinate2D loc = [LXSession currentLocation].coordinate;
-    [[LXServer shared] requestPath:@"/items/near_location.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"latitude": [NSString stringWithFormat:@"%f", loc.latitude], @"longitude": [NSString stringWithFormat:@"%f", loc.longitude] }
+    [[LXServer shared] requestPath:@"/items/within_bounds.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"centerx": [NSString stringWithFormat:@"%f", centerX], @"centery": [NSString stringWithFormat:@"%f", centerY], @"dx": [NSString stringWithFormat:@"%f", dx], @"dy": [NSString stringWithFormat:@"%f", dy] }
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (void) getItemsNearCurrentLocation:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback
+{
+    CLLocation *loc = [LXSession currentLocation];
+    [[LXServer shared] requestPath:@"/items/near_location.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"latitude": [NSString stringWithFormat:@"%f", loc.coordinate.latitude], @"longitude": [NSString stringWithFormat:@"%f", loc.coordinate.longitude] }
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -400,7 +417,8 @@
 }
 
 
-- (void) createBucketWithFirstName:(NSString*)firstName andBucketType:(NSString*)bucketType success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
+- (void) createBucketWithFirstName:(NSString*)firstName andBucketType:(NSString*)bucketType success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
     [[LXServer shared] requestPath:@"buckets.json" withMethod:@"POST"
                     withParamaters:@{@"bucket" : @{@"first_name": firstName, @"user_id": [[[LXSession thisSession] user] userID], @"bucket_type": bucketType } }
                            success:^(id responseObject) {
@@ -485,7 +503,8 @@
 }
 
 
-- (void) removeItem:(NSDictionary*)item fromBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
+- (void) removeItem:(NSDictionary*)item fromBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
     [[LXServer shared] requestPath:@"/destroy_with_bucket_and_item.json" withMethod:@"DELETE" withParamaters:@{@"bucket_id":[bucket ID], @"item_id":[item ID]}
                            success:^(id responseObject){
                                if (successCallback) {
@@ -500,7 +519,8 @@
      ];
 }
 
-- (void) updateDeviceToken:(NSData *)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
+- (void) updateDeviceToken:(NSData *)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
     NSString *tokenString = [[token description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     tokenString = [tokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
     

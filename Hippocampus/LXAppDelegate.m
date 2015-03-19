@@ -160,10 +160,7 @@
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
         [[UIApplication sharedApplication] registerForRemoteNotifications];
     } else {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-         UIRemoteNotificationTypeBadge |
-         UIRemoteNotificationTypeAlert |
-         UIRemoteNotificationTypeSound];
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
     }
 }
 
@@ -186,8 +183,7 @@
 }
 
 - (void) setBadgeIcon {
-    UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
-    if (grantedSettings.types && UIUserNotificationTypeBadge) {
+    if ([LXSession areNotificationsEnabled]) {
         if ([[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
             [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] objectForKey:@"items_count"] integerValue]];
         } else {
@@ -208,6 +204,7 @@
         [userDefaults setInteger:1 forKey:@"appLaunches"];
     }
     [userDefaults synchronize];
+    NSLog(@"app launches = %d", [userDefaults integerForKey:@"appLaunches"]); 
 }
 
 

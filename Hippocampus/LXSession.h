@@ -47,4 +47,5 @@
 + (BOOL) locationPermissionDetermined;
 - (void) startLocationUpdates;
 
++ (BOOL) areNotificationsEnabled;
 @end

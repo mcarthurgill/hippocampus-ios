@@ -44,10 +44,12 @@
 - (void) setupProperties
 {
     requestMade = NO;
+    firstRequest = YES;
+    self.allItems = [[NSMutableArray alloc] init];
+    [self getItemsNearCurrentLocation];
     [self.navigationItem setTitle:@"Nearby Notes"];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    self.allItems = [[NSMutableArray alloc] init];
-    [self getLocationBasedItems];
+    [self setupMapView];
 }
 
 # pragma mark - Create and Setup MapView
@@ -74,6 +76,14 @@
     [self showItem:(UIButton*)[view rightCalloutAccessoryView]];
 }
 
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+    if (!firstRequest && !requestMade) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self getItemsWithCenterX:self.mapView.region.center.longitude andCenterY:self.mapView.region.center.latitude andDX:self.mapView.region.span.longitudeDelta/2.0 andDY:self.mapView.region.span.latitudeDelta/2.0];
+        });
+    }
+}
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
@@ -114,7 +124,8 @@
 
 - (void) makeMapViewVisible
 {
-    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
+    [self.mapView showAnnotations:self.mapView.annotations animated:NO];
+    [self.mapView setVisibleMapRect:self.mapView.visibleMapRect edgePadding:UIEdgeInsetsMake(0, 0, 0, 0) animated:NO];
 }
 
 # pragma mark - TableView Delegate
@@ -126,7 +137,7 @@
     
     if (requestMade) {
         [self.sections addObject:@"requesting"];
-    } else if ([[LXSession thisSession] hasLocation] && self.allItems.count > 0){
+    } else if (self.allItems.count > 0){
         [self.sections addObject:@"all"];
     } else {
         [self.sections addObject:@"explanation"];
@@ -179,7 +190,7 @@
 - (UITableViewCell*) explanationCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     HCExplanationTableViewCell *cell = (HCExplanationTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:@"explanationCell" forIndexPath:indexPath];
-    NSString *text = [[LXSession thisSession] hasLocation] ? @"You haven't created any notes near your current location." : @"You need to give us location permission for this feature. Settings > Privacy > Location Services > Hippocampus";
+    NSString *text = [[LXSession thisSession] hasLocation] ? @"You haven't created any notes here." : @"You need to give us location permission for this feature. Settings > Privacy > Location Services > Hippocampus";
     [cell configureWithText:text];
     return cell;
 }
@@ -231,14 +242,13 @@
 
 # pragma mark - Location Based Notes
 
-- (void) getLocationBasedItems
+- (void) getItemsWithCenterX:(CGFloat)centerx andCenterY:(CGFloat)centery andDX:(CGFloat)dx andDY:(CGFloat)dy
 {
-    [[LXSession thisSession] startLocationUpdates];
     requestMade = YES;
-    [[LXServer shared] getNotesNearCurrentLocation:^(id responseObject) {
+    [[LXServer shared] getItemsNearCenterX:centerx andCenterY:centery andDX:dx andDY:dy success:^(id responseObject) {
         self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
-        [self setupMapView];
         requestMade = NO;
+        [self addAnnotationsToMapView];
         [self.tableView reloadData];
     } failure:^(NSError *error) {
         requestMade = NO;
@@ -246,7 +256,24 @@
     }];
 }
 
-- (NSMutableArray*) itemsSortedByDistance:(NSMutableArray*)items {
+- (void) getItemsNearCurrentLocation
+{
+    [[LXSession thisSession] startLocationUpdates];
+    requestMade = YES;
+    [[LXServer shared] getItemsNearCurrentLocation:^(id responseObject) {
+        firstRequest = NO;
+        self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
+        requestMade = NO;
+        [self setupMapView];
+        [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        requestMade = NO;
+        [self.tableView reloadData];
+    }];
+}
+
+- (NSMutableArray*) itemsSortedByDistance:(NSMutableArray*)items
+{
     [items sortUsingComparator:^NSComparisonResult(id o1, id o2) {
         CLLocation *l1 = [[CLLocation alloc] initWithLatitude:[[o1 objectForKey:@"latitude"] doubleValue] longitude:[[o1 objectForKey:@"longitude"] doubleValue]];
         CLLocation *l2 = [[CLLocation alloc] initWithLatitude:[[o2 objectForKey:@"latitude"] doubleValue] longitude:[[o2 objectForKey:@"longitude"] doubleValue]];

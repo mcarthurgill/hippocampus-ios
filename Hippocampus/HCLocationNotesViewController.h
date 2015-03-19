@@ -15,6 +15,7 @@
 @interface HCLocationNotesViewController : UIViewController <MKMapViewDelegate>
 {
     BOOL requestMade;
+    BOOL firstRequest;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
