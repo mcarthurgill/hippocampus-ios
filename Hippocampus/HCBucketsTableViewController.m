@@ -17,6 +17,7 @@
 #import "HCLocationNotesViewController.h"
 #import "HCItemTableViewCell.h"
 #import "HCIndicatorTableViewCell.h"
+#import "HCBucketDetailsViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -66,7 +67,8 @@
     });
 }
 
-- (void) viewWillAppear:(BOOL)animated{
+- (void) viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     self.bucketsDictionary = nil;
@@ -100,7 +102,8 @@
 }
 
 
-- (void) setupProperties {
+- (void) setupProperties
+{
     //remove extra cell lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -108,6 +111,8 @@
     self.serverSearchDictionary = [[NSMutableDictionary alloc] init];
     
     requestMade = NO;
+    
+    [self setLongPressGestureToRemoveBucket];
     
     //change back button text when new VC gets popped on the stack
     self.navigationItem.backBarButtonItem =
@@ -402,7 +407,8 @@
     }
 }
 
-- (IBAction)moreButtonClicked:(id)sender {
+- (IBAction)moreButtonClicked:(id)sender
+{
     NSString *other1 = @"Upcoming Reminders";
     NSString *other2 = @"Notes Near Current Location";
     NSString *other3 = @"Random Notes";
@@ -582,7 +588,8 @@
 
 
 # pragma mark - HCSendRequestForUpdatedBuckets
-- (void) sendRequestForUpdatedBucket {
+- (void) sendRequestForUpdatedBucket
+{
     [self refreshChange];
 }
 
@@ -590,7 +597,8 @@
 
 # pragma mark - Action Sheet Delegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 0) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         LXRemindersViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"remindersViewController"];
@@ -608,6 +616,36 @@
     }
     if (buttonIndex == 3) {
         NSLog(@"Cancel pressed --> Cancel ActionSheet");
+    }
+}
+
+
+
+# pragma mark - Gesture Recognizers
+
+- (void) setLongPressGestureToRemoveBucket
+{
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 0.7; //seconds
+    lpgr.delegate = self;
+    [self.tableView addGestureRecognizer:lpgr];
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        //if its a bucket && its not the all notes bucket && we are not in assign mode
+        if ([[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] && ![[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] isAllNotesBucket] && ![self assignMode])
+        {
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+            HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];
+            [dvc setBucket:[[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] mutableCopy]];
+            [self.navigationController pushViewController:dvc animated:YES];
+        }
     }
 }
 
