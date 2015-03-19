@@ -9,9 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "HCBucketViewController.h"
 
-@interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate, UIActionSheetDelegate>
+@interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate>
 {
     BOOL requestMade;
+    MBProgressHUD* hud;
 }
 
 @property (strong, nonatomic) NSString* mode;

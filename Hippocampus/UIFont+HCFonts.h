@@ -11,5 +11,6 @@
 @interface UIFont (HCFonts)
 
 + (UIFont*) noteDisplay;
++ (UIFont*) explanationDisplay;
 
 @end

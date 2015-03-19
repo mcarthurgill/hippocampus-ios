@@ -28,6 +28,7 @@
     }
     
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    [self incrementAppLaunchCount];
 
     return YES;
 }
@@ -47,9 +48,6 @@
 							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    
     NSLog(@"applicationWillResignActive");
     
     NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
@@ -57,12 +55,14 @@
     if (![moc save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
     }
-    
+    if ([HCUser loggedInUser]) {
+        [[LXServer shared] getAllBucketsWithSuccess:nil failure:nil];
+    }
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-//    [self setBadgeIcon];
+    
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -72,8 +72,6 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [[LXSession thisSession] attemptUnsavedNoteSaving];
     });
@@ -142,31 +140,75 @@
 
 # pragma mark - Background Fetch
 
--(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-    [[LXServer shared] getAllItemsWithPage:0
-                                   success:^(id responseObject){
-//                                       [self setBadgeIcon];
-                                   }failure:^(NSError *error){
-//                                       [self setBadgeIcon];
-                                   }];
-    
-    [[LXServer shared] getAllBucketsWithSuccess:^(id responseObject){
-//        [self setBadgeIcon];
-    }failure:^(NSError *error){
-//        [self setBadgeIcon];
-    }];
+-(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+   [[LXServer shared] getAllBucketsWithSuccess:^(id responseObject){
+                        completionHandler(UIBackgroundFetchResultNewData);
+                    }failure:^(NSError *error){
+                        completionHandler(UIBackgroundFetchResultNoData);
+                    }];
 }
 
 
 
 # pragma mark - Notifications
 
-//- (void) setBadgeIcon {
-//    if ([[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
-//        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] objectForKey:@"items_count"] integerValue]];
-//    } else {
-//        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-//    }
-//}
+- (void) getPushNotificationPermission {
+    if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeAlert|UIUserNotificationTypeSound
+                                                                                 categories:nil];
+        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
+        [[UIApplication sharedApplication] registerForRemoteNotifications];
+    } else {
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+         UIRemoteNotificationTypeBadge |
+         UIRemoteNotificationTypeAlert |
+         UIRemoteNotificationTypeSound];
+    }
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[LXServer shared] updateDeviceToken:deviceToken
+                                    success:^(id responseObject){
+                                        NSLog(@"My token is: %@", deviceToken);
+                                    }failure:^(NSError *error){
+                                        NSLog(@"Didn't successfully submit device token: %@", deviceToken);
+                                    }
+         ];
+    });
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+    NSLog(@"Failed to get token, error: %@", error);
+}
+
+- (void) setBadgeIcon {
+    UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
+    if (grantedSettings.types && UIUserNotificationTypeBadge) {
+        if ([[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] objectForKey:@"items_count"] integerValue]];
+        } else {
+            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+        }
+    }
+}
+
+- (void) incrementAppLaunchCount {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if ([userDefaults objectForKey:@"appLaunches"]) {
+        NSInteger appLaunches = [userDefaults integerForKey:@"appLaunches"];
+        [userDefaults setInteger:appLaunches+1 forKey:@"appLaunches"];
+        if ([userDefaults integerForKey:@"appLaunches"] == 7) {
+            [self getPushNotificationPermission];
+        }
+    } else {
+        [userDefaults setInteger:1 forKey:@"appLaunches"];
+    }
+    [userDefaults synchronize];
+}
+
 
 @end

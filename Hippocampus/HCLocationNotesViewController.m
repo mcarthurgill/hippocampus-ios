@@ -16,6 +16,7 @@
 
 #define IMAGE_FADE_IN_TIME 0.1f
 
+
 @interface HCLocationNotesViewController ()
 
 @end
@@ -26,18 +27,22 @@
 @synthesize allItems;
 @synthesize mapViewHeightConstraint;
 @synthesize tableViewHeightConstraint;
+@synthesize mapView;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self setupProperties];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void) setupProperties {
+- (void) setupProperties
+{
     requestMade = NO;
     [self.navigationItem setTitle:@"Nearby Notes"];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -45,39 +50,71 @@
     [self getLocationBasedItems];
 }
 
-
-
 # pragma mark - Create and Setup MapView
 
-- (void) setupMapView {
-    
-    MKMapView* mv = (MKMapView*)[self.view viewWithTag:19];
+- (void) setupMapView
+{
+    [self.mapView setDelegate:self];
     [self setupMapAndTableConstraints];
-    [self addAnnotationsToMapView:mv];
-    [self makeMapViewVisible:mv];
+    [self addAnnotationsToMapView];
+    [self makeMapViewVisible];
 }
 
-- (void) addAnnotationsToMapView:(MKMapView*)mv {
+- (void) addAnnotationsToMapView
+{
     for (NSDictionary*item in self.allItems) {
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
         [annotation setCoordinate:[item location].coordinate];
         [annotation setTitle:[[item message] truncated:25]];
-        [mv addAnnotation:annotation];
+        [self.mapView addAnnotation:annotation];
     }
 }
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    [self showItem:(UIButton*)[view rightCalloutAccessoryView]];
+}
 
-- (void) setupMapAndTableConstraints {
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+{
+    if (annotation == self.mapView.userLocation) {
+        return nil;
+    }
+    
+    MKPinAnnotationView* customPinView = [[MKPinAnnotationView alloc]
+                                           initWithAnnotation:annotation reuseIdentifier:@"annotation"];
+    customPinView.canShowCallout = YES;
+    
+    UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    rightButton.tag = [self indexOfItemWithMessage:[annotation title] truncated:25];
+    if (rightButton.tag >= 0) {
+        customPinView.rightCalloutAccessoryView = rightButton;
+    }
+    return customPinView;
+}
+
+- (void) showItem:(UIButton*)sender {
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
+    [itvc setItem:[self.allItems objectAtIndex:sender.tag]];
+    [itvc setItems:self.allItems];
+    [itvc setDelegate:self];
+    [self.navigationController pushViewController:itvc animated:YES];
+}
+
+- (void) setupMapAndTableConstraints
+{
     mapViewHeightConstraint.constant = self.view.frame.size.height*0.5;
     tableViewHeightConstraint.constant = self.view.frame.size.height - mapViewHeightConstraint.constant + self.navigationController.navigationBar.frame.size.height;
     
     [UIView animateWithDuration:0.0 animations:^{
         [self.view layoutIfNeeded];
     }];
-    
 }
 
-- (void) makeMapViewVisible:(MKMapView *)mv {
-    [mv showAnnotations:mv.annotations animated:YES];
+- (void) makeMapViewVisible
+{
+    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
 }
 
 # pragma mark - TableView Delegate
@@ -171,6 +208,8 @@
             additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
         }
         return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
+        return 120.0f;
     }
     return 44.0;
 }
@@ -192,7 +231,9 @@
 
 # pragma mark - Location Based Notes
 
-- (void) getLocationBasedItems {
+- (void) getLocationBasedItems
+{
+    [[LXSession thisSession] startLocationUpdates];
     requestMade = YES;
     [[LXServer shared] getNotesNearCurrentLocation:^(id responseObject) {
         self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
@@ -215,6 +256,18 @@
         return d1 < d2 ? NSOrderedAscending : d1 > d2 ? NSOrderedDescending : NSOrderedSame;
     }];
     return items;
+}
+
+
+# pragma mark - Helpers
+- (NSUInteger) indexOfItemWithMessage:(NSString*)message truncated:(int)truncation
+{
+    for (NSDictionary *item in self.allItems) {
+        if ([[[item objectForKey:@"message"] truncated:truncation] isEqualToString:message]) {
+            return [self.allItems indexOfObject:item];
+        }
+    }
+    return -1;
 }
 
 @end

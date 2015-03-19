@@ -215,6 +215,7 @@
                                    if (bucketsDictionary) {
                                        [[NSUserDefaults standardUserDefaults] setObject:[self bucketToSave:bucketsDictionary] forKey:@"buckets"];
                                        [[NSUserDefaults standardUserDefaults] synchronize];
+                                       [(LXAppDelegate *)[[UIApplication sharedApplication] delegate] setBadgeIcon];
                                    }
                                });
                                if (successCallback) {
@@ -499,6 +500,23 @@
      ];
 }
 
+- (void) updateDeviceToken:(NSData *)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
+    NSString *tokenString = [[token description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    tokenString = [tokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    [[LXServer shared] requestPath:@"/device_tokens" withMethod:@"POST" withParamaters:@{@"device_token": @{@"ios_device_token": tokenString, @"environment": @"production", @"user_id": [[HCUser loggedInUser] userID]}}
+                           success:^(id responseObject){
+                                if (successCallback) {
+                                    successCallback(responseObject);
+                                }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+];
+}
 
 - (NSMutableDictionary*) bucketToSave:(NSMutableDictionary*)incomingDictionary
 {

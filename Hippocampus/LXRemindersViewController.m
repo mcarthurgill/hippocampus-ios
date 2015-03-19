@@ -144,12 +144,16 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-        NSDictionary* item = [self.allItems objectAtIndex:indexPath.row];
-        return [self heightForText:[[item objectForKey:@"message"] truncated:320] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f;
-    }else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
-        return 90.0;
+        NSDictionary *item = [self.allItems objectAtIndex:indexPath.row];
+        int additional = 0;
+        if ([item hasMediaURLs]) {
+            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
+        }
+        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
+        return 120.0f;
     }
-    return 60.0;
+    return 44.0;
 }
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

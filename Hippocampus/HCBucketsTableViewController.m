@@ -17,6 +17,7 @@
 #import "HCLocationNotesViewController.h"
 #import "HCItemTableViewCell.h"
 #import "HCIndicatorTableViewCell.h"
+#import "HCBucketDetailsViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -60,15 +61,14 @@
     
     [self cacheComposeBucketController];
 
-    [[LXSession thisSession] startLocationUpdates];
-
     //reload data to make sure it's catching assign mode
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self reloadScreen];
     });
 }
 
-- (void) viewWillAppear:(BOOL)animated{
+- (void) viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
     self.bucketsDictionary = nil;
@@ -87,8 +87,6 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    //[self refreshChange];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -104,7 +102,8 @@
 }
 
 
-- (void) setupProperties {
+- (void) setupProperties
+{
     //remove extra cell lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
@@ -112,6 +111,8 @@
     self.serverSearchDictionary = [[NSMutableDictionary alloc] init];
     
     requestMade = NO;
+    
+    [self setLongPressGestureToRemoveBucket];
     
     //change back button text when new VC gets popped on the stack
     self.navigationItem.backBarButtonItem =
@@ -340,7 +341,19 @@
     return [NSString stringWithFormat:@"%@ Threads",[self.sections objectAtIndex:section]];
 }
 
-
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSDictionary *bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        if (bucket && ![bucket isAllNotesBucket] && ![self assignMode]) {
+            [self showHUDWithMessage:@"Deleting Thread..."];
+            [[LXServer shared] deleteBucketWithBucketID:[bucket ID] success:^(id responseObject){
+                [self refreshChange];
+            }failure:^(NSError *error){
+                [self hideHUD];
+            }];
+        }
+    }
+}
 
 
 
@@ -360,11 +373,6 @@
 
 
 
-
-
-
-
-
 # pragma mark refresh controller
 
 - (void) refreshChange
@@ -376,9 +384,11 @@
             self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
             requestMade = NO;
             [self reloadScreen];
+            [self hideHUD];
     } failure:^(NSError *error) {
         NSLog(@"error: %@", [error localizedDescription]);
         requestMade = NO;
+        [self hideHUD];
         [self reloadScreen];
     }];
 }
@@ -406,7 +416,8 @@
     }
 }
 
-- (IBAction)moreButtonClicked:(id)sender {
+- (IBAction)moreButtonClicked:(id)sender
+{
     NSString *other1 = @"Upcoming Reminders";
     NSString *other2 = @"Notes Near Current Location";
     NSString *other3 = @"Random Notes";
@@ -586,7 +597,8 @@
 
 
 # pragma mark - HCSendRequestForUpdatedBuckets
-- (void) sendRequestForUpdatedBucket {
+- (void) sendRequestForUpdatedBucket
+{
     [self refreshChange];
 }
 
@@ -594,7 +606,8 @@
 
 # pragma mark - Action Sheet Delegate
 
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 0) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         LXRemindersViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"remindersViewController"];
@@ -615,5 +628,46 @@
     }
 }
 
+
+
+# pragma mark - Gesture Recognizers
+
+- (void) setLongPressGestureToRemoveBucket
+{
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 0.7; //seconds
+    lpgr.delegate = self;
+    [self.tableView addGestureRecognizer:lpgr];
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        NSDictionary *bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        if (bucket && ![bucket isAllNotesBucket] && ![self assignMode]) {
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+            HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];
+            [dvc setBucket:[[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] mutableCopy]];
+            [self.navigationController pushViewController:dvc animated:YES];
+        }
+    }
+}
+
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
+{
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = message;
+}
+
+- (void) hideHUD
+{
+    [hud hide:YES];
+}
 
 @end
