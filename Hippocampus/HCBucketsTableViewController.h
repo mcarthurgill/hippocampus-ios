@@ -12,6 +12,7 @@
 @interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate>
 {
     BOOL requestMade;
+    MBProgressHUD* hud;
 }
 
 @property (strong, nonatomic) NSString* mode;

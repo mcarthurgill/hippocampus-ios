@@ -15,4 +15,9 @@
     return [UIFont fontWithName:@"HelveticaNeue-Light" size:16.0f];
 }
 
++ (UIFont*) explanationDisplay
+{
+    return [UIFont systemFontOfSize:17.0f];
+}
+
 @end

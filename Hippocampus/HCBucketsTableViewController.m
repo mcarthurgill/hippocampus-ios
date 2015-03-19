@@ -341,7 +341,19 @@
     return [NSString stringWithFormat:@"%@ Threads",[self.sections objectAtIndex:section]];
 }
 
-
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSDictionary *bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        if (bucket && ![bucket isAllNotesBucket] && ![self assignMode]) {
+            [self showHUDWithMessage:@"Deleting Thread..."];
+            [[LXServer shared] deleteBucketWithBucketID:[bucket ID] success:^(id responseObject){
+                [self refreshChange];
+            }failure:^(NSError *error){
+                [self hideHUD];
+            }];
+        }
+    }
+}
 
 
 
@@ -361,11 +373,6 @@
 
 
 
-
-
-
-
-
 # pragma mark refresh controller
 
 - (void) refreshChange
@@ -377,9 +384,11 @@
             self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
             requestMade = NO;
             [self reloadScreen];
+            [self hideHUD];
     } failure:^(NSError *error) {
         NSLog(@"error: %@", [error localizedDescription]);
         requestMade = NO;
+        [self hideHUD];
         [self reloadScreen];
     }];
 }
@@ -638,9 +647,8 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        //if its a bucket && its not the all notes bucket && we are not in assign mode
-        if ([[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] && ![[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] isAllNotesBucket] && ![self assignMode])
-        {
+        NSDictionary *bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        if (bucket && ![bucket isAllNotesBucket] && ![self assignMode]) {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];
             [dvc setBucket:[[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] mutableCopy]];
@@ -649,5 +657,17 @@
     }
 }
 
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
+{
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = message;
+}
+
+- (void) hideHUD
+{
+    [hud hide:YES];
+}
 
 @end

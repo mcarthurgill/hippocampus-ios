@@ -16,6 +16,7 @@
 
 #define IMAGE_FADE_IN_TIME 0.1f
 
+
 @interface HCLocationNotesViewController ()
 
 @end
@@ -27,17 +28,20 @@
 @synthesize mapViewHeightConstraint;
 @synthesize tableViewHeightConstraint;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self setupProperties];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void) setupProperties {
+- (void) setupProperties
+{
     requestMade = NO;
     [self.navigationItem setTitle:@"Nearby Notes"];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -45,19 +49,18 @@
     [self getLocationBasedItems];
 }
 
-
-
 # pragma mark - Create and Setup MapView
 
-- (void) setupMapView {
-    
+- (void) setupMapView
+{
     MKMapView* mv = (MKMapView*)[self.view viewWithTag:19];
     [self setupMapAndTableConstraints];
     [self addAnnotationsToMapView:mv];
     [self makeMapViewVisible:mv];
 }
 
-- (void) addAnnotationsToMapView:(MKMapView*)mv {
+- (void) addAnnotationsToMapView:(MKMapView*)mv
+{
     for (NSDictionary*item in self.allItems) {
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
         [annotation setCoordinate:[item location].coordinate];
@@ -66,17 +69,18 @@
     }
 }
 
-- (void) setupMapAndTableConstraints {
+- (void) setupMapAndTableConstraints
+{
     mapViewHeightConstraint.constant = self.view.frame.size.height*0.5;
     tableViewHeightConstraint.constant = self.view.frame.size.height - mapViewHeightConstraint.constant + self.navigationController.navigationBar.frame.size.height;
     
     [UIView animateWithDuration:0.0 animations:^{
         [self.view layoutIfNeeded];
     }];
-    
 }
 
-- (void) makeMapViewVisible:(MKMapView *)mv {
+- (void) makeMapViewVisible:(MKMapView *)mv
+{
     [mv showAnnotations:mv.annotations animated:YES];
 }
 
@@ -171,6 +175,8 @@
             additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
         }
         return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
+        return 120.0f;
     }
     return 44.0;
 }
@@ -192,7 +198,9 @@
 
 # pragma mark - Location Based Notes
 
-- (void) getLocationBasedItems {
+- (void) getLocationBasedItems
+{
+    [[LXSession thisSession] startLocationUpdates];
     requestMade = YES;
     [[LXServer shared] getNotesNearCurrentLocation:^(id responseObject) {
         self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
