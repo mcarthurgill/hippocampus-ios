@@ -27,6 +27,7 @@
 @synthesize allItems;
 @synthesize mapViewHeightConstraint;
 @synthesize tableViewHeightConstraint;
+@synthesize mapView;
 
 - (void)viewDidLoad
 {
@@ -53,20 +54,52 @@
 
 - (void) setupMapView
 {
-    MKMapView* mv = (MKMapView*)[self.view viewWithTag:19];
+    [self.mapView setDelegate:self];
     [self setupMapAndTableConstraints];
-    [self addAnnotationsToMapView:mv];
-    [self makeMapViewVisible:mv];
+    [self addAnnotationsToMapView];
+    [self makeMapViewVisible];
 }
 
-- (void) addAnnotationsToMapView:(MKMapView*)mv
+- (void) addAnnotationsToMapView
 {
     for (NSDictionary*item in self.allItems) {
         MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
         [annotation setCoordinate:[item location].coordinate];
         [annotation setTitle:[[item message] truncated:25]];
-        [mv addAnnotation:annotation];
+        [self.mapView addAnnotation:annotation];
     }
+}
+- (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+{
+    [self showItem:(UIButton*)[view rightCalloutAccessoryView]];
+}
+
+
+- (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+{
+    if (annotation == self.mapView.userLocation) {
+        return nil;
+    }
+    
+    MKPinAnnotationView* customPinView = [[MKPinAnnotationView alloc]
+                                           initWithAnnotation:annotation reuseIdentifier:@"annotation"];
+    customPinView.canShowCallout = YES;
+    
+    UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    rightButton.tag = [self indexOfItemWithMessage:[annotation title] truncated:25];
+    if (rightButton.tag >= 0) {
+        customPinView.rightCalloutAccessoryView = rightButton;
+    }
+    return customPinView;
+}
+
+- (void) showItem:(UIButton*)sender {
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
+    [itvc setItem:[self.allItems objectAtIndex:sender.tag]];
+    [itvc setItems:self.allItems];
+    [itvc setDelegate:self];
+    [self.navigationController pushViewController:itvc animated:YES];
 }
 
 - (void) setupMapAndTableConstraints
@@ -79,9 +112,9 @@
     }];
 }
 
-- (void) makeMapViewVisible:(MKMapView *)mv
+- (void) makeMapViewVisible
 {
-    [mv showAnnotations:mv.annotations animated:YES];
+    [self.mapView showAnnotations:self.mapView.annotations animated:YES];
 }
 
 # pragma mark - TableView Delegate
@@ -223,6 +256,18 @@
         return d1 < d2 ? NSOrderedAscending : d1 > d2 ? NSOrderedDescending : NSOrderedSame;
     }];
     return items;
+}
+
+
+# pragma mark - Helpers
+- (NSUInteger) indexOfItemWithMessage:(NSString*)message truncated:(int)truncation
+{
+    for (NSDictionary *item in self.allItems) {
+        if ([[[item objectForKey:@"message"] truncated:truncation] isEqualToString:message]) {
+            return [self.allItems indexOfObject:item];
+        }
+    }
+    return -1;
 }
 
 @end

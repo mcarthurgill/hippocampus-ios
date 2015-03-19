@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
 #define PICTURE_HEIGHT 280
 #define PICTURE_MARGIN_TOP 8
 
-@interface HCLocationNotesViewController : UIViewController
+@interface HCLocationNotesViewController : UIViewController <MKMapViewDelegate>
 {
     BOOL requestMade;
 }
@@ -21,5 +22,6 @@
 @property (strong, nonatomic) NSMutableArray *allItems;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mapViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewHeightConstraint;
+@property (strong, nonatomic) IBOutlet MKMapView *mapView;
 
 @end

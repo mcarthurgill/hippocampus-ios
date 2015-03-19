@@ -1406,6 +1406,9 @@
                                         <exclude reference="e4A-0d-beh"/>
                                     </mask>
                                 </variation>
+                                <connections>
+                                    <outlet property="delegate" destination="uTi-lv-ozV" id="Aip-y8-9mb"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1427,6 +1430,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="mapView" destination="8tN-47-n6S" id="Rbr-dp-D5n"/>
                         <outlet property="mapViewHeightConstraint" destination="zO3-66-yNT" id="zEb-QW-qi5"/>
                         <outlet property="tableView" destination="xIu-VK-l4s" id="DkS-ee-xbo"/>
                         <outlet property="tableViewHeightConstraint" destination="9t7-g9-QOh" id="vhF-2w-IhQ"/>
