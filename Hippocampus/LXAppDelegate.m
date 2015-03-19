@@ -140,8 +140,8 @@
 
 # pragma mark - Background Fetch
 
--(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler{
-
+-(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
    [[LXServer shared] getAllBucketsWithSuccess:^(id responseObject){
                         completionHandler(UIBackgroundFetchResultNewData);
                     }failure:^(NSError *error){
