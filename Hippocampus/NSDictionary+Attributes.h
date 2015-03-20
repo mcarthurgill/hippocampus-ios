@@ -83,6 +83,10 @@
 
 - (BOOL) equalsObjectBasedOnTimestamp:(NSDictionary*)other;
 
+- (NSString*) firstWord;
+
+- (BOOL) messageIsOneWord;
+
 - (NSMutableDictionary*) cleanDictionary;
 
 

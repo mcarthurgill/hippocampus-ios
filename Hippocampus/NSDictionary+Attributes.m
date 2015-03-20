@@ -215,6 +215,16 @@
     return [self deviceTimestamp] && [[self deviceTimestamp] respondsToSelector:@selector(isEqualToString:)] && [[self deviceTimestamp] isEqualToString:[other deviceTimestamp]];
 }
 
+- (NSString*) firstWord
+{
+    return [[[self message] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] firstObject];
+}
+
+- (BOOL) messageIsOneWord
+{
+    return [[self message] length] < 100 && [[[self message] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] count] == 1;
+}
+
 
 # pragma mark other dictionary helpers
 

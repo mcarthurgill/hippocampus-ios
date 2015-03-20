@@ -504,13 +504,11 @@
     NSString *tokenString = [[token description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     tokenString = [tokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    [[LXServer shared] requestPath:@"/device_tokens" withMethod:@"POST" withParamaters:@{@"device_token": @{@"ios_device_token": tokenString, @"environment": @"production", @"user_id": [[HCUser loggedInUser] userID]}}
-                           success:^(id responseObject){
+    [[LXServer shared] requestPath:@"/device_tokens" withMethod:@"POST" withParamaters:@{@"device_token": @{@"ios_device_token": tokenString, @"environment": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENVIRONMENT"], @"user_id": [[[LXSession thisSession] user] userID]}} success:^(id responseObject) {
                                 if (successCallback) {
                                     successCallback(responseObject);
                                 }
-                           }
-                           failure:^(NSError *error) {
+                           } failure:^(NSError *error) {
                                if (failureCallback) {
                                    failureCallback(error);
                                }

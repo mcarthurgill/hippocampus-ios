@@ -28,7 +28,6 @@
     }
     
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-    [self incrementAppLaunchCount];
 
     return YES;
 }
@@ -75,6 +74,7 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [[LXSession thisSession] attemptUnsavedNoteSaving];
     });
+    [self incrementAppLaunchCount];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -153,27 +153,23 @@
 
 # pragma mark - Notifications
 
-- (void) getPushNotificationPermission {
+- (void) getPushNotificationPermission
+{
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeAlert|UIUserNotificationTypeSound
-                                                                                 categories:nil];
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeAlert|UIUserNotificationTypeSound categories:nil];
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
         [[UIApplication sharedApplication] registerForRemoteNotifications];
     } else {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-         UIRemoteNotificationTypeBadge |
-         UIRemoteNotificationTypeAlert |
-         UIRemoteNotificationTypeSound];
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound];
     }
 }
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[LXServer shared] updateDeviceToken:deviceToken
-                                    success:^(id responseObject){
+        [[LXServer shared] updateDeviceToken:deviceToken success:^(id responseObject) {
                                         NSLog(@"My token is: %@", deviceToken);
-                                    }failure:^(NSError *error){
+                                    } failure:^(NSError *error){
                                         NSLog(@"Didn't successfully submit device token: %@", deviceToken);
                                     }
          ];
@@ -185,7 +181,8 @@
     NSLog(@"Failed to get token, error: %@", error);
 }
 
-- (void) setBadgeIcon {
+- (void) setBadgeIcon
+{
     UIUserNotificationSettings *grantedSettings = [[UIApplication sharedApplication] currentUserNotificationSettings];
     if (grantedSettings.types && UIUserNotificationTypeBadge) {
         if ([[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
@@ -196,12 +193,13 @@
     }
 }
 
-- (void) incrementAppLaunchCount {
+- (void) incrementAppLaunchCount
+{
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults objectForKey:@"appLaunches"]) {
         NSInteger appLaunches = [userDefaults integerForKey:@"appLaunches"];
         [userDefaults setInteger:appLaunches+1 forKey:@"appLaunches"];
-        if ([userDefaults integerForKey:@"appLaunches"] == 7) {
+        if ([userDefaults integerForKey:@"appLaunches"] > 7) {
             [self getPushNotificationPermission];
         }
     } else {

@@ -58,8 +58,6 @@
     [super viewDidLoad];
     
     [self setupProperties];
-    
-    [self cacheComposeBucketController];
 
     //reload data to make sure it's catching assign mode
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -405,9 +403,8 @@
 
 - (IBAction)composeButtonClicked:(id)sender
 {
-    if (!self.composeBucketController) {
-        [self cacheComposeBucketController];
-    }
+    self.composeBucketController = [[UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"bucketViewController"];
+    
     if ([[self drawFromDictionary] objectForKey:@"Recent"] && [[[[self drawFromDictionary] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
         [self.composeBucketController setBucket:[[[self drawFromDictionary] objectForKey:@"Recent"] firstObject]];
         [self.composeBucketController setInitializeWithKeyboardUp:YES];
@@ -591,8 +588,8 @@
 
 - (void) cacheComposeBucketController
 {
-    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-    self.composeBucketController = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+    //UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    //self.composeBucketController = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
 }
 
 

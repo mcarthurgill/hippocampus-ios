@@ -21,13 +21,15 @@
 
 @property (strong, nonatomic) NSMutableDictionary* item;
 @property (strong, nonatomic) NSMutableDictionary* originalItem;
-@property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
+
 @property (strong, nonatomic) NSMutableArray* sections;
-@property (strong, nonatomic) NSMutableDictionary* bucketToRemove; 
+@property (strong, nonatomic) NSMutableArray* actions;
 
-@property (strong, nonatomic) UITextView* messageTextView;
-
+@property (strong, nonatomic) NSMutableDictionary* bucketToRemove;
 @property (strong, nonatomic) NSMutableDictionary* mediaDictionary;
+
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
+@property (strong, nonatomic) UITextView* messageTextView;
 
 - (void) saveReminder:(NSString*)reminder withType:(NSString*)type;
 - (void) saveUpdatedMessage:(NSString *)updatedMessage;

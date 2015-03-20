@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>APIRoot</key>
-	<string>http://hippocampus-app.herokuapp.com</string>
+	<string>https://hippocampus-app.herokuapp.com</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -24,6 +24,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>1.05</string>
+	<key>ENVIRONMENT</key>
+	<string>development</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>

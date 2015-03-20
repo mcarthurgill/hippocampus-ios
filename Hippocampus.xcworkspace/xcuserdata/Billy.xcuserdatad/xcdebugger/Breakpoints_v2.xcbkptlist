@@ -266,11 +266,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "447183339.396798"
+            timestampString = "448497919.654824"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
+            startingLineNumber = "77"
+            endingLineNumber = "77"
             landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
@@ -324,12 +324,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "447183339.396798"
+            timestampString = "448497919.654824"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "493"
-            endingLineNumber = "493"
-            landmarkName = "-currentDictionary"
+            startingLineNumber = "490"
+            endingLineNumber = "490"
+            landmarkName = "-modifiedSearchArrayWithResponseObject:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -340,12 +340,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "447183339.396798"
+            timestampString = "448497919.654824"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "495"
-            endingLineNumber = "495"
-            landmarkName = "-currentDictionary"
+            startingLineNumber = "492"
+            endingLineNumber = "492"
+            landmarkName = "-modifiedSearchArrayWithResponseObject:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -388,13 +388,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCItemTableViewController.m"
-            timestampString = "447009993.138153"
+            timestampString = "448523492.303235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "420"
-            endingLineNumber = "420"
-            landmarkName = "-navItem"
-            landmarkType = "5">
+            startingLineNumber = "441"
+            endingLineNumber = "441"
+            landmarkName = "@implementation HCItemTableViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -404,13 +404,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCItemTableViewController.m"
-            timestampString = "447009993.138153"
+            timestampString = "448523492.303235"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "421"
-            endingLineNumber = "421"
-            landmarkName = "-navItem"
-            landmarkType = "5">
+            startingLineNumber = "442"
+            endingLineNumber = "442"
+            landmarkName = "@implementation HCItemTableViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

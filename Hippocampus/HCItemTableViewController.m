@@ -29,6 +29,7 @@
 @synthesize originalItem;
 @synthesize saveButton;
 @synthesize sections;
+@synthesize actions;
 @synthesize bucketToRemove;
 
 @synthesize messageTextView;
@@ -112,6 +113,17 @@
     }
 }
 
+- (void) setActionsArray
+{
+    self.actions = [[NSMutableArray alloc] init];
+    
+    [self.actions addObject:@"assign"];
+    if ([self.item messageIsOneWord]) {
+        [self.actions addObject:@"define"];
+    }
+    [self.actions addObject:@"delete"];
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     self.sections = [[NSMutableArray alloc] init];
@@ -139,6 +151,8 @@
         [self.sections addObject:@"location"];
     }
     
+    [self setActionsArray];
+    
     return self.sections.count;
 }
 
@@ -161,7 +175,7 @@
             return [[self.item buckets] count];
         }
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
-        return 2;
+        return [self.actions count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"location"]) {
         return 1;
     }
@@ -293,15 +307,17 @@
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
     [blueDot setHidden:YES];
     
-    if (indexPath.row == 0) {
+    if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"assign"]) {
         [label setText:@"Add to Thread"];
         if ([self.item isOutstanding]) {
             [blueDot.layer setCornerRadius:4];
             [blueDot setClipsToBounds:YES];
             [blueDot setHidden:NO];
         }
-    } else if (indexPath.row == 1) {
+    } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"delete"]) {
         [label setText:@"Delete Note"];
+    } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"define"]) {
+        [label setText:@"Show Definition"];
     }
     
     return cell;
@@ -403,14 +419,19 @@
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[self.item mediaURLs] objectAtIndex:indexPath.row]]];
     
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
-        if (indexPath.row == 0) {
+        if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"assign"]) {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCBucketsTableViewController* itvc = (HCBucketsTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketsTableViewController"];
             [itvc setMode:@"assign"];
             [itvc setDelegate:self];
             [self.navigationController pushViewController:itvc animated:YES];
-        } else if (indexPath.row == 1) {
+        } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"delete"]) {
             [self showAlertViewWithTitle:@"Are you sure?" message:@"Deleting this note means it is gone forever."];
+        } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"define"]) {
+            //if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:@"word"]) {
+                UIReferenceLibraryViewController* ref = [[UIReferenceLibraryViewController alloc] initWithTerm:[self.item firstWord]];
+                [self presentViewController:ref animated:YES completion:nil];
+            //}
         }
     }
     
@@ -592,7 +613,8 @@
     [av show];
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (alertView.tag == 2) {
         if (buttonIndex == 1) {
             NSLog(@"remove!!!!");
@@ -606,7 +628,8 @@
     }
 }
 
-- (void) destroyBucketItemPair {
+- (void) destroyBucketItemPair
+{
     [self setUnsavedChanges:YES andSavingChanges:YES];
     [self showHUDWithMessage:@"Updating..."];
     
@@ -627,7 +650,8 @@
                           }];
 }
 
-- (void) updateBucketInBackground:(NSDictionary*)bucket {
+- (void) updateBucketInBackground:(NSDictionary*)bucket
+{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:^(id responseObject){
             self.bucketToRemove = nil;
@@ -635,7 +659,8 @@
     });
 }
 
-- (void) deleteItem {
+- (void) deleteItem
+{
     [self.item deleteItemWithSuccess:nil failure:nil];
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
@@ -656,7 +681,8 @@
     return YES;
 }
 
-- (void) updateTableViewCellSizes:(UITextView *)textView {
+- (void) updateTableViewCellSizes:(UITextView *)textView
+{
     [textView invalidateIntrinsicContentSize];
     if (![self.item hasMessage]) {
         [self.tableView reloadData];
