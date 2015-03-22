@@ -125,7 +125,6 @@
 - (void) makeMapViewVisible
 {
     [self.mapView showAnnotations:self.mapView.annotations animated:NO];
-    [self.mapView setVisibleMapRect:self.mapView.visibleMapRect edgePadding:UIEdgeInsetsMake(0, 0, 0, 0) animated:NO];
 }
 
 # pragma mark - TableView Delegate

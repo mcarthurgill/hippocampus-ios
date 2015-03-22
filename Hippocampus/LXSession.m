@@ -244,6 +244,8 @@ static LXSession* thisSession = nil;
     } else {
         if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {
             [self.locationManager requestWhenInUseAuthorization];
+        } else {
+            [self.locationManager startUpdatingLocation];
         }
     }
 }
