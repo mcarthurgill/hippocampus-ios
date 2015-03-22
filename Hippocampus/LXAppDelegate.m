@@ -80,6 +80,10 @@
         [[LXSession thisSession] attemptUnsavedNoteSaving];
     });
     [self incrementAppLaunchCount];
+    
+    if ([LXSession locationPermissionDetermined]) {
+        [[LXSession thisSession] startLocationUpdates];
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
