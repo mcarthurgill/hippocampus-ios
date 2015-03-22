@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4lK-2R-yNE">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -216,7 +217,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Hippocampus" id="z0i-Au-GnR">
-                        <barButtonItem key="leftBarButtonItem" title="More" style="plain" id="Unx-6d-ejb">
+                        <barButtonItem key="leftBarButtonItem" style="plain" systemItem="organize" id="Unx-6d-ejb">
                             <connections>
                                 <action selector="moreButtonClicked:" destination="qHq-hU-e41" id="SbT-cK-7TK"/>
                             </connections>
@@ -664,11 +665,11 @@
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xd3-CD-40J">
                                 <rect key="frame" x="0.0" y="560" width="600" height="40"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
-                                        <rect key="frame" x="541" y="0.0" width="59" height="40"/>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="suh-LO-BkZ">
+                                        <rect key="frame" x="546" y="0.0" width="52" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="Xhe-E5-quE"/>
-                                            <constraint firstAttribute="width" constant="59" id="pcG-4z-GO1"/>
+                                            <constraint firstAttribute="width" constant="52" id="pcG-4z-GO1"/>
                                         </constraints>
                                         <state key="normal" title="Save">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -677,22 +678,21 @@
                                             <action selector="addAction:" destination="NRV-Pe-zK1" eventType="touchUpInside" id="M2n-Aq-MSH"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDx-XO-QSU">
-                                        <rect key="frame" x="0.0" y="0.0" width="34" height="40"/>
+                                    <button opaque="NO" contentMode="scaleAspectFit" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDx-XO-QSU">
+                                        <rect key="frame" x="0.0" y="3" width="33" height="33"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="BlD-ql-ysK"/>
-                                            <constraint firstAttribute="width" constant="34" id="vQi-45-gPL"/>
+                                            <constraint firstAttribute="height" constant="33" id="BlD-ql-ysK"/>
+                                            <constraint firstAttribute="width" constant="33" id="vQi-45-gPL"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                        <state key="normal" title="+">
+                                        <state key="normal" image="Photo-100-blue.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="uploadImage:" destination="NRV-Pe-zK1" eventType="touchUpInside" id="gmc-2S-rel"/>
                                         </connections>
                                     </button>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" scrollEnabled="NO" text="Add Note" translatesAutoresizingMaskIntoConstraints="NO" id="bUM-CL-Fv8">
-                                        <rect key="frame" x="34" y="4" width="506" height="32"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" scrollEnabled="NO" text="Add Note" translatesAutoresizingMaskIntoConstraints="NO" id="bUM-CL-Fv8">
+                                        <rect key="frame" x="41" y="4" width="506" height="32"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="201" id="ZY6-ZM-wrB"/>
@@ -713,12 +713,14 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.92055852900552482" green="0.92055852900552482" blue="0.92055852900552482" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
-                                    <constraint firstItem="bUM-CL-Fv8" firstAttribute="leading" secondItem="xd3-CD-40J" secondAttribute="leading" constant="34" id="3de-ef-2OY"/>
+                                    <constraint firstItem="bUM-CL-Fv8" firstAttribute="leading" secondItem="xd3-CD-40J" secondAttribute="leading" constant="36" id="3de-ef-2OY"/>
                                     <constraint firstAttribute="trailing" secondItem="suh-LO-BkZ" secondAttribute="trailing" id="NAm-bu-WnI"/>
-                                    <constraint firstItem="gDx-XO-QSU" firstAttribute="leading" secondItem="xd3-CD-40J" secondAttribute="leading" id="OaX-ve-AZm"/>
+                                    <constraint firstItem="gDx-XO-QSU" firstAttribute="leading" secondItem="xd3-CD-40J" secondAttribute="leading" constant="2" id="OaX-ve-AZm"/>
                                     <constraint firstItem="bUM-CL-Fv8" firstAttribute="top" secondItem="xd3-CD-40J" secondAttribute="top" constant="4" id="StE-3d-WWJ"/>
+                                    <constraint firstItem="bUM-CL-Fv8" firstAttribute="leading" secondItem="gDx-XO-QSU" secondAttribute="trailing" constant="2" id="Vr1-27-LbO"/>
                                     <constraint firstItem="suh-LO-BkZ" firstAttribute="leading" secondItem="bUM-CL-Fv8" secondAttribute="trailing" constant="-4" id="YfH-Lv-Gbu"/>
-                                    <constraint firstAttribute="bottom" secondItem="gDx-XO-QSU" secondAttribute="bottom" id="buM-jF-Wr2"/>
+                                    <constraint firstItem="suh-LO-BkZ" firstAttribute="leading" secondItem="bUM-CL-Fv8" secondAttribute="trailing" id="ZuR-4m-hTN"/>
+                                    <constraint firstAttribute="bottom" secondItem="gDx-XO-QSU" secondAttribute="bottom" constant="3" id="buM-jF-Wr2"/>
                                     <constraint firstAttribute="trailing" secondItem="bUM-CL-Fv8" secondAttribute="trailing" constant="60" id="e4U-lZ-boW"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="fx0-s2-uhs"/>
                                     <constraint firstAttribute="bottom" secondItem="suh-LO-BkZ" secondAttribute="bottom" id="r09-0J-tj4"/>
@@ -726,6 +728,8 @@
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
+                                        <exclude reference="3de-ef-2OY"/>
+                                        <exclude reference="e4U-lZ-boW"/>
                                         <exclude reference="YfH-Lv-Gbu"/>
                                     </mask>
                                 </variation>
@@ -1611,4 +1615,7 @@
             <point key="canvasLocation" x="4250" y="1890"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Photo-100-blue.png" width="100" height="100"/>
+    </resources>
 </document>

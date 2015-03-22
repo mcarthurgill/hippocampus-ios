@@ -49,19 +49,24 @@
 {
     NSLog(@"applicationWillResignActive");
     
+    UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
+    }];
+    
     NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
     NSError* error;
     if (![moc save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
     }
-    if ([HCUser loggedInUser]) {
+    if ([[LXSession thisSession] user]) {
         [[LXServer shared] getAllBucketsWithSuccess:nil failure:nil];
     }
+    
+    [[UIApplication sharedApplication] endBackgroundTask:bgt];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    
+    [self setBadgeIcon];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
