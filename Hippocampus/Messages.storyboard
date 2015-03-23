@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4lK-2R-yNE">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -1454,7 +1455,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PBq-8I-LiD">
+                            <navigationBar contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PBq-8I-LiD">
                                 <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="Fbd-lH-iNZ"/>
@@ -1474,17 +1475,18 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="10" translatesAutoresizingMaskIntoConstraints="NO" id="OtA-OW-PE4">
+                            <pickerView contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wzW-1Y-OD4">
                                 <rect key="frame" x="0.0" y="64" width="600" height="162"/>
-                                <date key="date" timeIntervalSinceReferenceDate="426817164.55374199">
-                                    <!--2014-07-12 00:19:24 +0000-->
-                                </date>
-                            </datePicker>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wzW-1Y-OD4">
-                                <rect key="frame" x="0.0" y="226" width="600" height="162"/>
                                 <connections>
                                     <outlet property="dataSource" destination="IVT-Jv-cUt" id="sVx-gM-isb"/>
                                     <outlet property="delegate" destination="IVT-Jv-cUt" id="CSc-PC-joa"/>
+                                </connections>
+                            </pickerView>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bU9-n1-7qy">
+                                <rect key="frame" x="0.0" y="234" width="600" height="162"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="IVT-Jv-cUt" id="NQG-7o-mS3"/>
+                                    <outlet property="delegate" destination="IVT-Jv-cUt" id="yC2-ov-nOk"/>
                                 </connections>
                             </pickerView>
                         </subviews>
@@ -1492,34 +1494,22 @@
                         <constraints>
                             <constraint firstItem="wzW-1Y-OD4" firstAttribute="leading" secondItem="CoC-H6-dye" secondAttribute="leading" id="5Su-Xz-vB9"/>
                             <constraint firstAttribute="trailing" secondItem="wzW-1Y-OD4" secondAttribute="trailing" id="5rK-Cf-dOr"/>
-                            <constraint firstItem="OtA-OW-PE4" firstAttribute="trailing" secondItem="PBq-8I-LiD" secondAttribute="trailing" id="Aou-wt-4r4"/>
-                            <constraint firstItem="wzW-1Y-OD4" firstAttribute="top" secondItem="OtA-OW-PE4" secondAttribute="bottom" id="ERs-jZ-hwN"/>
                             <constraint firstItem="wzW-1Y-OD4" firstAttribute="leading" secondItem="PBq-8I-LiD" secondAttribute="leading" id="PEE-SJ-qKs"/>
-                            <constraint firstItem="OtA-OW-PE4" firstAttribute="leading" secondItem="PBq-8I-LiD" secondAttribute="leading" id="Q0g-on-8ds"/>
                             <constraint firstItem="UEE-6v-VqZ" firstAttribute="top" secondItem="wzW-1Y-OD4" secondAttribute="bottom" constant="160" id="T65-r3-Qo5"/>
-                            <constraint firstItem="wzW-1Y-OD4" firstAttribute="leading" secondItem="OtA-OW-PE4" secondAttribute="leading" id="c98-hG-Y5b"/>
-                            <constraint firstItem="OtA-OW-PE4" firstAttribute="leading" secondItem="wzW-1Y-OD4" secondAttribute="leading" id="eng-F8-cal"/>
-                            <constraint firstItem="UEE-6v-VqZ" firstAttribute="top" secondItem="OtA-OW-PE4" secondAttribute="bottom" constant="321" id="i1O-wY-rln"/>
                             <constraint firstItem="wzW-1Y-OD4" firstAttribute="trailing" secondItem="PBq-8I-LiD" secondAttribute="trailing" id="k6j-7s-Rc6"/>
-                            <constraint firstItem="wzW-1Y-OD4" firstAttribute="trailing" secondItem="OtA-OW-PE4" secondAttribute="trailing" id="kg7-QZ-EyP"/>
-                            <constraint firstItem="OtA-OW-PE4" firstAttribute="trailing" secondItem="wzW-1Y-OD4" secondAttribute="trailing" id="t3A-Mg-sRn"/>
-                            <constraint firstItem="OtA-OW-PE4" firstAttribute="top" secondItem="PBq-8I-LiD" secondAttribute="bottom" id="tV9-2T-AVi"/>
                             <constraint firstItem="PBq-8I-LiD" firstAttribute="top" secondItem="CoC-H6-dye" secondAttribute="topMargin" constant="20" id="yzp-kt-sDg"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="PEE-SJ-qKs"/>
-                                <exclude reference="c98-hG-Y5b"/>
                                 <exclude reference="k6j-7s-Rc6"/>
-                                <exclude reference="kg7-QZ-EyP"/>
                                 <exclude reference="T65-r3-Qo5"/>
-                                <exclude reference="i1O-wY-rln"/>
                             </mask>
                         </variation>
                     </view>
                     <connections>
                         <outlet property="cancelButton" destination="Cvu-zz-Wk8" id="TNK-Ha-tFy"/>
-                        <outlet property="datePicker" destination="OtA-OW-PE4" id="kt5-dO-hEb"/>
+                        <outlet property="dayPicker" destination="bU9-n1-7qy" id="P0F-Yp-Mau"/>
                         <outlet property="saveButton" destination="UBe-A3-p75" id="lcn-RJ-dEA"/>
                         <outlet property="typePicker" destination="wzW-1Y-OD4" id="QaO-z2-dIk"/>
                     </connections>
