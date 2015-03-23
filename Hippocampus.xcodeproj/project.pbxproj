@@ -46,6 +46,7 @@
 		2837E7FC1ABD06460089FA33 /* Photo-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837E7FB1ABD06460089FA33 /* Photo-100.png */; };
 		2837E7FE1ABD082C0089FA33 /* Photo-100-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837E7FD1ABD082C0089FA33 /* Photo-100-blue.png */; };
 		2837E8001ABD09400089FA33 /* More-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837E7FF1ABD09400089FA33 /* More-100.png */; };
+		2837E8031AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2837E8021AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m */; };
 		28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDA1A8D692E00B12548 /* 11-clock.png */; };
 		28431DDD1A8D692E00B12548 /* 11-clock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDB1A8D692E00B12548 /* 11-clock@2x.png */; };
 		28431DE01A8D69BA00B12548 /* 78-stopwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDE1A8D69BA00B12548 /* 78-stopwatch.png */; };
@@ -138,6 +139,8 @@
 		2837E7FB1ABD06460089FA33 /* Photo-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Photo-100.png"; sourceTree = "<group>"; };
 		2837E7FD1ABD082C0089FA33 /* Photo-100-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Photo-100-blue.png"; sourceTree = "<group>"; };
 		2837E7FF1ABD09400089FA33 /* More-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "More-100.png"; sourceTree = "<group>"; };
+		2837E8011AC0A8DC0089FA33 /* UIPickerView+CustomPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPickerView+CustomPicker.h"; sourceTree = "<group>"; };
+		2837E8021AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPickerView+CustomPicker.m"; sourceTree = "<group>"; };
 		28431DDA1A8D692E00B12548 /* 11-clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock.png"; sourceTree = "<group>"; };
 		28431DDB1A8D692E00B12548 /* 11-clock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock@2x.png"; sourceTree = "<group>"; };
 		28431DDE1A8D69BA00B12548 /* 78-stopwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "78-stopwatch.png"; sourceTree = "<group>"; };
@@ -407,6 +410,8 @@
 		281CA94D196DB60C00E6BE96 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				2837E8011AC0A8DC0089FA33 /* UIPickerView+CustomPicker.h */,
+				2837E8021AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m */,
 				281CA94E196DB62A00E6BE96 /* LXDate+RailsTimeConverter.h */,
 				281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */,
 				28BD3EAD196F519B00BBF5B0 /* NSArray+Alphabet.h */,
@@ -646,6 +651,7 @@
 				76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,
 				2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */,
+				2837E8031AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m in Sources */,
 				281CA9141951F4F800E6BE96 /* HCUser.m in Sources */,
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
 				288433BF1A8BD3AA0059FCE1 /* HCItemPageViewController.m in Sources */,
