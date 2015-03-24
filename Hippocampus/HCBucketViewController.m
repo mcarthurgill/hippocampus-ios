@@ -78,6 +78,11 @@
     [self.navigationItem setTitle:[self.bucket firstName]];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -657,13 +662,16 @@
 
 # pragma mark Keyboard Notifications
 
-- (void) observeKeyboard {
+- (void) observeKeyboard
+{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
 }
 
 
-- (void) keyboardWillShow:(NSNotification *)sender {
+- (void) keyboardWillShow:(NSNotification *)sender
+{
     if (self.isViewLoaded && self.view.window) {
         [self setScrollToPosition:@"bottom"];
         [self setTableScrollToIndex:[self currentArray].count animated:YES];
@@ -681,7 +689,8 @@
     }
 }
 
-- (void) keyboardWillHide:(NSNotification *)sender {
+- (void) keyboardWillHide:(NSNotification *)sender
+{
     if (self.isViewLoaded && self.view.window) {
         NSDictionary *info = [sender userInfo];
         NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -696,10 +705,17 @@
     }
 }
 
+- (void) keyboardWillChangeFrame:(NSNotification *)sender
+{
+    NSLog(@"changed frame");
+}
+
+
 
 # pragma mark Constraints
 
--(void) setupConstraint {
+-(void) setupConstraint
+{
     self.composeView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.composeView];
     
@@ -808,6 +824,9 @@
 }
 
 
+
+
+
 # pragma mark - HCUpdateBucketDelegate
 
 -(void)updateBucket:(NSMutableDictionary *)updatedBucket
@@ -815,6 +834,9 @@
     self.bucket = updatedBucket;
     [self.delegate sendRequestForUpdatedBucket];
 }
+
+
+
 
 
 # pragma  mark - AlertView Delegate
@@ -861,6 +883,7 @@
         }
     }
 }
+
 
 
 # pragma mark - Congratulations Notifications
