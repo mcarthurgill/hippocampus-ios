@@ -18,6 +18,8 @@
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 
+@property (strong, nonatomic) NSDate* currentlySelectedDate;
+
 @property (strong, nonatomic) IBOutlet UIPickerView *dayPicker;
 
 

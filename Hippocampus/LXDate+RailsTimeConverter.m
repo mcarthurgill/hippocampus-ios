@@ -79,5 +79,72 @@
     return [dateFormat stringFromDate:date];
 }
 
++ (NSInteger) currentYearInteger
+{
+   return [[NSDate date] yearInteger];
+}
+
++ (NSInteger) currentMonthInteger
+{
+   return [[NSDate date] monthInteger];
+}
+
++ (NSInteger) currentDayInteger
+{
+   return [[NSDate date] dayInteger];
+}
+
+- (NSInteger) yearInteger
+{
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
+    
+    return [components year];
+}
+
+- (NSInteger) monthInteger
+{
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
+    
+    return [components month];
+}
+
+- (NSInteger) dayInteger
+{
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:self];
+    
+    return [components day];
+}
+
+- (NSInteger) yearIndex
+{
+    NSLog(@"%i - %i", [self yearInteger], [NSDate currentYearInteger]);
+    return [self yearInteger] < [NSDate currentYearInteger] ? 0 : ([self yearInteger] - [NSDate currentYearInteger]);
+}
+
+- (NSInteger) monthIndex
+{
+    return [self monthInteger]-1;
+}
+
+- (NSInteger) dayIndex
+{
+    return [self dayInteger]-1;
+}
+
+- (NSString*) dayOfWeek
+{
+    return [[NSArray daysOfWeek] objectAtIndex:[self dayOfWeekIndex]];
+}
+
+- (NSInteger) dayOfWeekIndex
+{
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *weekdayComponents =[gregorian components:NSWeekdayCalendarUnit fromDate:self];
+    return [weekdayComponents weekday]-1;
+}
+
 
 @end

@@ -20,4 +20,20 @@
 
 + (NSString*) formattedDateFromString:(NSString*)string;
 
++ (NSInteger) currentYearInteger;
++ (NSInteger) currentMonthInteger;
++ (NSInteger) currentDayInteger;
+
+- (NSInteger) yearInteger;
+- (NSInteger) monthInteger;
+- (NSInteger) dayInteger;
+
+- (NSInteger) yearIndex;
+- (NSInteger) monthIndex;
+- (NSInteger) dayIndex;
+
+- (NSString*) dayOfWeek;
+- (NSInteger) dayOfWeekIndex;
+
+
 @end

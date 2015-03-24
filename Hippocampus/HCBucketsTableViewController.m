@@ -417,7 +417,7 @@
 {
     NSString *other1 = @"Upcoming Reminders";
     NSString *other2 = @"Notes Near Current Location";
-    NSString *other3 = @"Random Notes";
+    NSString *other3 = @"Show Random Note";
     NSString *cancelTitle = @"Cancel";
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc]

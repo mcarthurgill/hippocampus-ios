@@ -18,5 +18,11 @@
 
 + (NSArray*) alphabetUppercaseWithOther;
 
++ (NSArray*) months;
+
++ (NSArray*) daysOfWeek;
+
++ (NSArray*) daysOfWeekShort;
+
 - (id) rand;
 @end
