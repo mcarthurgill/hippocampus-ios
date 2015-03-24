@@ -21,11 +21,11 @@
     
     [[LXSession thisSession] setVariables];
     
-    if ([self shouldPresentIntroductionViews]) {
+    //if ([self shouldPresentIntroductionViews]) {
         [self setRootStoryboard:@"Login"];
-    } else {
-        [self setRootStoryboard:@"Messages"];
-    }
+    //} else {
+    //    [self setRootStoryboard:@"Messages"];
+    //}
     
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
 

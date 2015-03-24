@@ -281,7 +281,7 @@
         NSDictionary* item = [[self searchArray] objectAtIndex:indexPath.row];
         int additional = 0;
         if ([item hasMediaURLs]) {
-            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
+            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*(int)[[item mediaURLs] count];
         }
         return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + additional;
         
