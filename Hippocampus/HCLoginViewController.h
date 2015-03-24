@@ -15,6 +15,8 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *numberTextField;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+
 - (IBAction)loginAction:(id)sender;
+- (IBAction)whyMobileAction:(id)sender;
 
 @end

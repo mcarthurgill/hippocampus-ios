@@ -83,6 +83,12 @@
      ];
 }
 
+- (IBAction) whyMobileAction:(id)sender
+{
+    UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Why Your Mobile #" message:@"We need your mobile number for two reasons: 1) to identify your notes as yours; and 2) so you can text notes to Hippocampus." delegate:self cancelButtonTitle:@"Got It." otherButtonTitles:nil];
+    [av show];
+}
+
 
 - (void) showAlertViewWithTitle:(NSString*)title message:(NSString*)message
 {
