@@ -17,7 +17,11 @@
 @property (strong, nonatomic) NSMutableDictionary* item;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
-@property (strong, nonatomic) IBOutlet UIDatePicker *datePicker;
+
+@property (strong, nonatomic) NSDate* currentlySelectedDate;
+
+@property (strong, nonatomic) IBOutlet UIPickerView *dayPicker;
+
 
 @property (strong, nonatomic) NSArray* typeOptions;
 @property (strong, nonatomic) IBOutlet UIPickerView *typePicker;

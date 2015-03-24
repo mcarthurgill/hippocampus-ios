@@ -274,7 +274,21 @@
     UILabel* direction =  (UILabel*)[cell.contentView viewWithTag:3];
     
     if ([self.item hasReminder]) {
-        [main setText:[NSDate timeAgoActualFromDatetime:[self.item reminderDate]]];
+        NSString* text = @"Tap to Set";
+        NSDate* date = [NSDate timeWithString:[self.item reminderDate]];
+        if ([self.item onceReminder]) {
+            text = [NSString stringWithFormat:@"%@ %li (%@), %li", [[NSArray months] objectAtIndex:[date monthIndex]], (long)[date dayInteger], [[NSArray daysOfWeek] objectAtIndex:[date dayOfWeekIndex]], (long)[date yearInteger] ];
+        } else if ([self.item yearlyReminder]) {
+            text = [NSString stringWithFormat:@"every %@ %li", [[NSArray months] objectAtIndex:[date monthIndex]], (long)[date dayInteger]];
+        } else if ([self.item monthlyReminder]) {
+            text = [NSString stringWithFormat:@"the %li of each month", (long)[date dayInteger]];
+        } else if ([self.item weeklyReminder]) {
+            text = [NSString stringWithFormat:@"every %@", [date dayOfWeek]];
+        } else if ([self.item dailyReminder]) {
+            text = @"every day";
+        }
+        //[main setText:[NSDate timeAgoActualFromDatetime:[self.item reminderDate]]];
+        [main setText:text];
         [main setTextColor:[UIColor blackColor]];
         [direction setText:[NSString stringWithFormat:@"Set to remind you %@. Tap to Change", [self.item objectForKey:@"item_type"]]];
     } else {

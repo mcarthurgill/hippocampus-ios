@@ -225,6 +225,31 @@
     return [[self message] length] < 100 && [[[self message] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] count] == 1;
 }
 
+- (BOOL) onceReminder
+{
+    return [[self itemType] isEqualToString:@"once"];
+}
+
+- (BOOL) yearlyReminder
+{
+    return [[self itemType] isEqualToString:@"yearly"];
+}
+
+- (BOOL) monthlyReminder
+{
+    return [[self itemType] isEqualToString:@"monthly"];
+}
+
+- (BOOL) weeklyReminder
+{
+    return [[self itemType] isEqualToString:@"weekly"];
+}
+
+- (BOOL) dailyReminder
+{
+    return [[self itemType] isEqualToString:@"daily"];
+}
+
 
 # pragma mark other dictionary helpers
 

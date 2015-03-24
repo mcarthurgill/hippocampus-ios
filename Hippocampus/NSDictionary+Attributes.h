@@ -87,6 +87,12 @@
 
 - (BOOL) messageIsOneWord;
 
+- (BOOL) onceReminder;
+- (BOOL) yearlyReminder;
+- (BOOL) monthlyReminder;
+- (BOOL) weeklyReminder;
+- (BOOL) dailyReminder;
+
 - (NSMutableDictionary*) cleanDictionary;
 
 
