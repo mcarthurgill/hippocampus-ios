@@ -32,10 +32,10 @@
     pageControlAppearance.currentPageIndicatorTintColor = [UIColor darkGrayColor];
     
     quotes = @[
-               @"\"To be interesting, be interested.\" Dale Carnegie",
-               @"\"Did you ever stop to think that a dog is the only animal that doesn’t have to work for a living? A hen has to lay eggs, a cow has to give milk, and a canary has to sing. But a dog makes his living by giving you nothing but love.\"",
-               @"Information not found in notes has only a five percent chance of being remembered.",
-               @"\"Names are the sweetest and most important sound in any language.\" Dale Carnegie",
+               @"To be interesting, be interested.",
+               @"Have you ever realized dogs are the only animals that don't have to work?\n\nHens lay eggs, cows give milk, and canaries sing. But a dog makes his living by giving you nothing but love.",
+               @"Start showing you care by remembering names, the sweetest and most important sound in any language.",
+               @"Write things down. Information not found in notes has only a five percent chance of being remembered.",
               ];
     
     [self setViewControllers:@[[self messageControllerWithMessage:[self.quotes firstObject] andIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:^(BOOL finished) {
