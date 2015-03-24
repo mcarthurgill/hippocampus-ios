@@ -8,6 +8,7 @@
 
 #import "HCOnboardingPageViewController.h"
 #import "HCMessageViewController.h"
+#import "HCLoginViewController.h"
 
 @interface HCOnboardingPageViewController ()
 
