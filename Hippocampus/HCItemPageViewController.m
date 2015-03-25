@@ -117,7 +117,7 @@
 
 - (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n
 {
-    int index = [self.items indexOfObject:original];
+    int index = (int)[self.items indexOfObject:original];
     if (index && index < self.items.count) {
         [self.items replaceObjectAtIndex:index withObject:n];
     }

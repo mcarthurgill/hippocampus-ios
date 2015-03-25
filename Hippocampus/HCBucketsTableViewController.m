@@ -246,7 +246,7 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
         [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket createdAt]], ([self assignMode] ? @" - Tap to Add Note" : @"")]];
     } else {
-        [description setText:[NSString stringWithFormat:@"%@ Notes %@%@", [bucket itemsCount], [bucket isAllNotesBucket] ? @"Outstanding" : @"", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket updatedAt]]])]];
+        [description setText:[NSString stringWithFormat:@"%@ Note%@ %@%@", [bucket itemsCount], ([[bucket itemsCount] integerValue] == 1 ? @"" : @"s"), [bucket isAllNotesBucket] ? @"Outstanding" : @"", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket updatedAt]]])]];
     }
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
@@ -299,7 +299,7 @@
         NSDictionary* item = [[self searchArray] objectAtIndex:indexPath.row];
         int additional = 0;
         if ([item hasMediaURLs]) {
-            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[item mediaURLs] count];
+            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*(int)[[item mediaURLs] count];
         }
         return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + additional;
         
@@ -439,7 +439,7 @@
 {
     NSString *other1 = @"Upcoming Reminders";
     NSString *other2 = @"Notes Near Current Location";
-    NSString *other3 = @"Random Notes";
+    NSString *other3 = @"Show Random Note";
     NSString *cancelTitle = @"Cancel";
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc]

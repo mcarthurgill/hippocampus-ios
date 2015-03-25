@@ -38,7 +38,12 @@
 {
     [super viewDidAppear:animated];
     
-    [self.numberTextField becomeFirstResponder];
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        //code to be executed on the main queue after delay
+        [self.numberTextField becomeFirstResponder];
+    });
 }
 
 - (void)didReceiveMemoryWarning
@@ -76,6 +81,12 @@
                   NSLog(@"ERROR: %@", [error localizedDescription]);
               }
      ];
+}
+
+- (IBAction) whyMobileAction:(id)sender
+{
+    UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Why Your Mobile #" message:@"We need your mobile number for two reasons: 1) to identify your notes as yours; and 2) so you can text notes to Hippocampus." delegate:self cancelButtonTitle:@"Got It." otherButtonTitles:nil];
+    [av show];
 }
 
 

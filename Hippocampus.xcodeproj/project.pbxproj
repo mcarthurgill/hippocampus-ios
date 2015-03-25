@@ -43,6 +43,13 @@
 		2837008D1A6F34F000C16E87 /* 06-magnify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008B1A6F34F000C16E87 /* 06-magnify@2x.png */; };
 		283700901A6F366E00C16E87 /* 122-stats.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008E1A6F366E00C16E87 /* 122-stats.png */; };
 		283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008F1A6F366E00C16E87 /* 122-stats@2x.png */; };
+		2837E7FC1ABD06460089FA33 /* Photo-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837E7FB1ABD06460089FA33 /* Photo-100.png */; };
+		2837E7FE1ABD082C0089FA33 /* Photo-100-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837E7FD1ABD082C0089FA33 /* Photo-100-blue.png */; };
+		2837E8001ABD09400089FA33 /* More-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837E7FF1ABD09400089FA33 /* More-100.png */; };
+		2837E8031AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 2837E8021AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m */; };
+		2837E8061AC11D2A0089FA33 /* HCInitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2837E8051AC11D2A0089FA33 /* HCInitialViewController.m */; };
+		2837E8091AC11D400089FA33 /* HCOnboardingPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2837E8081AC11D400089FA33 /* HCOnboardingPageViewController.m */; };
+		2837E80C1AC11D550089FA33 /* HCMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2837E80B1AC11D550089FA33 /* HCMessageViewController.m */; };
 		28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDA1A8D692E00B12548 /* 11-clock.png */; };
 		28431DDD1A8D692E00B12548 /* 11-clock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDB1A8D692E00B12548 /* 11-clock@2x.png */; };
 		28431DE01A8D69BA00B12548 /* 78-stopwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDE1A8D69BA00B12548 /* 78-stopwatch.png */; };
@@ -56,7 +63,6 @@
 		28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */; };
 		761596B31AB7847D00EE6259 /* HCItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761596B21AB7847D00EE6259 /* HCItemTableViewCell.m */; };
 		761596B61AB7935C00EE6259 /* HCIndicatorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761596B51AB7935B00EE6259 /* HCIndicatorTableViewCell.m */; };
-		76379FD51A8904F700D19E64 /* camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 76379FD41A8904F700D19E64 /* camera.png */; };
 		765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */; };
 		768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */; };
 		769DCA701AB860660036E4BB /* HCExplanationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 769DCA6F1AB860660036E4BB /* HCExplanationTableViewCell.m */; };
@@ -136,6 +142,17 @@
 		2837008B1A6F34F000C16E87 /* 06-magnify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "06-magnify@2x.png"; sourceTree = "<group>"; };
 		2837008E1A6F366E00C16E87 /* 122-stats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "122-stats.png"; sourceTree = "<group>"; };
 		2837008F1A6F366E00C16E87 /* 122-stats@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "122-stats@2x.png"; sourceTree = "<group>"; };
+		2837E7FB1ABD06460089FA33 /* Photo-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Photo-100.png"; sourceTree = "<group>"; };
+		2837E7FD1ABD082C0089FA33 /* Photo-100-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Photo-100-blue.png"; sourceTree = "<group>"; };
+		2837E7FF1ABD09400089FA33 /* More-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "More-100.png"; sourceTree = "<group>"; };
+		2837E8011AC0A8DC0089FA33 /* UIPickerView+CustomPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIPickerView+CustomPicker.h"; sourceTree = "<group>"; };
+		2837E8021AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIPickerView+CustomPicker.m"; sourceTree = "<group>"; };
+		2837E8041AC11D2A0089FA33 /* HCInitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCInitialViewController.h; sourceTree = "<group>"; };
+		2837E8051AC11D2A0089FA33 /* HCInitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCInitialViewController.m; sourceTree = "<group>"; };
+		2837E8071AC11D400089FA33 /* HCOnboardingPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCOnboardingPageViewController.h; sourceTree = "<group>"; };
+		2837E8081AC11D400089FA33 /* HCOnboardingPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCOnboardingPageViewController.m; sourceTree = "<group>"; };
+		2837E80A1AC11D550089FA33 /* HCMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCMessageViewController.h; sourceTree = "<group>"; };
+		2837E80B1AC11D550089FA33 /* HCMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCMessageViewController.m; sourceTree = "<group>"; };
 		28431DDA1A8D692E00B12548 /* 11-clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock.png"; sourceTree = "<group>"; };
 		28431DDB1A8D692E00B12548 /* 11-clock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock@2x.png"; sourceTree = "<group>"; };
 		28431DDE1A8D69BA00B12548 /* 78-stopwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "78-stopwatch.png"; sourceTree = "<group>"; };
@@ -158,7 +175,6 @@
 		761596B21AB7847D00EE6259 /* HCItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCItemTableViewCell.m; sourceTree = "<group>"; };
 		761596B41AB7935B00EE6259 /* HCIndicatorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCIndicatorTableViewCell.h; sourceTree = "<group>"; };
 		761596B51AB7935B00EE6259 /* HCIndicatorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIndicatorTableViewCell.m; sourceTree = "<group>"; };
-		76379FD41A8904F700D19E64 /* camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = camera.png; sourceTree = "<group>"; };
 		765B3D711AAF944700E599F3 /* HCRandomItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCRandomItemViewController.h; sourceTree = "<group>"; };
 		765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCRandomItemViewController.m; sourceTree = "<group>"; };
 		768D348F1A94FDAA00D340C0 /* HCBucketDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCBucketDetailsViewController.h; sourceTree = "<group>"; };
@@ -316,7 +332,6 @@
 		281CA9041951EC9700E6BE96 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
-				76379FD41A8904F700D19E64 /* camera.png */,
 				281CA91B196C29D500E6BE96 /* Icons */,
 			);
 			name = Assets;
@@ -352,6 +367,9 @@
 		281CA91B196C29D500E6BE96 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				2837E7FF1ABD09400089FA33 /* More-100.png */,
+				2837E7FD1ABD082C0089FA33 /* Photo-100-blue.png */,
+				2837E7FB1ABD06460089FA33 /* Photo-100.png */,
 				28431DDE1A8D69BA00B12548 /* 78-stopwatch.png */,
 				28431DDF1A8D69BA00B12548 /* 78-stopwatch@2x.png */,
 				28431DDA1A8D692E00B12548 /* 11-clock.png */,
@@ -375,6 +393,12 @@
 				281CA928196C2C2900E6BE96 /* HCLoginViewController.m */,
 				283700871A6F199600C16E87 /* LXTokenViewController.h */,
 				283700881A6F199600C16E87 /* LXTokenViewController.m */,
+				2837E8041AC11D2A0089FA33 /* HCInitialViewController.h */,
+				2837E8051AC11D2A0089FA33 /* HCInitialViewController.m */,
+				2837E8071AC11D400089FA33 /* HCOnboardingPageViewController.h */,
+				2837E8081AC11D400089FA33 /* HCOnboardingPageViewController.m */,
+				2837E80A1AC11D550089FA33 /* HCMessageViewController.h */,
+				2837E80B1AC11D550089FA33 /* HCMessageViewController.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -412,6 +436,8 @@
 		281CA94D196DB60C00E6BE96 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				2837E8011AC0A8DC0089FA33 /* UIPickerView+CustomPicker.h */,
+				2837E8021AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m */,
 				281CA94E196DB62A00E6BE96 /* LXDate+RailsTimeConverter.h */,
 				281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */,
 				28BD3EAD196F519B00BBF5B0 /* NSArray+Alphabet.h */,
@@ -573,18 +599,20 @@
 				283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */,
 				281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */,
 				76FBBD881A80122A00CAF765 /* Messages.storyboard in Resources */,
-				76379FD51A8904F700D19E64 /* camera.png in Resources */,
 				281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
+				2837E8001ABD09400089FA33 /* More-100.png in Resources */,
 				28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */,
 				283700901A6F366E00C16E87 /* 122-stats.png in Resources */,
 				28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */,
 				2837008D1A6F34F000C16E87 /* 06-magnify@2x.png in Resources */,
 				2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */,
 				28431DE01A8D69BA00B12548 /* 78-stopwatch.png in Resources */,
+				2837E7FC1ABD06460089FA33 /* Photo-100.png in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,
+				2837E7FE1ABD082C0089FA33 /* Photo-100-blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -654,10 +682,14 @@
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
 				76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,
+				2837E8061AC11D2A0089FA33 /* HCInitialViewController.m in Sources */,
 				2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */,
+				2837E8031AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m in Sources */,
 				281CA9141951F4F800E6BE96 /* HCUser.m in Sources */,
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
+				2837E80C1AC11D550089FA33 /* HCMessageViewController.m in Sources */,
 				288433BF1A8BD3AA0059FCE1 /* HCItemPageViewController.m in Sources */,
+				2837E8091AC11D400089FA33 /* HCOnboardingPageViewController.m in Sources */,
 				281CA937196C458400E6BE96 /* HCBucketsTableViewController.m in Sources */,
 				76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */,
 				76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */,
