@@ -165,7 +165,7 @@
         [self.sections addObject:@"searchResults"];
     }
     
-    if ([self assignMode] && [[LXAddressBook thisBook] permissionGranted]) {
+    if ([self assignMode] && [[LXAddressBook thisBook] permissionGranted] && [[[self currentDictionary] objectForKey:@"Contacts"] count] > 0) {
         [self.sections addObject:@"Contacts"];
     }
     // Return the number of sections.
