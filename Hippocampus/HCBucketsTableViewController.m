@@ -207,7 +207,7 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
         return [self itemCellForTableView:tableView withItem:[[self searchArray] objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]) {
-        return [self contactsCellForTableView:tableView withContact:[[[LXAddressBook thisBook] contacts] objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
+        return [self contactsCellForTableView:tableView withContact:[[[self currentDictionary] objectForKey:@"Contacts"] objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     }
     return [self bucketCellForTableView:tableView cellForRowAtIndexPath:indexPath];
 }
@@ -317,7 +317,7 @@
             [btvc setDelegate:self.delegate];
             [self.navigationController pushViewController:btvc animated:YES];
         } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]) {
-            [self createBucketFromContact:[[[LXAddressBook thisBook] contacts] objectAtIndex:indexPath.row]];
+            [self createBucketFromContact:[[[self currentDictionary] objectForKey:@"Contacts"] objectAtIndex:indexPath.row]];
         } else {
             [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
             [self.navigationController popViewControllerAnimated:YES];
@@ -576,8 +576,9 @@
     for (NSString* key in [oldDictionary allKeys]) {
         NSArray* buckets = [oldDictionary objectForKey:key];
         NSMutableArray* newBuckets = [[NSMutableArray alloc] init];
+        NSString *keyToSearch = [key isEqualToString:@"Contacts"] ? @"name" : @"first_name";
         for (NSDictionary* bucket in buckets) {
-            if ([[[bucket objectForKey:@"first_name"] lowercaseString] containsString:term]) {
+            if ([[[bucket objectForKey:keyToSearch] lowercaseString] containsString:term]) {
                 [newBuckets addObject:bucket];
             }
         }
