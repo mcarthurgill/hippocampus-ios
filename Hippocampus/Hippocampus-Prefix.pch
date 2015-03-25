@@ -27,4 +27,6 @@
     #import "SGImageCache.h"
     #import "NSDictionary+Attributes.h"
     #import "UIFont+HCFonts.h"
+    #import "LXAddressBook.h"
+    #import "UILabel+Bold.h"
 #endif

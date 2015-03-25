@@ -28,7 +28,9 @@
     }
     
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-
+    
+    [self loadAddressBook];
+    
     return YES;
 }
 
@@ -160,7 +162,7 @@
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
         [[UIApplication sharedApplication] registerForRemoteNotifications];
     } else {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert)];
+        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     }
 }
 
@@ -205,7 +207,17 @@
         [userDefaults setInteger:1 forKey:@"appLaunches"];
     }
     [userDefaults synchronize];
-    NSLog(@"app launches = %d", [userDefaults integerForKey:@"appLaunches"]); 
+}
+
+
+# pragma mark - contacts
+- (void) loadAddressBook
+{
+    if ([[LXAddressBook thisBook] permissionGranted]) {
+        [[LXAddressBook thisBook] obtainContactList:^(BOOL success) {
+            NSLog(@"loadAddressbook completed");
+        }];
+    }
 }
 
 

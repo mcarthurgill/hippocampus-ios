@@ -39,6 +39,8 @@
 
 - (NSString*) itemType;
 
+- (NSString*) name;
+
 - (NSString*) reminderDate;
 
 - (NSString*) nextReminderDate;
@@ -88,6 +90,8 @@
 - (BOOL) messageIsOneWord;
 
 - (NSMutableDictionary*) cleanDictionary;
+
+- (NSMutableDictionary*) bucketNames;
 
 
 // actions

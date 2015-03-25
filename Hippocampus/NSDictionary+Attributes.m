@@ -102,6 +102,11 @@
     return [self objectForKey:@"item_type"];
 }
 
+- (NSString*) name
+{
+    return [self objectForKey:@"name"];
+}
+
 - (NSString*) reminderDate
 {
     return [self objectForKey:@"reminder_date"];
@@ -257,6 +262,17 @@
         }
     }
     return tDict;
+}
+
+- (NSMutableDictionary*) bucketNames
+{
+    NSMutableDictionary *bucketNamesDict = [[NSMutableDictionary alloc] init];
+    for (NSDictionary*bucketType in self) {
+        for (NSDictionary*bucket in [self objectForKey:bucketType]) {
+            [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
+        }
+    }
+    return bucketNamesDict; 
 }
 
 

@@ -42,4 +42,6 @@
 - (void) removeItem:(NSDictionary*)item fromBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) updateDeviceToken:(NSData *)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) getItemsNearCurrentLocation:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (void) createContactCardWithBucket:(NSDictionary*)bucket andContact:(NSMutableDictionary*)contact success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+
 @end

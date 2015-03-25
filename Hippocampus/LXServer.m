@@ -502,6 +502,26 @@
      ];
 }
 
+- (void) createContactCardWithBucket:(NSDictionary*)bucket andContact:(NSMutableDictionary*)contact success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:contact
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    NSString* jsonContact = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    [[LXServer shared] requestPath:@"/contact_cards.json" withMethod:@"POST" withParamaters:@{@"contact_card":@{@"bucket_id":[bucket ID], @"contact_info":jsonContact}}
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
 
 - (void) removeItem:(NSDictionary*)item fromBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {

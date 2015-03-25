@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4lK-2R-yNE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4lK-2R-yNE">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -209,6 +210,47 @@
                                     </variation>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactCell" rowHeight="60" id="8N2-es-2G4" customClass="HCContactTableViewCell">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="8N2-es-2G4" id="YAI-ul-U6j">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="wordWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZY9-cA-GOM">
+                                            <rect key="frame" x="18" y="13" width="564" height="20"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="rJX-aZ-dwo"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JSq-zL-fol">
+                                            <rect key="frame" x="18" y="33" width="564" height="21"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="4g9-C2-wWU"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailingMargin" secondItem="JSq-zL-fol" secondAttribute="trailing" constant="10" id="2LS-Kk-2WT"/>
+                                        <constraint firstItem="ZY9-cA-GOM" firstAttribute="top" secondItem="YAI-ul-U6j" secondAttribute="topMargin" constant="5" id="6Aq-ZS-Jq7"/>
+                                        <constraint firstItem="JSq-zL-fol" firstAttribute="top" secondItem="ZY9-cA-GOM" secondAttribute="bottom" id="LTe-88-78I"/>
+                                        <constraint firstItem="ZY9-cA-GOM" firstAttribute="leading" secondItem="YAI-ul-U6j" secondAttribute="leadingMargin" constant="10" id="N9c-w8-rLt"/>
+                                        <constraint firstItem="JSq-zL-fol" firstAttribute="leading" secondItem="YAI-ul-U6j" secondAttribute="leadingMargin" constant="10" id="Nb3-2l-BMU"/>
+                                        <constraint firstAttribute="centerY" secondItem="ZY9-cA-GOM" secondAttribute="centerY" id="YVq-GE-hXy"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="ZY9-cA-GOM" secondAttribute="trailing" constant="10" id="zfb-N1-Zvd"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="YVq-GE-hXy"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="qHq-hU-e41" id="RQu-qE-nbp"/>
@@ -240,7 +282,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hb2-wA-XgH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1875" y="1145"/>
+            <point key="canvasLocation" x="1875" y="1143"/>
         </scene>
         <!--Reminders View Controller-->
         <scene sceneID="FgW-IG-sGC">

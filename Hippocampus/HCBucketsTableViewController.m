@@ -18,6 +18,7 @@
 #import "HCItemTableViewCell.h"
 #import "HCIndicatorTableViewCell.h"
 #import "HCBucketDetailsViewController.h"
+#import "HCContactTableViewCell.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -63,6 +64,8 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self reloadScreen];
     });
+    
+    [self getAddressBookPermissionIfUndetermined];
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -162,6 +165,10 @@
         [self.sections addObject:@"searchResults"];
     }
     
+    if ([self assignMode] && [[LXAddressBook thisBook] permissionGranted]) {
+        [self.sections addObject:@"Contacts"];
+    }
+    
     // Return the number of sections.
     return self.sections.count;
 }
@@ -184,6 +191,8 @@
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
         return [[self searchArray] count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contacts"]) {
+        return [[[LXAddressBook thisBook] contacts] count];
     }
     // Return the number of rows in the section.
     return 0;
@@ -198,6 +207,8 @@
         return [self newCellForTableView:tableView cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
         return [self itemCellForTableView:tableView withItem:[[self searchArray] objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]) {
+        return [self contactsCellForTableView:tableView withContact:[[[LXAddressBook thisBook] contacts] objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     }
     return [self bucketCellForTableView:tableView cellForRowAtIndexPath:indexPath];
 }
@@ -257,6 +268,13 @@
     return cell;
 }
 
+- (UITableViewCell*) contactsCellForTableView:(UITableView*)tableView withContact:(NSDictionary*)contact cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    HCContactTableViewCell *cell = (HCContactTableViewCell*)[tableView dequeueReusableCellWithIdentifier:@"contactCell" forIndexPath:indexPath];
+    [cell configureWithContact:contact];
+    return cell;
+}
+
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {
     NSDictionary *attributes = @{NSFontAttributeName: font};
@@ -302,6 +320,8 @@
         
         } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Recent"] && !([[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] hasID])) {
         
+        } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]) {
+            [self createBucketFromContact:[[[LXAddressBook thisBook] contacts] objectAtIndex:indexPath.row]];
         } else {
             [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
             [self.navigationController popViewControllerAnimated:YES];
@@ -335,6 +355,8 @@
         return nil;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
         return [NSString stringWithFormat:@"Notes With \"%@\"", [self searchTerm]];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contacts"]) {
+        return @"Contacts";
     }
     return [NSString stringWithFormat:@"%@ Threads",[self.sections objectAtIndex:section]];
 }
@@ -667,4 +689,49 @@
     [hud hide:YES];
 }
 
+
+# pragma mark - AddressBook
+
+- (void) getAddressBookPermissionIfUndetermined
+{
+    if ([self assignMode] && ![[LXAddressBook thisBook] permissionDetermined]) {
+        [[LXAddressBook thisBook] requestAccess:^(BOOL success) {
+            [self reloadScreen];
+            NSLog(@"bucketstableviewcontroller completed");
+        }];
+    }
+}
+
+
+# pragma mark - create bucket from contacts
+- (void) createBucketFromContact:(NSMutableDictionary*)contact
+{
+    [self showHUDWithMessage:@"Creating Thread"];
+    
+    [[LXServer shared] createBucketWithFirstName:[contact name] andBucketType:@"Person"
+                                         success:^(id responseObject) {
+                                             [self hideHUD];
+                                             NSDictionary* bucket = responseObject;
+                                             [self createContactCardWithBucket:bucket andContact:contact];
+                                             [self.delegate addToStack:bucket];
+                                             [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
+                                         }failure:^(NSError* error) {
+                                             [self hideHUD];
+                                             UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the thread." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                                             [av show];
+                                         }];
+
+}
+
+- (void) createContactCardWithBucket:(NSDictionary*)bucket andContact:(NSMutableDictionary*)contact
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[LXServer shared] createContactCardWithBucket:bucket andContact:contact
+            success:^(id responseObject){
+                NSLog(@"contact created successfully responseObject = %@", responseObject);
+            }failure:^(NSError *error) {
+                NSLog(@"whoops");
+            }];
+    });
+}
 @end
