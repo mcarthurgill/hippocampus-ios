@@ -168,7 +168,6 @@
     if ([self assignMode] && [[LXAddressBook thisBook] permissionGranted]) {
         [self.sections addObject:@"Contacts"];
     }
-    
     // Return the number of sections.
     return self.sections.count;
 }
@@ -192,7 +191,7 @@
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
         return [[self searchArray] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contacts"]) {
-        return [[[LXAddressBook thisBook] contacts] count];
+        return [[[self currentDictionary] objectForKey:@"Contacts"] count];
     }
     // Return the number of rows in the section.
     return 0;
@@ -317,9 +316,6 @@
             HCNewBucketIITableViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"newBucketIITableViewController"];
             [btvc setDelegate:self.delegate];
             [self.navigationController pushViewController:btvc animated:YES];
-        
-        } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Recent"] && !([[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] hasID])) {
-        
         } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]) {
             [self createBucketFromContact:[[[LXAddressBook thisBook] contacts] objectAtIndex:indexPath.row]];
         } else {
@@ -355,7 +351,7 @@
         return nil;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
         return [NSString stringWithFormat:@"Notes With \"%@\"", [self searchTerm]];
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contacts"]) {
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contacts"]) {
         return @"Contacts";
     }
     return [NSString stringWithFormat:@"%@ Threads",[self.sections objectAtIndex:section]];
@@ -552,6 +548,15 @@
 
 - (NSMutableDictionary*) drawFromDictionary
 {
+    NSMutableDictionary* temp = [self threadsOnlyDictionary];
+    if ([[LXAddressBook thisBook] permissionGranted]) {
+        [temp setObject:[[LXAddressBook thisBook] contacts] forKey:@"Contacts"];
+    }
+    return temp;
+}
+
+- (NSMutableDictionary*) threadsOnlyDictionary
+{
     if (!self.bucketsDictionary || [[self.bucketsDictionary allKeys] count] == 0) {
         if (!self.cachedDiskDictionary) {
             self.cachedDiskDictionary = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"]];
@@ -567,7 +572,7 @@
     
     NSMutableDictionary* newDictionary = [[NSMutableDictionary alloc] init];
     NSMutableDictionary* oldDictionary = [term length] > 1 && [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] ? [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] : [self drawFromDictionary];
-    
+
     for (NSString* key in [oldDictionary allKeys]) {
         NSArray* buckets = [oldDictionary objectForKey:key];
         NSMutableArray* newBuckets = [[NSMutableArray alloc] init];
@@ -614,7 +619,6 @@
     //self.composeBucketController = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
 }
 
-
 # pragma mark - HCSendRequestForUpdatedBuckets
 - (void) sendRequestForUpdatedBucket
 {
@@ -627,18 +631,17 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    
     if (buttonIndex == 0) {
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         LXRemindersViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"remindersViewController"];
         [self.navigationController pushViewController:vc animated:YES];
     }
     if (buttonIndex == 1) {
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCLocationNotesViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"locationNotesViewController"];
         [self.navigationController pushViewController:vc animated:YES];
     }
     if (buttonIndex == 2) {
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCRandomItemViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"randomItemViewController"];
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -697,7 +700,6 @@
     if ([self assignMode] && ![[LXAddressBook thisBook] permissionDetermined]) {
         [[LXAddressBook thisBook] requestAccess:^(BOOL success) {
             [self reloadScreen];
-            NSLog(@"bucketstableviewcontroller completed");
         }];
     }
 }
@@ -734,4 +736,6 @@
             }];
     });
 }
+
+
 @end
