@@ -15,7 +15,6 @@ static LXAddressBook* thisBook = nil;
 @implementation LXAddressBook
 
 @synthesize contacts;
-@synthesize contactsDictionary;
 
 # pragma mark - Initializers
 //constructor
@@ -70,7 +69,6 @@ static LXAddressBook* thisBook = nil;
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         self.contacts = [[NSMutableArray alloc] init];
-        self.contactsDictionary = [[NSMutableDictionary alloc] init];
         CFErrorRef *error = NULL;
         ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, error);
         NSArray* orderedContacts = (__bridge_transfer NSArray*) ABAddressBookCopyArrayOfAllPeople(addressBook);
@@ -92,7 +90,6 @@ static LXAddressBook* thisBook = nil;
                 if (name && name.length > 1 && ![bucketNames objectForKey:name]) {
                     NSDictionary *contactInfo = [[NSDictionary alloc] initWithObjectsAndKeys:name, @"name", firstName, @"first_name", lastName, @"last_name", emails, @"emails", phones, @"phones", recordID, @"record_id", note, @"note", bday, @"birthday", company, @"company", nil];
                     [contacts addObject:contactInfo];
-                    [contactsDictionary setObject:contactInfo forKey:firstName]; 
                 }
             }
         }

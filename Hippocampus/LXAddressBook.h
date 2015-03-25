@@ -11,7 +11,6 @@
 @interface LXAddressBook : NSObject
 
 @property (strong, nonatomic) NSMutableArray *contacts;
-@property (strong, nonatomic) NSMutableDictionary *contactsDictionary;
 
 + (LXAddressBook*) thisBook;
 - (BOOL) permissionDetermined;
