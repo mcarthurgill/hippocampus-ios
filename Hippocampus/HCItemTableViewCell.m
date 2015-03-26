@@ -71,7 +71,10 @@
             [iv.layer setCornerRadius:8.0f];
             if ([item hasID]) {
                 
-                if (![SGImageCache haveImageForURL:url] || ![iv.image isEqual:[SGImageCache imageForURL:url]]) {
+                if ([SGImageCache haveImageForURL:url]) {
+                    iv.image = [SGImageCache imageForURL:url];
+                    [iv setAlpha:1.0f];
+                } else if (![iv.image isEqual:[SGImageCache imageForURL:url]]) {
                     iv.image = nil;
                     [iv setAlpha:0.0f];
                     [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
