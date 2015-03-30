@@ -86,9 +86,10 @@ static LXAddressBook* thisBook = nil;
                 NSString *bday = [self getContactBirthday:[orderedContacts objectAtIndex:i]];
                 NSString *company = [self getContactCompany:[orderedContacts objectAtIndex:i]];
                 NSNumber *recordID = [self getContactRecordID:[orderedContacts objectAtIndex:i]];
-            
+                UIImage *image = [self getContactImage:[orderedContacts objectAtIndex:i]];
+                
                 if (name && name.length > 1 && ![bucketNames objectForKey:name]) {
-                    NSDictionary *contactInfo = [[NSDictionary alloc] initWithObjectsAndKeys:name, @"name", firstName, @"first_name", lastName, @"last_name", emails, @"emails", phones, @"phones", recordID, @"record_id", note, @"note", bday, @"birthday", company, @"company", nil];
+                    NSDictionary *contactInfo = [[NSDictionary alloc] initWithObjectsAndKeys:name, @"name", firstName, @"first_name", lastName, @"last_name", emails, @"emails", phones, @"phones", recordID, @"record_id", note, @"note", bday, @"birthday", company, @"company", image, @"image", nil];
                     [contacts addObject:contactInfo];
                 }
             }
@@ -160,6 +161,18 @@ static LXAddressBook* thisBook = nil;
 - (NSString*) getContactCompany:(NSDictionary *)contact
 {
     return (__bridge NSString *)ABRecordCopyValue((__bridge ABRecordRef)contact, kABPersonOrganizationProperty);
+}
+
+- (UIImage*) getContactImage:(NSDictionary *)contact
+{
+    if (ABPersonHasImageData((__bridge ABRecordRef)contact)) {
+        NSData* data = (__bridge_transfer NSData*) ABPersonCopyImageData((__bridge ABRecordRef)contact);
+        UIImage* imgd = [UIImage imageWithData:data];
+        if (imgd) {
+            return imgd;
+        }
+    }
+    return nil;
 }
 
 - (void) sortContacts
