@@ -1153,7 +1153,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IQG-fp-S7a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4267" y="1167"/>
+            <point key="canvasLocation" x="4267" y="1153"/>
         </scene>
         <!--Bucket Details View Controller-->
         <scene sceneID="cLs-N7-96g">

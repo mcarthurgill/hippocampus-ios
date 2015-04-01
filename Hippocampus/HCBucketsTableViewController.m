@@ -238,6 +238,9 @@
     
     UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
     [note setText:[bucket objectForKey:@"first_name"]];
+    if (NULL_TO_NIL([bucket bucketType]) && [[bucket bucketType] isEqualToString:@"Person"]) {
+        [note boldSubstring:[[note.text componentsSeparatedByString:@" "] objectAtIndex:0]];
+    }
     
     UILabel* description = (UILabel*)[cell.contentView viewWithTag:2];
     if (NULL_TO_NIL([bucket objectForKey:@"description_text"])) {
