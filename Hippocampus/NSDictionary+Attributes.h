@@ -83,6 +83,8 @@
 
 - (BOOL) hasBuckets;
 
+- (BOOL) createdFromContacts;
+
 - (BOOL) equalsObjectBasedOnTimestamp:(NSDictionary*)other;
 
 - (NSString*) firstWord;
