@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4lK-2R-yNE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4lK-2R-yNE">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
@@ -221,8 +221,8 @@
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="7JM-lb-1Vf"/>
-                                                    <exclude reference="tDw-fe-bzW"/>
                                                     <exclude reference="dzZ-Z1-1XC"/>
+                                                    <exclude reference="tDw-fe-bzW"/>
                                                 </mask>
                                             </variation>
                                         </label>
@@ -284,37 +284,39 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="eVE-Fn-knC"/>
-                                            <exclude reference="eAG-Mw-cBd"/>
                                             <exclude reference="1by-0G-JOG"/>
+                                            <exclude reference="eAG-Mw-cBd"/>
+                                            <exclude reference="eVE-Fn-knC"/>
                                             <exclude reference="tm4-CG-Nv0"/>
                                             <exclude reference="aGT-kO-tyD"/>
                                             <exclude reference="gIQ-mh-dGe"/>
                                             <exclude reference="owd-37-nsc"/>
-                                            <exclude reference="wwo-YE-766"/>
                                             <exclude reference="UKg-v2-R0h"/>
+                                            <exclude reference="wwo-YE-766"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="infoCell" rowHeight="200" id="qYU-9Q-4LB" customClass="HCContactTableViewCell">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="infoCell" rowHeight="100" id="qYU-9Q-4LB" customClass="HCContactTableViewCell">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qYU-9Q-4LB" id="Vu7-gS-x3c">
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aWW-e5-Kli">
-                                            <rect key="frame" x="18" y="13" width="564" height="184"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" tag="2" contentMode="scaleToFill" editable="NO" text="Info" translatesAutoresizingMaskIntoConstraints="NO" id="xqE-m4-y6M">
+                                            <rect key="frame" x="8" y="8" width="584" height="83"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES"/>
+                                        </textView>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="aWW-e5-Kli" secondAttribute="trailing" constant="10" id="Mxk-2K-fFo"/>
-                                        <constraint firstItem="aWW-e5-Kli" firstAttribute="bottom" secondItem="Vu7-gS-x3c" secondAttribute="bottomMargin" constant="5" id="Utg-Ft-T5I"/>
-                                        <constraint firstItem="aWW-e5-Kli" firstAttribute="top" secondItem="Vu7-gS-x3c" secondAttribute="topMargin" constant="5" id="odq-xO-rAF"/>
-                                        <constraint firstItem="aWW-e5-Kli" firstAttribute="leading" secondItem="Vu7-gS-x3c" secondAttribute="leadingMargin" constant="10" id="suA-6o-87k"/>
+                                        <constraint firstItem="xqE-m4-y6M" firstAttribute="trailing" secondItem="Vu7-gS-x3c" secondAttribute="trailingMargin" id="9sW-ql-BzC"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="xqE-m4-y6M" secondAttribute="bottom" id="CT5-sP-Rrf"/>
+                                        <constraint firstItem="xqE-m4-y6M" firstAttribute="top" secondItem="Vu7-gS-x3c" secondAttribute="topMargin" id="OBK-c2-V6t"/>
+                                        <constraint firstItem="xqE-m4-y6M" firstAttribute="leading" secondItem="Vu7-gS-x3c" secondAttribute="leadingMargin" id="d9V-5j-bqc"/>
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -349,7 +351,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hb2-wA-XgH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1875" y="1143"/>
+            <point key="canvasLocation" x="1875" y="1142"/>
         </scene>
         <!--Reminders View Controller-->
         <scene sceneID="FgW-IG-sGC">
@@ -378,7 +380,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kP8-bb-6a1" id="B7c-wh-kDW">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <activityIndicatorView opaque="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="t8R-sf-akw">
+                                                <activityIndicatorView opaque="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="t8R-sf-akw">
                                                     <rect key="frame" x="290" y="22" width="20" height="20"/>
                                                 </activityIndicatorView>
                                             </subviews>
@@ -445,8 +447,8 @@
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
-                                                            <exclude reference="WfJ-HN-mdh"/>
                                                             <exclude reference="CZg-HE-Rz2"/>
+                                                            <exclude reference="WfJ-HN-mdh"/>
                                                             <exclude reference="utg-32-3V0"/>
                                                         </mask>
                                                     </variation>
@@ -509,15 +511,15 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="91m-Hf-qqm"/>
+                                                    <exclude reference="Vkf-zX-aHQ"/>
                                                     <exclude reference="i1u-zB-wdd"/>
                                                     <exclude reference="jNU-u6-jMa"/>
-                                                    <exclude reference="Vkf-zX-aHQ"/>
-                                                    <exclude reference="91m-Hf-qqm"/>
                                                     <exclude reference="NtJ-em-Bsh"/>
                                                     <exclude reference="zlo-MB-ulC"/>
                                                     <exclude reference="Bas-fr-wEY"/>
-                                                    <exclude reference="hxD-30-KvR"/>
                                                     <exclude reference="Sx1-Ps-7WM"/>
+                                                    <exclude reference="hxD-30-KvR"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -642,8 +644,8 @@
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="Gua-w1-I8S"/>
-                                                            <exclude reference="xQT-In-Jen"/>
                                                             <exclude reference="sdx-SB-O5p"/>
+                                                            <exclude reference="xQT-In-Jen"/>
                                                         </mask>
                                                     </variation>
                                                 </label>
@@ -706,14 +708,14 @@
                                             <variation key="default">
                                                 <mask key="constraints">
                                                     <exclude reference="GRG-so-FWP"/>
-                                                    <exclude reference="uED-xI-jzA"/>
                                                     <exclude reference="KsH-u4-mWT"/>
                                                     <exclude reference="mq0-qK-jFb"/>
-                                                    <exclude reference="rnG-lo-6u1"/>
+                                                    <exclude reference="uED-xI-jzA"/>
                                                     <exclude reference="E24-oI-uXL"/>
+                                                    <exclude reference="rnG-lo-6u1"/>
                                                     <exclude reference="IYL-T7-7tw"/>
-                                                    <exclude reference="uqv-4J-mld"/>
                                                     <exclude reference="RoE-cO-j5p"/>
+                                                    <exclude reference="uqv-4J-mld"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1624,9 +1626,9 @@
                                                     <nil key="highlightedColor"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
-                                                            <exclude reference="vmS-iO-zbk"/>
-                                                            <exclude reference="BUi-nG-Rpt"/>
                                                             <exclude reference="3WF-NJ-OTA"/>
+                                                            <exclude reference="BUi-nG-Rpt"/>
+                                                            <exclude reference="vmS-iO-zbk"/>
                                                         </mask>
                                                     </variation>
                                                 </label>
@@ -1688,10 +1690,10 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
+                                                    <exclude reference="18k-Vd-sQ1"/>
                                                     <exclude reference="32S-TD-mpb"/>
                                                     <exclude reference="RcJ-Na-xnW"/>
                                                     <exclude reference="ksF-04-WzL"/>
-                                                    <exclude reference="18k-Vd-sQ1"/>
                                                     <exclude reference="6cB-SW-Tyv"/>
                                                     <exclude reference="WAb-XH-Ged"/>
                                                     <exclude reference="MUF-MI-dze"/>

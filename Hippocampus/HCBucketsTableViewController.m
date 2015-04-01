@@ -243,8 +243,8 @@
 - (UITableViewCell*) infoCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"infoCell" forIndexPath:indexPath];
-    UILabel* label = (UILabel*) [cell.contentView viewWithTag:2];
-    [label setText:[NSString stringWithFormat:@"Text notes to: +1 (615) 724-9333\n\n%@ Notes\n%@ Threads\n\nHippocampus %@\nMade with <3 in Nashville", [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
+    UITextView* textView = (UITextView*) [cell.contentView viewWithTag:2];
+    [textView setText:[NSString stringWithFormat:@"Text notes to: +1 (615) 724-9333\n\n%@ Notes\n%@ Threads\n\nHippocampus %@\nMade with <3 in Nashville", [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
     return cell;
 }
 

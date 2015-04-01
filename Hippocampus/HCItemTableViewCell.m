@@ -55,7 +55,7 @@
     }
     
     UILabel* timestamp = (UILabel*)[self.contentView viewWithTag:3];
-    [timestamp setText:([item hasID] ? [NSString stringWithFormat:@"%@%@%@", [item createdFromContacts] ? @"copied from Contacts NOTES section - " : @"" ,([item hasBucketsString] ? [NSString stringWithFormat:@"%@ - ", [item bucketsString]] : @""), [self dateToDisplayForItem:item]] : @"syncing with server")];
+    [timestamp setText:([item hasID] ? [NSString stringWithFormat:@"%@%@", ([item hasBucketsString] ? [NSString stringWithFormat:@"%@ - ", [item bucketsString]] : @""), [self dateToDisplayForItem:item]] : @"syncing with server")];
     
     int i = 0;
     if ([item croppedMediaURLs]) {
