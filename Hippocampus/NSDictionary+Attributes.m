@@ -255,6 +255,10 @@
     return [[self itemType] isEqualToString:@"daily"];
 }
 
+- (BOOL) createdFromContacts
+{
+    return NULL_TO_NIL([self inputMethod]) && [[self inputMethod] isEqualToString:@"contacts"];
+}
 
 # pragma mark other dictionary helpers
 
