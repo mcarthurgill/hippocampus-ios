@@ -23,8 +23,8 @@
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
 #define IMAGE_FADE_IN_TIME 0.3f
-#define PICTURE_HEIGHT 280
-#define PICTURE_MARGIN_TOP 8
+#define PICTURE_HEIGHT_IN_CELL 280
+#define PICTURE_MARGIN_TOP_IN_CELL 8
 
 @interface HCBucketsTableViewController ()
 
@@ -129,6 +129,10 @@
 
 - (void) reloadScreen
 {
+    if ([[[[LXSession thisSession] user] score] integerValue] > 15) {
+        [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[LXSession thisSession] user] scoreString]]];
+    }
+    NSLog(@"%@", [[[LXSession thisSession] user] scoreString]);
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
 }
@@ -168,6 +172,11 @@
     if ([self assignMode] && [[LXAddressBook thisBook] permissionGranted] && [[[self currentDictionary] objectForKey:@"Contacts"] count] > 0) {
         [self.sections addObject:@"Contacts"];
     }
+    
+    if (![self assignMode]) {
+        [self.sections addObject:@"info"];
+    }
+    
     // Return the number of sections.
     return self.sections.count;
 }
@@ -192,6 +201,8 @@
         return [[self searchArray] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contacts"]) {
         return [[[self currentDictionary] objectForKey:@"Contacts"] count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"info"]) {
+        return 1;
     }
     // Return the number of rows in the section.
     return 0;
@@ -208,6 +219,8 @@
         return [self itemCellForTableView:tableView withItem:[[self searchArray] objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]) {
         return [self contactsCellForTableView:tableView withContact:[[[self currentDictionary] objectForKey:@"Contacts"] objectAtIndex:indexPath.row] cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"info"]) {
+        return [self infoCellForTableView:tableView cellForRowAtIndexPath:indexPath];
     }
     return [self bucketCellForTableView:tableView cellForRowAtIndexPath:indexPath];
 }
@@ -224,6 +237,14 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"newCell" forIndexPath:indexPath];
     UILabel* label = (UILabel*) [cell.contentView viewWithTag:1];
     [label setText:@"+ New Thread"];
+    return cell;
+}
+
+- (UITableViewCell*) infoCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"infoCell" forIndexPath:indexPath];
+    UILabel* label = (UILabel*) [cell.contentView viewWithTag:2];
+    [label setText:[NSString stringWithFormat:@"Text notes to: +1 (615) 724-9333\n\n%@ Notes\n%@ Threads\n\nHippocampus %@\nMade with <3 in Nashville", [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
     return cell;
 }
 
@@ -248,7 +269,11 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
         [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket createdAt]], ([self assignMode] ? @" - Tap to Add Note" : @"")]];
     } else {
-        [description setText:[NSString stringWithFormat:@"%@ Note%@ %@%@", [bucket itemsCount], ([[bucket itemsCount] integerValue] == 1 ? @"" : @"s"), [bucket isAllNotesBucket] ? @"Outstanding" : @"", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket updatedAt]]])]];
+        if ([bucket isAllNotesBucket] && [[bucket itemsCount] integerValue] == 0) {
+            [description setText:[NSString stringWithFormat:@"%@ Note%@", [[[[LXSession thisSession] user] numberItems] formattedString], ([[bucket itemsCount] integerValue] == 1 ? @"" : @"s")]];
+        } else {
+            [description setText:[NSString stringWithFormat:@"%@ Note%@ %@%@", [bucket itemsCount], ([[bucket itemsCount] integerValue] == 1 ? @"" : @"s"), [bucket isAllNotesBucket] ? @"Outstanding" : @"", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket updatedAt]]])]];
+        }
     }
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
@@ -299,11 +324,16 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
         
         NSDictionary* item = [[self searchArray] objectAtIndex:indexPath.row];
+        
         int additional = 0;
         if ([item hasMediaURLs]) {
-            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*(int)[[item mediaURLs] count];
+            additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*[[item mediaURLs] count];
         }
-        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + additional;
+        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
+        
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"info"]) {
+        
+        return 180.0f;
         
     }
     
@@ -312,6 +342,12 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"info"]) {
+        return;
+    }
+    
     if ([self assignMode]) {
         
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"new"]) {
@@ -345,7 +381,6 @@
         }
     
     }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -356,6 +391,8 @@
         return [NSString stringWithFormat:@"Notes With \"%@\"", [self searchTerm]];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contacts"]) {
         return @"Contacts";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"info"]) {
+        return @"Info";
     }
     return [NSString stringWithFormat:@"%@ Threads",[self.sections objectAtIndex:section]];
 }
@@ -441,12 +478,7 @@
     NSString *other3 = @"Show Random Note";
     NSString *cancelTitle = @"Cancel";
     
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                  initWithTitle:nil
-                                  delegate:self
-                                  cancelButtonTitle:cancelTitle
-                                  destructiveButtonTitle:nil
-                                  otherButtonTitles:other1, other2, other3, nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:other1, other2, other3, nil];
     
     [actionSheet showInView:self.view];
 }

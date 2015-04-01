@@ -29,13 +29,16 @@
         <attribute name="lastBucketUpdateTime" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="lastItemUpdateTime" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
         <attribute name="loggedInUser" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="numberBuckets" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="numberItems" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="phone" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="score" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="updatedAt" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
         <element name="HCBucket" positionX="-18" positionY="117" width="128" height="180"/>
         <element name="HCItem" positionX="-36" positionY="54" width="128" height="193"/>
-        <element name="HCUser" positionX="-63" positionY="-18" width="128" height="163"/>
+        <element name="HCUser" positionX="-63" positionY="-18" width="128" height="210"/>
     </elements>
 </model>

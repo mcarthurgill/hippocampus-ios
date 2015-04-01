@@ -206,6 +206,7 @@
 
 
 # pragma mark specific callbacks
+
 - (void) getAllBucketsWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
@@ -264,7 +265,11 @@
                                        [saveArray addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
                                        [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:saveArray] forKey:@"0"];
                                        [[NSUserDefaults standardUserDefaults] synchronize];
+                                       
                                        //SET THE BADGE
+                                       //WHY IS THIS NOT IMPLEMENTED RIGHT HERE?
+                                       
+                                       [[[LXSession thisSession] user] setUserStats:responseObject];
                                    });
                                }
                                if (successCallback) {
