@@ -15,6 +15,9 @@
 @dynamic userID;
 @dynamic phone;
 @dynamic countryCode;
+@dynamic numberBuckets;
+@dynamic numberItems;
+@dynamic score;
 @dynamic createdAt;
 @dynamic updatedAt;
 @dynamic lastItemUpdateTime;
@@ -24,6 +27,10 @@
 {
     return [[NSMutableDictionary alloc] initWithDictionary:@{
                                                              @"userID": @"id",
+                                                             @"numberBuckets": @"number_buckets",
+                                                             @"numberItems": @"number_items",
+                                                             @"score": @"score",
+                                                             @"createdAt": @"created_at",
                                                              @"createdAt": @"created_at",
                                                              @"updatedAt": @"updated_at",
                                                              @"countryCode": @"country_code",
@@ -108,42 +115,40 @@
 
 - (void) getNewItemsSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    //[self getItems:[[[LXSession thisSession] user] lastItemUpdateTime] success:successCallback failure:failureCallback];
 }
 
 - (void) getItems:(NSNumber*)lastUpdated success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-//    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/items.json", self.userID] withMethod:@"GET" withParamaters:@{@"above": [NSString stringWithFormat:@"%f", lastUpdated.floatValue]}
-//                           success:^(id responseObject) {
-//                               [LXServer addArrayToDatabase:@"HCItem" array:(NSArray*)responseObject primaryKeyName:@"itemID" withMapping:[HCItem resourceKeysForPropertyKeys]];
-//                               if (successCallback)
-//                                   successCallback(responseObject);
-//                           }
-//                           failure:^(NSError *error) {
-//                               if (failureCallback)
-//                                   failureCallback(error);
-//                           }
-//     ];
 }
 
 - (void) getNewBucketsSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    //[self getBuckets:[[[LXSession thisSession] user] lastBucketUpdateTime] success:successCallback failure:failureCallback];
 }
 
 - (void) getBuckets:(NSNumber*)lastUpdated success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-//    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", self.userID] withMethod:@"GET" withParamaters:@{@"above": [NSString stringWithFormat:@"%f", lastUpdated.floatValue]}
-//                           success:^(id responseObject) {
-//                               [LXServer addArrayToDatabase:@"HCBucket" array:(NSArray*)responseObject primaryKeyName:@"bucketID" withMapping:[HCBucket resourceKeysForPropertyKeys]];
-//                               if (successCallback)
-//                                   successCallback(responseObject);
-//                           }
-//                           failure:^(NSError *error) {
-//                               if (failureCallback)
-//                                   failureCallback(error);
-//                           }
-//     ];
+}
+
+-(NSString*) scoreString
+{
+    return [self.score formattedString];
+}
+
+
+# pragma mark setters
+
+- (void) setUserStats:(NSMutableDictionary*)dict
+{
+    if ([dict objectForKey:@"number_buckets"] && [[dict objectForKey:@"number_buckets"] respondsToSelector:@selector(integerValue)]) {
+        [self setNumberBuckets:[NSNumber numberWithInt:[[dict objectForKey:@"number_buckets"] integerValue]]];
+    }
+    if ([dict objectForKey:@"number_items"] && [[dict objectForKey:@"number_items"] respondsToSelector:@selector(integerValue)]) {
+        [self setNumberItems:[NSNumber numberWithInt:[[dict objectForKey:@"number_items"] integerValue]]];
+    }
+    if ([dict objectForKey:@"score"] && [[dict objectForKey:@"score"] respondsToSelector:@selector(integerValue)]) {
+        [self setScore:[NSNumber numberWithInt:[[dict objectForKey:@"score"] integerValue]]];
+    }
+    [[self managedObjectContext] save:nil];
 }
 
 @end

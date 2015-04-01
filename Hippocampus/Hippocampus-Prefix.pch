@@ -29,4 +29,5 @@
     #import "UIFont+HCFonts.h"
     #import "LXAddressBook.h"
     #import "UILabel+Bold.h"
+    #import "NSNumber+Helpers.h"
 #endif

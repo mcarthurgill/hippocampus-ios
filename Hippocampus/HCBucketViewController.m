@@ -221,7 +221,7 @@
         if ([item hasMediaURLs]) {
             additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*[[item mediaURLs] count];
         }
-        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional;
+        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
     }
     return 44.0;
 }

@@ -103,6 +103,13 @@
         }
     }
     
+    UIImageView* alarmClock = (UIImageView*) [self.contentView viewWithTag:32];
+    if ([item hasReminder]) {
+        [alarmClock setHidden:NO];
+    } else {
+        [alarmClock setHidden:YES];
+    }
+    
     while ([self.contentView viewWithTag:(200+i)]) {
         [[self.contentView viewWithTag:(200+i)] removeFromSuperview];
         ++i;

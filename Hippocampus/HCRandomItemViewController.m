@@ -13,6 +13,8 @@
 #import "HCExplanationTableViewCell.h"
 
 #define IMAGE_FADE_IN_TIME 0.1f
+#define PICTURE_HEIGHT_IN_CELL 280
+#define PICTURE_MARGIN_TOP_IN_CELL 8
 
 @interface HCRandomItemViewController ()
 
@@ -136,11 +138,12 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
+        NSDictionary *item = self.item;
         int additional = 0;
-        if ([self.item hasMediaURLs]) {
-            additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*[[self.item mediaURLs] count];
+        if ([item hasMediaURLs]) {
+            additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*[[item mediaURLs] count];
         }
-        return [self heightForText:[self.item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional;
+        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
         return 120.0f;
     }

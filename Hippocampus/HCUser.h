@@ -16,6 +16,9 @@
 @property (nonatomic, retain) NSString * userID;
 @property (nonatomic, retain) NSString * phone;
 @property (nonatomic, retain) NSString * countryCode;
+@property (nonatomic, retain) NSNumber * numberItems;
+@property (nonatomic, retain) NSNumber * numberBuckets;
+@property (nonatomic, retain) NSNumber * score;
 @property (nonatomic, retain) NSString * createdAt;
 @property (nonatomic, retain) NSString * updatedAt;
 @property (nonatomic, retain) NSNumber * lastItemUpdateTime;
@@ -36,5 +39,11 @@
 - (void) getItems:(NSNumber*)lastUpdated success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) getNewBucketsSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) getBuckets:(NSNumber*)lastUpdated success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (NSString*) scoreString;
+
+
+//setters
+
+- (void) setUserStats:(NSMutableDictionary*)dict;
 
 @end
