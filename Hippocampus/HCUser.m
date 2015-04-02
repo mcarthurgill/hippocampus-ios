@@ -148,7 +148,9 @@
     if ([dict objectForKey:@"score"] && [[dict objectForKey:@"score"] respondsToSelector:@selector(integerValue)]) {
         [self setScore:[NSNumber numberWithInt:[[dict objectForKey:@"score"] integerValue]]];
     }
-    [[self managedObjectContext] save:nil];
+    if (dict) {
+        [[self managedObjectContext] save:nil];
+    }
 }
 
 @end

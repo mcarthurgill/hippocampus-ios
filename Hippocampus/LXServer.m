@@ -146,10 +146,16 @@
     [self requestPath:path withMethod:method withParamaters:params constructingBodyWithBlock:nil success:successCallback failure:failureCallback];
 }
 
-- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:(NSDictionary*)params constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:(NSDictionary*)p constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
     }];
+    
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] initWithDictionary:p];
+    if ([[LXSession thisSession] user]) {
+        [params setObject:@{ @"uid":[[[LXSession thisSession] user] userID] } forKey:@"auth"];
+    }
+    
     if ([method.uppercaseString isEqualToString:@"GET"]) {
         [self GET:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
             //NSLog(@"%@", responseObject);
@@ -509,9 +515,7 @@
 
 - (void) createContactCardWithBucket:(NSDictionary*)bucket andContact:(NSMutableDictionary*)contact success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:contact
-                                                       options:NSJSONWritingPrettyPrinted
-                                                         error:&error];
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:contact options:NSJSONWritingPrettyPrinted error:&error];
     NSString* jsonContact = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
     [[LXServer shared] requestPath:@"/contact_cards.json" withMethod:@"POST" withParamaters:@{@"contact_card":@{@"bucket_id":[bucket ID], @"contact_info":jsonContact}}

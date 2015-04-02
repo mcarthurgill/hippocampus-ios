@@ -13,6 +13,7 @@
 #import "LXString+NSString.h"
 #import "LXAppDelegate.h"
 #import "HCItemTableViewCell.h"
+#import "UIImage+Helpers.h"
 
 @import AssetsLibrary;
 
@@ -464,8 +465,6 @@
         [self incrementPage];
     }
     
-    [self clearTextField:NO];
-    
 }
 
 - (void) shouldRequestMoreItems
@@ -789,17 +788,13 @@
 {
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\r%@", self.composeTextView.attributedText.string]];
     NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
-    textAttachment.image = image;
-    
-    CGFloat oldWidth = textAttachment.image.size.width;
-    CGFloat scaleFactor = oldWidth / (self.composeTextView.frame.size.width - 100); //subtract 30 (arbitrary) for padding inside textview
     
     self.imageAttachments = [[NSMutableArray alloc] init];
-    [self.imageAttachments addObject:[UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]]];
+    [self.imageAttachments addObject:image];
     
     [attributedString setAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f] forKey:NSFontAttributeName] range:NSMakeRange(0, attributedString.length)];
     
-    textAttachment.image = [UIImage imageWithCGImage:textAttachment.image.CGImage scale:scaleFactor orientation:[self properOrientationForImage:textAttachment.image]];
+    textAttachment.image = [image scaledToSize:200.0f];
     NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
     [attributedString replaceCharactersInRange:NSMakeRange(0, 0) withAttributedString:attrStringWithImage];
     

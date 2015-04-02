@@ -63,6 +63,7 @@
 		28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
+		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
 		761596B31AB7847D00EE6259 /* HCItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761596B21AB7847D00EE6259 /* HCItemTableViewCell.m */; };
 		761596B61AB7935C00EE6259 /* HCIndicatorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761596B51AB7935B00EE6259 /* HCIndicatorTableViewCell.m */; };
 		765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */; };
@@ -176,6 +177,8 @@
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
+		28F5B8B01ACC9AD600C7F5BC /* UIImage+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Helpers.h"; sourceTree = "<group>"; };
+		28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Helpers.m"; sourceTree = "<group>"; };
 		48B234900A21648A78B84A3E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		761596B11AB7847D00EE6259 /* HCItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCItemTableViewCell.h; sourceTree = "<group>"; };
 		761596B21AB7847D00EE6259 /* HCItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCItemTableViewCell.m; sourceTree = "<group>"; };
@@ -459,6 +462,8 @@
 				76B029761AC20247003539B4 /* UILabel+Bold.m */,
 				28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */,
 				28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */,
+				28F5B8B01ACC9AD600C7F5BC /* UIImage+Helpers.h */,
+				28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -699,6 +704,7 @@
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
 				2837E80C1AC11D550089FA33 /* HCMessageViewController.m in Sources */,
 				288433BF1A8BD3AA0059FCE1 /* HCItemPageViewController.m in Sources */,
+				28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */,
 				2837E8091AC11D400089FA33 /* HCOnboardingPageViewController.m in Sources */,
 				281CA937196C458400E6BE96 /* HCBucketsTableViewController.m in Sources */,
 				76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */,
