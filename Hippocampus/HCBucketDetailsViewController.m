@@ -8,6 +8,7 @@
 
 #import "HCBucketDetailsViewController.h"
 #import "HCDetailsPhotoTableViewCell.h"
+#import "HCChangeBucketTypeViewController.h"
 
 @interface HCBucketDetailsViewController ()
 
@@ -20,7 +21,6 @@
 @synthesize sections;
 @synthesize updatedBucketName;
 @synthesize delegate;
-@synthesize typeOptions;
 @synthesize mediaUrls;
 
 
@@ -45,7 +45,6 @@
     
     [self setUnsavedChanges:NO andSavingChanges:NO];
     
-    self.typeOptions = @[@"Other", @"Person", @"Event", @"Place"];
     self.mediaUrls = [[NSMutableArray alloc] init];
     [self getMediaUrls];
 }
@@ -79,7 +78,7 @@
     if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketName"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
-        return 1;
+        return 2;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
@@ -114,8 +113,13 @@
 - (UITableViewCell*) bucketTypeCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"bucketTypeCell" forIndexPath:indexPath];
-    UIPickerView* picker = (UIPickerView*)[cell.contentView viewWithTag:1];
-    [picker selectRow:[self.typeOptions indexOfObject:[self.bucket bucketType]] inComponent:0 animated:NO];
+    UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
+    if (indexPath.row == 0) {
+        [changeTypeLabel setText:[self.bucket bucketType]];
+    } else {
+        [changeTypeLabel setText:@"Change Thread Type"];
+        [changeTypeLabel boldSubstring:changeTypeLabel.text];
+    }
     return cell;
 }
 
@@ -183,7 +187,7 @@
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
         return 75.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
-        return 150.0f;
+        return 50.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
         return 50.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
@@ -197,6 +201,12 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
         [self alertForDeletion];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"] && indexPath.row == 1) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCChangeBucketTypeViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"changeBucketTypeViewController"];
+        [vc setBucket:self.bucket];
+        [vc setDelegate:self]; 
+        [self.navigationController presentViewController:vc animated:YES completion:nil];
     }
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -336,33 +346,6 @@
 }
 
 
-
-# pragma mark picker view delegate data source
-
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-{
-    return 1;
-}
-
-
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-    return [self.typeOptions count];
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return [self.typeOptions objectAtIndex:row];
-}
-
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    [self setUnsavedChanges:YES andSavingChanges:NO];
-    [self.bucket setObject:[self.typeOptions objectAtIndex:row] forKey:@"bucket_type"];
-    [self saveInfo]; 
-}
-
-
 # pragma  mark - AlertView Delegate
 
 - (void) alertForDeletion
@@ -406,6 +389,16 @@
 {
     return self.mediaUrls && self.mediaUrls.count > 0;
 }
+
+
+# pragma mark - HCUpdateBucketTypeDelegate
+
+-(void)updateBucketType:(NSMutableDictionary *)updatedBucket
+{
+    self.bucket = updatedBucket;
+    [self saveInfo]; 
+}
+
 
 
 @end

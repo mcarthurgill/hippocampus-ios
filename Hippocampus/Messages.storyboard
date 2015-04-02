@@ -1424,30 +1424,29 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="bucketTypeCell" rowHeight="184" id="BEi-Yn-Nqf">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="bucketTypeCell" rowHeight="51" id="BEi-Yn-Nqf">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BEi-Yn-Nqf" id="N3Q-VN-Qug">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ziR-JG-XEI">
-                                                    <rect key="frame" x="8" y="11" width="584" height="162"/>
-                                                    <connections>
-                                                        <outlet property="dataSource" destination="4T6-jH-5BP" id="QBC-6K-6VE"/>
-                                                        <outlet property="delegate" destination="4T6-jH-5BP" id="jJW-pb-mx8"/>
-                                                    </connections>
-                                                </pickerView>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cMi-zf-jfi">
+                                                    <rect key="frame" x="8" y="16" width="584" height="20"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="ziR-JG-XEI" firstAttribute="leading" secondItem="N3Q-VN-Qug" secondAttribute="leadingMargin" id="1RY-Wv-78s"/>
-                                                <constraint firstAttribute="centerX" secondItem="ziR-JG-XEI" secondAttribute="centerX" id="49T-zw-erw"/>
-                                                <constraint firstItem="ziR-JG-XEI" firstAttribute="top" secondItem="N3Q-VN-Qug" secondAttribute="topMargin" constant="3" id="GCN-qo-Xu9"/>
-                                                <constraint firstItem="ziR-JG-XEI" firstAttribute="trailing" secondItem="N3Q-VN-Qug" secondAttribute="trailingMargin" id="K1M-hC-FNY"/>
-                                                <constraint firstAttribute="centerY" secondItem="ziR-JG-XEI" secondAttribute="centerY" id="KOa-65-oEt"/>
+                                                <constraint firstAttribute="centerX" secondItem="cMi-zf-jfi" secondAttribute="centerX" id="DdE-Qz-Y2V"/>
+                                                <constraint firstItem="cMi-zf-jfi" firstAttribute="trailing" secondItem="N3Q-VN-Qug" secondAttribute="trailingMargin" id="G1Y-E9-Zxm"/>
+                                                <constraint firstAttribute="centerY" secondItem="cMi-zf-jfi" secondAttribute="centerY" id="cAU-2a-5dg"/>
+                                                <constraint firstItem="cMi-zf-jfi" firstAttribute="top" secondItem="N3Q-VN-Qug" secondAttribute="topMargin" constant="7" id="oeD-L6-5ey"/>
+                                                <constraint firstItem="cMi-zf-jfi" firstAttribute="leading" secondItem="N3Q-VN-Qug" secondAttribute="leadingMargin" id="rJe-dl-Nud"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="GCN-qo-Xu9"/>
+                                                    <exclude reference="oeD-L6-5ey"/>
                                                 </mask>
                                             </variation>
                                         </tableViewCellContentView>
@@ -1833,6 +1832,57 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="djr-Wz-Uz0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3496" y="1895"/>
+        </scene>
+        <!--Change Bucket Type View Controller-->
+        <scene sceneID="g8C-rP-hxr">
+            <objects>
+                <viewController storyboardIdentifier="changeBucketTypeViewController" id="hbI-5s-eRa" customClass="HCChangeBucketTypeViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="CNC-OE-dil"/>
+                        <viewControllerLayoutGuide type="bottom" id="My1-kg-5SH"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="UJ2-CY-6Df">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dbH-J2-Y3a">
+                                <rect key="frame" x="16" y="79" width="568" height="162"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="hbI-5s-eRa" id="llm-Fg-1Cg"/>
+                                    <outlet property="delegate" destination="hbI-5s-eRa" id="AO8-w0-fkN"/>
+                                </connections>
+                            </pickerView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DtE-0V-Lvd">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="Update Bucket Type" id="wlz-eW-2X0">
+                                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="VJx-HD-94o">
+                                            <connections>
+                                                <action selector="saveAction:" destination="hbI-5s-eRa" id="NQX-Yi-tM2"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dbH-J2-Y3a" firstAttribute="top" secondItem="DtE-0V-Lvd" secondAttribute="bottom" constant="15" id="3pQ-EO-q6Z"/>
+                            <constraint firstItem="DtE-0V-Lvd" firstAttribute="leading" secondItem="UJ2-CY-6Df" secondAttribute="leading" id="82s-SM-Bj7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="dbH-J2-Y3a" secondAttribute="trailing" id="Fbl-yg-wNC"/>
+                            <constraint firstAttribute="centerX" secondItem="dbH-J2-Y3a" secondAttribute="centerX" id="U3n-RH-faz"/>
+                            <constraint firstItem="DtE-0V-Lvd" firstAttribute="top" secondItem="CNC-OE-dil" secondAttribute="bottom" id="WsL-C6-GJf"/>
+                            <constraint firstItem="dbH-J2-Y3a" firstAttribute="leading" secondItem="UJ2-CY-6Df" secondAttribute="leadingMargin" id="iQJ-PW-8ZV"/>
+                            <constraint firstItem="DtE-0V-Lvd" firstAttribute="centerX" secondItem="dbH-J2-Y3a" secondAttribute="centerX" id="yTH-JY-py6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="pickerView" destination="dbH-J2-Y3a" id="RnS-fE-bWH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sFk-WS-da0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3496" y="2577"/>
         </scene>
         <!--New Thread-->
         <scene sceneID="HGb-p0-MI9">
