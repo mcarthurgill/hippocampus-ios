@@ -765,9 +765,9 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[LXServer shared] createContactCardWithBucket:bucket andContact:contact
-            success:^(id responseObject){
+            success:^(id responseObject) {
                 NSLog(@"contact created successfully responseObject = %@", responseObject);
-            }failure:^(NSError *error) {
+            } failure:^(NSError *error) {
                 NSLog(@"whoops");
             }];
     });
