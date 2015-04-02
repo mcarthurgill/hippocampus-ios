@@ -78,6 +78,7 @@
 		76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */; };
 		76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */; };
 		76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */; };
+		76F5964E1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76F5964D1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m */; };
 		76FBBD861A800F4300CAF765 /* HCIntroductionFailureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76FBBD851A800F4300CAF765 /* HCIntroductionFailureViewController.m */; };
 		76FBBD881A80122A00CAF765 /* Messages.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76FBBD871A80122A00CAF765 /* Messages.storyboard */; };
 		76FBBD8B1A813D7D00CAF765 /* HCBucketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76FBBD8A1A813D7D00CAF765 /* HCBucketViewController.m */; };
@@ -207,6 +208,8 @@
 		76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionQuestionViewController.m; sourceTree = "<group>"; };
 		76E6A1FB1A8BCFFA00B3669B /* LXRemindersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXRemindersViewController.h; sourceTree = "<group>"; };
 		76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXRemindersViewController.m; sourceTree = "<group>"; };
+		76F5964C1ACCB17300F32E47 /* HCChangeBucketTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCChangeBucketTypeViewController.h; sourceTree = "<group>"; };
+		76F5964D1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCChangeBucketTypeViewController.m; sourceTree = "<group>"; };
 		76FBBD841A800F4300CAF765 /* HCIntroductionFailureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCIntroductionFailureViewController.h; sourceTree = "<group>"; };
 		76FBBD851A800F4300CAF765 /* HCIntroductionFailureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionFailureViewController.m; sourceTree = "<group>"; };
 		76FBBD871A80122A00CAF765 /* Messages.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Messages.storyboard; sourceTree = "<group>"; };
@@ -439,6 +442,8 @@
 				768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */,
 				281CA94A196D9EE100E6BE96 /* HCNewBucketIITableViewController.h */,
 				281CA94B196D9EE100E6BE96 /* HCNewBucketIITableViewController.m */,
+				76F5964C1ACCB17300F32E47 /* HCChangeBucketTypeViewController.h */,
+				76F5964D1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m */,
 			);
 			name = Bucket;
 			sourceTree = "<group>";
@@ -688,6 +693,7 @@
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
 				288433C21A8BD45E0059FCE1 /* HCContainerViewController.m in Sources */,
 				76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */,
+				76F5964E1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m in Sources */,
 				76B57C2C1AB0D65A00A67DE0 /* HCLocationNotesViewController.m in Sources */,
 				768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,

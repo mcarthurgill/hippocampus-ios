@@ -243,8 +243,8 @@
 - (UITableViewCell*) infoCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"infoCell" forIndexPath:indexPath];
-    UILabel* label = (UILabel*) [cell.contentView viewWithTag:2];
-    [label setText:[NSString stringWithFormat:@"Text notes to: +1 (615) 724-9333\n\n%@ Notes\n%@ Threads\n\nHippocampus %@\nMade with <3 in Nashville", [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
+    UITextView* textView = (UITextView*) [cell.contentView viewWithTag:2];
+    [textView setText:[NSString stringWithFormat:@"Text notes to: +1 (615) 724-9333\n\n%@ Notes\n%@ Threads\n\nHippocampus %@\nMade with <3 in Nashville", [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
     return cell;
 }
 
@@ -259,6 +259,9 @@
     
     UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
     [note setText:[bucket objectForKey:@"first_name"]];
+    if (NULL_TO_NIL([bucket bucketType]) && [[bucket bucketType] isEqualToString:@"Person"]) {
+        [note boldSubstring:[[note.text componentsSeparatedByString:@" "] objectAtIndex:0]];
+    }
     
     UILabel* description = (UILabel*)[cell.contentView viewWithTag:2];
     if (NULL_TO_NIL([bucket objectForKey:@"description_text"])) {

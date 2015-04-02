@@ -15,7 +15,7 @@
 -(void)updateBucket:(NSMutableDictionary *)updatedBucket;
 @end
 
-@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
+@interface HCBucketDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 {
     BOOL unsavedChanges;
     BOOL savingChanges;
@@ -28,7 +28,6 @@
 @property (strong, nonatomic) NSString *updatedBucketName;
 @property (nonatomic,assign) id delegate;
 
-@property (strong, nonatomic) NSArray* typeOptions;
 @property (strong, nonatomic) NSMutableArray *mediaUrls;
 
 @end
