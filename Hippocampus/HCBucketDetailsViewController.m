@@ -34,6 +34,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
 - (void) setup
 {
     [self.navigationItem setTitle:[self.bucket firstName]];
@@ -116,6 +121,7 @@
     UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
     if (indexPath.row == 0) {
         [changeTypeLabel setText:[self.bucket bucketType]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     } else {
         [changeTypeLabel setText:@"Change Thread Type"];
         [changeTypeLabel boldSubstring:changeTypeLabel.text];
@@ -204,8 +210,8 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"] && indexPath.row == 1) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCChangeBucketTypeViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"changeBucketTypeViewController"];
-        [vc setBucket:self.bucket];
-        [vc setDelegate:self]; 
+        [vc setBucketDict:self.bucket];
+        [vc setDelegate:self];
         [self.navigationController presentViewController:vc animated:YES completion:nil];
     }
     

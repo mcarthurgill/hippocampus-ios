@@ -16,17 +16,21 @@
 
 @synthesize typeOptions;
 @synthesize pickerView;
-@synthesize bucket;
-@synthesize delegate; 
+@synthesize bucketDict;
+@synthesize delegate;
+@synthesize selectedBucketType;
 
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.typeOptions = @[@"Other", @"Person", @"Event", @"Place"];
-    [self.pickerView selectRow:[self.typeOptions indexOfObject:[self.bucket bucketType]] inComponent:0 animated:NO];
+    self.selectedBucketType = [self.bucketDict bucketType];
+    [self.pickerView selectRow:[self.typeOptions indexOfObject:selectedBucketType] inComponent:0 animated:NO];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -51,14 +55,23 @@
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    [self.bucket setObject:[self.typeOptions objectAtIndex:row] forKey:@"bucket_type"];
+    self.selectedBucketType = [self.typeOptions objectAtIndex:row];
 }
 
 
 # pragma mark - Actions
 
-- (IBAction)saveAction:(id)sender {
-    [self.delegate updateBucketType:self.bucket];
+- (IBAction)saveAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(updateBucketType:)]) {
+        [self.bucketDict setObject:self.selectedBucketType forKey:@"bucket_type"];
+        [self.delegate updateBucketType:self.bucketDict];
+    }
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)cancelAction:(id)sender
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end
