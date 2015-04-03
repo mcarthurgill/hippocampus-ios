@@ -16,9 +16,11 @@
 
 @property (strong, nonatomic) NSArray* typeOptions;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
-@property (strong, nonatomic) NSMutableDictionary *bucket;
+@property (weak, nonatomic) NSMutableDictionary *bucketDict;
+@property (weak, nonatomic) NSString *selectedBucketType; 
 @property (nonatomic,assign) id delegate;
 
 - (IBAction)saveAction:(id)sender;
+- (IBAction)cancelAction:(id)sender;
 
 @end
