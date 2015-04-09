@@ -55,4 +55,20 @@
     return nil;
 }
 
+
+- (NSString *) namesOfContacts
+{
+    NSString *names = @"";
+    for (NSDictionary *contact in self) {
+        if (contact == self.lastObject && self.count > 1) {
+            names = [names stringByAppendingString: self.count > 2 ? @"and " : @" and "];
+        }
+        names = [names stringByAppendingString:[contact name]];
+        if (contact != self.lastObject && self.count > 2){
+            names = [names stringByAppendingString:@", "];
+        }
+    }
+    return names;
+}
+
 @end

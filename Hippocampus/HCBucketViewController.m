@@ -115,6 +115,7 @@
     }
     
     [self buildCongrats];
+    [self getBucketInfo];
 
     [self cacheImagePickerController];
     self.itemForDeletion = [[NSMutableDictionary alloc] init];
@@ -260,8 +261,8 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-            NSDictionary* object = [[self currentArray] objectAtIndex:indexPath.row];
-            [self deleteItemFromServerAndTable:object];
+            [self setItemForDeletion:[[self currentArray] objectAtIndex:indexPath.row]];
+            [self alertForDeletion];
         }
     }
 }
@@ -464,7 +465,6 @@
     if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
         [self incrementPage];
     }
-    
 }
 
 - (void) shouldRequestMoreItems
@@ -476,18 +476,36 @@
     }
 }
 
+- (void) getBucketInfo
+{
+    if (![self.bucket isAllNotesBucket]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[LXServer shared] getBucketInfoWithPage:self.page bucketID:[self.bucket ID] success:^(id responseObject) {
+                [self refreshWithResponseObject:responseObject];
+                [self setBucket:[responseObject objectForKey:@"bucket"]];
+            }failure:^(NSError *error) {
+                NSLog(@"damn!");
+            }];
+        });
+    }
+}
+
 
 - (void) deleteItemFromServerAndTable:(NSDictionary *)item
 {
-    [self deleteItem:item];
-    NSInteger index = [[self allItems] indexOfObject:item];
-    [[self allItems] removeObject:item];
-    [self reloadScreenToIndex:index animated:YES];
+    if ([item belongsToCurrentUser]) {
+        [self deleteItem:item];
+        NSInteger index = [[self allItems] indexOfObject:item];
+        [[self allItems] removeObject:item];
+        [self reloadScreenToIndex:index animated:YES];
+    }
 }
 
 - (void) deleteItem:(NSDictionary *)item
 {
-    [item deleteItemWithSuccess:nil failure:nil];
+    if ([item belongsToCurrentUser]) {
+        [item deleteItemWithSuccess:nil failure:nil];
+    }
 }
 
 - (void) incrementPage
@@ -837,12 +855,21 @@
 # pragma  mark - AlertView Delegate
 
 - (void) alertForDeletion {
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Are you sure?"
-                                                     message:@"Do you want to delete this note?"
+    NSString *title = @"Sorry";
+    NSString *message = @"You cannot delete a note you did not add!";
+    NSString *buttonTitle = @"Okay";
+    
+    if (self.itemForDeletion && [self.itemForDeletion belongsToCurrentUser]) {
+        title = @"Are you sure?";
+        message = @"Do you want to delete this note?";
+        buttonTitle = @"Delete";
+    }
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:title
+                                                     message:message
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles: nil];
-    [alert addButtonWithTitle:@"Delete"];
+    [alert addButtonWithTitle:buttonTitle];
     [alert show];
 }
 
@@ -868,6 +895,7 @@
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
+    NSLog(@"handle long press");
     CGPoint p = [gestureRecognizer locationInView:self.tableView];
     
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];

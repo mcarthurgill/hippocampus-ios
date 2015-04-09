@@ -28,6 +28,4 @@
 @property (strong, nonatomic) NSString *updatedBucketName;
 @property (nonatomic,assign) id delegate;
 
-@property (strong, nonatomic) NSMutableArray *mediaUrls;
-
 @end

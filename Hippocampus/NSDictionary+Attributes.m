@@ -35,6 +35,11 @@
     return [self objectForKey:@"user_id"];
 }
 
+- (BOOL) belongsToCurrentUser
+{
+    return [[NSString stringWithFormat:@"%@", [self userID]] isEqualToString:[[HCUser loggedInUser] userID]];
+}
+
 - (NSString*) createdAt
 {
     if ([self objectForKey:@"created_at_server"])
@@ -147,6 +152,11 @@
     return [self objectForKey:@"bucket_type"];
 }
 
+- (NSArray*) bucketUserPairs
+{
+    return [self objectForKey:@"bucket_user_pairs"];
+}
+
 - (CLLocation*) location
 {
     if ([self hasLocation]) {
@@ -253,6 +263,11 @@
 - (BOOL) dailyReminder
 {
     return [[self itemType] isEqualToString:@"daily"];
+}
+
+- (BOOL) hasCollaborators
+{
+    return [self bucketUserPairs] && [[self bucketUserPairs] count] > 1;
 }
 
 # pragma mark other dictionary helpers

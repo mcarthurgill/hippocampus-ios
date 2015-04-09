@@ -19,6 +19,8 @@
 
 - (NSString*) userID;
 
+- (BOOL) belongsToCurrentUser;
+
 - (NSString*) createdAt;
 
 - (NSString*) updatedAt;
@@ -57,6 +59,8 @@
 
 - (NSString*) bucketType;
 
+- (NSArray*) bucketUserPairs;
+
 - (CLLocation*) location;
 
 - (BOOL) hasID;
@@ -94,6 +98,8 @@
 - (BOOL) monthlyReminder;
 - (BOOL) weeklyReminder;
 - (BOOL) dailyReminder;
+
+- (BOOL) hasCollaborators;
 
 - (NSMutableDictionary*) cleanDictionary;
 

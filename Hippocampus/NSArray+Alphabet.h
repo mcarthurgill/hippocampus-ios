@@ -25,4 +25,7 @@
 + (NSArray*) daysOfWeekShort;
 
 - (id) rand;
+
+- (NSString *) namesOfContacts;
+
 @end

@@ -24,7 +24,7 @@
 
 - (void) setVariables;
 
-
+- (NSString*)myName;
 
 
 - (NSMutableArray*) unsavedNotes;

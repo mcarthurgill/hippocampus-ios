@@ -47,7 +47,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "239"
             endingLineNumber = "239"
-            landmarkName = "-getBucketShowWithPage:bucketID:success:failure:"
+            landmarkName = "-getAllBucketsWithSuccess:failure:"
             landmarkType = "5">
             <Locations>
                <Location
