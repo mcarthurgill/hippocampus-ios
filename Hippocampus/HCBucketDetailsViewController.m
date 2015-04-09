@@ -27,6 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
+    NSLog(@"* = %@", [self.bucket bucketUserPairs]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,7 +67,7 @@
     self.sections = [[NSMutableArray alloc] init];
     
     [self.sections addObject:@"bucketName"];
-    [self.sections addObject:@"sharedWith"];
+    [self.sections addObject:@"collaborate"];
     [self.sections addObject:@"bucketType"];
     if ([self.bucket belongsToCurrentUser]) {
         [self.sections addObject:@"deleteBucket"];
@@ -83,7 +84,7 @@
     // Return the number of rows in the section.
     if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketName"]) {
         return 1;
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"sharedWith"]) {
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"collaborate"]) {
         return [self.bucket hasCollaborators] ? [[self.bucket bucketUserPairs] count] + 1 : 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
         return 2;
@@ -100,8 +101,8 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
         return [self bucketNameCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"sharedWith"]) {
-        return [self sharedWithCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"]) {
+        return [self collaborateCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
         return [self bucketTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
@@ -120,16 +121,19 @@
     return cell;
 }
 
-- (UITableViewCell*) sharedWithCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell*) collaborateCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"sharedWithCell" forIndexPath:indexPath];
-    UILabel* sharedWithLabel = (UILabel*)[cell.contentView viewWithTag:1];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"collaborateCell" forIndexPath:indexPath];
+    UILabel* collaborateLabel = (UILabel*)[cell.contentView viewWithTag:1];
     if ([self.bucket hasCollaborators] && indexPath.row != [[self.bucket bucketUserPairs] count]) {
-        [sharedWithLabel setText:[[[self.bucket bucketUserPairs] objectAtIndex:indexPath.row] objectForKey:@"name"]];
+        [collaborateLabel setText:[[[self.bucket bucketUserPairs] objectAtIndex:indexPath.row] objectForKey:@"name"]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    } else {
-        [sharedWithLabel setText:@"Make Thread Collaborative"];
-        [sharedWithLabel boldSubstring:sharedWithLabel.text];
+    }else if ([self.bucket hasCollaborators]) {
+        [collaborateLabel setText:@"Add More Collaborators"];
+        [collaborateLabel boldSubstring:collaborateLabel.text];
+    }else {
+        [collaborateLabel setText:@"Make Thread Collaborative"];
+        [collaborateLabel boldSubstring:collaborateLabel.text];
     }
     return cell;
 }
@@ -211,7 +215,7 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
         return 75.0f;
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"sharedWith"]) {
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"]) {
         return 50.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
         return 50.0f;
@@ -234,7 +238,7 @@
         [vc setBucketDict:self.bucket];
         [vc setDelegate:self];
         [self.navigationController presentViewController:vc animated:YES completion:nil];
-    } else if (([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"sharedWith"]) && ([self.bucket hasCollaborators] ? indexPath.row == [[self.bucket bucketUserPairs] count] : indexPath.row == 0)) {
+    } else if (([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"]) && ([self.bucket hasCollaborators] ? indexPath.row == [[self.bucket bucketUserPairs] count] : indexPath.row == 0)) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCCollaborateViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"collaborateViewController"];
         [vc setBucket:self.bucket];
@@ -249,8 +253,8 @@
 {
     if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketName"]) {
         return @"Thread Name";
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"sharedWith"]) {
-        return @"Shared With";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"collaborate"]) {
+        return @"Collaborators";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
         return @"Thread Type";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {

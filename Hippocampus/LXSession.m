@@ -292,17 +292,5 @@ static LXSession* thisSession = nil;
     }
 }
 
-# pragma mark - Name
-
-- (NSString*)myName
-{
-    NSString *ownerName = [[UIDevice currentDevice] name];
-    
-    NSRange t = [ownerName rangeOfString:@"'s"];
-    if (t.location != NSNotFound) {
-        ownerName = [ownerName substringToIndex:t.location];
-    }
-    return ownerName;
-}
 
 @end

@@ -519,6 +519,22 @@
 }
 
 
+- (void) updateUser:(NSDictionary*)params success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[[LXSession thisSession] user] userID]] withMethod:@"PUT" withParamaters:params
+                           success:^(id responseObject){
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
 - (void) addItem:(NSDictionary*)item toBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
     [[LXServer shared] requestPath:@"/bucket_item_pairs.json" withMethod:@"POST" withParamaters:@{@"bucket_item_pair":@{@"bucket_id":[bucket ID], @"item_id":[item ID]}}
                            success:^(id responseObject) {
@@ -590,7 +606,7 @@
 
 - (void) createBucketUserPairsWithContacts:(NSMutableArray*)contacts andBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/add_collaborators.json", [bucket ID]] withMethod:@"POST" withParamaters:@{@"contacts" : contacts, @"current_user_name" : [[LXSession thisSession] myName]}
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/add_collaborators.json", [bucket ID]] withMethod:@"POST" withParamaters:@{@"contacts" : contacts}
                            success:^(id responseObject){
                                if (successCallback) {
                                    successCallback(responseObject);

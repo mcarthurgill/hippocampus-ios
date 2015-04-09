@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4lK-2R-yNE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14D131" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4lK-2R-yNE">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -759,6 +759,72 @@
             </objects>
             <point key="canvasLocation" x="1875" y="2585"/>
         </scene>
+        <!--Name View Controller-->
+        <scene sceneID="YpT-mo-o26">
+            <objects>
+                <viewController storyboardIdentifier="nameViewController" id="KSy-EM-ZEP" customClass="HCNameViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PDQ-oM-NQs"/>
+                        <viewControllerLayoutGuide type="bottom" id="MFZ-YG-0Sv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="U1s-Jp-XEd">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Your Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fFg-hU-o2a">
+                                <rect key="frame" x="16" y="127" width="568" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ALj-e1-Sg5">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                <items>
+                                    <navigationItem title="Collaborate" id="uT9-po-0Sp">
+                                        <barButtonItem key="rightBarButtonItem" title="Continue" id="Tjd-03-HWj">
+                                            <connections>
+                                                <action selector="continueAction:" destination="KSy-EM-ZEP" id="Dv0-vj-EB0"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is your name?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dbz-gQ-cIY">
+                                <rect key="frame" x="16" y="93" width="568" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We need your name so your friends know who invited them." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V9e-Ye-ceI">
+                                <rect key="frame" x="16" y="180" width="568" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="V9e-Ye-ceI" firstAttribute="top" secondItem="fFg-hU-o2a" secondAttribute="bottom" constant="23" id="0sv-MH-c5r"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="V9e-Ye-ceI" secondAttribute="trailing" id="2IQ-IZ-xqF"/>
+                            <constraint firstItem="Dbz-gQ-cIY" firstAttribute="trailing" secondItem="U1s-Jp-XEd" secondAttribute="trailingMargin" id="2gv-ME-Bg8"/>
+                            <constraint firstAttribute="trailing" secondItem="ALj-e1-Sg5" secondAttribute="trailing" id="5y7-b4-df8"/>
+                            <constraint firstItem="fFg-hU-o2a" firstAttribute="leading" secondItem="U1s-Jp-XEd" secondAttribute="leadingMargin" id="EGe-tN-7zC"/>
+                            <constraint firstItem="fFg-hU-o2a" firstAttribute="top" secondItem="Dbz-gQ-cIY" secondAttribute="bottom" constant="14" id="Nyb-W1-RZK"/>
+                            <constraint firstItem="Dbz-gQ-cIY" firstAttribute="leading" secondItem="U1s-Jp-XEd" secondAttribute="leadingMargin" id="aeC-1g-8q0"/>
+                            <constraint firstItem="ALj-e1-Sg5" firstAttribute="leading" secondItem="U1s-Jp-XEd" secondAttribute="leading" id="cUK-hZ-xcX"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="fFg-hU-o2a" secondAttribute="trailing" id="hvw-AS-yMY"/>
+                            <constraint firstItem="V9e-Ye-ceI" firstAttribute="leading" secondItem="U1s-Jp-XEd" secondAttribute="leadingMargin" id="lcW-qQ-7kS"/>
+                            <constraint firstItem="Dbz-gQ-cIY" firstAttribute="top" secondItem="ALj-e1-Sg5" secondAttribute="bottom" constant="29" id="rh7-aF-qGF"/>
+                            <constraint firstItem="ALj-e1-Sg5" firstAttribute="top" secondItem="PDQ-oM-NQs" secondAttribute="bottom" id="uk8-EX-Akb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="nameTextField" destination="fFg-hU-o2a" id="DhV-hL-i6A"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LVA-1G-VVw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1875" y="3305"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="mLZ-YD-xpE">
             <objects>
@@ -1424,7 +1490,7 @@
                                             </variation>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="sharedWithCell" id="1Th-a3-OyJ">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="collaborateCell" id="1Th-a3-OyJ">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Th-a3-OyJ" id="Aux-p3-zoU">

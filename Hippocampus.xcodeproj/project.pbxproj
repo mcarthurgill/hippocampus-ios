@@ -69,6 +69,7 @@
 		765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */; };
 		768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */; };
 		769DCA701AB860660036E4BB /* HCExplanationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 769DCA6F1AB860660036E4BB /* HCExplanationTableViewCell.m */; };
+		76AA7BD61AD717FD00291183 /* HCNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76AA7BD51AD717FD00291183 /* HCNameViewController.m */; };
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
 		76B029741AC1EE21003539B4 /* HCContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029731AC1EE21003539B4 /* HCContactTableViewCell.m */; };
 		76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029761AC20247003539B4 /* UILabel+Bold.m */; };
@@ -193,6 +194,8 @@
 		768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCBucketDetailsViewController.m; sourceTree = "<group>"; };
 		769DCA6E1AB860660036E4BB /* HCExplanationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCExplanationTableViewCell.h; sourceTree = "<group>"; };
 		769DCA6F1AB860660036E4BB /* HCExplanationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCExplanationTableViewCell.m; sourceTree = "<group>"; };
+		76AA7BD41AD717FD00291183 /* HCNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCNameViewController.h; sourceTree = "<group>"; };
+		76AA7BD51AD717FD00291183 /* HCNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCNameViewController.m; sourceTree = "<group>"; };
 		76B0296F1AC1AF99003539B4 /* LXAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXAddressBook.h; sourceTree = "<group>"; };
 		76B029701AC1AF99003539B4 /* LXAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXAddressBook.m; sourceTree = "<group>"; };
 		76B029721AC1EE21003539B4 /* HCContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCContactTableViewCell.h; sourceTree = "<group>"; };
@@ -452,6 +455,8 @@
 				76F5964D1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m */,
 				76D965A11AD456AE008C1D3B /* HCCollaborateViewController.h */,
 				76D965A21AD456AE008C1D3B /* HCCollaborateViewController.m */,
+				76AA7BD41AD717FD00291183 /* HCNameViewController.h */,
+				76AA7BD51AD717FD00291183 /* HCNameViewController.m */,
 			);
 			name = Bucket;
 			sourceTree = "<group>";
@@ -730,6 +735,7 @@
 				28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */,
 				76BE801B1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m in Sources */,
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
+				76AA7BD61AD717FD00291183 /* HCNameViewController.m in Sources */,
 				281CA94C196D9EE100E6BE96 /* HCNewBucketIITableViewController.m in Sources */,
 				76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */,
 				281CA91A1951F4F900E6BE96 /* HCItem.m in Sources */,

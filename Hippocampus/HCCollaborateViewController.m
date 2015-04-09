@@ -9,6 +9,7 @@
 #import "HCCollaborateViewController.h"
 #import "HCExplanationTableViewCell.h"
 #import "HCCollaborateTableViewCell.h"
+#import "HCNameViewController.h"
 
 @interface HCCollaborateViewController ()
 
@@ -30,11 +31,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-- (void) viewDidDisappear:(BOOL)animated
-{
-    [self.contactsToInvite removeAllObjects];
 }
 
 - (void) setup
@@ -138,8 +134,8 @@
 
 - (void) share
 {
-    if ([self shouldExplainCollaborativeThreads]) {
-        [self alertFirstTime];
+    if ([self shouldGetUserName]) {
+        [self displayNameController];
     } else {
         [self alertBeforeSendingInvites];
     }
@@ -173,20 +169,17 @@
     }
 }
 
+- (void) displayNameController
+{
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCNameViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"nameViewController"];
+    [vc setDelegate:self];
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
+}
 
 # pragma  mark - AlertView Delegate
 
-- (void) alertFirstTime
-{
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Make Collaborative?"
-                                                     message:@"Making a thread collaborative means the people you have selected can add notes to this thread. However, they will not be able to delete notes you have added."
-                                                    delegate:self
-                                           cancelButtonTitle:@"Cancel"
-                                           otherButtonTitles: nil];
-    [alert addButtonWithTitle:@"Okay"];
-    [alert setTag:1];
-    [alert show];
-}
+
 
 - (void) alertBeforeSendingInvites
 {
@@ -202,24 +195,26 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 1 && buttonIndex == 1) {
-        [self alertBeforeSendingInvites];
-    }
     if (alertView.tag == 2 && buttonIndex == 1) {
         [self inviteForCollaboration];
     }
 }
 
 
-- (BOOL) shouldExplainCollaborativeThreads
+# pragma mark - Send Invites Delegate
+- (BOOL) shouldGetUserName
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if (![userDefaults objectForKey:@"shareThreadCount"]) {
-        [userDefaults setInteger:1 forKey:@"shareThreadCount"];
+    return ![userDefaults objectForKey:@"collaborativeThreadCount"];
+}
+
+- (void) updateUserShareThreadCount
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    if (![userDefaults objectForKey:@"collaborativeThreadCount"]) {
+        [userDefaults setInteger:1 forKey:@"collaborativeThreadCount"];
         [userDefaults synchronize];
-        return YES;
     }
-    return NO;
 }
 
 
