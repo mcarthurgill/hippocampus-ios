@@ -115,13 +115,15 @@
 
 - (void) setActionsArray
 {
-    self.actions = [[NSMutableArray alloc] init];
-    
-    [self.actions addObject:@"assign"];
-    if ([self.item messageIsOneWord]) {
-        [self.actions addObject:@"define"];
+    if (!self.actions || [self.actions count] == 0) {
+        self.actions = [[NSMutableArray alloc] init];
+        
+        [self.actions addObject:@"assign"];
+        if ([self.item messageIsOneWord]) {
+            [self.actions addObject:@"define"];
+        }
+        [self.actions addObject:@"delete"];
     }
-    [self.actions addObject:@"delete"];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

@@ -129,7 +129,7 @@
 
 - (void) reloadScreen
 {
-    if ([[[[LXSession thisSession] user] score] integerValue] > 15) {
+    if ([[[[LXSession thisSession] user] score] integerValue] > 15 && ![self assignMode]) {
         [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[LXSession thisSession] user] scoreString]]];
     }
     NSLog(@"%@", [[[LXSession thisSession] user] scoreString]);
