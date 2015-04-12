@@ -71,6 +71,7 @@
 		765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */; };
 		768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */; };
 		769DCA701AB860660036E4BB /* HCExplanationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 769DCA6F1AB860660036E4BB /* HCExplanationTableViewCell.m */; };
+		76AA7BD61AD717FD00291183 /* HCNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76AA7BD51AD717FD00291183 /* HCNameViewController.m */; };
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
 		76B029741AC1EE21003539B4 /* HCContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029731AC1EE21003539B4 /* HCContactTableViewCell.m */; };
 		76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029761AC20247003539B4 /* UILabel+Bold.m */; };
@@ -79,6 +80,8 @@
 		76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76BFE0711A7C0662005AD98C /* Introduction.storyboard */; };
 		76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */; };
 		76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */; };
+		76D965A31AD456AE008C1D3B /* HCCollaborateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D965A21AD456AE008C1D3B /* HCCollaborateViewController.m */; };
+		76D965A61AD45CEB008C1D3B /* HCCollaborateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D965A51AD45CEB008C1D3B /* HCCollaborateTableViewCell.m */; };
 		76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */; };
 		76F5964E1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76F5964D1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m */; };
 		76FBBD861A800F4300CAF765 /* HCIntroductionFailureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76FBBD851A800F4300CAF765 /* HCIntroductionFailureViewController.m */; };
@@ -195,6 +198,8 @@
 		768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCBucketDetailsViewController.m; sourceTree = "<group>"; };
 		769DCA6E1AB860660036E4BB /* HCExplanationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCExplanationTableViewCell.h; sourceTree = "<group>"; };
 		769DCA6F1AB860660036E4BB /* HCExplanationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCExplanationTableViewCell.m; sourceTree = "<group>"; };
+		76AA7BD41AD717FD00291183 /* HCNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCNameViewController.h; sourceTree = "<group>"; };
+		76AA7BD51AD717FD00291183 /* HCNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCNameViewController.m; sourceTree = "<group>"; };
 		76B0296F1AC1AF99003539B4 /* LXAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXAddressBook.h; sourceTree = "<group>"; };
 		76B029701AC1AF99003539B4 /* LXAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXAddressBook.m; sourceTree = "<group>"; };
 		76B029721AC1EE21003539B4 /* HCContactTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCContactTableViewCell.h; sourceTree = "<group>"; };
@@ -210,6 +215,10 @@
 		76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionViewController.m; sourceTree = "<group>"; };
 		76BFE0771A7C1015005AD98C /* HCIntroductionQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCIntroductionQuestionViewController.h; sourceTree = "<group>"; };
 		76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionQuestionViewController.m; sourceTree = "<group>"; };
+		76D965A11AD456AE008C1D3B /* HCCollaborateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCCollaborateViewController.h; sourceTree = "<group>"; };
+		76D965A21AD456AE008C1D3B /* HCCollaborateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCCollaborateViewController.m; sourceTree = "<group>"; };
+		76D965A41AD45CEB008C1D3B /* HCCollaborateTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCCollaborateTableViewCell.h; sourceTree = "<group>"; };
+		76D965A51AD45CEB008C1D3B /* HCCollaborateTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCCollaborateTableViewCell.m; sourceTree = "<group>"; };
 		76E6A1FB1A8BCFFA00B3669B /* LXRemindersViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXRemindersViewController.h; sourceTree = "<group>"; };
 		76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXRemindersViewController.m; sourceTree = "<group>"; };
 		76F5964C1ACCB17300F32E47 /* HCChangeBucketTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCChangeBucketTypeViewController.h; sourceTree = "<group>"; };
@@ -451,6 +460,10 @@
 				281CA94B196D9EE100E6BE96 /* HCNewBucketIITableViewController.m */,
 				76F5964C1ACCB17300F32E47 /* HCChangeBucketTypeViewController.h */,
 				76F5964D1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m */,
+				76D965A11AD456AE008C1D3B /* HCCollaborateViewController.h */,
+				76D965A21AD456AE008C1D3B /* HCCollaborateViewController.m */,
+				76AA7BD41AD717FD00291183 /* HCNameViewController.h */,
+				76AA7BD51AD717FD00291183 /* HCNameViewController.m */,
 			);
 			name = Bucket;
 			sourceTree = "<group>";
@@ -508,6 +521,8 @@
 				761596B51AB7935B00EE6259 /* HCIndicatorTableViewCell.m */,
 				769DCA6E1AB860660036E4BB /* HCExplanationTableViewCell.h */,
 				769DCA6F1AB860660036E4BB /* HCExplanationTableViewCell.m */,
+				76D965A41AD45CEB008C1D3B /* HCCollaborateTableViewCell.h */,
+				76D965A51AD45CEB008C1D3B /* HCCollaborateTableViewCell.m */,
 			);
 			name = "Table Cells";
 			sourceTree = "<group>";
@@ -734,6 +749,7 @@
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
 				2837E80C1AC11D550089FA33 /* HCMessageViewController.m in Sources */,
 				288433BF1A8BD3AA0059FCE1 /* HCItemPageViewController.m in Sources */,
+				76D965A31AD456AE008C1D3B /* HCCollaborateViewController.m in Sources */,
 				28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */,
 				2837E8091AC11D400089FA33 /* HCOnboardingPageViewController.m in Sources */,
 				281CA937196C458400E6BE96 /* HCBucketsTableViewController.m in Sources */,
@@ -743,12 +759,14 @@
 				28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */,
 				76BE801B1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m in Sources */,
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
+				76AA7BD61AD717FD00291183 /* HCNameViewController.m in Sources */,
 				281CA94C196D9EE100E6BE96 /* HCNewBucketIITableViewController.m in Sources */,
 				76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */,
 				281CA91A1951F4F900E6BE96 /* HCItem.m in Sources */,
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
 				769DCA701AB860660036E4BB /* HCExplanationTableViewCell.m in Sources */,
+				76D965A61AD45CEB008C1D3B /* HCCollaborateTableViewCell.m in Sources */,
 				281CA93F196C8D0500E6BE96 /* HCItemTableViewController.m in Sources */,
 				76FBBD8B1A813D7D00CAF765 /* HCBucketViewController.m in Sources */,
 			);

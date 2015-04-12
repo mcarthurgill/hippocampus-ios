@@ -272,9 +272,6 @@
                                        [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:saveArray] forKey:@"0"];
                                        [[NSUserDefaults standardUserDefaults] synchronize];
                                        
-                                       //SET THE BADGE
-                                       //WHY IS THIS NOT IMPLEMENTED RIGHT HERE?
-                                       
                                        [[[LXSession thisSession] user] setUserStats:responseObject];
                                    });
                                }
@@ -290,6 +287,30 @@
                            }
      ];
 }
+
+- (void) getBucketInfoWithPage:(int)p bucketID:(NSString*)bucketID success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/info.json", bucketID] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
+                           success:^(id responseObject) {
+                               if ([responseObject objectForKey:@"page"] && [[responseObject objectForKey:@"page"] integerValue] == 0) {
+                                   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                       [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:[responseObject objectForKey:@"items"]] forKey:[NSString stringWithFormat:@"%li",(long)[bucketID integerValue]]];
+                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                   });
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
 
 - (void) savebucketWithBucketID:(NSString*)bucketID andBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
@@ -498,6 +519,22 @@
 }
 
 
+- (void) updateUser:(NSDictionary*)params success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[[LXSession thisSession] user] userID]] withMethod:@"PUT" withParamaters:params
+                           success:^(id responseObject){
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
 - (void) addItem:(NSDictionary*)item toBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
     [[LXServer shared] requestPath:@"/bucket_item_pairs.json" withMethod:@"POST" withParamaters:@{@"bucket_item_pair":@{@"bucket_id":[bucket ID], @"item_id":[item ID]}}
                            success:^(id responseObject) {
@@ -562,7 +599,25 @@
                                    failureCallback(error);
                                }
                            }
-];
+     ];
+}
+
+
+
+- (void) createBucketUserPairsWithContacts:(NSMutableArray*)contacts andBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/add_collaborators.json", [bucket ID]] withMethod:@"POST" withParamaters:@{@"contacts" : contacts}
+                           success:^(id responseObject){
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
 }
 
 - (NSMutableDictionary*) bucketToSave:(NSMutableDictionary*)incomingDictionary

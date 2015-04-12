@@ -14,7 +14,8 @@ static LXAddressBook* thisBook = nil;
 
 @implementation LXAddressBook
 
-@synthesize contacts;
+@synthesize contactsForAssignment;
+@synthesize allContacts;
 
 # pragma mark - Initializers
 //constructor
@@ -68,7 +69,8 @@ static LXAddressBook* thisBook = nil;
 - (void) obtainContactList:(void (^) (BOOL success))completion
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        self.contacts = [[NSMutableArray alloc] init];
+        self.contactsForAssignment = [[NSMutableArray alloc] init];
+        self.allContacts = [[NSMutableArray alloc] init];
         CFErrorRef *error = NULL;
         ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, error);
         NSArray* orderedContacts = (__bridge_transfer NSArray*) ABAddressBookCopyArrayOfAllPeople(addressBook);
@@ -88,9 +90,13 @@ static LXAddressBook* thisBook = nil;
                 NSNumber *recordID = [self getContactRecordID:[orderedContacts objectAtIndex:i]];
                 UIImage *image = [self getContactImage:[orderedContacts objectAtIndex:i]];
                 
-                if (name && name.length > 1 && ![bucketNames objectForKey:name]) {
+                if (name && name.length > 1) {
                     NSDictionary *contactInfo = [[NSDictionary alloc] initWithObjectsAndKeys:name, @"name", firstName, @"first_name", lastName, @"last_name", emails, @"emails", phones, @"phones", recordID, @"record_id", note, @"note", bday, @"birthday", company, @"company", image, @"image", nil];
-                    [contacts addObject:contactInfo];
+                    [self.allContacts addObject:contactInfo];
+                    
+                    if (![bucketNames objectForKey:name]) {
+                        [self.contactsForAssignment addObject:contactInfo];
+                    }
                 }
             }
         }
@@ -185,12 +191,17 @@ static LXAddressBook* thisBook = nil;
     
     NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:sortString ascending:YES selector:@selector(caseInsensitiveCompare:)];
     NSArray * descriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
-    NSArray * sortedArray = [[contacts copy] sortedArrayUsingDescriptors:descriptors];
-    contacts = [sortedArray mutableCopy];
+    NSArray * sortedArray = [[self.contactsForAssignment copy] sortedArrayUsingDescriptors:descriptors];
+    self.contactsForAssignment = [sortedArray mutableCopy];
+    
+    NSArray * sortedAllContacts = [[self.allContacts copy] sortedArrayUsingDescriptors:descriptors];
+    self.allContacts = [sortedAllContacts mutableCopy];
 }
 
 - (BOOL) sortedByFirstName
 {
     return ABPersonGetSortOrdering() == kABPersonSortByFirstName;
 }
+
+
 @end

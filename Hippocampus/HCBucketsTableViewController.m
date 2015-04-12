@@ -585,7 +585,7 @@
 {
     NSMutableDictionary* temp = [self threadsOnlyDictionary];
     if ([[LXAddressBook thisBook] permissionGranted]) {
-        [temp setObject:[[LXAddressBook thisBook] contacts] forKey:@"Contacts"];
+        [temp setObject:[[LXAddressBook thisBook] contactsForAssignment] forKey:@"Contacts"];
     }
     return temp;
 }

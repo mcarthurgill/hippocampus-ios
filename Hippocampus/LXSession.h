@@ -24,9 +24,6 @@
 
 - (void) setVariables;
 
-
-
-
 - (NSMutableArray*) unsavedNotes;
 - (NSMutableDictionary*) unsavedNotesDictionary;
 - (NSMutableArray*) unsavedNotesForBucket:(NSString*)bucketID;

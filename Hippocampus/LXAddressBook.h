@@ -10,7 +10,8 @@
 
 @interface LXAddressBook : NSObject
 
-@property (strong, nonatomic) NSMutableArray *contacts;
+@property (strong, nonatomic) NSMutableArray *contactsForAssignment;
+@property (strong, nonatomic) NSMutableArray *allContacts;
 
 + (LXAddressBook*) thisBook;
 - (BOOL) permissionDetermined;
@@ -18,5 +19,4 @@
 - (void) requestAccess:(void (^) (BOOL success))completion;
 - (void) obtainContactList:(void (^) (BOOL success))completion;
 - (BOOL) sortedByFirstName;
-
 @end

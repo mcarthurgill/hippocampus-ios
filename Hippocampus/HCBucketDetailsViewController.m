@@ -9,6 +9,7 @@
 #import "HCBucketDetailsViewController.h"
 #import "HCDetailsPhotoTableViewCell.h"
 #import "HCChangeBucketTypeViewController.h"
+#import "HCCollaborateViewController.h"
 
 @interface HCBucketDetailsViewController ()
 
@@ -21,12 +22,12 @@
 @synthesize sections;
 @synthesize updatedBucketName;
 @synthesize delegate;
-@synthesize mediaUrls;
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
+    NSLog(@"* = %@", [self.bucket bucketUserPairs]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,6 +38,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self getBucketInfo];
 }
 
 - (void) setup
@@ -49,9 +51,6 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveInfo)];
     
     [self setUnsavedChanges:NO andSavingChanges:NO];
-    
-    self.mediaUrls = [[NSMutableArray alloc] init];
-    [self getMediaUrls];
 }
 
 - (void) reloadScreen
@@ -68,8 +67,11 @@
     self.sections = [[NSMutableArray alloc] init];
     
     [self.sections addObject:@"bucketName"];
+    [self.sections addObject:@"collaborate"];
     [self.sections addObject:@"bucketType"];
-    [self.sections addObject:@"deleteBucket"];
+    if ([self.bucket belongsToCurrentUser]) {
+        [self.sections addObject:@"deleteBucket"];
+    }
     if ([self bucketHasMediaUrls]) {
         [self.sections addObject:@"media"];
     }
@@ -82,12 +84,14 @@
     // Return the number of rows in the section.
     if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketName"]) {
         return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"collaborate"]) {
+        return [self.bucket hasCollaborators] ? [[self.bucket bucketUserPairs] count] + 1 : 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
         return 2;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
-        return (self.mediaUrls.count%2 == 0) ? self.mediaUrls.count/2 : self.mediaUrls.count/2 + 1;
+        return ([self.bucket mediaURLs].count%2 == 0) ? [self.bucket mediaURLs].count/2 : [self.bucket mediaURLs].count/2 + 1;
     }
     return 0;
 }
@@ -97,6 +101,8 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
         return [self bucketNameCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"]) {
+        return [self collaborateCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
         return [self bucketTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
@@ -112,6 +118,23 @@
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"bucketNameCell" forIndexPath:indexPath];
     UITextField* bucketName = (UITextField*)[cell.contentView viewWithTag:1];
     [bucketName setText:[self.bucket firstName]];
+    return cell;
+}
+
+- (UITableViewCell*) collaborateCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"collaborateCell" forIndexPath:indexPath];
+    UILabel* collaborateLabel = (UILabel*)[cell.contentView viewWithTag:1];
+    if ([self.bucket hasCollaborators] && indexPath.row != [[self.bucket bucketUserPairs] count]) {
+        [collaborateLabel setText:[[[self.bucket bucketUserPairs] objectAtIndex:indexPath.row] objectForKey:@"name"]];
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    }else if ([self.bucket hasCollaborators]) {
+        [collaborateLabel setText:@"Add More Collaborators"];
+        [collaborateLabel boldSubstring:collaborateLabel.text];
+    }else {
+        [collaborateLabel setText:@"Make Thread Collaborative"];
+        [collaborateLabel boldSubstring:collaborateLabel.text];
+    }
     return cell;
 }
 
@@ -145,11 +168,11 @@
     UIImageView *leftImage = (UIImageView*)[cell.contentView viewWithTag:1];
     UIImageView *rightImage = (UIImageView*)[cell.contentView viewWithTag:2];
     
-    [cell configureWithMediaUrl:[self.mediaUrls objectAtIndex:(indexPath.row)*2] andImageView:leftImage];
+    [cell configureWithMediaUrl:[[self.bucket mediaURLs] objectAtIndex:(indexPath.row)*2] andImageView:leftImage];
     [self finishConfigurationForImageView:leftImage];
 
-    if ((indexPath.row)*2 + 1 < self.mediaUrls.count) {
-        [cell configureWithMediaUrl:[self.mediaUrls objectAtIndex:(indexPath.row)*2 + 1] andImageView:rightImage];
+    if ((indexPath.row)*2 + 1 < [[self.bucket mediaURLs] count]) {
+        [cell configureWithMediaUrl:[[self.bucket mediaURLs] objectAtIndex:(indexPath.row)*2 + 1] andImageView:rightImage];
         [self finishConfigurationForImageView:rightImage];
     } else {
         [rightImage setImage:nil];
@@ -192,6 +215,8 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketName"]) {
         return 75.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"]) {
+        return 50.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
         return 50.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
@@ -213,6 +238,11 @@
         [vc setBucketDict:self.bucket];
         [vc setDelegate:self];
         [self.navigationController presentViewController:vc animated:YES completion:nil];
+    } else if (([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"]) && ([self.bucket hasCollaborators] ? indexPath.row == [[self.bucket bucketUserPairs] count] : indexPath.row == 0)) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCCollaborateViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"collaborateViewController"];
+        [vc setBucket:self.bucket];
+        [self.navigationController pushViewController:vc animated:YES];
     }
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -223,6 +253,8 @@
 {
     if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketName"]) {
         return @"Thread Name";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"collaborate"]) {
+        return @"Collaborators";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
         return @"Thread Type";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {
@@ -275,18 +307,24 @@
     [self updateButtonStatus];
 }
 
-- (void) getMediaUrls
+- (void) getBucketInfo
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[LXServer shared] getMediaUrlsForBucketID:[self.bucket ID] success:^(id responseObject) {
-            [self.mediaUrls addObjectsFromArray:[responseObject objectForKey:@"media_urls"]];
-            [self.tableView reloadData];
-        } failure:^(NSError *error) {
-            NSLog(@"error!");
-        }];
-    });
+    if (![self.bucket isAllNotesBucket]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[LXServer shared] getBucketInfoWithPage:0 bucketID:[self.bucket ID] success:^(id responseObject) {
+                [self refreshWithResponseObject:responseObject];
+            }failure:^(NSError *error) {
+                NSLog(@"damn!");
+            }];
+        });
+    }
 }
 
+- (void) refreshWithResponseObject:(NSDictionary*)responseObject
+{
+    [self setBucket:[[responseObject objectForKey:@"bucket"] mutableCopy]];
+    [self.tableView reloadData];
+}
 
 - (void)imageTapped:(UIGestureRecognizer *)gestureRecognizer
 {
@@ -302,9 +340,9 @@
     
     if (imageView.image) {
         if (gestureRecognizer.view.tag == 1) {
-            mediaUrl = [self.mediaUrls objectAtIndex:(indexPath.row)*2];
+            mediaUrl = [[self.bucket mediaURLs] objectAtIndex:(indexPath.row)*2];
         } else {
-            mediaUrl = [self.mediaUrls objectAtIndex:(indexPath.row)*2 + 1];
+            mediaUrl = [[self.bucket mediaURLs] objectAtIndex:(indexPath.row)*2 + 1];
         }
         [self openImageWithUrl:mediaUrl];
     }
@@ -393,9 +431,8 @@
 
 - (BOOL) bucketHasMediaUrls
 {
-    return self.mediaUrls && self.mediaUrls.count > 0;
+    return [self.bucket mediaURLs] && [[self.bucket mediaURLs] count] > 0;
 }
-
 
 # pragma mark - HCUpdateBucketTypeDelegate
 
