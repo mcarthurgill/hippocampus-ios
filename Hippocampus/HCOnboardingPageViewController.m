@@ -33,9 +33,9 @@
     
     quotes = @[
                @"To be interesting, be interested.",
-               @"Have you ever realized dogs are the only animals that don't have to work?\n\nHens lay eggs, cows give milk, and canaries sing. But a dog makes his living by giving you nothing but love.",
-               @"Start showing you care by remembering names, the sweetest and most important sound in any language.",
-               @"Write things down. Information not found in notes has only a five percent chance of being remembered.",
+               //@"Have you ever realized dogs are the only animals that don't have to work?\n\nHens lay eggs, cows give milk, and canaries sing. But a dog makes his living by giving you nothing but love.",
+               @"Names are the sweetest sound in any language. Start writing them down.",
+               @"Information not found in notes has only a 5% chance of being remembered.",
               ];
     
     [self setViewControllers:@[[self messageControllerWithMessage:[self.quotes firstObject] andIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:^(BOOL finished) {

@@ -25,7 +25,7 @@
         [self setRootStoryboard:@"Login"];
     } else {
         [self setRootStoryboard:@"Messages"];
-        //[self setRootStoryboard:@"Login"];
+        //[self setRootStoryboard:@"Tutorial"];
     }
     
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
