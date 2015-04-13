@@ -20,6 +20,7 @@
 @synthesize bucket; 
 @synthesize tableView;
 @synthesize sections;
+@synthesize actionCells;
 @synthesize updatedBucketName;
 @synthesize delegate;
 
@@ -46,7 +47,7 @@
     [self.navigationItem setTitle:[self.bucket firstName]];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    //[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveInfo)];
     
@@ -65,13 +66,23 @@
 {
     // Return the number of sections.
     self.sections = [[NSMutableArray alloc] init];
+    self.actionCells = [[NSMutableArray alloc] init];
     
     [self.sections addObject:@"bucketName"];
     [self.sections addObject:@"collaborate"];
     [self.sections addObject:@"bucketType"];
+    
+    //figure out action cells here
     if ([self.bucket belongsToCurrentUser]) {
-        [self.sections addObject:@"deleteBucket"];
+        [self.actionCells addObject:@"deleteBucket"];
+        [self.actionCells addObject:@"changeBucketType"];
     }
+    
+    //add actions section if there are action cells
+    if ([self.actionCells count] > 0) {
+        [self.sections addObject:@"actions"];
+    }
+    
     if ([self bucketHasMediaUrls]) {
         [self.sections addObject:@"media"];
     }
@@ -87,9 +98,9 @@
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"collaborate"]) {
         return [self.bucket hasCollaborators] ? [[self.bucket bucketUserPairs] count] + 1 : 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
-        return 2;
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {
         return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
+        return [self.actionCells count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         return ([self.bucket mediaURLs].count%2 == 0) ? [self.bucket mediaURLs].count/2 : [self.bucket mediaURLs].count/2 + 1;
     }
@@ -105,8 +116,12 @@
         return [self collaborateCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
         return [self bucketTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
-        return [self deleteBucketCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
+        if ([[self.actionCells objectAtIndex:indexPath.row] isEqualToString:@"deleteBucket"]) {
+            return [self deleteBucketCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+        } else if ([[self.actionCells objectAtIndex:indexPath.row] isEqualToString:@"changeBucketType"]) {
+            return [self changeBucketTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+        }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return [self mediaCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     }
@@ -128,11 +143,11 @@
     if ([self.bucket hasCollaborators] && indexPath.row != [[self.bucket bucketUserPairs] count]) {
         [collaborateLabel setText:[[[self.bucket bucketUserPairs] objectAtIndex:indexPath.row] objectForKey:@"name"]];
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    }else if ([self.bucket hasCollaborators]) {
-        [collaborateLabel setText:@"Add More Collaborators"];
+    } else if ([self.bucket hasCollaborators]) {
+        [collaborateLabel setText:@"+ Add Collaborators"];
         [collaborateLabel boldSubstring:collaborateLabel.text];
-    }else {
-        [collaborateLabel setText:@"Make Thread Collaborative"];
+    } else {
+        [collaborateLabel setText:@"+ Add Collaborators"];
         [collaborateLabel boldSubstring:collaborateLabel.text];
     }
     return cell;
@@ -142,13 +157,17 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"bucketTypeCell" forIndexPath:indexPath];
     UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
-    if (indexPath.row == 0) {
-        [changeTypeLabel setText:[self.bucket bucketType]];
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-    } else {
-        [changeTypeLabel setText:@"Change Thread Type"];
-        [changeTypeLabel boldSubstring:changeTypeLabel.text];
-    }
+    [changeTypeLabel setText:[self.bucket bucketType]];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    return cell;
+}
+
+- (UITableViewCell*) changeBucketTypeCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"bucketTypeCell" forIndexPath:indexPath];
+    UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
+    [changeTypeLabel setText:@"Change Thread Type"];
+    [changeTypeLabel boldSubstring:changeTypeLabel.text];
     return cell;
 }
 
@@ -219,7 +238,7 @@
         return 50.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
         return 50.0f;
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         return 50.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return 200.0f;
@@ -230,14 +249,16 @@
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"deleteBucket"]) {
-        [self alertForDeletion];
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"] && indexPath.row == 1) {
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-        HCChangeBucketTypeViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"changeBucketTypeViewController"];
-        [vc setBucketDict:self.bucket];
-        [vc setDelegate:self];
-        [self.navigationController presentViewController:vc animated:YES completion:nil];
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
+        if ([[self.actionCells objectAtIndex:indexPath.row] isEqualToString:@"deleteBucket"]) {
+            [self alertForDeletion];
+        } else if ([[self.actionCells objectAtIndex:indexPath.row] isEqualToString:@"changeBucketType"]) {
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+            HCChangeBucketTypeViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"changeBucketTypeViewController"];
+            [vc setBucketDict:self.bucket];
+            [vc setDelegate:self];
+            [self.navigationController presentViewController:vc animated:YES completion:nil];
+        }
     } else if (([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"]) && ([self.bucket hasCollaborators] ? indexPath.row == [[self.bucket bucketUserPairs] count] : indexPath.row == 0)) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCCollaborateViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"collaborateViewController"];
@@ -257,7 +278,7 @@
         return @"Collaborators";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
         return @"Thread Type";
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"deleteBucket"]) {
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         return @"Media";

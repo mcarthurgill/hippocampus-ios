@@ -76,12 +76,14 @@
                     [iv setAlpha:1.0f];
                 } else if (![iv.image isEqual:[SGImageCache imageForURL:url]]) {
                     iv.image = nil;
-                    [iv setAlpha:0.0f];
+                    [iv setAlpha:1.0f];
                     [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
                         if (image) {
+                            float curAlpha = [iv alpha];
+                            [iv setAlpha:0.0f];
                             iv.image = image;
                             [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
-                                [iv setAlpha:1.0f];
+                                [iv setAlpha:curAlpha];
                             }];
                         }
                     }];
@@ -89,7 +91,7 @@
                 
 
             } else {
-                if (![iv.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
+                if ([NSData dataWithContentsOfFile:url] && ![iv.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
                     [iv setAlpha:0.0f];
                     iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
                     [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {

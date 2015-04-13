@@ -58,6 +58,8 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshChangeAfterDelay) name:@"appAwake" object:nil];
+    
     [self setupProperties];
 
     //reload data to make sure it's catching assign mode
@@ -66,6 +68,14 @@
     });
     
     [self getAddressBookPermissionIfUndetermined];
+    
+    if ([self allNotesDictionary]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+        [btvc setBucket:[[NSMutableDictionary alloc] initWithDictionary:[self allNotesDictionary]]];
+        [btvc setDelegate:self];
+        [self.navigationController pushViewController:btvc animated:NO];
+    }
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -127,11 +137,15 @@
 
 #pragma mark - Table view data source
 
+- (void) refreshChangeAfterDelay
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.05*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self refreshChange];
+    });
+}
+
 - (void) reloadScreen
 {
-    if ([[[[LXSession thisSession] user] score] integerValue] > 15 && ![self assignMode]) {
-        [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[LXSession thisSession] user] scoreString]]];
-    }
     NSLog(@"%@", [[[LXSession thisSession] user] scoreString]);
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
@@ -461,13 +475,13 @@
 
 - (IBAction)composeButtonClicked:(id)sender
 {
-    self.composeBucketController = [[UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"bucketViewController"];
-    
-    if ([[self drawFromDictionary] objectForKey:@"Recent"] && [[[[self drawFromDictionary] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
-        [self.composeBucketController setBucket:[[[self drawFromDictionary] objectForKey:@"Recent"] firstObject]];
-        [self.composeBucketController setInitializeWithKeyboardUp:YES];
-        [self.composeBucketController setScrollToPosition:@"bottom"];
-        [self.navigationController pushViewController:self.composeBucketController animated:YES];
+    if ([self allNotesDictionary]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+        [btvc setInitializeWithKeyboardUp:YES];
+        [btvc setBucket:[[NSMutableDictionary alloc] initWithDictionary:[self allNotesDictionary]]];
+        [btvc setDelegate:self];
+        [self.navigationController pushViewController:btvc animated:YES];
     }
 }
 
@@ -655,7 +669,21 @@
     //self.composeBucketController = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
 }
 
+
+
+# pragma mark helpers
+
+- (NSDictionary*) allNotesDictionary
+{
+    if ([self currentDictionary] && [[self currentDictionary] objectForKey:@"Recent"] && [[[self currentDictionary] objectForKey:@"Recent"] firstObject] && [[[[self currentDictionary] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
+        return [[[self currentDictionary] objectForKey:@"Recent"] firstObject];
+    }
+    return nil;
+}
+
+
 # pragma mark - HCSendRequestForUpdatedBuckets
+
 - (void) sendRequestForUpdatedBucket
 {
     [self refreshChange];

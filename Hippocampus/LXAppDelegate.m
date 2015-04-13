@@ -79,6 +79,8 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"appAwake" object:nil];
+    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [[LXSession thisSession] attemptUnsavedNoteSaving];
     });

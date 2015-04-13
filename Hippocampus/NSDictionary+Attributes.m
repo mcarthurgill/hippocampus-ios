@@ -81,10 +81,10 @@
 - (NSMutableArray*) croppedMediaURLs
 {
     if ([self mediaURLs]) {
-        NSMutableArray* cropped = [[NSMutableArray alloc] initWithArray:[self mediaURLs]];
+        NSMutableArray* cropped = [[NSMutableArray alloc] init];
         int i = 0;
-        for (NSString* edited in cropped) {
-            [cropped replaceObjectAtIndex:i withObject:[edited croppedImageURLToScreenWidth]];
+        for (NSString* edited in [self mediaURLs]) {
+            [cropped addObject:[edited croppedImageURLToScreenWidth]];
             ++i;
         }
         return cropped;

@@ -22,10 +22,14 @@
     MBProgressHUD* hud;
 }
 
-@property (strong, nonatomic) NSMutableDictionary* bucket;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray* sections;
-@property (strong, nonatomic) NSString *updatedBucketName;
 @property (nonatomic,assign) id delegate;
+
+@property (strong, nonatomic) NSMutableDictionary* bucket;
+@property (strong, nonatomic) NSMutableArray* sections;
+@property (strong, nonatomic) NSMutableArray* actionCells;
+
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
+@property (strong, nonatomic) NSString *updatedBucketName;
 
 @end

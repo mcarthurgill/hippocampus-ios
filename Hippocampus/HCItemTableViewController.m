@@ -363,7 +363,7 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
-        return [self heightForText:[self.item message] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 36.0f;
+        return [self heightForText:[self.item message] width:(self.view.frame.size.width-20.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 36.0f;
     
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return 56.0f;
