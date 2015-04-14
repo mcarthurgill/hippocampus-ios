@@ -620,6 +620,23 @@
      ];
 }
 
+- (void) deleteBucketUserPairWithBucketID:(NSString*)bucketID andPhoneNumber:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/remove_collaborators.json", bucketID] withMethod:@"POST" withParamaters:@{@"phone": phone}
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
 - (NSMutableDictionary*) bucketToSave:(NSMutableDictionary*)incomingDictionary
 {
     NSMutableDictionary* temp = [[NSMutableDictionary alloc] init];

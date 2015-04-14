@@ -48,9 +48,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    NSLog(@"***item = %@", self.item);
-    
+        
     [[self navItem] setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item createdAt]]];
     
     self.originalItem = self.item;
@@ -124,7 +122,9 @@
         if ([self.item messageIsOneWord]) {
             [self.actions addObject:@"define"];
         }
-        [self.actions addObject:@"delete"];
+        if ([self.item belongsToCurrentUser]) {
+            [self.actions addObject:@"delete"];
+        }
     }
 }
 
