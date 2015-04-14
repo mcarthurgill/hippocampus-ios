@@ -28,7 +28,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
-    NSLog(@"* = %@", [self.bucket bucketUserPairs]);
 }
 
 - (void)didReceiveMemoryWarning {
