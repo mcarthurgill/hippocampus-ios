@@ -22,6 +22,14 @@
                                 <outlet property="delegate" destination="qHq-hU-e41" id="qwu-LX-xv3"/>
                             </connections>
                         </searchBar>
+                        <imageView key="tableFooterView" userInteractionEnabled="NO" tag="32" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlarmClock-100.png" id="noi-Vc-hCc">
+                            <rect key="frame" x="0.0" y="698" width="600" height="10"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="10" id="aR1-Dg-8Rb"/>
+                                <constraint firstAttribute="width" constant="10" id="k2D-16-Mzk"/>
+                            </constraints>
+                        </imageView>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="bucketCell" id="9u7-eh-FVp">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -122,6 +130,13 @@
                                                 </mask>
                                             </variation>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" tag="32" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group-100.png" translatesAutoresizingMaskIntoConstraints="NO" id="SXA-kq-hVB">
+                                            <rect key="frame" x="580" y="5" width="10" height="10"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="10" id="f4S-z5-fYa"/>
+                                                <constraint firstAttribute="width" constant="10" id="gb7-u9-aGH"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="9gE-Wp-zoN" firstAttribute="top" secondItem="DnI-cQ-nyv" secondAttribute="bottom" constant="-4" id="M9v-oi-QJ3"/>
@@ -129,11 +144,13 @@
                                         <constraint firstItem="akl-57-fyj" firstAttribute="centerY" secondItem="DnI-cQ-nyv" secondAttribute="centerY" id="Qv1-YJ-318"/>
                                         <constraint firstItem="akl-57-fyj" firstAttribute="leading" secondItem="DnI-cQ-nyv" secondAttribute="leading" id="X3c-Ba-4Lh"/>
                                         <constraint firstItem="9gE-Wp-zoN" firstAttribute="leading" secondItem="Uex-7J-nTZ" secondAttribute="leadingMargin" constant="2" id="Y13-Dd-3B3"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="SXA-kq-hVB" secondAttribute="trailing" constant="2" id="gD5-T6-hhu"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="9gE-Wp-zoN" secondAttribute="trailing" constant="290" id="lxy-iS-Blr"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="DnI-cQ-nyv" secondAttribute="trailing" constant="37" id="nmF-1V-MTB"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="9gE-Wp-zoN" secondAttribute="trailing" constant="37" id="rGU-Ow-tLQ"/>
                                         <constraint firstItem="DnI-cQ-nyv" firstAttribute="leading" secondItem="Uex-7J-nTZ" secondAttribute="leadingMargin" constant="2" id="wDF-th-Zbp"/>
                                         <constraint firstItem="DnI-cQ-nyv" firstAttribute="top" secondItem="Uex-7J-nTZ" secondAttribute="topMargin" constant="5" id="z9R-H7-NNY"/>
+                                        <constraint firstItem="SXA-kq-hVB" firstAttribute="top" secondItem="Uex-7J-nTZ" secondAttribute="topMargin" constant="-3" id="zVP-fA-4Ag"/>
                                         <constraint firstItem="DnI-cQ-nyv" firstAttribute="leading" secondItem="Uex-7J-nTZ" secondAttribute="leadingMargin" constant="10" id="zxl-78-MZL"/>
                                     </constraints>
                                     <variation key="default">
@@ -1141,6 +1158,28 @@
                                     </constraints>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="addedByCell" id="iWH-Rq-ZdJ">
+                                <rect key="frame" x="0.0" y="130" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iWH-Rq-ZdJ" id="wM4-ca-qEq">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jjE-rU-pYF">
+                                            <rect key="frame" x="20" y="12" width="560" height="20"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="jjE-rU-pYF" firstAttribute="leading" secondItem="wM4-ca-qEq" secondAttribute="leadingMargin" constant="12" id="uTs-Ry-Kb0"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="jjE-rU-pYF" secondAttribute="trailing" constant="12" id="vcV-hf-UoO"/>
+                                        <constraint firstAttribute="centerX" secondItem="jjE-rU-pYF" secondAttribute="centerX" id="xs7-MK-3zE"/>
+                                        <constraint firstAttribute="centerY" secondItem="jjE-rU-pYF" secondAttribute="centerY" constant="-0.5" id="yaP-fP-wgY"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="labelSelectCell" id="edt-zt-kI6">
                                 <rect key="frame" x="0.0" y="174" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
@@ -1176,9 +1215,18 @@
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" tag="32" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Group-100.png" translatesAutoresizingMaskIntoConstraints="NO" id="cKl-3c-shi">
+                                            <rect key="frame" x="580" y="5" width="10" height="10"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="10" id="QWB-R8-BzG"/>
+                                                <constraint firstAttribute="height" constant="10" id="xoX-dV-7ia"/>
+                                            </constraints>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="centerY" secondItem="56U-lf-0ez" secondAttribute="centerY" constant="-0.5" id="3hR-zt-ZSU"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="cKl-3c-shi" secondAttribute="trailing" constant="2" id="6Jp-Af-AYJ"/>
+                                        <constraint firstItem="cKl-3c-shi" firstAttribute="top" secondItem="Jc6-uz-Az5" secondAttribute="topMargin" constant="-3" id="912-xp-SYH"/>
                                         <constraint firstItem="56U-lf-0ez" firstAttribute="leading" secondItem="Jc6-uz-Az5" secondAttribute="leadingMargin" constant="12" id="Vid-yR-A5s"/>
                                         <constraint firstAttribute="centerX" secondItem="56U-lf-0ez" secondAttribute="centerX" id="s2T-IC-EpV"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="56U-lf-0ez" secondAttribute="trailing" constant="12" id="tp8-Gg-332"/>
@@ -2179,6 +2227,7 @@
     </scenes>
     <resources>
         <image name="AlarmClock-100.png" width="100" height="100"/>
+        <image name="Group-100.png" width="100" height="100"/>
         <image name="Photo-100-blue.png" width="100" height="100"/>
     </resources>
 </document>

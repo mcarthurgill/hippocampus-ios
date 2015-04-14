@@ -59,6 +59,10 @@
 
 - (NSString*) bucketType;
 
+- (NSString*) visibility;
+
+- (NSString*) itemUserName;
+
 - (NSArray*) bucketUserPairs;
 
 - (CLLocation*) location;
@@ -100,6 +104,11 @@
 - (BOOL) dailyReminder;
 
 - (BOOL) hasCollaborators;
+- (BOOL) isCollaborativeThread;
+
+- (BOOL) hasCollaborativeThread;
+
+- (BOOL) hasItemUserName;
 
 - (NSMutableDictionary*) cleanDictionary;
 

@@ -39,6 +39,7 @@
 		281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */; };
 		2826C6071AD70828008DC533 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2826C6061AD70828008DC533 /* Tutorial.storyboard */; };
 		2826C60B1AD848DB008DC533 /* tutorial.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60A1AD848DB008DC533 /* tutorial.png */; };
+		2826C60D1ADC9474008DC533 /* Group-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60C1ADC9474008DC533 /* Group-100.png */; };
 		2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827B8491970B6D900F595D9 /* HCReminderViewController.m */; };
 		283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283700881A6F199600C16E87 /* LXTokenViewController.m */; };
 		2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008A1A6F34F000C16E87 /* 06-magnify.png */; };
@@ -145,6 +146,7 @@
 		281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LXDate+RailsTimeConverter.m"; sourceTree = "<group>"; };
 		2826C6061AD70828008DC533 /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		2826C60A1AD848DB008DC533 /* tutorial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial.png; sourceTree = "<group>"; };
+		2826C60C1ADC9474008DC533 /* Group-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Group-100.png"; sourceTree = "<group>"; };
 		2827B8481970B6D900F595D9 /* HCReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCReminderViewController.h; sourceTree = "<group>"; };
 		2827B8491970B6D900F595D9 /* HCReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCReminderViewController.m; sourceTree = "<group>"; };
 		283700871A6F199600C16E87 /* LXTokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXTokenViewController.h; sourceTree = "<group>"; };
@@ -395,6 +397,7 @@
 		281CA91B196C29D500E6BE96 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				2826C60C1ADC9474008DC533 /* Group-100.png */,
 				28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */,
 				2837E7FF1ABD09400089FA33 /* More-100.png */,
 				2837E7FD1ABD082C0089FA33 /* Photo-100-blue.png */,
@@ -652,6 +655,7 @@
 				281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */,
 				281CA923196C29F800E6BE96 /* 179-notepad@2x.png in Resources */,
 				28431DDD1A8D692E00B12548 /* 11-clock@2x.png in Resources */,
+				2826C60D1ADC9474008DC533 /* Group-100.png in Resources */,
 				2826C60B1AD848DB008DC533 /* tutorial.png in Resources */,
 				283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */,
 				281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */,

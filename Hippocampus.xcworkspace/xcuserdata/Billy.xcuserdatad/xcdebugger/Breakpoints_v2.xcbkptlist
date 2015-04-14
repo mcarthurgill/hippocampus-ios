@@ -324,11 +324,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "450628277.031516"
+            timestampString = "450663651.422379"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "536"
-            endingLineNumber = "536"
+            startingLineNumber = "543"
+            endingLineNumber = "543"
             landmarkName = "-searchWithCurrentText"
             landmarkType = "5">
          </BreakpointContent>
@@ -340,11 +340,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "450628277.031516"
+            timestampString = "450663651.422379"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "538"
-            endingLineNumber = "538"
+            startingLineNumber = "545"
+            endingLineNumber = "545"
             landmarkName = "-searchWithCurrentText"
             landmarkType = "5">
          </BreakpointContent>
@@ -388,11 +388,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCItemTableViewController.m"
-            timestampString = "450109314.274448"
+            timestampString = "450664496.818426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "457"
-            endingLineNumber = "457"
+            startingLineNumber = "482"
+            endingLineNumber = "482"
             landmarkName = "@implementation HCItemTableViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -404,11 +404,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCItemTableViewController.m"
-            timestampString = "450109314.274448"
+            timestampString = "450664496.818426"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "458"
-            endingLineNumber = "458"
+            startingLineNumber = "483"
+            endingLineNumber = "483"
             landmarkName = "@implementation HCItemTableViewController"
             landmarkType = "3">
          </BreakpointContent>

@@ -299,6 +299,13 @@
         [blueDot setHidden:YES];
     }
     
+    UIImageView* collaboratorsImageView = (UIImageView*) [cell.contentView viewWithTag:32];
+    if ([bucket isCollaborativeThread]) {
+        [collaboratorsImageView setHidden:NO];
+    } else {
+        [collaboratorsImageView setHidden:YES];
+    }
+    
     return cell;
 }
 
