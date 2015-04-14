@@ -49,6 +49,8 @@
 {
     [super viewDidLoad];
     
+    NSLog(@"***item = %@", self.item);
+    
     [[self navItem] setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item createdAt]]];
     
     self.originalItem = self.item;

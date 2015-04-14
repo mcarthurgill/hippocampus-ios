@@ -27,6 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
+    NSLog(@"bucket = %@", self.bucket);
 }
 
 - (void)didReceiveMemoryWarning {
