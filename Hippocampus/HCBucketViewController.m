@@ -55,15 +55,19 @@
 {
     [super viewDidLoad];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshChangeBottom) name:@"appAwake" object:nil];
+    
     //remove extra table view lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
     [self setupProperties];
     
-    [self.navigationItem setTitle:[self.bucket firstName]];
+    [self setNavTitle];
+    
     [self setupConstraint];
     [self observeKeyboard];
     [self setLongPressGestureToRemoveItem];
+    
     [self refreshChange];
     
     [self setTableScrollToIndex:([self currentArray].count) animated:NO];
@@ -76,7 +80,7 @@
 {
     [super viewWillAppear:animated];
     [self shouldSetKeyboardAsFirstResponder];
-    [self.navigationItem setTitle:[self.bucket firstName]];
+    [self setNavTitle];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -94,6 +98,17 @@
 {
     [super viewDidDisappear:animated];
     [self.composeTextView resignFirstResponder];
+}
+
+- (void) setNavTitle
+{
+    if ([self.bucket isAllNotesBucket]) {
+        if ([[[[LXSession thisSession] user] score] integerValue] > 8) {
+            [self setTitle:[NSString stringWithFormat:@"All Notes (%@)", [[[[LXSession thisSession] user] numberItems] formattedString]]];
+        }
+    } else {
+        [self.navigationItem setTitle:[self.bucket firstName]];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -131,8 +146,13 @@
 
 - (void) reloadScreenToIndex:(NSUInteger)index animated:(BOOL)animated
 {
-    [self.tableView reloadData];
+    [self reloadScreen];
     [self setTableScrollToIndex:index animated:animated];
+}
+
+- (void) reloadScreen
+{
+    [self.tableView reloadData];
     [self toggleSaveButton];
 }
 
@@ -384,6 +404,18 @@
     }
 }
 
+- (void) refreshChangeBottom
+{
+    if (requestMade)
+        return;
+    requestMade = YES;
+    if ([self.bucket isAllNotesBucket]) {
+        [self sendRequestForAllItemsWithPage:0];
+    } else {
+        [self sendRequestForBucketShowWithPage:0];
+    }
+}
+
 - (void) sendRequestForBucketShow
 {
     [self sendRequestForBucketShowWithPage:self.page];
@@ -422,12 +454,18 @@
 
 - (void) refreshWithResponseObject:(NSDictionary*)responseObject
 {
-    if (!self.allItems) {
+    BOOL scroll = NO;
+    if (!self.allItems || ([responseObject objectForKey:@"page"] && [[responseObject objectForKey:@"page"] integerValue] == 0)) {
         self.allItems = [[NSMutableArray alloc] init];
+        scroll = YES;
     }
     
+    //NSLog(@"responseObject: %@", responseObject);
+    
+    NSIndexSet *indexes;
+    
     if ([responseObject objectForKey:@"items"]) {
-        NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
+        indexes = [NSIndexSet indexSetWithIndexesInRange:
                                NSMakeRange(0,[[responseObject objectForKey:@"items"] count])];
         if (indexes.count == 0) {
             shouldContinueRequesting = NO;
@@ -439,20 +477,19 @@
         } else {
             [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
         }
-        if ([[responseObject objectForKey:@"items"] count] > 0) {
-            [self reloadScreenToIndex:indexes.count animated:NO];
-        }
     }
     
-    if ([responseObject objectForKey:@"outstanding_items"] && self.page < 1) {
+    if ([responseObject objectForKey:@"outstanding_items"] && [[responseObject objectForKey:@"page"] integerValue] == 0) {
         [self.allItems addObjectsFromArray:[responseObject objectForKey:@"outstanding_items"]];
         if ([[responseObject objectForKey:@"outstanding_items"] count] > 0) {
             [self reloadScreenToIndex:[self currentArray].count animated:NO];
         }
+    } else if ([[responseObject objectForKey:@"items"] count] > 0) { //} else if (scroll && [[responseObject objectForKey:@"items"] count] > 0) {
+        [self reloadScreenToIndex:indexes.count animated:NO];
     }
     
     if ([responseObject objectForKey:@"bottom_items"] && [responseObject objectForKey:@"page"]) {
-        NSIndexSet *indexes = [NSIndexSet indexSetWithIndexesInRange:
+        indexes = [NSIndexSet indexSetWithIndexesInRange:
                                NSMakeRange(0,[[responseObject objectForKey:@"bottom_items"] count])];
         if (indexes.count == 0) {
             shouldContinueRequesting = NO;
@@ -463,7 +500,8 @@
     }
     
     if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
-        [self incrementPage];
+        [self setPage:([[responseObject objectForKey:@"page"] integerValue] + 1)];
+        NSLog(@"page: %i", self.page);
     }
 }
 
@@ -506,11 +544,6 @@
     if ([item belongsToCurrentUser]) {
         [item deleteItemWithSuccess:nil failure:nil];
     }
-}
-
-- (void) incrementPage
-{
-    self.page = self.page + 1;
 }
 
 - (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n

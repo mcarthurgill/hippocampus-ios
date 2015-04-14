@@ -81,10 +81,10 @@
 - (NSMutableArray*) croppedMediaURLs
 {
     if ([self mediaURLs]) {
-        NSMutableArray* cropped = [[NSMutableArray alloc] initWithArray:[self mediaURLs]];
+        NSMutableArray* cropped = [[NSMutableArray alloc] init];
         int i = 0;
-        for (NSString* edited in cropped) {
-            [cropped replaceObjectAtIndex:i withObject:[edited croppedImageURLToScreenWidth]];
+        for (NSString* edited in [self mediaURLs]) {
+            [cropped addObject:[edited croppedImageURLToScreenWidth]];
             ++i;
         }
         return cropped;
@@ -150,6 +150,18 @@
 - (NSString*) bucketType
 {
     return [self objectForKey:@"bucket_type"];
+}
+
+- (NSString*) visibility
+{
+    return [self objectForKey:@"visibility"];
+}
+
+- (NSString*) itemUserName
+{
+    if (![self hasItemUserName])
+        return nil;
+    return [[self objectForKey:@"user"] objectForKey:@"name"];
 }
 
 - (NSArray*) bucketUserPairs
@@ -268,6 +280,30 @@
 - (BOOL) hasCollaborators
 {
     return [self bucketUserPairs] && [[self bucketUserPairs] count] > 1;
+}
+
+- (BOOL) isCollaborativeThread
+{
+    return [self visibility] && [[self visibility] isEqualToString:@"collaborative"];
+}
+
+- (BOOL) hasCollaborativeThread
+{
+    if (![self hasBuckets])
+        return NO;
+    NSArray* bucketsCopy = [[NSArray alloc] initWithArray:[self buckets]];
+    if (!bucketsCopy)
+        return NO;
+    for (int i = 0; i < [bucketsCopy count]; ++i) {
+        if ([[bucketsCopy objectAtIndex:i] isCollaborativeThread])
+            return YES;
+    }
+    return NO;
+}
+
+- (BOOL) hasItemUserName
+{
+    return [self objectForKey:@"user"] && [[self objectForKey:@"user"] respondsToSelector:@selector(objectForKey:)] && NULL_TO_NIL([[self objectForKey:@"user"] objectForKey:@"name"]);
 }
 
 # pragma mark other dictionary helpers

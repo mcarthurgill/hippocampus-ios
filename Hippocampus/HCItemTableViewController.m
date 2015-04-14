@@ -132,6 +132,10 @@
 {
     self.sections = [[NSMutableArray alloc] init];
     
+    if ([self.item hasItemUserName] && [self.item hasCollaborativeThread]) {
+        [self.sections addObject:@"addedBy"];
+    }
+    
     if ([self.item hasMessage]) {
         [self.sections addObject:@"message"];
     }
@@ -166,6 +170,8 @@
         if ([self.item hasReminder]) {
             return 1;
         }
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"addedBy"]) {
+        return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"message"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
@@ -191,6 +197,8 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"type"]) {
         return [self tableView:tableView typeCellForIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"addedBy"]) {
+        return [self tableView:tableView addedByCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         return [self tableView:tableView messageCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
@@ -213,6 +221,16 @@
     
     UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
     [label setText:[self.item itemType]];
+    
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView*)tableView addedByCellForIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"addedByCell" forIndexPath:indexPath];
+    
+    UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
+    [label setText:[NSString stringWithFormat:@"Added by %@.", [self.item itemUserName]]];
     
     return cell;
 }
@@ -313,6 +331,13 @@
     UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
     [label setText:[bucket firstName]];
     
+    UIImageView* collaboratorsImageView = (UIImageView*) [cell.contentView viewWithTag:32];
+    if ([bucket isCollaborativeThread]) {
+        [collaboratorsImageView setHidden:NO];
+    } else {
+        [collaboratorsImageView setHidden:YES];
+    }
+    
     return cell;
 }
 
@@ -365,7 +390,7 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
-        return [self heightForText:[self.item message] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 36.0f;
+        return [self heightForText:[self.item message] width:(self.view.frame.size.width-20.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 36.0f;
     
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return 56.0f;
@@ -572,6 +597,7 @@
     [[LXServer shared] updateItemInfoWithItem:self.item
                                       success:^(id responseObject){
                                           self.item = [NSMutableDictionary dictionaryWithDictionary:responseObject];
+                                          NSLog(@"responseObject item: %@", self.item);
                                           [self getImages];
                                           [self reloadScreen];
                                       }

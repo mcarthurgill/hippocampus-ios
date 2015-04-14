@@ -38,7 +38,7 @@
     [self.navigationItem setTitle:@"Invite Collaborators"];
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    //[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(share)];
     [self updateButtonStatus];

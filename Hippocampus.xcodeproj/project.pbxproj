@@ -37,6 +37,9 @@
 		281CA93F196C8D0500E6BE96 /* HCItemTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA93E196C8D0500E6BE96 /* HCItemTableViewController.m */; };
 		281CA94C196D9EE100E6BE96 /* HCNewBucketIITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA94B196D9EE100E6BE96 /* HCNewBucketIITableViewController.m */; };
 		281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */; };
+		2826C6071AD70828008DC533 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2826C6061AD70828008DC533 /* Tutorial.storyboard */; };
+		2826C60B1AD848DB008DC533 /* tutorial.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60A1AD848DB008DC533 /* tutorial.png */; };
+		2826C60D1ADC9474008DC533 /* Group-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60C1ADC9474008DC533 /* Group-100.png */; };
 		2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827B8491970B6D900F595D9 /* HCReminderViewController.m */; };
 		283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283700881A6F199600C16E87 /* LXTokenViewController.m */; };
 		2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008A1A6F34F000C16E87 /* 06-magnify.png */; };
@@ -141,6 +144,9 @@
 		281CA94B196D9EE100E6BE96 /* HCNewBucketIITableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCNewBucketIITableViewController.m; sourceTree = "<group>"; };
 		281CA94E196DB62A00E6BE96 /* LXDate+RailsTimeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LXDate+RailsTimeConverter.h"; sourceTree = "<group>"; };
 		281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LXDate+RailsTimeConverter.m"; sourceTree = "<group>"; };
+		2826C6061AD70828008DC533 /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
+		2826C60A1AD848DB008DC533 /* tutorial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial.png; sourceTree = "<group>"; };
+		2826C60C1ADC9474008DC533 /* Group-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Group-100.png"; sourceTree = "<group>"; };
 		2827B8481970B6D900F595D9 /* HCReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCReminderViewController.h; sourceTree = "<group>"; };
 		2827B8491970B6D900F595D9 /* HCReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCReminderViewController.m; sourceTree = "<group>"; };
 		283700871A6F199600C16E87 /* LXTokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXTokenViewController.h; sourceTree = "<group>"; };
@@ -293,8 +299,9 @@
 			isa = PBXGroup;
 			children = (
 				76FBBD871A80122A00CAF765 /* Messages.storyboard */,
-				76BFE0711A7C0662005AD98C /* Introduction.storyboard */,
+				2826C6061AD70828008DC533 /* Tutorial.storyboard */,
 				281CA924196C2B9100E6BE96 /* Login.storyboard */,
+				76BFE0711A7C0662005AD98C /* Introduction.storyboard */,
 				281CA8DA1951EC7E00E6BE96 /* LXAppDelegate.h */,
 				281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */,
 				281CA8E61951EC7E00E6BE96 /* Images.xcassets */,
@@ -341,6 +348,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2826C6081AD84714008DC533 /* Tutorial */,
 				76E6A1FA1A8BCFE100B3669B /* More */,
 				281CA940196C8DC000E6BE96 /* Bucket */,
 				281CA93C196C8CF700E6BE96 /* Item */,
@@ -353,6 +361,7 @@
 		281CA9041951EC9700E6BE96 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				2826C6091AD848C8008DC533 /* Tutorial */,
 				281CA91B196C29D500E6BE96 /* Icons */,
 			);
 			name = Assets;
@@ -388,6 +397,7 @@
 		281CA91B196C29D500E6BE96 /* Icons */ = {
 			isa = PBXGroup;
 			children = (
+				2826C60C1ADC9474008DC533 /* Group-100.png */,
 				28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */,
 				2837E7FF1ABD09400089FA33 /* More-100.png */,
 				2837E7FD1ABD082C0089FA33 /* Photo-100-blue.png */,
@@ -484,6 +494,21 @@
 				28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		2826C6081AD84714008DC533 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Tutorial;
+			sourceTree = "<group>";
+		};
+		2826C6091AD848C8008DC533 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				2826C60A1AD848DB008DC533 /* tutorial.png */,
+			);
+			name = Tutorial;
 			sourceTree = "<group>";
 		};
 		76BE80181AB75546006262CB /* Table Cells */ = {
@@ -630,6 +655,8 @@
 				281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */,
 				281CA923196C29F800E6BE96 /* 179-notepad@2x.png in Resources */,
 				28431DDD1A8D692E00B12548 /* 11-clock@2x.png in Resources */,
+				2826C60D1ADC9474008DC533 /* Group-100.png in Resources */,
+				2826C60B1AD848DB008DC533 /* tutorial.png in Resources */,
 				283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */,
 				281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */,
 				76FBBD881A80122A00CAF765 /* Messages.storyboard in Resources */,
@@ -647,6 +674,7 @@
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,
+				2826C6071AD70828008DC533 /* Tutorial.storyboard in Resources */,
 				2837E7FE1ABD082C0089FA33 /* Photo-100-blue.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
