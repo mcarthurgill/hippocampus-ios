@@ -40,6 +40,9 @@
 		2826C6071AD70828008DC533 /* Tutorial.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2826C6061AD70828008DC533 /* Tutorial.storyboard */; };
 		2826C60B1AD848DB008DC533 /* tutorial.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60A1AD848DB008DC533 /* tutorial.png */; };
 		2826C60D1ADC9474008DC533 /* Group-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60C1ADC9474008DC533 /* Group-100.png */; };
+		2826C6101ADDA5D1008DC533 /* txt_scrnsht.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60F1ADDA5D1008DC533 /* txt_scrnsht.png */; };
+		2826C6131ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2826C6121ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m */; };
+		2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 2826C6151ADDA6AF008DC533 /* NSString+SHAEncryption.m */; };
 		2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2827B8491970B6D900F595D9 /* HCReminderViewController.m */; };
 		283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283700881A6F199600C16E87 /* LXTokenViewController.m */; };
 		2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008A1A6F34F000C16E87 /* 06-magnify.png */; };
@@ -147,6 +150,11 @@
 		2826C6061AD70828008DC533 /* Tutorial.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Tutorial.storyboard; sourceTree = "<group>"; };
 		2826C60A1AD848DB008DC533 /* tutorial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial.png; sourceTree = "<group>"; };
 		2826C60C1ADC9474008DC533 /* Group-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Group-100.png"; sourceTree = "<group>"; };
+		2826C60F1ADDA5D1008DC533 /* txt_scrnsht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txt_scrnsht.png; sourceTree = "<group>"; };
+		2826C6111ADDA684008DC533 /* FBVerifyPhoneNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBVerifyPhoneNumberViewController.h; sourceTree = "<group>"; };
+		2826C6121ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBVerifyPhoneNumberViewController.m; sourceTree = "<group>"; };
+		2826C6141ADDA6AF008DC533 /* NSString+SHAEncryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SHAEncryption.h"; sourceTree = "<group>"; };
+		2826C6151ADDA6AF008DC533 /* NSString+SHAEncryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SHAEncryption.m"; sourceTree = "<group>"; };
 		2827B8481970B6D900F595D9 /* HCReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCReminderViewController.h; sourceTree = "<group>"; };
 		2827B8491970B6D900F595D9 /* HCReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCReminderViewController.m; sourceTree = "<group>"; };
 		283700871A6F199600C16E87 /* LXTokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXTokenViewController.h; sourceTree = "<group>"; };
@@ -361,6 +369,7 @@
 		281CA9041951EC9700E6BE96 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				2826C60E1ADDA5BF008DC533 /* Images */,
 				2826C6091AD848C8008DC533 /* Tutorial */,
 				281CA91B196C29D500E6BE96 /* Icons */,
 			);
@@ -421,6 +430,8 @@
 		281CA926196C2C0B00E6BE96 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				2826C6111ADDA684008DC533 /* FBVerifyPhoneNumberViewController.h */,
+				2826C6121ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m */,
 				281CA927196C2C2900E6BE96 /* HCLoginViewController.h */,
 				281CA928196C2C2900E6BE96 /* HCLoginViewController.m */,
 				283700871A6F199600C16E87 /* LXTokenViewController.h */,
@@ -474,6 +485,8 @@
 		281CA94D196DB60C00E6BE96 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				2826C6141ADDA6AF008DC533 /* NSString+SHAEncryption.h */,
+				2826C6151ADDA6AF008DC533 /* NSString+SHAEncryption.m */,
 				2837E8011AC0A8DC0089FA33 /* UIPickerView+CustomPicker.h */,
 				2837E8021AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m */,
 				281CA94E196DB62A00E6BE96 /* LXDate+RailsTimeConverter.h */,
@@ -509,6 +522,14 @@
 				2826C60A1AD848DB008DC533 /* tutorial.png */,
 			);
 			name = Tutorial;
+			sourceTree = "<group>";
+		};
+		2826C60E1ADDA5BF008DC533 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				2826C60F1ADDA5D1008DC533 /* txt_scrnsht.png */,
+			);
+			name = Images;
 			sourceTree = "<group>";
 		};
 		76BE80181AB75546006262CB /* Table Cells */ = {
@@ -673,6 +694,7 @@
 				28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */,
+				2826C6101ADDA5D1008DC533 /* txt_scrnsht.png in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,
 				2826C6071AD70828008DC533 /* Tutorial.storyboard in Resources */,
 				2837E7FE1ABD082C0089FA33 /* Photo-100-blue.png in Resources */,
@@ -740,6 +762,7 @@
 				76B57C2C1AB0D65A00A67DE0 /* HCLocationNotesViewController.m in Sources */,
 				768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
+				2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */,
 				281CA9111951F36700E6BE96 /* Model.xcdatamodeld in Sources */,
 				281CA930196C3C9400E6BE96 /* HCBucket.m in Sources */,
 				765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */,
@@ -761,6 +784,7 @@
 				76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */,
 				281CA8D81951EC7E00E6BE96 /* main.m in Sources */,
 				28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */,
+				2826C6131ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m in Sources */,
 				76BE801B1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m in Sources */,
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
 				76AA7BD61AD717FD00291183 /* HCNameViewController.m in Sources */,

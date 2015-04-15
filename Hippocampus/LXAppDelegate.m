@@ -24,8 +24,8 @@
     if ([self shouldPresentIntroductionViews]) {
         [self setRootStoryboard:@"Login"];
     } else {
-        [self setRootStoryboard:@"Messages"];
-        //[self setRootStoryboard:@"Tutorial"];
+        //[self setRootStoryboard:@"Messages"];
+        [self setRootStoryboard:@"Login"];
     }
     
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];

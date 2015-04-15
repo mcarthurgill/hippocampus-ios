@@ -18,6 +18,7 @@
 
 @synthesize numberTextField;
 @synthesize loginButton;
+@synthesize countryCodeTextField;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,6 +33,11 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [self.loginButton.layer setCornerRadius:4.0f];
+    [self.loginButton setClipsToBounds:YES];
+    
+    [self enableDisableNextButton];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -63,13 +69,13 @@
     [self showHUDWithMessage:@"Working"];
     
     [HCUser loginUser:self.numberTextField.text
+          callingCode:[[[self.countryCodeTextField text] componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]
               success:^(id responseObject){
-                  //[self dismissViewControllerAnimated:YES completion:nil];
                   [self hideHUD];
-                  //[(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Main"];
+                  NSLog(@"response: %@", responseObject);
                   if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"]) {
                       LXTokenViewController* vc = [[UIStoryboard storyboardWithName:@"Login" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"tokenController"];
-                      [vc setPhoneNumber:self.numberTextField.text];
+                      [vc setPhoneNumber:[responseObject objectForKey:@"phone"]];
                       [self.navigationController pushViewController:vc animated:YES];
                   } else {
                       [self showAlertViewWithTitle:@"Uh-oh" message:@"Login failed for some reason."];
@@ -89,6 +95,31 @@
     [av show];
 }
 
+- (IBAction)countryCodeValueChanged:(id)sender
+{
+    [self enableDisableNextButton];
+}
+
+- (IBAction)numberValueChanged:(id)sender
+{
+    [self enableDisableNextButton];
+}
+
+- (void) enableDisableNextButton
+{
+    if ([self canAdvance]) {
+        [self.loginButton setBackgroundColor:[UIColor blueColor]];
+        [self.loginButton setEnabled:YES];
+    } else {
+        [self.loginButton setBackgroundColor:[UIColor grayColor]];
+        [self.loginButton setEnabled:NO];
+    }
+}
+
+- (BOOL) canAdvance
+{
+    return [self.countryCodeTextField text] && [[self.countryCodeTextField text] length] > 1 && [self.numberTextField text] && [[self.numberTextField text] length] > 6;
+}
 
 - (void) showAlertViewWithTitle:(NSString*)title message:(NSString*)message
 {
@@ -103,6 +134,22 @@
 - (BOOL) textFieldShouldReturn:(UITextField *)textField
 {
     [self loginAction:nil];
+    return YES;
+}
+
+- (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if ([textField tag] == 10) {
+        NSString* newString = [[textField text] stringByReplacingCharactersInRange:range withString:string];
+        NSString *numberString = [[newString componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+        [textField setText:[NSString stringWithFormat:@"+%@", numberString]];
+        [self enableDisableNextButton];
+        return NO;
+    } else if ([textField  tag] == 11) {
+        [textField setText:[[textField text] stringByReplacingCharactersInRange:range withString:string]];
+        [self enableDisableNextButton];
+        return NO;
+    }
     return YES;
 }
 

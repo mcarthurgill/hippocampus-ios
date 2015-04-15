@@ -17,11 +17,14 @@
 
 @synthesize phoneNumber;
 @synthesize tokenInput;
+@synthesize explanationLabel;
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    [self.explanationLabel setText:[NSString stringWithFormat:@"We just texted a code to %@", phoneNumber]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -62,6 +65,11 @@
      ];
 }
 
+- (IBAction)backAction:(id)sender
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 
 - (void) showAlertViewWithTitle:(NSString*)title message:(NSString*)message
 {
@@ -77,6 +85,16 @@
 {
     [self goAction:nil];
     return YES;
+}
+
+- (BOOL) textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString* newString = [[textField text] stringByReplacingCharactersInRange:range withString:string];
+    [textField setText:newString];
+    if ([newString length] == 4) {
+        [self goAction:nil];
+    }
+    return NO;
 }
 
 

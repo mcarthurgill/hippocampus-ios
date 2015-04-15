@@ -13,10 +13,15 @@
     MBProgressHUD* hud;
 }
 
+@property (strong, nonatomic) IBOutlet UITextField *countryCodeTextField;
 @property (weak, nonatomic) IBOutlet UITextField *numberTextField;
+
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
 
 - (IBAction)loginAction:(id)sender;
 - (IBAction)whyMobileAction:(id)sender;
+
+- (IBAction)countryCodeValueChanged:(id)sender;
+- (IBAction)numberValueChanged:(id)sender;
 
 @end

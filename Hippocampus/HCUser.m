@@ -65,9 +65,9 @@
     return nil;
 }
 
-+ (void) loginUser:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
++ (void) loginUser:(NSString*)phone callingCode:(NSString*)callingCode success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:@"/passcode.json" withMethod:@"POST" withParamaters:@{ @"phone": phone, @"country_code" : @"1"}
+    [[LXServer shared] requestPath:@"/passcode.json" withMethod:@"POST" withParamaters:@{ @"phone": phone, @"calling_code" : callingCode}
                            success:^(id responseObject) {
                                //HCUser* user = [LXServer addToDatabase:@"HCUser" object:responseObject primaryKeyName:@"userID" withMapping:[HCUser resourceKeysForPropertyKeys]];
                                //[user makeLoggedInUser];
@@ -86,6 +86,26 @@
 + (void) tokenVerify:(NSString*)code phone:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     [[LXServer shared] requestPath:@"/session.json" withMethod:@"POST" withParamaters:@{@"phone": phone, @"passcode": code }
+                           success:^(id responseObject) {
+                               if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"] && [responseObject objectForKey:@"user"]) {
+                                   HCUser* user = [LXServer addToDatabase:@"HCUser" object:[responseObject objectForKey:@"user"] primaryKeyName:@"userID" withMapping:[HCUser resourceKeysForPropertyKeys]];
+                                   [user makeLoggedInUser];
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
++ (void) loginWithToken:(NSString*)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"/session_token.json" withMethod:@"POST" withParamaters:@{@"token": token }
                            success:^(id responseObject) {
                                if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"] && [responseObject objectForKey:@"user"]) {
                                    HCUser* user = [LXServer addToDatabase:@"HCUser" object:[responseObject objectForKey:@"user"] primaryKeyName:@"userID" withMapping:[HCUser resourceKeysForPropertyKeys]];

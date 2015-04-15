@@ -9,6 +9,8 @@
 #import "HCOnboardingPageViewController.h"
 #import "HCMessageViewController.h"
 #import "HCLoginViewController.h"
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 
 @interface HCOnboardingPageViewController ()
 
@@ -63,7 +65,8 @@
 {
     if ([viewController respondsToSelector:@selector(index)]) {
         if ([(HCMessageViewController*)viewController index] == self.quotes.count-1) {
-            return (UINavigationController*)[[UIStoryboard storyboardWithName:@"Login" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"loginNavigationViewController"];
+            NSString* identifier = [self canDevicePlaceAPhoneCall] ? @"loginNavigationViewController" : @"loginNonPhoneNavigationViewController";
+            return (UINavigationController*)[[UIStoryboard storyboardWithName:@"Login" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:identifier];
         } else if ([(HCMessageViewController*)viewController index] < self.quotes.count-1) {
             return [self messageControllerWithMessage:[self.quotes objectAtIndex:([(HCMessageViewController*)viewController index]+1)] andIndex:([(HCMessageViewController*)viewController index]+1)];
         }
@@ -81,11 +84,13 @@
 }
 
 
-- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController {
+- (NSInteger)presentationCountForPageViewController:(UIPageViewController *)pageViewController
+{
     return [self.quotes count]+1;
 }
 
-- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController {
+- (NSInteger)presentationIndexForPageViewController:(UIPageViewController *)pageViewController
+{
     return [self childIndex];
 }
 
@@ -98,6 +103,22 @@
     [controller setIndex:index];
     
     return controller;
+}
+
+
+# pragma mark helpers
+
+-(BOOL) canDevicePlaceAPhoneCall
+{
+    // Check if the device can place a phone call
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"tel://"]]) {
+        // Device supports phone calls, lets confirm it can place one right now
+        CTTelephonyNetworkInfo *netInfo = [[CTTelephonyNetworkInfo alloc] init];
+        CTCarrier *carrier = [netInfo subscriberCellularProvider];
+        NSString *mnc = [carrier mobileNetworkCode];
+        return !(([mnc length] == 0) || ([mnc isEqualToString:@"65535"]));
+    }
+    return NO;
 }
 
 @end

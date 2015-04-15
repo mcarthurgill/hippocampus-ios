@@ -14,6 +14,8 @@ static LXSession* thisSession = nil;
 
 @implementation LXSession
 
+@synthesize verifyingTokens;
+
 @synthesize user;
 
 @synthesize managedObjectModel;
@@ -292,5 +294,15 @@ static LXSession* thisSession = nil;
     }
 }
 
+
+
+
+- (void) addVerifyingToken:(NSString *)token
+{
+    if (!self.verifyingTokens) {
+        self.verifyingTokens = [[NSMutableArray alloc] init];
+    }
+    [self.verifyingTokens addObject:token];
+}
 
 @end

@@ -16,6 +16,8 @@
 
 @property (strong, nonatomic) HCUser* user;
 
+@property (strong, nonatomic) NSMutableArray* verifyingTokens;
+
 @property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
@@ -45,4 +47,10 @@
 - (void) startLocationUpdates;
 
 + (BOOL) areNotificationsEnabled;
+
+
+
+
+- (void) addVerifyingToken:(NSString*)token;
+
 @end
