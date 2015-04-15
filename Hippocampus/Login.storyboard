@@ -309,6 +309,21 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TU9-Zt-MaM">
+                                <rect key="frame" x="0.0" y="471" width="320" height="38"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="38" id="GnR-kk-tSK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <state key="normal" title="Receive a Text Instead">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendTextAction:" destination="iBP-k2-jEe" eventType="touchUpInside" id="o5h-Kb-r6V"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wnu-bS-PxM">
                                 <rect key="frame" x="16" y="512" width="288" height="46"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -327,13 +342,11 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="txt_scrnsht.png" translatesAutoresizingMaskIntoConstraints="NO" id="epf-G9-Lyw">
                                 <rect key="frame" x="79" y="140" width="163" height="288"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="163" id="3Of-XL-VrS"/>
                                     <constraint firstAttribute="width" secondItem="epf-G9-Lyw" secondAttribute="height" multiplier="125:221" id="9U6-eY-og4"/>
-                                    <constraint firstAttribute="height" constant="288" id="aUS-Ky-hhv"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the blue button and send us a text so we know this is your phone." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8aZ-LH-HA4">
-                                <rect key="frame" x="20" y="26" width="280" height="55"/>
+                                <rect key="frame" x="20" y="49" width="280" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="280" id="MD0-s4-gFw"/>
                                     <constraint firstAttribute="height" constant="55" id="e93-za-Ygb"/>
@@ -343,21 +356,6 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TU9-Zt-MaM">
-                                <rect key="frame" x="0.0" y="471" width="320" height="38"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="38" id="GnR-kk-tSK"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <state key="normal" title="Receive a Text Instead">
-                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="sendTextAction:" destination="iBP-k2-jEe" eventType="touchUpInside" id="o5h-Kb-r6V"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -365,10 +363,11 @@
                             <constraint firstAttribute="centerX" secondItem="wnu-bS-PxM" secondAttribute="centerX" id="7hg-5E-2Ay"/>
                             <constraint firstAttribute="width" secondItem="TU9-Zt-MaM" secondAttribute="width" id="85j-4b-pVG"/>
                             <constraint firstAttribute="centerX" secondItem="epf-G9-Lyw" secondAttribute="centerX" constant="-0.5" id="Emh-os-5De"/>
+                            <constraint firstItem="epf-G9-Lyw" firstAttribute="top" secondItem="8aZ-LH-HA4" secondAttribute="bottom" constant="36" id="MOU-eb-Ga8"/>
                             <constraint firstAttribute="centerY" secondItem="epf-G9-Lyw" secondAttribute="centerY" constant="0.5" id="N8h-UP-5EO"/>
-                            <constraint firstItem="epf-G9-Lyw" firstAttribute="top" secondItem="8aZ-LH-HA4" secondAttribute="bottom" constant="59" id="YcE-In-Kb4"/>
                             <constraint firstItem="wnu-bS-PxM" firstAttribute="top" secondItem="TU9-Zt-MaM" secondAttribute="bottom" constant="3" id="cdH-aI-2Dl"/>
                             <constraint firstItem="i8Q-6h-LRt" firstAttribute="top" secondItem="wnu-bS-PxM" secondAttribute="bottom" constant="10" id="kt0-fv-Wmv"/>
+                            <constraint firstItem="TU9-Zt-MaM" firstAttribute="top" secondItem="epf-G9-Lyw" secondAttribute="bottom" constant="43" id="kv4-90-AIc"/>
                             <constraint firstAttribute="centerX" secondItem="TU9-Zt-MaM" secondAttribute="centerX" id="mPy-gf-lr5"/>
                         </constraints>
                     </view>

@@ -85,7 +85,7 @@
     [super viewWillAppear:animated];
     
     [self hideHUD];
-    
+
     if (![self canDevicePlaceAPhoneCall]) {
         //tell server to send phone a text
         [self sendTextAction:nil];
