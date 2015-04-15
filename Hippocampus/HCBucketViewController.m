@@ -14,6 +14,7 @@
 #import "LXAppDelegate.h"
 #import "HCItemTableViewCell.h"
 #import "UIImage+Helpers.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 @import AssetsLibrary;
 
@@ -356,6 +357,10 @@
                                }
          ];
         [self incrementNoteCreatedInApp];
+        
+        if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
+            AudioServicesPlaySystemSound (1352); //works ALWAYS as of this post
+        }
     }
 }
 

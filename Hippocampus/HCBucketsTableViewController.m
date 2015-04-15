@@ -19,6 +19,7 @@
 #import "HCIndicatorTableViewCell.h"
 #import "HCBucketDetailsViewController.h"
 #import "HCContactTableViewCell.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -378,9 +379,15 @@
             [self.navigationController pushViewController:btvc animated:YES];
         } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]) {
             [self createBucketFromContact:[[[self currentDictionary] objectForKey:@"Contacts"] objectAtIndex:indexPath.row]];
+            if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
+                AudioServicesPlaySystemSound (1352); //works ALWAYS as of this post
+            }
         } else {
             [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
             [self.navigationController popViewControllerAnimated:YES];
+            if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
+                AudioServicesPlaySystemSound (1352); //works ALWAYS as of this post
+            }
         }
     
     } else {
