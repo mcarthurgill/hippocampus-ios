@@ -635,7 +635,7 @@
         NSMutableArray* newBuckets = [[NSMutableArray alloc] init];
         NSString *keyToSearch = [key isEqualToString:@"Contacts"] ? @"name" : @"first_name";
         for (NSDictionary* bucket in buckets) {
-            if ([[[bucket objectForKey:keyToSearch] lowercaseString] containsString:term]) {
+            if ([[[bucket objectForKey:keyToSearch] lowercaseString] rangeOfString:term].length > 0) {
                 [newBuckets addObject:bucket];
             }
         }
