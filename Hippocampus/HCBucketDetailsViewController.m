@@ -29,7 +29,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
-    NSLog(@"user = %@", [HCUser loggedInUser]);
 }
 
 - (void)didReceiveMemoryWarning {
