@@ -31,5 +31,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @property (strong, nonatomic) NSString *updatedBucketName;
+@property (strong, nonatomic) NSDictionary *bucketUserPairForDeletion;
 
 @end

@@ -183,19 +183,58 @@ static LXAddressBook* thisBook = nil;
 
 - (void) sortContacts
 {
-    NSString* sortString = @"last_name";
+    NSString *sortString = @"last_name";
     ABPersonSortOrdering sortOrder = ABPersonGetSortOrdering();
+    NSArray *sortedArray;
+    
     if (sortOrder == kABPersonSortByFirstName) {
         sortString = @"name";
+        NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:sortString ascending:YES selector:@selector(caseInsensitiveCompare:)];
+        NSArray * descriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
+        sortedArray = [[self.contactsForAssignment copy] sortedArrayUsingDescriptors:descriptors];
+    } else {
+        NSArray *lastNameSortedArray = [[self.contactsForAssignment copy] sortedArrayUsingComparator:^(id o1, id o2) {
+            NSDictionary *cl1 = o1;
+            NSDictionary *cl2 = o2;
+            
+            NSComparisonResult result = [[cl1 objectForKey:@"last_name"] compare:[cl2 objectForKey:@"last_name"] options:NSCaseInsensitiveSearch];
+            
+            if ([[cl1 objectForKey:@"last_name"] length] < 1) {
+                result = [[cl1 objectForKey:@"name"] compare:[cl2 objectForKey:@"last_name"] options:NSCaseInsensitiveSearch];
+            }
+            if ([[cl2 objectForKey:@"last_name"] length] < 1) {
+                result = [[cl1 objectForKey:@"last_name"] compare:[cl2 objectForKey:@"name"] options:NSCaseInsensitiveSearch];
+            }
+            return result;
+        }];
+        sortedArray = lastNameSortedArray;
     }
-    
-    NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:sortString ascending:YES selector:@selector(caseInsensitiveCompare:)];
-    NSArray * descriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
-    NSArray * sortedArray = [[self.contactsForAssignment copy] sortedArrayUsingDescriptors:descriptors];
     self.contactsForAssignment = [sortedArray mutableCopy];
     
-    NSArray * sortedAllContacts = [[self.allContacts copy] sortedArrayUsingDescriptors:descriptors];
-    self.allContacts = [sortedAllContacts mutableCopy];
+    
+    if (sortOrder == kABPersonSortByFirstName) {
+        sortString = @"name";
+        NSSortDescriptor *firstDescriptor = [[NSSortDescriptor alloc] initWithKey:sortString ascending:YES selector:@selector(caseInsensitiveCompare:)];
+        NSArray * descriptors = [NSArray arrayWithObjects:firstDescriptor, nil];
+        sortedArray = [[self.allContacts copy] sortedArrayUsingDescriptors:descriptors];
+    } else {
+        NSArray *lastNameSortedArray = [[self.allContacts copy] sortedArrayUsingComparator:^(id o1, id o2) {
+            NSDictionary *cl1 = o1;
+            NSDictionary *cl2 = o2;
+            
+            NSComparisonResult result = [[cl1 objectForKey:@"last_name"] compare:[cl2 objectForKey:@"last_name"] options:NSCaseInsensitiveSearch];
+            
+            if ([[cl1 objectForKey:@"last_name"] length] < 1) {
+                result = [[cl1 objectForKey:@"name"] compare:[cl2 objectForKey:@"last_name"] options:NSCaseInsensitiveSearch];
+            }
+            if ([[cl2 objectForKey:@"last_name"] length] < 1) {
+                result = [[cl1 objectForKey:@"last_name"] compare:[cl2 objectForKey:@"name"] options:NSCaseInsensitiveSearch];
+            }
+            return result;
+        }];
+        sortedArray = lastNameSortedArray;
+    }
+    self.allContacts = [sortedArray mutableCopy];
 }
 
 - (BOOL) sortedByFirstName

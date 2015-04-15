@@ -23,11 +23,13 @@
 @synthesize actionCells;
 @synthesize updatedBucketName;
 @synthesize delegate;
+@synthesize bucketUserPairForDeletion;
 
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setup];
+    NSLog(@"user = %@", [HCUser loggedInUser]);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,6 +53,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveInfo)];
     
     [self setUnsavedChanges:NO andSavingChanges:NO];
+    
+    [self setLongPressGestureToRemoveCollaborator];
 }
 
 - (void) reloadScreen
@@ -75,6 +79,10 @@
     if ([self.bucket belongsToCurrentUser]) {
         [self.actionCells addObject:@"deleteBucket"];
         [self.actionCells addObject:@"changeBucketType"];
+    }
+    
+    if ([self.bucket hasCollaborators]) {
+        [self.actionCells addObject:@"leaveThread"];
     }
     
     //add actions section if there are action cells
@@ -120,6 +128,8 @@
             return [self deleteBucketCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
         } else if ([[self.actionCells objectAtIndex:indexPath.row] isEqualToString:@"changeBucketType"]) {
             return [self changeBucketTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
+        } else if ([[self.actionCells objectAtIndex:indexPath.row] isEqualToString:@"leaveThread"]) {
+            return [self leaveThreadTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
         }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return [self mediaCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
@@ -167,6 +177,14 @@
     UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
     [changeTypeLabel setText:@"Change Thread Type"];
     [changeTypeLabel boldSubstring:changeTypeLabel.text];
+    return cell;
+}
+
+- (UITableViewCell*) leaveThreadTypeCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"leaveThreadCell" forIndexPath:indexPath];
+    UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
+    [changeTypeLabel setText:@"Leave Thread"];
     return cell;
 }
 
@@ -257,6 +275,8 @@
             [vc setBucketDict:self.bucket];
             [vc setDelegate:self];
             [self.navigationController presentViewController:vc animated:YES completion:nil];
+        } else if ([[self.actionCells objectAtIndex:indexPath.row] isEqualToString:@"leaveThread"]) {
+            [self alertForLeavingThread];
         }
     } else if (([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"]) && ([self.bucket hasCollaborators] ? indexPath.row == [[self.bucket bucketUserPairs] count] : indexPath.row == 0)) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
@@ -307,6 +327,28 @@
 {
     [self showHUDWithMessage:@"Deleting Thread..."];
     [[LXServer shared] deleteBucketWithBucketID:[self.bucket ID] success:^(id responseObject) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self hideHUD];
+    }failure:^(NSError *error){
+        [self hideHUD];
+    }];
+}
+
+- (void) leaveThread
+{
+    [self showHUDWithMessage:@"Leaving Thread..."];
+    [[LXServer shared] deleteBucketUserPairWithBucketID:[self.bucket ID] andPhoneNumber:[[HCUser loggedInUser] phone] success:^(id responseObject) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        [self hideHUD];
+    }failure:^(NSError *error){
+        [self hideHUD];
+    }];
+}
+
+- (void) removeCollaborator
+{
+    [self showHUDWithMessage:@"Removing..."];
+    [[LXServer shared] deleteBucketUserPairWithBucketID:[self.bucket ID] andPhoneNumber:[self.bucketUserPairForDeletion objectForKey:@"phone_number"] success:^(id responseObject) {
         [self.navigationController popToRootViewControllerAnimated:YES];
         [self hideHUD];
     }failure:^(NSError *error){
@@ -420,14 +462,56 @@
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles: nil];
     [alert addButtonWithTitle:@"Delete Thread"];
+    [alert setTag:1];
     [alert show];
 }
 
 
+- (void) alertForLeavingThread
+{
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Leave this thread?"
+                                                     message:@"Are you sure you want to leave this thread?"
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles: nil];
+    [alert addButtonWithTitle:@"Leave"];
+    [alert setTag:2];
+    [alert show];
+}
+
+- (void) alertForRemoveCollaborator
+{
+    NSString *title = @"Remove?";
+    NSString *message = [NSString stringWithFormat:@"This will remove %@ from this thread.", [self.bucketUserPairForDeletion name]];
+    NSString *cancelButton = @"Cancel";
+    NSString *removeButton = @"Remove";
+    
+    if (self.bucketUserPairForDeletion && [[self.bucketUserPairForDeletion objectForKey:@"phone_number"] isEqualToString:[[self.bucket creator] objectForKey:@"phone"]]) {
+        title = @"Sorry";
+        message = @"You cannot remove the creator of this thread.";
+        cancelButton = nil;
+        removeButton = @"Okay";
+        [self setBucketUserPairForDeletion:nil];
+    }
+    
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:title
+                                                     message:message
+                                                    delegate:self
+                                           cancelButtonTitle:cancelButton
+                                           otherButtonTitles: nil];
+    [alert addButtonWithTitle:removeButton];
+    [alert setTag:3];
+    [alert show];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == 1) {
+    if (buttonIndex == 1 && alertView.tag == 1) {
         [self deleteBucket];
+    } else if (buttonIndex == 1 && alertView.tag == 2) {
+        [self leaveThread];
+    } else if (buttonIndex == 1 && alertView.tag == 3) {
+        [self removeCollaborator];
     }
 }
 
@@ -454,12 +538,37 @@
     return [self.bucket mediaURLs] && [[self.bucket mediaURLs] count] > 0;
 }
 
+
 # pragma mark - HCUpdateBucketTypeDelegate
 
 -(void)updateBucketType:(NSMutableDictionary *)updatedBucket
 {
     self.bucket = updatedBucket;
     [self saveInfo]; 
+}
+
+
+# pragma mark - Gesture Recognizers
+
+- (void) setLongPressGestureToRemoveCollaborator {
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 0.7; //seconds
+    lpgr.delegate = self;
+    [self.tableView addGestureRecognizer:lpgr];
+}
+
+-(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"] && [[self.bucket bucketUserPairs] objectAtIndex:indexPath.row]) {
+            [self setBucketUserPairForDeletion:[[self.bucket bucketUserPairs] objectAtIndex:indexPath.row]];
+            [self alertForRemoveCollaborator];
+        }
+    }
 }
 
 

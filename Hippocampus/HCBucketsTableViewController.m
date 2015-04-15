@@ -421,7 +421,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSDictionary *bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
-        if (bucket && ![bucket isAllNotesBucket] && ![self assignMode]) {
+        if (bucket && ![bucket isAllNotesBucket] && ![self assignMode] && [bucket belongsToCurrentUser]) {
             [self showHUDWithMessage:@"Deleting Thread..."];
             [[LXServer shared] deleteBucketWithBucketID:[bucket ID] success:^(id responseObject){
                 [self refreshChange];

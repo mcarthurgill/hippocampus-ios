@@ -891,16 +891,18 @@
     NSString *title = @"Sorry";
     NSString *message = @"You cannot delete a note you did not add!";
     NSString *buttonTitle = @"Okay";
+    NSString *cancelTitle = nil;
     
     if (self.itemForDeletion && [self.itemForDeletion belongsToCurrentUser]) {
         title = @"Are you sure?";
         message = @"Do you want to delete this note?";
         buttonTitle = @"Delete";
+        cancelTitle = @"Cancel";
     }
     UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:title
                                                      message:message
                                                     delegate:self
-                                           cancelButtonTitle:@"Cancel"
+                                           cancelButtonTitle:cancelTitle
                                            otherButtonTitles: nil];
     [alert addButtonWithTitle:buttonTitle];
     [alert show];

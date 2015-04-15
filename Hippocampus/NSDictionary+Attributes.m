@@ -301,6 +301,11 @@
     return NO;
 }
 
+- (NSDictionary*) creator
+{
+    return [self objectForKey:@"creator"];
+}
+
 - (BOOL) hasItemUserName
 {
     return [self objectForKey:@"user"] && [[self objectForKey:@"user"] respondsToSelector:@selector(objectForKey:)] && NULL_TO_NIL([[self objectForKey:@"user"] objectForKey:@"name"]);

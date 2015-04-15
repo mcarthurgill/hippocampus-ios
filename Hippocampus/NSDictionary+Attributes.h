@@ -110,6 +110,8 @@
 
 - (BOOL) hasItemUserName;
 
+- (NSDictionary*) creator;
+
 - (NSMutableDictionary*) cleanDictionary;
 
 - (NSMutableDictionary*) bucketNames;
