@@ -90,7 +90,7 @@
 - (UITableViewCell*) explanationCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     HCExplanationTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"explanationCell" forIndexPath:indexPath];
-    [cell configureWithText:@"You must grant location permission create a collaborative thread. Go to Settings > Privacy > Contacts > Hippocampus"];
+    [cell configureWithText:@"You must grant location permission create a collaborative collection. Go to Settings > Privacy > Contacts > Hippocampus"];
     return cell;
 }
 
@@ -184,7 +184,7 @@
 - (void) alertBeforeSendingInvites
 {
     UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Are you sure?"
-                                                     message:[NSString stringWithFormat:@"Are you sure you want to share this thread with %@", [self.contactsToInvite namesOfContacts]]
+                                                     message:[NSString stringWithFormat:@"Are you sure you want to share this collection with %@", [self.contactsToInvite namesOfContacts]]
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles: nil];
