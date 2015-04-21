@@ -84,6 +84,8 @@
 		76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76BFE0711A7C0662005AD98C /* Introduction.storyboard */; };
 		76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */; };
 		76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */; };
+		76CA904F1AE15C9B00C6E400 /* LXSetup.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CA904E1AE15C9B00C6E400 /* LXSetup.m */; };
+		76CA90581AE19D1300C6E400 /* HCSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CA90571AE19D1300C6E400 /* HCSetupViewController.m */; };
 		76D965A31AD456AE008C1D3B /* HCCollaborateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D965A21AD456AE008C1D3B /* HCCollaborateViewController.m */; };
 		76D965A61AD45CEB008C1D3B /* HCCollaborateTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D965A51AD45CEB008C1D3B /* HCCollaborateTableViewCell.m */; };
 		76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76E6A1FC1A8BCFFA00B3669B /* LXRemindersViewController.m */; };
@@ -225,6 +227,11 @@
 		76BFE0751A7C0FA8005AD98C /* HCIntroductionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionViewController.m; sourceTree = "<group>"; };
 		76BFE0771A7C1015005AD98C /* HCIntroductionQuestionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCIntroductionQuestionViewController.h; sourceTree = "<group>"; };
 		76BFE0781A7C1015005AD98C /* HCIntroductionQuestionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIntroductionQuestionViewController.m; sourceTree = "<group>"; };
+		76CA904A1AE154D600C6E400 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
+		76CA904D1AE15C9B00C6E400 /* LXSetup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXSetup.h; sourceTree = "<group>"; };
+		76CA904E1AE15C9B00C6E400 /* LXSetup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXSetup.m; sourceTree = "<group>"; };
+		76CA90561AE19D1300C6E400 /* HCSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCSetupViewController.h; sourceTree = "<group>"; };
+		76CA90571AE19D1300C6E400 /* HCSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCSetupViewController.m; sourceTree = "<group>"; };
 		76D965A11AD456AE008C1D3B /* HCCollaborateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCCollaborateViewController.h; sourceTree = "<group>"; };
 		76D965A21AD456AE008C1D3B /* HCCollaborateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCCollaborateViewController.m; sourceTree = "<group>"; };
 		76D965A41AD45CEB008C1D3B /* HCCollaborateTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCCollaborateTableViewCell.h; sourceTree = "<group>"; };
@@ -356,6 +363,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				76CA904B1AE1572800C6E400 /* Setup */,
 				2826C6081AD84714008DC533 /* Tutorial */,
 				76E6A1FA1A8BCFE100B3669B /* More */,
 				281CA940196C8DC000E6BE96 /* Bucket */,
@@ -399,6 +407,8 @@
 				281CA90A1951ECBA00E6BE96 /* LXSession.m */,
 				76B0296F1AC1AF99003539B4 /* LXAddressBook.h */,
 				76B029701AC1AF99003539B4 /* LXAddressBook.m */,
+				76CA904D1AE15C9B00C6E400 /* LXSetup.h */,
+				76CA904E1AE15C9B00C6E400 /* LXSetup.m */,
 			);
 			name = Session;
 			sourceTree = "<group>";
@@ -562,6 +572,15 @@
 				76FBBD851A800F4300CAF765 /* HCIntroductionFailureViewController.m */,
 			);
 			name = Introduction;
+			sourceTree = "<group>";
+		};
+		76CA904B1AE1572800C6E400 /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				76CA90561AE19D1300C6E400 /* HCSetupViewController.h */,
+				76CA90571AE19D1300C6E400 /* HCSetupViewController.m */,
+			);
+			name = Setup;
 			sourceTree = "<group>";
 		};
 		76E6A1FA1A8BCFE100B3669B /* More */ = {
@@ -760,6 +779,7 @@
 				76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */,
 				76F5964E1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m in Sources */,
 				76B57C2C1AB0D65A00A67DE0 /* HCLocationNotesViewController.m in Sources */,
+				76CA90581AE19D1300C6E400 /* HCSetupViewController.m in Sources */,
 				768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */,
@@ -784,6 +804,7 @@
 				76BFE0791A7C1015005AD98C /* HCIntroductionQuestionViewController.m in Sources */,
 				281CA8D81951EC7E00E6BE96 /* main.m in Sources */,
 				28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */,
+				76CA904F1AE15C9B00C6E400 /* LXSetup.m in Sources */,
 				2826C6131ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m in Sources */,
 				76BE801B1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m in Sources */,
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
@@ -1022,10 +1043,11 @@
 		281CA90F1951F36700E6BE96 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				76CA904A1AE154D600C6E400 /* Model 3.xcdatamodel */,
 				28F5B8A81ACC378000C7F5BC /* Model 2.xcdatamodel */,
 				281CA9101951F36700E6BE96 /* Model.xcdatamodel */,
 			);
-			currentVersion = 28F5B8A81ACC378000C7F5BC /* Model 2.xcdatamodel */;
+			currentVersion = 76CA904A1AE154D600C6E400 /* Model 3.xcdatamodel */;
 			path = Model.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;

@@ -47,4 +47,6 @@
 - (void) createContactCardWithBucket:(NSDictionary*)bucket andContact:(NSMutableDictionary*)contact success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) createBucketUserPairsWithContacts:(NSMutableArray*)contacts andBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) deleteBucketUserPairWithBucketID:(NSString*)bucketID andPhoneNumber:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (void) getSetupQuestionsForPercentage:(NSString*)percentage success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (void) submitResponseToSetupQuestion:(NSString*)response success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 @end

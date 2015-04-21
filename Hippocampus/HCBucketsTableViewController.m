@@ -20,6 +20,7 @@
 #import "HCBucketDetailsViewController.h"
 #import "HCContactTableViewCell.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "LXAppDelegate.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -94,11 +95,17 @@
         [self.navigationItem setRightBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:nil];
     }
+    if (![[[LXSession thisSession] user] completedSetup]) {
+        [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[[LXSession thisSession] user] setupCompletion] formattedPercentage]]];
+    }
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    if ([[LXSetup theSetup] shouldPromptForCompletion] && [self.navigationController.visibleViewController isKindOfClass:[HCBucketsTableViewController class]] && ![self assignMode]) {
+        [self showSetup];
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -147,7 +154,6 @@
 
 - (void) reloadScreen
 {
-    NSLog(@"%@", [[[LXSession thisSession] user] scoreString]);
     [self.refreshControl endRefreshing];
     [self.tableView reloadData];
 }
@@ -810,4 +816,41 @@
 }
 
 
+# pragma mark - Setup
+
+-(UIImage*) takeScreenshot
+{
+    CGSize size = self.view.window.frame.size;
+    LXAppDelegate *appDelegate = (LXAppDelegate*)[[UIApplication sharedApplication] delegate];
+    
+    UIGraphicsBeginImageContext(size);
+    [appDelegate.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
+-(void)showSetup
+{
+    UIImage *img = [self takeScreenshot];
+    
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCSetupViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"setupViewController"];
+    [btvc setScreenshot:img];
+    [UIView animateWithDuration:0.5
+                     animations:^{
+                         self.navigationController.view.alpha = 0.1;
+                     }
+                     completion:^(BOOL finished){
+                         [self presentViewController:btvc animated:NO completion:nil];
+                         [UIView animateWithDuration:0.5
+                                          animations:^{
+                                              self.navigationController.view.alpha = 1;
+                                          }
+                                          completion:^(BOOL finished){
+                                              
+                                          }];
+                     }];
+}
 @end

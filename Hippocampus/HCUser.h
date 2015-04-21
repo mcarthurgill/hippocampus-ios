@@ -23,6 +23,7 @@
 @property (nonatomic, retain) NSString * updatedAt;
 @property (nonatomic, retain) NSNumber * lastItemUpdateTime;
 @property (nonatomic, retain) NSNumber * lastBucketUpdateTime;
+@property (nonatomic, retain) NSNumber * setupCompletion;
 
 
 // logged in user
@@ -46,5 +47,10 @@
 //setters
 
 - (void) setUserStats:(NSMutableDictionary*)dict;
+
+
+//helpers
+
+-(BOOL) completedSetup;
 
 @end

@@ -17,4 +17,10 @@
     return [formatter stringFromNumber:self];
 }
 
+- (NSString*) formattedPercentage
+{
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    [formatter setNumberStyle:NSNumberFormatterPercentStyle];
+    return [formatter stringFromNumber:[NSNumber numberWithFloat:[self floatValue]/100]];
+}
 @end

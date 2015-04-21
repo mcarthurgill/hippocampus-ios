@@ -31,6 +31,7 @@
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     [self loadAddressBook];
+    [[LXSetup theSetup] getSetupQuestions];
     
     return YES;
 }

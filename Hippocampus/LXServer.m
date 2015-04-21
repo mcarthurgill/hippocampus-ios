@@ -637,6 +637,43 @@
      ];
 }
 
+- (void) getSetupQuestionsForPercentage:(NSString *)percentage success:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback
+{
+    percentage = percentage ? percentage : @"25";
+    [[LXServer shared] requestPath:@"/setup_questions.json" withMethod:@"GET" withParamaters:@{@"percentage": percentage}
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (void) submitResponseToSetupQuestion:(NSString*)response success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"/create_from_setup_questions.json" withMethod:@"POST" withParamaters:@{@"setup_question": @{@"question": [[LXSetup theSetup] currentQuestion], @"response": response}}
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^(void){
+                                       [self getAllItemsWithPage:0 success:nil failure:nil];
+                                   });
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               NSLog(@"error: %@", [error localizedDescription]);
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
 - (NSMutableDictionary*) bucketToSave:(NSMutableDictionary*)incomingDictionary
 {
     NSMutableDictionary* temp = [[NSMutableDictionary alloc] init];

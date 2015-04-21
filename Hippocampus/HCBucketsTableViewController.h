@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "HCBucketViewController.h"
+#import "HCSetupViewController.h"
 
 @interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate>
 {

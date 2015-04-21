@@ -11,5 +11,6 @@
 @interface NSNumber (Helpers)
 
 - (NSString*) formattedString;
+- (NSString*) formattedPercentage; 
 
 @end

@@ -22,6 +22,7 @@
 @dynamic updatedAt;
 @dynamic lastItemUpdateTime;
 @dynamic lastBucketUpdateTime;
+@dynamic setupCompletion;
 
 + (NSMutableDictionary *)resourceKeysForPropertyKeys
 {
@@ -30,6 +31,7 @@
                                                              @"numberBuckets": @"number_buckets",
                                                              @"numberItems": @"number_items",
                                                              @"score": @"score",
+                                                             @"setupCompletion": @"setupCompletion",
                                                              @"createdAt": @"created_at",
                                                              @"createdAt": @"created_at",
                                                              @"updatedAt": @"updated_at",
@@ -154,11 +156,21 @@
     return [self.score formattedString];
 }
 
+-(NSString*) setupCompletionString
+{
+    return [self.setupCompletion formattedPercentage];
+}
+
+-(BOOL) completedSetup
+{
+    return [self.setupCompletion integerValue] == 100;
+}
 
 # pragma mark setters
 
 - (void) setUserStats:(NSMutableDictionary*)dict
 {
+    NSLog(@"set user stats");
     if ([dict objectForKey:@"number_buckets"] && [[dict objectForKey:@"number_buckets"] respondsToSelector:@selector(integerValue)]) {
         [self setNumberBuckets:[NSNumber numberWithInt:[[dict objectForKey:@"number_buckets"] integerValue]]];
     }
@@ -167,6 +179,9 @@
     }
     if ([dict objectForKey:@"score"] && [[dict objectForKey:@"score"] respondsToSelector:@selector(integerValue)]) {
         [self setScore:[NSNumber numberWithInt:[[dict objectForKey:@"score"] integerValue]]];
+    }
+    if ([dict objectForKey:@"setup_completion"] && [[dict objectForKey:@"setup_completion"] respondsToSelector:@selector(integerValue)]) {
+        [self setSetupCompletion:[NSNumber numberWithInt:[[dict objectForKey:@"setup_completion"] integerValue]]];
     }
     if (dict) {
         [[self managedObjectContext] save:nil];

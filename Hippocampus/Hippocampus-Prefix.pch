@@ -30,4 +30,5 @@
     #import "LXAddressBook.h"
     #import "UILabel+Bold.h"
     #import "NSNumber+Helpers.h"
+    #import "LXSetup.h"
 #endif
