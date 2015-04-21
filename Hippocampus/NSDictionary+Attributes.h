@@ -96,6 +96,8 @@
 - (NSString*) firstWord;
 
 - (BOOL) messageIsOneWord;
+- (BOOL) notBlank;
+- (BOOL) lettersOnly;
 
 - (BOOL) onceReminder;
 - (BOOL) yearlyReminder;
@@ -109,6 +111,7 @@
 - (BOOL) hasCollaborativeThread;
 
 - (BOOL) hasItemUserName;
+
 
 - (NSDictionary*) creator;
 

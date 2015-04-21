@@ -105,7 +105,7 @@
 {
     if ([self.bucket isAllNotesBucket]) {
         if ([[[[LXSession thisSession] user] score] integerValue] > 8) {
-            [self setTitle:[NSString stringWithFormat:@"All Notes (%@)", [[[[LXSession thisSession] user] numberItems] formattedString]]];
+            [self setTitle:[NSString stringWithFormat:@"All Thoughts (%@)", [[[[LXSession thisSession] user] numberItems] formattedString]]];
         }
     } else {
         [self.navigationItem setTitle:[self.bucket firstName]];
@@ -263,7 +263,7 @@
         [self.navigationController pushViewController:itvc animated:YES];
 
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-        [self showHUDWithMessage:@"Syncing Note"];
+        [self showHUDWithMessage:@"Syncing Thought"];
         [[LXSession thisSession] attemptNoteSave:[[self currentArray] objectAtIndex:indexPath.row]
                                          success:^(id responseObject) {
                                              [self replacingWithItem:responseObject];
@@ -642,7 +642,7 @@
     [self setScrollToPosition:@"bottom"];
     [self setTableScrollToIndex:[[self currentArray] count] animated:YES];
     
-    if ([textView.text isEqualToString:@"Add Note"]) {
+    if ([textView.text isEqualToString:@"Add Thought"]) {
         textView.text = @"";
         textView.textColor = [UIColor blackColor];
     }
@@ -653,7 +653,7 @@
 {
     [self updateConstraintsForTextView:textView];
     if ([textView.text isEqualToString:@""]) {
-        textView.text = @"Add Note";
+        textView.text = @"Add Thought";
         textView.textColor = [UIColor lightGrayColor];
     }
     [textView resignFirstResponder];
@@ -702,7 +702,7 @@
         self.composeTextView.text = @"";
         self.composeTextView.textColor = [UIColor blackColor];
     } else {
-        self.composeTextView.text = @"Add Note";
+        self.composeTextView.text = @"Add Thought";
         self.composeTextView.textColor = [UIColor lightGrayColor];
         [self.composeTextView resignFirstResponder];
     }
@@ -894,13 +894,13 @@
 
 - (void) alertForDeletion {
     NSString *title = @"Sorry";
-    NSString *message = @"You cannot delete a note you did not add!";
+    NSString *message = @"You cannot delete a thought you did not add!";
     NSString *buttonTitle = @"Okay";
     NSString *cancelTitle = nil;
     
     if (self.itemForDeletion && [self.itemForDeletion belongsToCurrentUser]) {
         title = @"Are you sure?";
-        message = @"Do you want to delete this note?";
+        message = @"Do you want to delete this thought?";
         buttonTitle = @"Delete";
         cancelTitle = @"Cancel";
     }

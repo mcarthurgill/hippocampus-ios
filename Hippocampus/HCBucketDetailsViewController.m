@@ -174,7 +174,7 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"bucketTypeCell" forIndexPath:indexPath];
     UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
-    [changeTypeLabel setText:@"Change Thread Type"];
+    [changeTypeLabel setText:@"Change Collection Type"];
     [changeTypeLabel boldSubstring:changeTypeLabel.text];
     return cell;
 }
@@ -183,7 +183,7 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"leaveThreadCell" forIndexPath:indexPath];
     UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
-    [changeTypeLabel setText:@"Leave Thread"];
+    [changeTypeLabel setText:@"Leave Collection"];
     return cell;
 }
 
@@ -191,7 +191,7 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"deleteBucketCell" forIndexPath:indexPath];
     UILabel* deleteLabel = (UILabel*)[cell.contentView viewWithTag:1];
-    [deleteLabel setText:@"Delete Thread"];
+    [deleteLabel setText:@"Delete Collection"];
     return cell;
 }
 
@@ -291,11 +291,11 @@
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketName"]) {
-        return @"Thread Name";
+        return @"Collection Name";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"collaborate"]) {
         return @"Collaborators";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
-        return @"Thread Type";
+        return @"Collection Type";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
@@ -324,7 +324,7 @@
 
 - (void) deleteBucket
 {
-    [self showHUDWithMessage:@"Deleting Thread..."];
+    [self showHUDWithMessage:@"Deleting Collection..."];
     [[LXServer shared] deleteBucketWithBucketID:[self.bucket ID] success:^(id responseObject) {
         [self.navigationController popToRootViewControllerAnimated:YES];
         [self hideHUD];
@@ -335,7 +335,7 @@
 
 - (void) leaveThread
 {
-    [self showHUDWithMessage:@"Leaving Thread..."];
+    [self showHUDWithMessage:@"Leaving Collection..."];
     [[LXServer shared] deleteBucketUserPairWithBucketID:[self.bucket ID] andPhoneNumber:[[HCUser loggedInUser] phone] success:^(id responseObject) {
         [self.navigationController popToRootViewControllerAnimated:YES];
         [self hideHUD];
@@ -455,12 +455,12 @@
 
 - (void) alertForDeletion
 {
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete this thread?"
-                                                     message:@"This will also delete all notes that only belong to this thread."
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete this collection?"
+                                                     message:@"This will also delete all thoughts that only belong to this collection."
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles: nil];
-    [alert addButtonWithTitle:@"Delete Thread"];
+    [alert addButtonWithTitle:@"Delete Collection"];
     [alert setTag:1];
     [alert show];
 }
@@ -468,8 +468,8 @@
 
 - (void) alertForLeavingThread
 {
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Leave this thread?"
-                                                     message:@"Are you sure you want to leave this thread?"
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Leave this collection?"
+                                                     message:@"Are you sure you want to leave this collection?"
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles: nil];
@@ -481,13 +481,13 @@
 - (void) alertForRemoveCollaborator
 {
     NSString *title = @"Remove?";
-    NSString *message = [NSString stringWithFormat:@"This will remove %@ from this thread.", [self.bucketUserPairForDeletion name]];
+    NSString *message = [NSString stringWithFormat:@"This will remove %@ from this collection.", [self.bucketUserPairForDeletion name]];
     NSString *cancelButton = @"Cancel";
     NSString *removeButton = @"Remove";
     
     if (self.bucketUserPairForDeletion && [[self.bucketUserPairForDeletion objectForKey:@"phone_number"] isEqualToString:[[self.bucket creator] objectForKey:@"phone"]]) {
         title = @"Sorry";
-        message = @"You cannot remove the creator of this thread.";
+        message = @"You cannot remove the creator of this collection.";
         cancelButton = nil;
         removeButton = @"Okay";
         [self setBucketUserPairForDeletion:nil];

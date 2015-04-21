@@ -115,7 +115,7 @@
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
     NSString* newDate = [dateFormat stringFromDate:self.currentlySelectedDate];
-    NSLog(@"Reminder Date: %@", newDate);
+    NSLog(@"Nudge Date: %@", newDate);
     [self.item setObject:newDate forKey:@"reminder_date"];
     [self dismissViewControllerAnimated:NO completion:^(void){
         [(HCItemTableViewController*)self.delegate saveReminder:newDate withType:[self typeSelected]];

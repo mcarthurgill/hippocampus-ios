@@ -119,8 +119,11 @@
         self.actions = [[NSMutableArray alloc] init];
         
         [self.actions addObject:@"assign"];
-        if ([self.item messageIsOneWord]) {
+        if ([self.item messageIsOneWord] && [self.item notBlank] && [self.item lettersOnly]) {
             [self.actions addObject:@"define"];
+        }
+        if ([self.item notBlank]) {
+            [self.actions addObject:@"copy"];
         }
         if ([self.item belongsToCurrentUser]) {
             [self.actions addObject:@"delete"];
@@ -145,9 +148,6 @@
     }
     
     [self.sections addObject:@"reminder"];
-    if ([self.item hasReminder]) {
-        //[self.sections addObject:@"type"];
-    }
     
     if ([self.item hasBuckets]) {
         [self.sections addObject:@"bucket"];
@@ -156,7 +156,7 @@
     [self.sections addObject:@"actions"];
     
     if ([self.item hasLocation]) {
-        [self.sections addObject:@"location"];
+        //[self.sections addObject:@"location"];
     }
     
     [self setActionsArray];
@@ -312,9 +312,9 @@
         //[main setText:[NSDate timeAgoActualFromDatetime:[self.item reminderDate]]];
         [main setText:text];
         [main setTextColor:[UIColor blackColor]];
-        [direction setText:[NSString stringWithFormat:@"Set to remind you %@. Tap to Change", [self.item objectForKey:@"item_type"]]];
+        [direction setText:[NSString stringWithFormat:@"Set to nudge you %@. Tap to Change", [self.item objectForKey:@"item_type"]]];
     } else {
-        [main setText:@"No Reminder Set!"];
+        [main setText:@"No Nudge Set!"];
         [main setTextColor:direction.textColor];
         [direction setText:@"Tap to Set"];
     }
@@ -351,16 +351,18 @@
     [blueDot setHidden:YES];
     
     if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"assign"]) {
-        [label setText:@"Add to Thread"];
+        [label setText:@"Add to Collection"];
         if ([self.item isOutstanding]) {
             [blueDot.layer setCornerRadius:4];
             [blueDot setClipsToBounds:YES];
             [blueDot setHidden:NO];
         }
     } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"delete"]) {
-        [label setText:@"Delete Note"];
+        [label setText:@"Delete Thought"];
     } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"define"]) {
         [label setText:@"Show Definition"];
+    } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"copy"]) {
+        [label setText:@"Copy Thought"];
     }
     
     return cell;
@@ -421,21 +423,21 @@
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if ([[self.sections objectAtIndex:section] isEqualToString:@"type"]) {
-        return @"Reminder Frequency";
+        return @"Nudge Frequency";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"message"]) {
         return nil;
-        return @"Note";
+        return @"Thought";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         return nil;
         return @"Images";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"reminder"]) {
-        return @"Reminder";
+        return @"Nudge";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucket"]) {
-        return @"Threads";
+        return @"Collections";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"location"]) {
-        return @"Note Location";
+        return @"Thought Location";
     }
     return nil;
 }
@@ -475,6 +477,11 @@
                 UIReferenceLibraryViewController* ref = [[UIReferenceLibraryViewController alloc] initWithTerm:[self.item firstWord]];
                 [self presentViewController:ref animated:YES completion:nil];
             //}
+        } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"copy"]) {
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = [self.item message];
+            [self showHUDWithMessage:@"Copying"];
+            [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5f];
         }
     }
     
@@ -506,7 +513,7 @@
     [self.item setObject:type forKey:@"item_type"];
     [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_request_timestamp"];
     
-    [self showHUDWithMessage:[NSString stringWithFormat:@"Saving Reminder"]];
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Setting Nudge"]];
 
     [[LXServer shared] saveReminderForItem:self.item
                                         success:^(id responseObject) {
@@ -543,7 +550,7 @@
 {
     [self setUnsavedChanges:YES andSavingChanges:YES];
 
-    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Thread", [bucket objectForKey:@"first_name"]]];
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Collection", [bucket objectForKey:@"first_name"]]];
     
     [[LXServer shared] addItem:self.item toBucket:bucket
                        success:^(id responseObject){
@@ -639,9 +646,10 @@
 
 # pragma  mark - AlertView Delegate
 
-- (void) alertForRemovalFromBucket:(NSMutableDictionary *)bucket {
+- (void) alertForRemovalFromBucket:(NSMutableDictionary *)bucket
+{
     UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Are you sure?"
-                                                     message:[NSString stringWithFormat:@"Do you want to remove this note from the %@ thread?", [bucket firstName]]
+                                                     message:[NSString stringWithFormat:@"Do you want to remove this note from the %@ collection?", [bucket firstName]]
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles: nil];
