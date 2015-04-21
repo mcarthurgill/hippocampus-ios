@@ -252,6 +252,20 @@
     return [[self message] length] < 100 && [[[self message] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] count] == 1;
 }
 
+- (BOOL) notBlank
+{
+    return [self message] && [[self message] length] > 0;
+}
+
+- (BOOL) lettersOnly
+{
+    NSCharacterSet *strCharSet = [NSCharacterSet characterSetWithCharactersInString:@"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+    strCharSet = [strCharSet invertedSet];
+    
+    NSRange r = [[self message] rangeOfCharacterFromSet:strCharSet];
+    return !(r.location != NSNotFound);
+}
+
 - (BOOL) onceReminder
 {
     return [[self itemType] isEqualToString:@"once"];

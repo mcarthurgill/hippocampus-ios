@@ -1351,7 +1351,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pre-H0-SXp">
-                                            <rect key="frame" x="75" y="18" width="8" height="8"/>
+                                            <rect key="frame" x="67" y="18" width="8" height="8"/>
                                             <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="8" id="ZJy-qW-VGh"/>
@@ -1371,7 +1371,7 @@
                                         <constraint firstAttribute="trailingMargin" secondItem="FHK-TE-98o" secondAttribute="trailing" constant="100" id="Sae-e7-6yH"/>
                                         <constraint firstItem="Pre-H0-SXp" firstAttribute="centerY" secondItem="FHK-TE-98o" secondAttribute="centerY" id="ZwN-mo-0dY"/>
                                         <constraint firstItem="FHK-TE-98o" firstAttribute="leading" secondItem="lAc-Bq-q3I" secondAttribute="leadingMargin" constant="100" id="k0P-4i-c0s"/>
-                                        <constraint firstItem="FHK-TE-98o" firstAttribute="leading" secondItem="Pre-H0-SXp" secondAttribute="trailing" id="kwl-7K-fW7"/>
+                                        <constraint firstItem="FHK-TE-98o" firstAttribute="leading" secondItem="Pre-H0-SXp" secondAttribute="trailing" constant="8" id="kwl-7K-fW7"/>
                                         <constraint firstAttribute="centerY" secondItem="FHK-TE-98o" secondAttribute="centerY" id="lMB-Ba-XPm"/>
                                         <constraint firstItem="Pre-H0-SXp" firstAttribute="leading" secondItem="lAc-Bq-q3I" secondAttribute="leading" constant="221" id="oPo-VT-aZD"/>
                                         <constraint firstItem="Pre-H0-SXp" firstAttribute="leading" secondItem="FHK-TE-98o" secondAttribute="leading" constant="-138" id="twJ-l8-7T0"/>

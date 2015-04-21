@@ -53,6 +53,10 @@
         [self.typePicker selectRow:[self indexOfType:@"once"] inComponent:0 animated:NO];
     }
     
+    if (![self.item hasReminder]) {
+        [self.typePicker selectRow:[self indexOfType:@"yearly"] inComponent:0 animated:NO];
+    }
+    
     [self refreshDayPicker];
 }
 

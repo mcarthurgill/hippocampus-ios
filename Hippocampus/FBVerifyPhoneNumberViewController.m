@@ -133,7 +133,7 @@
         
         NSString* token = [[NSString random:16] shaEncrypted];
         
-        NSString *message = [NSString stringWithFormat:@"My code: (%@). Verify me, please.", [NSString stringWithFormat:@"%@==", token]];
+        NSString *message = [NSString stringWithFormat:@"My code: (%@). Verify me!", [NSString stringWithFormat:@"%@==", token]];
         
         [[LXSession thisSession] addVerifyingToken:token];
         

@@ -90,7 +90,7 @@
     [self reloadScreen];
 
     if ([self assignMode]) {
-        [self setTitle:@"Add to Thread"];
+        [self setTitle:@"Add to Collection"];
         [self.navigationItem setRightBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:nil];
     }
@@ -251,7 +251,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"newCell" forIndexPath:indexPath];
     UILabel* label = (UILabel*) [cell.contentView viewWithTag:1];
-    [label setText:@"+ New Thread"];
+    [label setText:@"+ New Collection"];
     return cell;
 }
 
@@ -259,7 +259,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"infoCell" forIndexPath:indexPath];
     UITextView* textView = (UITextView*) [cell.contentView viewWithTag:2];
-    [textView setText:[NSString stringWithFormat:@"Text notes to: +1 (615) 724-9333\n\n%@ Notes\n%@ Threads\n\nHippocampus %@\nMade with <3 in Nashville", [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
+    [textView setText:[NSString stringWithFormat:@"Text thoughts to: +1 (615) 724-9333\n\n%@ Thoughts\n%@ Collections\n\nHippocampus %@\nMade with <3 in Nashville", [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
     return cell;
 }
 
@@ -282,12 +282,12 @@
     if (NULL_TO_NIL([bucket objectForKey:@"description_text"])) {
         [description setText:[bucket objectForKey:@"description_text"]];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
-        [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket createdAt]], ([self assignMode] ? @" - Tap to Add Note" : @"")]];
+        [description setText:[NSString stringWithFormat:@"Created %@%@", [NSDate timeAgoActualFromDatetime:[bucket createdAt]], ([self assignMode] ? @" - Tap to Add Thought" : @"")]];
     } else {
         if ([bucket isAllNotesBucket] && [[bucket itemsCount] integerValue] == 0) {
-            [description setText:[NSString stringWithFormat:@"%@ Note%@", [[[[LXSession thisSession] user] numberItems] formattedString], ([[bucket itemsCount] integerValue] == 1 ? @"" : @"s")]];
+            [description setText:[NSString stringWithFormat:@"%@ Thought%@", [[[[LXSession thisSession] user] numberItems] formattedString], ([[bucket itemsCount] integerValue] == 1 ? @"" : @"s")]];
         } else {
-            [description setText:[NSString stringWithFormat:@"%@ Note%@ %@%@", [bucket itemsCount], ([[bucket itemsCount] integerValue] == 1 ? @"" : @"s"), [bucket isAllNotesBucket] ? @"Outstanding" : @"", ([self assignMode] ? @" - Tap to Add Note" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket updatedAt]]])]];
+            [description setText:[NSString stringWithFormat:@"%@ Thought%@ %@%@", [bucket itemsCount], ([[bucket itemsCount] integerValue] == 1 ? @"" : @"s"), [bucket isAllNotesBucket] ? @"Outstanding" : @"", ([self assignMode] ? @" - Tap to Add Thought" : [NSString stringWithFormat:@" - updated %@", [NSDate timeAgoActualFromDatetime:[bucket updatedAt]]])]];
         }
     }
     
@@ -410,20 +410,20 @@
     if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"] || [[self.sections objectAtIndex:section] isEqualToString:@"new"]) {
         return nil;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
-        return [NSString stringWithFormat:@"Notes With \"%@\"", [self searchTerm]];
+        return [NSString stringWithFormat:@"Thoughts With \"%@\"", [self searchTerm]];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Contacts"]) {
         return @"Contacts";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"info"]) {
         return @"Info";
     }
-    return [NSString stringWithFormat:@"%@ Threads",[self.sections objectAtIndex:section]];
+    return [NSString stringWithFormat:@"%@ Collections",[self.sections objectAtIndex:section]];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSDictionary *bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
         if (bucket && ![bucket isAllNotesBucket] && ![self assignMode] && [bucket belongsToCurrentUser]) {
-            [self showHUDWithMessage:@"Deleting Thread..."];
+            [self showHUDWithMessage:@"Deleting Collection..."];
             [[LXServer shared] deleteBucketWithBucketID:[bucket ID] success:^(id responseObject){
                 [self refreshChange];
             }failure:^(NSError *error){
@@ -495,9 +495,9 @@
 
 - (IBAction)moreButtonClicked:(id)sender
 {
-    NSString *other1 = @"Upcoming Reminders";
-    NSString *other2 = @"Notes Near Current Location";
-    NSString *other3 = @"Show Random Note";
+    NSString *other1 = @"Upcoming Nudges";
+    NSString *other2 = @"Thoughts Near Current Location";
+    NSString *other3 = @"Show Random Thought";
     NSString *cancelTitle = @"Cancel";
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:other1, other2, other3, nil];
@@ -780,7 +780,7 @@
 # pragma mark - create bucket from contacts
 - (void) createBucketFromContact:(NSMutableDictionary*)contact
 {
-    [self showHUDWithMessage:@"Creating Thread"];
+    [self showHUDWithMessage:@"Creating Collection"];
     
     [[LXServer shared] createBucketWithFirstName:[contact name] andBucketType:@"Person"
                                          success:^(id responseObject) {
@@ -791,7 +791,7 @@
                                              [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
                                          }failure:^(NSError* error) {
                                              [self hideHUD];
-                                             UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the thread." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                                             UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the collection." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
                                              [av show];
                                          }];
 
