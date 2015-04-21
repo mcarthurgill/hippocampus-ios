@@ -569,6 +569,22 @@
      ];
 }
 
+- (void) deleteContactCard:(NSMutableDictionary*)contact success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
+    
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/contact_cards/%@.json", [contact ID]] withMethod:@"DELETE" withParamaters:nil
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
 - (void) removeItem:(NSDictionary*)item fromBucket:(NSDictionary*)bucket success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     [[LXServer shared] requestPath:@"/destroy_with_bucket_and_item.json" withMethod:@"DELETE" withParamaters:@{@"bucket_id":[bucket ID], @"item_id":[item ID]}

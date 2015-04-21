@@ -1628,6 +1628,41 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactCardCell" rowHeight="50" id="cKd-8i-r2d">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cKd-8i-r2d" id="HbM-JB-Byk">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2x0-OC-gEk">
+                                                    <rect key="frame" x="8" y="15" width="584" height="20"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tyI-8u-T6m">
+                                                    <rect key="frame" x="8" y="35" width="584" height="14"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="2x0-OC-gEk" firstAttribute="trailing" secondItem="HbM-JB-Byk" secondAttribute="trailingMargin" id="PG6-30-RD9"/>
+                                                <constraint firstItem="tyI-8u-T6m" firstAttribute="trailing" secondItem="HbM-JB-Byk" secondAttribute="trailingMargin" id="TZU-pW-Adt"/>
+                                                <constraint firstItem="2x0-OC-gEk" firstAttribute="leading" secondItem="HbM-JB-Byk" secondAttribute="leadingMargin" id="Tr7-xk-V8w"/>
+                                                <constraint firstItem="2x0-OC-gEk" firstAttribute="bottom" secondItem="HbM-JB-Byk" secondAttribute="bottomMargin" constant="-8" id="ZQm-Yk-YVo"/>
+                                                <constraint firstItem="tyI-8u-T6m" firstAttribute="top" secondItem="2x0-OC-gEk" secondAttribute="bottom" id="fs1-tG-oFq"/>
+                                                <constraint firstItem="tyI-8u-T6m" firstAttribute="leading" secondItem="HbM-JB-Byk" secondAttribute="leadingMargin" id="jrd-x8-fLb"/>
+                                                <constraint firstItem="2x0-OC-gEk" firstAttribute="top" secondItem="HbM-JB-Byk" secondAttribute="topMargin" constant="7" id="voS-rY-SwW"/>
+                                            </constraints>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="ZQm-Yk-YVo"/>
+                                                </mask>
+                                            </variation>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="mediaCell" rowHeight="178" id="ZYN-qU-Kyc" customClass="HCDetailsPhotoTableViewCell">
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>

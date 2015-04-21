@@ -65,6 +65,15 @@
 
 - (NSArray*) bucketUserPairs;
 
+- (NSArray*) phones;
+- (NSArray*) emails;
+- (NSString*) lastName;
+- (NSNumber*) recordID;
+- (NSString*) note;
+- (NSString*) birthday;
+- (NSString*) company;
+- (NSString*) firstPhone;
+
 - (CLLocation*) location;
 
 - (BOOL) hasID;
@@ -105,6 +114,7 @@
 - (BOOL) weeklyReminder;
 - (BOOL) dailyReminder;
 
+- (BOOL) hasContacts;
 - (BOOL) hasCollaborators;
 - (BOOL) isCollaborativeThread;
 
@@ -114,6 +124,8 @@
 
 
 - (NSDictionary*) creator;
+- (NSArray*) contactCards;
+- (NSDictionary*) contactCard;
 
 - (NSMutableDictionary*) cleanDictionary;
 

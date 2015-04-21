@@ -23,6 +23,7 @@
 @synthesize searchResults;
 @synthesize searchBar;
 @synthesize bucket;
+@synthesize isCollaborating;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -35,12 +36,17 @@
 
 - (void) setup
 {
-    [self.navigationItem setTitle:@"Invite Collaborators"];
+    if (isCollaborating) {
+        [self.navigationItem setTitle:@"Invite Collaborators"];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(share)];
+    } else {
+        [self.navigationItem setTitle:@"Add Contact"];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Add" style:UIBarButtonItemStylePlain target:self action:@selector(addContact)];
+    }
     
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     //[self.tableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:self action:@selector(share)];
     [self updateButtonStatus];
     
     self.contactsToInvite = [[NSMutableArray alloc] init];
@@ -141,6 +147,21 @@
     }
 }
 
+- (void) addContact
+{
+    [self showHUDWithMessage:@"Adding contact"];
+    [[LXServer shared] createContactCardWithBucket:self.bucket andContact:[self.contactsToInvite firstObject] success:^(id responseObject) {
+        [self hideHUD];
+        [self showHUDWithMessage:@"Success!"];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self hideHUD];
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+    }failure:^(NSError *error) {
+        [self hideHUD];
+    }];
+}
+
 - (void) inviteForCollaboration
 {
     [self showHUDWithMessage:@"Adding collaborators"];
@@ -160,12 +181,32 @@
 {
     NSDictionary *contact = isSearching ? [self.searchResults objectAtIndex:indexPath.row] : [[[LXAddressBook thisBook] allContacts] objectAtIndex:indexPath.row];
     
-    if ([self.contactsToInvite containsObject:contact]) {
-        [self.contactsToInvite removeObject:contact];
-        [[self.tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryNone];
+    if (isCollaborating) {
+        if ([self.contactsToInvite containsObject:contact]) {
+            [self.contactsToInvite removeObject:contact];
+            [[self.tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryNone];
+        } else {
+            [self.contactsToInvite addObject:contact];
+            [[self.tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryCheckmark];
+        }
     } else {
-        [self.contactsToInvite addObject:contact];
-        [[self.tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryCheckmark];
+        if ([self.contactsToInvite containsObject:contact]) {
+            [self.contactsToInvite removeObject:contact];
+            [[self.tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryNone];
+        } else {
+            for (NSDictionary*contact in self.contactsToInvite) {
+                NSIndexPath *ip;
+                if (isSearching) {
+                    ip = [NSIndexPath indexPathForRow:[self.searchResults indexOfObject:contact] inSection:0];
+                } else {
+                    ip = [NSIndexPath indexPathForRow:[[[LXAddressBook thisBook] allContacts] indexOfObject:contact] inSection:0];
+                }
+                [[self.tableView cellForRowAtIndexPath:ip] setAccessoryType:UITableViewCellAccessoryNone];
+            }
+            [self.contactsToInvite removeAllObjects];
+            [self.contactsToInvite addObject:contact];
+            [[self.tableView cellForRowAtIndexPath:indexPath] setAccessoryType:UITableViewCellAccessoryCheckmark];
+        }
     }
 }
 
@@ -240,8 +281,6 @@
         [self.navigationItem.rightBarButtonItem setEnabled:NO];
     }
 }
-
-
 
 
 #pragma mark - Search

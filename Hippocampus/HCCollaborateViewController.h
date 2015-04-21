@@ -19,5 +19,6 @@
 @property (strong, nonatomic) NSMutableArray *searchResults;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) NSDictionary *bucket; 
+@property (nonatomic) BOOL isCollaborating;
 
 @end

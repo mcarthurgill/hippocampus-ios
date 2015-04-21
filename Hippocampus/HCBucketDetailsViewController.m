@@ -89,6 +89,10 @@
         [self.sections addObject:@"actions"];
     }
     
+    if ([[self.bucket bucketType] isEqualToString:@"Person"]) {
+        [self.sections addObject:@"contactCard"];
+    }
+    
     if ([self bucketHasMediaUrls]) {
         [self.sections addObject:@"media"];
     }
@@ -107,6 +111,8 @@
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return [self.actionCells count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contactCard"]) {
+        return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         return ([self.bucket mediaURLs].count%2 == 0) ? [self.bucket mediaURLs].count/2 : [self.bucket mediaURLs].count/2 + 1;
     }
@@ -130,6 +136,8 @@
         } else if ([[self.actionCells objectAtIndex:indexPath.row] isEqualToString:@"leaveThread"]) {
             return [self leaveThreadTypeCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
         }
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"contactCard"]) {
+        return [self contactCardCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return [self mediaCellForTableView:self.tableView cellForRowAtIndexPath:indexPath];
     }
@@ -195,6 +203,25 @@
     return cell;
 }
 
+- (UITableViewCell*) contactCardCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"contactCardCell" forIndexPath:indexPath];
+    UILabel* contactLabel = (UILabel*)[cell.contentView viewWithTag:1];
+    UILabel* phoneLabel = (UILabel*)[cell.contentView viewWithTag:2];
+    
+    if ([self.bucket hasContacts]) {
+        [contactLabel setText:[[self.bucket contactCard] name]];
+        [phoneLabel setText:[[self.bucket contactCard] firstPhone]];
+        [phoneLabel setHidden:NO];
+    } else {
+        [phoneLabel setHidden:YES];
+        [contactLabel setText:@"Add Contact"];
+        [contactLabel boldSubstring:contactLabel.text];
+    }
+    return cell;
+}
+
+
 - (UITableViewCell*) mediaCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     
@@ -256,6 +283,8 @@
         return 50.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         return 50.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"contactCard"]) {
+        return 50.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return 200.0f;
     }
@@ -281,6 +310,15 @@
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCCollaborateViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"collaborateViewController"];
         [vc setBucket:self.bucket];
+        [vc setIsCollaborating:YES];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"contactCard"] && [self.bucket hasContacts]) {
+        [self alertForRemovingContact];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"contactCard"]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCCollaborateViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"collaborateViewController"];
+        [vc setBucket:self.bucket];
+        [vc setIsCollaborating:NO];
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -298,6 +336,8 @@
         return @"Collection Type";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contactCard"]) {
+        return @"Contacts";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         return @"Media";
     }
@@ -327,6 +367,17 @@
     [self showHUDWithMessage:@"Deleting Collection..."];
     [[LXServer shared] deleteBucketWithBucketID:[self.bucket ID] success:^(id responseObject) {
         [self.navigationController popToRootViewControllerAnimated:YES];
+        [self hideHUD];
+    }failure:^(NSError *error){
+        [self hideHUD];
+    }];
+}
+
+- (void) removeContact
+{
+    [self showHUDWithMessage:@"Removing Contact..."];
+    [[LXServer shared] deleteContactCard:[[self.bucket contactCard] mutableCopy] success:^(id responseObject) {
+        [self getBucketInfo];
         [self hideHUD];
     }failure:^(NSError *error){
         [self hideHUD];
@@ -465,6 +516,18 @@
     [alert show];
 }
 
+- (void) alertForRemovingContact
+{
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Remove?"
+                                                     message:[NSString stringWithFormat:@"Are you sure you want to remove the contact card for %@", [[self.bucket contactCard] name]]
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles: nil];
+    [alert addButtonWithTitle:@"Remove"];
+    [alert setTag:4];
+    [alert show];
+}
+
 
 - (void) alertForLeavingThread
 {
@@ -511,6 +574,8 @@
         [self leaveThread];
     } else if (buttonIndex == 1 && alertView.tag == 3) {
         [self removeCollaborator];
+    } else if (buttonIndex == 1 && alertView.tag == 4) {
+        [self removeContact];
     }
 }
 

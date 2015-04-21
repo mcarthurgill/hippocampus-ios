@@ -320,6 +320,64 @@
     return [self objectForKey:@"creator"];
 }
 
+- (NSArray*) contactCards
+{
+    return [self objectForKey:@"contact_cards"];
+}
+
+- (NSDictionary*) contactCard
+{
+    if ([self objectForKey:@"contact_cards"]) {
+        return [[self objectForKey:@"contact_cards"] firstObject];
+    }
+    return nil;
+}
+
+- (NSArray*) phones
+{
+    return [self objectForKey:@"phones"];
+}
+
+- (NSString*) firstPhone
+{
+    return [[self objectForKey:@"phones"] firstObject];
+}
+
+- (NSArray*) emails
+{
+    return [self objectForKey:@"emails"];
+}
+
+- (NSString*) lastName
+{
+    return [self objectForKey:@"last_name"];
+}
+
+- (NSNumber*) recordID
+{
+    return [self objectForKey:@"recordID"];
+}
+
+- (NSString*) note
+{
+    return [self objectForKey:@"note"];
+}
+
+- (NSString*) birthday
+{
+    return [self objectForKey:@"birthday"];
+}
+
+- (NSString*) company
+{
+    return [self objectForKey:@"company"];
+}
+
+- (BOOL) hasContacts
+{
+    return [self objectForKey:@"contact_cards"] && [[self objectForKey:@"contact_cards"] count] > 0;
+}
+
 - (BOOL) hasItemUserName
 {
     return [self objectForKey:@"user"] && [[self objectForKey:@"user"] respondsToSelector:@selector(objectForKey:)] && NULL_TO_NIL([[self objectForKey:@"user"] objectForKey:@"name"]);
