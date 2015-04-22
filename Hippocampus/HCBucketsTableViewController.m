@@ -279,6 +279,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     
     UILabel* note = (UILabel*)[cell.contentView viewWithTag:1];
+
     [note setText:[bucket objectForKey:@"first_name"]];
     if (NULL_TO_NIL([bucket bucketType]) && [[bucket bucketType] isEqualToString:@"Person"]) {
         [note boldSubstring:[[note.text componentsSeparatedByString:@" "] objectAtIndex:0]];
@@ -689,6 +690,9 @@
 
 - (NSDictionary*) allNotesDictionary
 {
+    NSLog(@"**********");
+    NSLog(@"self.currentDictionary = %@", [self currentDictionary]);
+    NSLog(@"**********");
     if ([self currentDictionary] && [[self currentDictionary] objectForKey:@"Recent"] && [[[self currentDictionary] objectForKey:@"Recent"] firstObject] && [[[[self currentDictionary] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
         return [[[self currentDictionary] objectForKey:@"Recent"] firstObject];
     }

@@ -482,6 +482,7 @@
         } else {
             [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
         }
+        [self reloadScreen]; 
     }
     
     if ([responseObject objectForKey:@"outstanding_items"] && [[responseObject objectForKey:@"page"] integerValue] == 0) {
@@ -538,9 +539,8 @@
 {
     if ([item belongsToCurrentUser]) {
         [self deleteItem:item];
-        NSInteger index = [[self allItems] indexOfObject:item];
         [[self allItems] removeObject:item];
-        [self reloadScreenToIndex:index animated:YES];
+        [self reloadScreen];
     }
 }
 
