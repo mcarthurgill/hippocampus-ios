@@ -490,11 +490,12 @@
 
 - (IBAction)composeButtonClicked:(id)sender
 {
-    if ([self allNotesDictionary]) {
+    NSDictionary* allNotesDict = [self allNotesDictionary];
+    if (allNotesDict) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
         [btvc setInitializeWithKeyboardUp:YES];
-        [btvc setBucket:[[NSMutableDictionary alloc] initWithDictionary:[self allNotesDictionary]]];
+        [btvc setBucket:[[NSMutableDictionary alloc] initWithDictionary:allNotesDict]];
         [btvc setDelegate:self];
         [self.navigationController pushViewController:btvc animated:YES];
     }
@@ -690,11 +691,10 @@
 
 - (NSDictionary*) allNotesDictionary
 {
-    NSLog(@"**********");
-    NSLog(@"self.currentDictionary = %@", [self currentDictionary]);
-    NSLog(@"**********");
-    if ([self currentDictionary] && [[self currentDictionary] objectForKey:@"Recent"] && [[[self currentDictionary] objectForKey:@"Recent"] firstObject] && [[[[self currentDictionary] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
-        return [[[self currentDictionary] objectForKey:@"Recent"] firstObject];
+    //NSLog(@"self.currentDictionary = %@", [self currentDictionary]);
+    NSMutableDictionary* cachedDraw = [self drawFromDictionary];
+    if (cachedDraw && [cachedDraw objectForKey:@"Recent"] && [[cachedDraw objectForKey:@"Recent"] firstObject] && [[[cachedDraw objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
+        return [[cachedDraw objectForKey:@"Recent"] firstObject];
     }
     return nil;
 }

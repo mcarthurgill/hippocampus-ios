@@ -324,12 +324,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "450806334.021287"
+            timestampString = "451437115.670242"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "550"
-            endingLineNumber = "550"
-            landmarkName = "-searchWithTerm:"
+            startingLineNumber = "551"
+            endingLineNumber = "551"
+            landmarkName = "-scrollViewDidScroll:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -340,12 +340,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "450806334.021287"
+            timestampString = "451437115.670242"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "552"
-            endingLineNumber = "552"
-            landmarkName = "-searchWithTerm:"
+            startingLineNumber = "553"
+            endingLineNumber = "553"
+            landmarkName = "-searchWithCurrentText"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
