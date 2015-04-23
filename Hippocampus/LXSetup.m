@@ -11,6 +11,7 @@
 #import "HCBucketViewController.h"
 #import "HCItemTableViewController.h"
 #import "HCReminderViewController.h"
+#import "LXAppDelegate.h"
 
 static LXSetup* theSetup = nil;
 
@@ -124,5 +125,17 @@ static LXSetup* theSetup = nil;
         }
     }
     return YES;
+}
+
+-(UIImage*) takeScreenshot
+{
+    LXAppDelegate *appDelegate = (LXAppDelegate*)[[UIApplication sharedApplication] delegate];
+    CGSize size = appDelegate.window.frame.size;
+    UIGraphicsBeginImageContext(size);
+    [appDelegate.window.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
 }
 @end

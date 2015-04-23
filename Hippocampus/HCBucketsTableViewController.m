@@ -21,6 +21,7 @@
 #import "HCContactTableViewCell.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "LXAppDelegate.h"
+#import "HCPopUpViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -100,6 +101,12 @@
         if ([[LXSetup theSetup] visitedThisScreen:self withAssignMode:[self assignMode]]) {
             NSLog(@"already visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
         } else {
+//            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+//            HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+//            [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+//            [vc setImageForMainImageView:[UIImage imageNamed:@"txt_scrnsht.png"]];
+//            [vc setMainLabelText:@"sup"];
+//            [self.navigationController presentViewController:vc animated:YES completion:nil];
             NSLog(@"have not visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
         }
     }
@@ -831,22 +838,10 @@
 
 # pragma mark - Setup
 
--(UIImage*) takeScreenshot
-{
-    CGSize size = self.view.window.frame.size;
-    LXAppDelegate *appDelegate = (LXAppDelegate*)[[UIApplication sharedApplication] delegate];
-    
-    UIGraphicsBeginImageContext(size);
-    [appDelegate.window.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return newImage;
-}
 
 -(void)showSetup
 {
-    UIImage *img = [self takeScreenshot];
+    UIImage *img = [[LXSetup theSetup] takeScreenshot];
     
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
     HCSetupViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"setupViewController"];

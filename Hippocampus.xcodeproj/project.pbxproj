@@ -72,6 +72,7 @@
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
 		761596B31AB7847D00EE6259 /* HCItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761596B21AB7847D00EE6259 /* HCItemTableViewCell.m */; };
 		761596B61AB7935C00EE6259 /* HCIndicatorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761596B51AB7935B00EE6259 /* HCIndicatorTableViewCell.m */; };
+		76450E511AE95308004D7FAD /* HCPopUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76450E501AE95308004D7FAD /* HCPopUpViewController.m */; };
 		765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */; };
 		768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */; };
 		769DCA701AB860660036E4BB /* HCExplanationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 769DCA6F1AB860660036E4BB /* HCExplanationTableViewCell.m */; };
@@ -204,6 +205,8 @@
 		761596B21AB7847D00EE6259 /* HCItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCItemTableViewCell.m; sourceTree = "<group>"; };
 		761596B41AB7935B00EE6259 /* HCIndicatorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCIndicatorTableViewCell.h; sourceTree = "<group>"; };
 		761596B51AB7935B00EE6259 /* HCIndicatorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIndicatorTableViewCell.m; sourceTree = "<group>"; };
+		76450E4F1AE95308004D7FAD /* HCPopUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCPopUpViewController.h; sourceTree = "<group>"; };
+		76450E501AE95308004D7FAD /* HCPopUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCPopUpViewController.m; sourceTree = "<group>"; };
 		765B3D711AAF944700E599F3 /* HCRandomItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCRandomItemViewController.h; sourceTree = "<group>"; };
 		765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCRandomItemViewController.m; sourceTree = "<group>"; };
 		768D348F1A94FDAA00D340C0 /* HCBucketDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCBucketDetailsViewController.h; sourceTree = "<group>"; };
@@ -522,6 +525,8 @@
 		2826C6081AD84714008DC533 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				76450E4F1AE95308004D7FAD /* HCPopUpViewController.h */,
+				76450E501AE95308004D7FAD /* HCPopUpViewController.m */,
 			);
 			name = Tutorial;
 			sourceTree = "<group>";
@@ -814,6 +819,7 @@
 				281CA91A1951F4F900E6BE96 /* HCItem.m in Sources */,
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
+				76450E511AE95308004D7FAD /* HCPopUpViewController.m in Sources */,
 				769DCA701AB860660036E4BB /* HCExplanationTableViewCell.m in Sources */,
 				76D965A61AD45CEB008C1D3B /* HCCollaborateTableViewCell.m in Sources */,
 				281CA93F196C8D0500E6BE96 /* HCItemTableViewController.m in Sources */,
