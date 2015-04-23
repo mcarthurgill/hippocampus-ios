@@ -308,7 +308,7 @@
     }
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
-    if ([bucket isAllNotesBucket] && [bucket hasItems]) {
+    if ([bucket hasUnseenItems] || ([bucket isAllNotesBucket] && [bucket hasItems])) {
         [blueDot.layer setCornerRadius:4];
         [blueDot setClipsToBounds:YES];
         [blueDot setHidden:NO];

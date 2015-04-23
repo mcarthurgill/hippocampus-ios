@@ -157,6 +157,11 @@
     return [self objectForKey:@"visibility"];
 }
 
+- (NSString*) unseenItems
+{
+    return [self objectForKey:@"unseen_items"];
+}
+
 - (NSString*) itemUserName
 {
     if (![self hasItemUserName])
@@ -299,6 +304,11 @@
 - (BOOL) isCollaborativeThread
 {
     return [self visibility] && [[self visibility] isEqualToString:@"collaborative"];
+}
+
+- (BOOL) hasUnseenItems
+{
+    return [self unseenItems] && [[self unseenItems] isEqualToString:@"yes"];
 }
 
 - (BOOL) hasCollaborativeThread

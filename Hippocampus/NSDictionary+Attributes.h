@@ -61,6 +61,8 @@
 
 - (NSString*) visibility;
 
+- (NSString*) unseenItems;
+
 - (NSString*) itemUserName;
 
 - (NSArray*) bucketUserPairs;
@@ -117,6 +119,7 @@
 - (BOOL) hasContacts;
 - (BOOL) hasCollaborators;
 - (BOOL) isCollaborativeThread;
+- (BOOL) hasUnseenItems;
 
 - (BOOL) hasCollaborativeThread;
 
