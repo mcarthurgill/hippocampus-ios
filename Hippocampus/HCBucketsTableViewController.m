@@ -111,7 +111,7 @@
         }
     }
     
-    //    if (![[[LXSession thisSession] user] completedSetup]) {
+    //    if (![[[LXSession thisSession] user] completedSetup] && ![self assignMode]) {
     //        [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[[LXSession thisSession] user] setupCompletion] formattedPercentage]]];
     //    }
 }
@@ -315,7 +315,7 @@
     }
     
     UILabel* blueDot = (UILabel*) [cell.contentView viewWithTag:4];
-    if ([bucket isAllNotesBucket] && [bucket hasItems]) {
+    if ([bucket hasUnseenItems] || ([bucket isAllNotesBucket] && [bucket hasItems])) {
         [blueDot.layer setCornerRadius:4];
         [blueDot setClipsToBounds:YES];
         [blueDot setHidden:NO];
