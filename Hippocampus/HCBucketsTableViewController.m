@@ -95,17 +95,26 @@
         [self.navigationItem setRightBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:nil];
     }
-    if (![[[LXSession thisSession] user] completedSetup]) {
-        [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[[LXSession thisSession] user] setupCompletion] formattedPercentage]]];
+    
+    if ([self.navigationController.visibleViewController isKindOfClass:[HCBucketsTableViewController class]]) {
+        if ([[LXSetup theSetup] visitedThisScreen:self withAssignMode:[self assignMode]]) {
+            NSLog(@"already visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
+        } else {
+            NSLog(@"have not visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
+        }
     }
+    
+    //    if (![[[LXSession thisSession] user] completedSetup]) {
+    //        [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[[LXSession thisSession] user] setupCompletion] formattedPercentage]]];
+    //    }
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    if ([[LXSetup theSetup] shouldPromptForCompletion] && [self.navigationController.visibleViewController isKindOfClass:[HCBucketsTableViewController class]] && ![self assignMode]) {
-        [self showSetup];
-    }
+//    if ([[LXSetup theSetup] shouldPromptForCompletion] && [self.navigationController.visibleViewController isKindOfClass:[HCBucketsTableViewController class]] && ![self assignMode]) {
+//        [self showSetup];
+//    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated

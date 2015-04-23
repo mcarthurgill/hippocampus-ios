@@ -75,6 +75,14 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self setTableScrollToIndex:([self currentArray].count) animated:NO];
     });
+    
+    if ([self.navigationController.visibleViewController isKindOfClass:[HCBucketViewController class]]) {
+        if ([[LXSetup theSetup] visitedThisScreen:self]) {
+            NSLog(@"already visited bucket view controller");
+        } else {
+            NSLog(@"have not visited bucket view controller");
+        }
+    }
 }
 
 - (void) viewWillAppear:(BOOL)animated

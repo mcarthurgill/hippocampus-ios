@@ -64,6 +64,12 @@
     [self setUnsavedChanges:NO andSavingChanges:NO];
     
     [self updateItemInfo];
+
+    if ([[LXSetup theSetup] visitedThisScreen:self]) {
+        NSLog(@"already visited item table view controller");
+    } else {
+        NSLog(@"have not visited item table view controller");
+    }
     
 }
 
@@ -517,7 +523,6 @@
 
     [[LXServer shared] saveReminderForItem:self.item
                                         success:^(id responseObject) {
-                                            NSLog(@"successfully updated reminder date");
                                             [self setUnsavedChanges:NO andSavingChanges:NO];
                                             [self hideHUD];
                                             [self reloadScreen];
@@ -604,7 +609,6 @@
     [[LXServer shared] updateItemInfoWithItem:self.item
                                       success:^(id responseObject){
                                           self.item = [NSMutableDictionary dictionaryWithDictionary:responseObject];
-                                          NSLog(@"responseObject item: %@", self.item);
                                           [self getImages];
                                           [self reloadScreen];
                                       }

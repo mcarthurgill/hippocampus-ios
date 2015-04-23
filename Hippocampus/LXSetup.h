@@ -20,4 +20,6 @@
 - (NSDictionary*) currentQuestion;
 - (void) removeCurrentQuestion;
 - (BOOL) questionsLeft;
+- (BOOL) visitedThisScreen:(id)vc;
+- (BOOL) visitedThisScreen:(id)vc withAssignMode:(BOOL)assignMode;
 @end
