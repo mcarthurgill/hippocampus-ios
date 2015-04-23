@@ -7,6 +7,10 @@
 //
 
 #import "LXSetup.h"
+#import "HCBucketsTableViewController.h"
+#import "HCBucketViewController.h"
+#import "HCItemTableViewController.h"
+#import "HCReminderViewController.h"
 
 static LXSetup* theSetup = nil;
 
@@ -89,5 +93,36 @@ static LXSetup* theSetup = nil;
 - (BOOL) questionsLeft
 {
     return self.questions.count > 0;
+}
+
+
+# pragma mark - Screens
+- (BOOL) visitedThisScreen:(id)vc {
+    return [self visitedThisScreen:vc withAssignMode:NO];
+}
+
+- (BOOL) visitedThisScreen:(id)vc withAssignMode:(BOOL)assignMode
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSString *viewControllerString = NSStringFromClass([vc class]);
+    
+    if (assignMode) {
+        viewControllerString = [viewControllerString stringByAppendingString:@"AssignMode"];
+    }
+    
+    if (viewControllerString && viewControllerString.length > 0) {
+        if ([userDefaults objectForKey:viewControllerString]) {
+            NSInteger visits = [userDefaults integerForKey:viewControllerString];
+            [userDefaults setInteger:visits+1 forKey:viewControllerString];
+            [userDefaults synchronize];
+            return YES;
+        } else {
+            [userDefaults setInteger:1 forKey:viewControllerString];
+            [userDefaults synchronize];
+            return NO;
+        }
+    }
+    return YES;
 }
 @end

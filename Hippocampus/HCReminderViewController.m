@@ -54,7 +54,14 @@
     }
     
     [self refreshDayPicker];
+    
+    if ([[LXSetup theSetup] visitedThisScreen:self]) {
+        NSLog(@"already visited reminder view controller");
+    } else {
+        NSLog(@"have not visited reminder view controller");
+    }
 }
+
 
 - (void) refreshAfterSelect
 {
