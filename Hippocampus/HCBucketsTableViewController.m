@@ -95,8 +95,9 @@
         [self.navigationItem setRightBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:nil];
     }
-    if (![[[LXSession thisSession] user] completedSetup]) {
-        [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[[LXSession thisSession] user] setupCompletion] formattedPercentage]]];
+    if (![[[LXSession thisSession] user] completedSetup] && ![self assignMode]) {
+        //[self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[[LXSession thisSession] user] setupCompletion] formattedPercentage]]];
+        
     }
 }
 
