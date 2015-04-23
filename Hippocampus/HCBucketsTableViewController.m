@@ -404,6 +404,7 @@
             [self createBucketFromContact:[[[self currentDictionary] objectForKey:@"Contacts"] objectAtIndex:indexPath.row]];
         } else {
             [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
+            [self updateAllBucketsInBackground];
             [self.navigationController popViewControllerAnimated:YES];
         }
     
@@ -426,6 +427,15 @@
         }
     
     }
+}
+
+- (void) updateAllBucketsInBackground
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[LXServer shared] getAllBucketsWithSuccess:^(id responseObject){
+            [self reloadScreen];
+        }failure:nil];
+    });
 }
 
 - (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
