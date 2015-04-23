@@ -217,7 +217,7 @@
 {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
                            success:^(id responseObject) {
-                               NSLog(@"allBuckets: %@", responseObject);
+                               //NSLog(@"allBuckets: %@", responseObject);
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    NSMutableDictionary* bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
                                    if (bucketsDictionary) {
