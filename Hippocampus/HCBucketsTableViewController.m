@@ -614,7 +614,7 @@
 - (NSMutableDictionary*) drawFromDictionary
 {
     NSMutableDictionary* temp = [self threadsOnlyDictionary];
-    if ([[LXAddressBook thisBook] permissionGranted]) {
+    if ([self assignMode] && [[LXAddressBook thisBook] permissionGranted]) {
         [temp setObject:[[LXAddressBook thisBook] contactsForAssignment] forKey:@"Contacts"];
     }
     return temp;
