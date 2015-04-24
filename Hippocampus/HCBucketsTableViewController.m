@@ -70,8 +70,6 @@
         [self reloadScreen];
     });
     
-    [self getAddressBookPermissionIfUndetermined];
-    
     if ([self allNotesDictionary]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
@@ -97,20 +95,6 @@
         [self.navigationItem setLeftBarButtonItem:nil];
     }
     
-    if ([self.navigationController.visibleViewController isKindOfClass:[HCBucketsTableViewController class]]) {
-        if ([[LXSetup theSetup] visitedThisScreen:self withAssignMode:[self assignMode]]) {
-            NSLog(@"already visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
-        } else {
-//            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-//            HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
-//            [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
-//            [vc setImageForMainImageView:[UIImage imageNamed:@"txt_scrnsht.png"]];
-//            [vc setMainLabelText:@"sup"];
-//            [self.navigationController presentViewController:vc animated:YES completion:nil];
-            NSLog(@"have not visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
-        }
-    }
-    
     //    if (![[[LXSession thisSession] user] completedSetup] && ![self assignMode]) {
     //        [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[[LXSession thisSession] user] setupCompletion] formattedPercentage]]];
     //    }
@@ -122,6 +106,32 @@
 //    if ([[LXSetup theSetup] shouldPromptForCompletion] && [self.navigationController.visibleViewController isKindOfClass:[HCBucketsTableViewController class]] && ![self assignMode]) {
 //        [self showSetup];
 //    }
+    
+    if ([self.navigationController.visibleViewController isKindOfClass:[HCBucketsTableViewController class]]) {
+        if ([[LXSetup theSetup] visitedThisScreen:self withAssignMode:[self assignMode]]) {
+            NSLog(@"already visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
+            if ([self assignMode]) {
+                [self getAddressBookPermissionIfUndetermined];
+            }
+        } else {
+            NSLog(@"have not visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
+            if ([self assignMode]) {
+                UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+                HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+                [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+                [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
+                [vc setMainLabelText:@"Thoughts belong to collections. Assign this thought to an existing collection or create a new one."];
+                [self.navigationController presentViewController:vc animated:NO completion:nil];
+            } else {
+                UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+                HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+                [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+                [vc setImageForMainImageView:[UIImage imageNamed:@"compose-screen.jpg"]];
+                [vc setMainLabelText:@"Welcome! Tap 'Compose' in the top right corner to add a thought."];
+                [self.navigationController presentViewController:vc animated:NO completion:nil];
+            }
+        }
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -529,9 +539,9 @@
 
 - (IBAction)moreButtonClicked:(id)sender
 {
-    NSString *other1 = @"Upcoming Nudges";
-    NSString *other2 = @"Thoughts Near Current Location";
-    NSString *other3 = @"Show Random Thought";
+    NSString *other1 = @"Nudges";
+    NSString *other2 = @"Thoughts Nearby";
+    NSString *other3 = @"Random Thought";
     NSString *cancelTitle = @"Cancel";
     
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:cancelTitle destructiveButtonTitle:nil otherButtonTitles:other1, other2, other3, nil];

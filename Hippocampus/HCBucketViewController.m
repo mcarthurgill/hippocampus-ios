@@ -15,6 +15,7 @@
 #import "HCItemTableViewCell.h"
 #import "UIImage+Helpers.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "HCPopUpViewController.h"
 
 @import AssetsLibrary;
 
@@ -75,14 +76,6 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self setTableScrollToIndex:([self currentArray].count) animated:NO];
     });
-    
-    if ([self.navigationController.visibleViewController isKindOfClass:[HCBucketViewController class]]) {
-        if ([[LXSetup theSetup] visitedThisScreen:self]) {
-            NSLog(@"already visited bucket view controller");
-        } else {
-            NSLog(@"have not visited bucket view controller");
-        }
-    }
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -95,6 +88,22 @@
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    if ([self.navigationController.visibleViewController isKindOfClass:[HCBucketViewController class]]) {
+        if ([self.bucket isAllNotesBucket]) {
+            if ([[LXSetup theSetup] visitedThisScreen:self]) {
+                NSLog(@"already visited bucket view controller");
+            } else {
+                NSLog(@"have not visited bucket view controller");
+                UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+                HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+                [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+                [vc setImageForMainImageView:[UIImage imageNamed:@"all-screen.jpg"]];
+                [vc setMainLabelText:@"These are all your thoughts. A blue dot means the thought doesn't belong to any collections."];
+                [self.navigationController presentViewController:vc animated:NO completion:nil];
+            }
+        }
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated

@@ -12,6 +12,7 @@
 #import "HCBucketsTableViewController.h"
 #import "HCContainerViewController.h"
 #import <QuartzCore/QuartzCore.h>
+#import "HCPopUpViewController.h"
 @import MapKit;
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
@@ -64,12 +65,6 @@
     [self setUnsavedChanges:NO andSavingChanges:NO];
     
     [self updateItemInfo];
-
-    if ([[LXSetup theSetup] visitedThisScreen:self]) {
-        NSLog(@"already visited item table view controller");
-    } else {
-        NSLog(@"have not visited item table view controller");
-    }
     
 }
 
@@ -78,6 +73,34 @@
     [super viewWillAppear:animated];
     
     [self reloadScreen];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if ([[LXSetup theSetup] visitedThisScreen:self]) {
+        NSLog(@"already visited item table view controller");
+    } else {
+        NSLog(@"have not visited item table view controller");
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+        [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+        [vc setImageForMainImageView:[UIImage imageNamed:@"item-screen.jpg"]];
+        [vc setMainLabelText:@"Here, you can assign this note to a collection or set it to nudge you (like a reminder) later."];
+        [self.navigationController.visibleViewController presentViewController:vc animated:NO completion:nil];
+    }
+    NSLog(@"have not visited item table view controller");
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+    [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+    [vc setImageForMainImageView:[UIImage imageNamed:@"item-screen.jpg"]];
+    [vc setMainLabelText:@"Here, you can assign this note to a collection or set it to nudge you (like a reminder) later."];
+    if (self.pageControllerDelegate && self.pageControllerDelegate.parentViewController) {
+        [[self.pageControllerDelegate.parentViewController navigationController] presentViewController:vc animated:NO completion:nil];
+    } else {
+        [self.navigationController presentViewController:vc animated:NO completion:nil];
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -366,9 +389,9 @@
     } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"delete"]) {
         [label setText:@"Delete Thought"];
     } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"define"]) {
-        [label setText:@"Show Definition"];
+        [label setText:@"Define"];
     } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"copy"]) {
-        [label setText:@"Copy Thought"];
+        [label setText:@"Copy"];
     }
     
     return cell;

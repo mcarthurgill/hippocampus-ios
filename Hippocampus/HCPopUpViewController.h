@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface HCPopUpViewController : UIViewController
+{
+    CGRect mainFrame;
+    CGRect hiddenFrame;
+}
 
 @property (weak, nonatomic) IBOutlet UIImageView *screenshotImageView;
 @property (weak, nonatomic) IBOutlet UIView *tintedView;
@@ -18,12 +22,13 @@
 @property (weak, nonatomic) IBOutlet UIImageView *mainImageView;
 @property (weak, nonatomic) IBOutlet UIButton *mainButton;
 
-- (IBAction)mainButtonAction:(id)sender;
-
 //the properties below are the ones you set for customization
 @property (strong, nonatomic) UIImage *imageForMainImageView;
 @property (strong, nonatomic) UIImage *imageForScreenshotImageView;
 @property (strong, nonatomic) NSString *mainLabelText;
+
+- (IBAction)mainButtonAction:(id)sender;
+- (IBAction)backgroundButtonAction:(id)sender;
 
 
 @end
