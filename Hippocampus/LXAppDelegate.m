@@ -7,6 +7,7 @@
 //
 
 #import "LXAppDelegate.h"
+#import "HCPermissionViewController.h"
 
 @implementation LXAppDelegate
 
@@ -170,6 +171,10 @@
 
 - (void) getPushNotificationPermission
 {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:YES forKey:@"doneAskingForPushNotificationPermission"];
+    [userDefaults synchronize];
+    
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeAlert|UIUserNotificationTypeSound categories:nil];
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
@@ -214,7 +219,16 @@
         NSInteger appLaunches = [userDefaults integerForKey:@"appLaunches"];
         [userDefaults setInteger:appLaunches+1 forKey:@"appLaunches"];
         if ([userDefaults integerForKey:@"appLaunches"] > 7) {
-            [self getPushNotificationPermission];
+            if (![LXSession areNotificationsEnabled] && ![userDefaults objectForKey:@"doneAskingForPushNotificationPermission"] && appLaunches%2 == 1) {
+                UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+                HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
+                [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+                [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
+                [vc setMainLabelText:@"We would like permission send you push notifications when you set a nudge (reminder) for a note."];
+                [vc setPermissionType:@"notifications"];
+                [vc setDelegate:self];
+                [self.window.rootViewController presentViewController:vc animated:NO completion:nil];
+            }
         }
     } else {
         [userDefaults setInteger:1 forKey:@"appLaunches"];

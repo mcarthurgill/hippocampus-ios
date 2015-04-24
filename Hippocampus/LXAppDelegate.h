@@ -13,6 +13,7 @@
 @property (strong, nonatomic) UIWindow *window;
 
 - (void) setRootStoryboard:(NSString*)name;
-- (void) setBadgeIcon; 
+- (void) setBadgeIcon;
+- (void) getPushNotificationPermission;
 
 @end

@@ -35,7 +35,7 @@
 {
     [super viewDidAppear:animated];
     
-    if (NO && [[LXSetup theSetup] visitedThisScreen:self]) {
+    if ([[LXSetup theSetup] visitedThisScreen:self]) {
         NSLog(@"already visited item table view controller");
     } else {
         NSLog(@"have not visited item table view controller");

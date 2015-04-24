@@ -16,6 +16,7 @@ static LXAddressBook* thisBook = nil;
 
 @synthesize contactsForAssignment;
 @synthesize allContacts;
+@synthesize alreadyAskedPermission; 
 
 # pragma mark - Initializers
 //constructor
@@ -77,7 +78,6 @@ static LXAddressBook* thisBook = nil;
         NSMutableDictionary *bucketNames = [[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] bucketNames];
 
         if (orderedContacts.count > 0) {
-
             for (int i = 0; i < [orderedContacts count]; i++) {
                 NSString *name = [self getContactName:[orderedContacts objectAtIndex:i]];
                 NSString *lastName = [self getContactLastName:[orderedContacts objectAtIndex:i]];
@@ -102,7 +102,7 @@ static LXAddressBook* thisBook = nil;
         }
         
         [self sortContacts];
-
+        NSLog(@"*******sortedContacts*******");
         completion(YES);
     });
 }

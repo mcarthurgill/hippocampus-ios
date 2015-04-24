@@ -22,6 +22,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "LXAppDelegate.h"
 #import "HCPopUpViewController.h"
+#import "HCPermissionViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
@@ -815,13 +816,24 @@
 
 - (void) getAddressBookPermissionIfUndetermined
 {
-    if ([self assignMode] && ![[LXAddressBook thisBook] permissionDetermined]) {
-        [[LXAddressBook thisBook] requestAccess:^(BOOL success) {
-            [self reloadScreen];
-        }];
+    if ([self assignMode] && ![[LXAddressBook thisBook] permissionDetermined] && ![[LXAddressBook thisBook] alreadyAskedPermission]) {
+        [[LXAddressBook thisBook] setAlreadyAskedPermission:YES]; 
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
+        [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+        [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
+        [vc setMainLabelText:@"We would like permission use your contacts to make creating collections easy for you."];
+        [vc setPermissionType:@"contacts"]; 
+        [vc setDelegate:self]; 
+        [self.navigationController presentViewController:vc animated:NO completion:nil];
     }
 }
 
+
+- (void) permissionsDelegate
+{
+    [self reloadScreen];
+}
 
 # pragma mark - create bucket from contacts
 - (void) createBucketFromContact:(NSMutableDictionary*)contact

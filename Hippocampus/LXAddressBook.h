@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSMutableArray *contactsForAssignment;
 @property (strong, nonatomic) NSMutableArray *allContacts;
+@property (nonatomic) BOOL alreadyAskedPermission;
 
 + (LXAddressBook*) thisBook;
 - (BOOL) permissionDetermined;

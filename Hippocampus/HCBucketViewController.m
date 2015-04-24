@@ -16,6 +16,7 @@
 #import "UIImage+Helpers.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "HCPopUpViewController.h"
+#import "HCPermissionViewController.h"
 
 @import AssetsLibrary;
 
@@ -387,8 +388,17 @@
         if ([userDefaults objectForKey:@"noteCreatedInApp"]) {
             NSInteger createdNotes = [userDefaults integerForKey:@"noteCreatedInApp"];
             [userDefaults setInteger:createdNotes+1 forKey:@"noteCreatedInApp"];
-            if ([userDefaults integerForKey:@"noteCreatedInApp"] == 4) {
-                [[LXSession thisSession] startLocationUpdates];
+            if ([userDefaults integerForKey:@"noteCreatedInApp"] == 4 && ![LXSession locationPermissionDetermined]) {
+                UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+                HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
+                [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+                [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
+                [vc setMainLabelText:@"We would like to use your location so you can see your thoughts on a map."];
+                [vc setPermissionType:@"location"];
+                [vc setDelegate:self];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.navigationController presentViewController:vc animated:NO completion:nil];
+                });
             }
         } else {
             [userDefaults setInteger:1 forKey:@"noteCreatedInApp"];
@@ -397,6 +407,10 @@
     });
 }
 
+- (void) permissionsDelegate
+{
+    NSLog(@"permissions delegate!");
+}
 
 - (void) replacingWithItem:(NSDictionary*)replacement
 {

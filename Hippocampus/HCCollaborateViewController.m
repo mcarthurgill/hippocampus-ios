@@ -10,6 +10,7 @@
 #import "HCExplanationTableViewCell.h"
 #import "HCCollaborateTableViewCell.h"
 #import "HCNameViewController.h"
+#import "HCPermissionViewController.h"
 
 @interface HCCollaborateViewController ()
 
@@ -263,11 +264,22 @@
 
 - (void) shouldPromptForAddressBookPermission
 {
-    if (![[LXAddressBook thisBook] permissionDetermined]) {
-        [[LXAddressBook thisBook] requestAccess:^(BOOL success) {
-            [self.tableView reloadData];
-        }];
+    if (![[LXAddressBook thisBook] permissionDetermined] && ![[LXAddressBook thisBook] alreadyAskedPermission]) {
+        [[LXAddressBook thisBook] setAlreadyAskedPermission:YES];
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
+        [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+        [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
+        [vc setMainLabelText:@"We would like permission use your contacts so you can build collections with your friends."];
+        [vc setPermissionType:@"contacts"]; 
+        [vc setDelegate:self];
+        [self.navigationController presentViewController:vc animated:NO completion:nil];
     }
+}
+
+- (void) permissionsDelegate
+{
+    [self.tableView reloadData];
 }
 
 

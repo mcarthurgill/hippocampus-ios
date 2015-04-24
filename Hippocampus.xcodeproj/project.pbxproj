@@ -77,6 +77,7 @@
 		761596B31AB7847D00EE6259 /* HCItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761596B21AB7847D00EE6259 /* HCItemTableViewCell.m */; };
 		761596B61AB7935C00EE6259 /* HCIndicatorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761596B51AB7935B00EE6259 /* HCIndicatorTableViewCell.m */; };
 		76450E511AE95308004D7FAD /* HCPopUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76450E501AE95308004D7FAD /* HCPopUpViewController.m */; };
+		76450E541AEA8509004D7FAD /* HCPermissionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76450E531AEA8509004D7FAD /* HCPermissionViewController.m */; };
 		765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */; };
 		768D34911A94FDAA00D340C0 /* HCBucketDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 768D34901A94FDAA00D340C0 /* HCBucketDetailsViewController.m */; };
 		769DCA701AB860660036E4BB /* HCExplanationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 769DCA6F1AB860660036E4BB /* HCExplanationTableViewCell.m */; };
@@ -215,6 +216,8 @@
 		761596B51AB7935B00EE6259 /* HCIndicatorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCIndicatorTableViewCell.m; sourceTree = "<group>"; };
 		76450E4F1AE95308004D7FAD /* HCPopUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCPopUpViewController.h; sourceTree = "<group>"; };
 		76450E501AE95308004D7FAD /* HCPopUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCPopUpViewController.m; sourceTree = "<group>"; };
+		76450E521AEA8509004D7FAD /* HCPermissionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCPermissionViewController.h; sourceTree = "<group>"; };
+		76450E531AEA8509004D7FAD /* HCPermissionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCPermissionViewController.m; sourceTree = "<group>"; };
 		765B3D711AAF944700E599F3 /* HCRandomItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCRandomItemViewController.h; sourceTree = "<group>"; };
 		765B3D721AAF944700E599F3 /* HCRandomItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCRandomItemViewController.m; sourceTree = "<group>"; };
 		768D348F1A94FDAA00D340C0 /* HCBucketDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCBucketDetailsViewController.h; sourceTree = "<group>"; };
@@ -604,6 +607,8 @@
 			children = (
 				76CA90561AE19D1300C6E400 /* HCSetupViewController.h */,
 				76CA90571AE19D1300C6E400 /* HCSetupViewController.m */,
+				76450E521AEA8509004D7FAD /* HCPermissionViewController.h */,
+				76450E531AEA8509004D7FAD /* HCPermissionViewController.m */,
 			);
 			name = Setup;
 			sourceTree = "<group>";
@@ -827,6 +832,7 @@
 				288433BF1A8BD3AA0059FCE1 /* HCItemPageViewController.m in Sources */,
 				76D965A31AD456AE008C1D3B /* HCCollaborateViewController.m in Sources */,
 				28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */,
+				76450E541AEA8509004D7FAD /* HCPermissionViewController.m in Sources */,
 				2837E8091AC11D400089FA33 /* HCOnboardingPageViewController.m in Sources */,
 				281CA937196C458400E6BE96 /* HCBucketsTableViewController.m in Sources */,
 				76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */,
