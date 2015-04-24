@@ -99,7 +99,7 @@
                 HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
                 [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
                 [vc setImageForMainImageView:[UIImage imageNamed:@"all-screen.jpg"]];
-                [vc setMainLabelText:@"These are all your thoughts. A blue dot means the thought doesn't belong to any collections."];
+                [vc setMainLabelText:@"These are all your thoughts. A blue dot means the thought doesn't belong to any collections yet."];
                 [self.navigationController presentViewController:vc animated:NO completion:nil];
             }
         }
