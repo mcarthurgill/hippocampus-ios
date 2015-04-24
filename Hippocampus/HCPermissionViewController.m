@@ -18,6 +18,7 @@
 @implementation HCPermissionViewController
 
 @synthesize mainLabel, mainImageView, overlayView, screenshotImageView, tintedView, imageForMainImageView, imageForScreenshotImageView, mainLabelText, grantPermissionButton, delegate, permissionType;
+@synthesize buttonText;
 
 - (void)viewDidLoad
 {
@@ -65,6 +66,10 @@
     [self.mainImageView setImage:self.imageForMainImageView];
     [self.mainLabel setText:self.mainLabelText];
     
+    if (self.buttonText && [self.buttonText length] > 0) {
+        [self.grantPermissionButton setTitle:self.buttonText forState:UIControlStateNormal];
+    }
+    
     [self.overlayView setAlpha:0.0f];
 }
 
@@ -72,7 +77,7 @@
 
 # pragma mark - Actions
 
-- (IBAction)backgroundButtonAction:(id)sender
+- (IBAction) backgroundButtonAction:(id)sender
 {
     [self dismissView:NO];
 }
@@ -91,7 +96,8 @@
 }
 
 
-- (IBAction)grantPermissionAction:(id)sender {
+- (IBAction) grantPermissionAction:(id)sender
+{
     if (permissionType && permissionType.length > 0) {
         if ([permissionType isEqualToString:@"contacts"]) {
             [[LXAddressBook thisBook] requestAccess:^(BOOL success) {

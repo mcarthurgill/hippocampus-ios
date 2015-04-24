@@ -223,10 +223,11 @@
                 UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
                 HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
                 [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
-                [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
-                [vc setMainLabelText:@"We would like permission send you push notifications when you set a nudge (reminder) for a note."];
+                [vc setImageForMainImageView:[UIImage imageNamed:@"permission-screen.jpg"]];
+                [vc setMainLabelText:@"Turn on push notifications to get nudges (reminders) about your thoughts. No spam, we promise."];
                 [vc setPermissionType:@"notifications"];
                 [vc setDelegate:self];
+                [vc setButtonText:@"Turn On Notifications"];
                 [self.window.rootViewController presentViewController:vc animated:NO completion:nil];
             }
         }

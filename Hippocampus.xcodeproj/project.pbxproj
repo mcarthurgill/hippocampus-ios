@@ -73,6 +73,7 @@
 		28CD3FBE1AEA0F8700B3ABB6 /* item-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FBD1AEA0F8700B3ABB6 /* item-screen.jpg */; };
 		28CD3FC01AEA887200B3ABB6 /* new-collection-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FBF1AEA887200B3ABB6 /* new-collection-screen.jpg */; };
 		28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FC11AEA89F400B3ABB6 /* nudge-screen.jpg */; };
+		28CD3FC41AEADC1A00B3ABB6 /* permission-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FC31AEADC1A00B3ABB6 /* permission-screen.jpg */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -207,6 +208,7 @@
 		28CD3FBD1AEA0F8700B3ABB6 /* item-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "item-screen.jpg"; sourceTree = "<group>"; };
 		28CD3FBF1AEA887200B3ABB6 /* new-collection-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "new-collection-screen.jpg"; sourceTree = "<group>"; };
 		28CD3FC11AEA89F400B3ABB6 /* nudge-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "nudge-screen.jpg"; sourceTree = "<group>"; };
+		28CD3FC31AEADC1A00B3ABB6 /* permission-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "permission-screen.jpg"; sourceTree = "<group>"; };
 		28F5B8A81ACC378000C7F5BC /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
@@ -566,6 +568,7 @@
 		28CD3FB41AE9BD6200B3ABB6 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				28CD3FC31AEADC1A00B3ABB6 /* permission-screen.jpg */,
 				28CD3FC11AEA89F400B3ABB6 /* nudge-screen.jpg */,
 				28CD3FBF1AEA887200B3ABB6 /* new-collection-screen.jpg */,
 				28CD3FBD1AEA0F8700B3ABB6 /* item-screen.jpg */,
@@ -754,6 +757,7 @@
 				28CD3FC01AEA887200B3ABB6 /* new-collection-screen.jpg in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */,
+				28CD3FC41AEADC1A00B3ABB6 /* permission-screen.jpg in Resources */,
 				28CD3FBA1AE9C80800B3ABB6 /* assign-screen.jpg in Resources */,
 				2826C6101ADDA5D1008DC533 /* txt_scrnsht.png in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,

@@ -821,10 +821,11 @@
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
         [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
-        [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
-        [vc setMainLabelText:@"We would like permission use your contacts to make creating collections easy for you."];
+        [vc setImageForMainImageView:[UIImage imageNamed:@"permission-screen.jpg"]];
+        [vc setMainLabelText:@"Use your contacts to easily create collections about people you already know."];
         [vc setPermissionType:@"contacts"]; 
-        [vc setDelegate:self]; 
+        [vc setDelegate:self];
+        [vc setButtonText:@"Grant Contact Permission"];
         [self.navigationController presentViewController:vc animated:NO completion:nil];
     }
 }

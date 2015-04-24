@@ -30,7 +30,8 @@
 @property (strong, nonatomic) UIImage *imageForMainImageView;
 @property (strong, nonatomic) UIImage *imageForScreenshotImageView;
 @property (strong, nonatomic) NSString *mainLabelText;
-@property (strong, nonatomic) NSString *permissionType; 
+@property (strong, nonatomic) NSString *permissionType;
+@property (strong, nonatomic) NSString *buttonText;
 @property (strong, nonatomic) id delegate;
 
 @end

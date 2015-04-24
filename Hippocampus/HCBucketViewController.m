@@ -382,20 +382,23 @@
     }
 }
 
-- (void) incrementNoteCreatedInApp {
+- (void) incrementNoteCreatedInApp
+{
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         if ([userDefaults objectForKey:@"noteCreatedInApp"]) {
             NSInteger createdNotes = [userDefaults integerForKey:@"noteCreatedInApp"];
             [userDefaults setInteger:createdNotes+1 forKey:@"noteCreatedInApp"];
             if ([userDefaults integerForKey:@"noteCreatedInApp"] == 4 && ![LXSession locationPermissionDetermined]) {
+                [self.congratsView setAlpha:0.0f];
                 UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
                 HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
                 [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
-                [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
-                [vc setMainLabelText:@"We would like to use your location so you can see your thoughts on a map."];
+                [vc setImageForMainImageView:[UIImage imageNamed:@"permission-screen.jpg"]];
+                [vc setMainLabelText:@"Use your phone's location to see your thoughts on a map."];
                 [vc setPermissionType:@"location"];
                 [vc setDelegate:self];
+                [vc setButtonText:@"Grant Location Permission"];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self.navigationController presentViewController:vc animated:NO completion:nil];
                 });
