@@ -11,6 +11,7 @@
 #import "HCItemTableViewCell.h"
 #import "HCIndicatorTableViewCell.h"
 #import "HCExplanationTableViewCell.h"
+#import "HCPermissionViewController.h"
 
 @import MapKit;
 
@@ -259,7 +260,27 @@
 
 - (void) getItemsNearCurrentLocation
 {
-    [[LXSession thisSession] startLocationUpdates];
+    if (![LXSession locationPermissionDetermined]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
+        [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+        [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
+        [vc setMainLabelText:@"We would like to use your location so you can see your thoughts on a map."];
+        [vc setPermissionType:@"location"];
+        [vc setDelegate:self];
+        [self.navigationController presentViewController:vc animated:NO completion:nil];
+    } else {
+        [self requestItemsNearMeFromServer];
+    }
+}
+
+- (void) permissionsDelegate
+{
+    [self requestItemsNearMeFromServer]; 
+}
+
+- (void) requestItemsNearMeFromServer
+{
     requestMade = YES;
     [[LXServer shared] getItemsNearCurrentLocation:^(id responseObject) {
         firstRequest = NO;
