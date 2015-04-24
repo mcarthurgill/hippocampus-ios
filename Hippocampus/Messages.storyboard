@@ -2343,7 +2343,7 @@
             </objects>
             <point key="canvasLocation" x="3496" y="3305"/>
         </scene>
-        <!--New Thread-->
+        <!--New Collection-->
         <scene sceneID="HGb-p0-MI9">
             <objects>
                 <tableViewController storyboardIdentifier="newBucketIITableViewController" id="bTB-5j-foa" customClass="HCNewBucketIITableViewController" sceneMemberID="viewController">
@@ -2417,7 +2417,7 @@
                             <outlet property="delegate" destination="bTB-5j-foa" id="TzN-b9-2pa"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="New Thread" id="lMC-JN-7YN">
+                    <navigationItem key="navigationItem" title="New Collection" id="lMC-JN-7YN">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="97E-0o-AvF">
                             <connections>
                                 <action selector="saveAction:" destination="bTB-5j-foa" id="nqm-Np-fWj"/>

@@ -49,7 +49,7 @@
     firstRequest = YES;
     self.allItems = [[NSMutableArray alloc] init];
     [self getItemsNearCurrentLocation];
-    [self.navigationItem setTitle:@"Nearby Notes"];
+    [self.navigationItem setTitle:@"Thoughts Nearby"];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self setupMapView];
 }

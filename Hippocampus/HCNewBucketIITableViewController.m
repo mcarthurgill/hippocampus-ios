@@ -9,6 +9,7 @@
 #import "HCNewBucketIITableViewController.h"
 #import "HCItemTableViewController.h"
 #import "HCItemPageViewController.h"
+#import "HCPopUpViewController.h"
 
 @interface HCNewBucketIITableViewController ()
 
@@ -43,6 +44,23 @@
 {
     [super viewWillAppear:animated];
     [self.typePicker selectRow:1 inComponent:0 animated:NO];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if ([[LXSetup theSetup] visitedThisScreen:self]) {
+        NSLog(@"already visited new bucket view controller");
+    } else {
+        NSLog(@"have not visited new bucket view controller");
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+        [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+        [vc setImageForMainImageView:[UIImage imageNamed:@"new-collection-screen.jpg"]];
+        [vc setMainLabelText:@"Name your collection. Then choose whether it's a Person (e.g. 'Sarah Smith'), Event ('Christmas Party'), Place ('The Office'), or Other ('Quotes')."];
+        [self.navigationController presentViewController:vc animated:NO completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning
