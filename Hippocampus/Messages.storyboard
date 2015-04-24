@@ -2241,8 +2241,8 @@
                                                     <action selector="mainButtonAction:" destination="kKU-VD-ynT" eventType="touchUpInside" id="sLv-Kj-6TL"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="Uhr-bH-sgn">
-                                                <rect key="frame" x="8" y="18" width="534" height="80"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="Uhr-bH-sgn">
+                                                <rect key="frame" x="16" y="18" width="534" height="80"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="213" id="IXT-5g-Fbk"/>
                                                     <constraint firstAttribute="width" constant="534" id="cw3-N5-ywL"/>
@@ -2253,6 +2253,7 @@
                                                 <variation key="default">
                                                     <mask key="constraints">
                                                         <exclude reference="IXT-5g-Fbk"/>
+                                                        <exclude reference="cw3-N5-ywL"/>
                                                     </mask>
                                                 </variation>
                                             </label>
@@ -2276,7 +2277,7 @@
                                             <constraint firstItem="mec-YS-YqR" firstAttribute="top" secondItem="Uhr-bH-sgn" secondAttribute="bottom" constant="8" id="1bT-lH-gcA"/>
                                             <constraint firstItem="mec-YS-YqR" firstAttribute="top" secondItem="Uhr-bH-sgn" secondAttribute="bottom" constant="25" id="6g0-hu-54h"/>
                                             <constraint firstItem="mec-YS-YqR" firstAttribute="top" secondItem="Uhr-bH-sgn" secondAttribute="bottom" constant="15" id="7Ic-Cl-wtX"/>
-                                            <constraint firstItem="Uhr-bH-sgn" firstAttribute="leading" secondItem="FyB-ko-GoU" secondAttribute="leading" constant="8" id="AaT-Lk-uN2"/>
+                                            <constraint firstItem="Uhr-bH-sgn" firstAttribute="leading" secondItem="FyB-ko-GoU" secondAttribute="leading" constant="16" id="AaT-Lk-uN2"/>
                                             <constraint firstItem="mec-YS-YqR" firstAttribute="leading" secondItem="FyB-ko-GoU" secondAttribute="leading" constant="29" id="BaA-cP-EaT"/>
                                             <constraint firstItem="Z1H-vd-nGb" firstAttribute="top" secondItem="mec-YS-YqR" secondAttribute="bottom" constant="80" id="DyC-8L-9tU"/>
                                             <constraint firstAttribute="trailing" secondItem="mec-YS-YqR" secondAttribute="trailing" constant="29" id="HBr-Sj-bQO"/>
@@ -2287,7 +2288,7 @@
                                             <constraint firstItem="mec-YS-YqR" firstAttribute="top" secondItem="Uhr-bH-sgn" secondAttribute="bottom" constant="8" id="lsg-e4-4yv"/>
                                             <constraint firstItem="Z1H-vd-nGb" firstAttribute="leading" secondItem="FyB-ko-GoU" secondAttribute="leading" constant="8" id="mdL-4C-4e9"/>
                                             <constraint firstItem="mec-YS-YqR" firstAttribute="top" secondItem="Uhr-bH-sgn" secondAttribute="bottom" constant="8" id="pD1-iC-5rZ"/>
-                                            <constraint firstAttribute="trailing" secondItem="Uhr-bH-sgn" secondAttribute="trailing" constant="8" id="rsD-3W-32f"/>
+                                            <constraint firstAttribute="trailing" secondItem="Uhr-bH-sgn" secondAttribute="trailing" constant="16" id="rsD-3W-32f"/>
                                             <constraint firstItem="mec-YS-YqR" firstAttribute="top" secondItem="Uhr-bH-sgn" secondAttribute="bottom" constant="8" id="uR8-XF-u7w"/>
                                             <constraint firstAttribute="trailing" secondItem="Z1H-vd-nGb" secondAttribute="trailing" constant="8" id="zDE-Aw-GHU"/>
                                         </constraints>
