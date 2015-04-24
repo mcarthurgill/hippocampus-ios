@@ -9,6 +9,7 @@
 #import "HCReminderViewController.h"
 #import "HCItemTableViewController.h"
 #import "UIPickerView+CustomPicker.h"
+#import "HCPopUpViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
@@ -54,11 +55,22 @@
     }
     
     [self refreshDayPicker];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
     if ([[LXSetup theSetup] visitedThisScreen:self]) {
         NSLog(@"already visited reminder view controller");
     } else {
         NSLog(@"have not visited reminder view controller");
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+        [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+        [vc setImageForMainImageView:[UIImage imageNamed:@"nudge-screen.jpg"]];
+        [vc setMainLabelText:@"By setting a Nudge, this thought will be sent to you on the morning(s) you select via SMS."];
+        [self presentViewController:vc animated:NO completion:nil];
     }
 }
 

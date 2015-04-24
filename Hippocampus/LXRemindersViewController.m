@@ -29,7 +29,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self.navigationItem setTitle:@"Upcoming Reminders"];
+    [self.navigationItem setTitle:@"Upcoming Nudges"];
     [self setupProperties];
     [self refreshChange];
 }
