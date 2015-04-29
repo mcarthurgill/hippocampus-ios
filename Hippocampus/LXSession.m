@@ -163,7 +163,7 @@ static LXSession* thisSession = nil;
                                             }
             ];
         }];
-    } else if ([[unsavedNote objectForKey:@"media_type"] isEqualToString:@"image"]) {
+    } else {
         [self createAndShareActionWithMediaUrls:mediaURLS andUnsavedNote:unsavedNote
                                         success:^(id responseObject) {
                                             if (successCallback) {
@@ -183,9 +183,6 @@ static LXSession* thisSession = nil;
 
 - (void) createAndShareActionWithMediaUrls:(NSMutableArray *)mediaURLS andUnsavedNote:(NSMutableDictionary *)unsavedNote  success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
-    }];
-    
     [unsavedNote removeObjectForKey:@"media_urls"];
     NSString *mediaType = [unsavedNote objectForKey:@"media_type"];
     [unsavedNote removeObjectForKey:@"media_type"];
