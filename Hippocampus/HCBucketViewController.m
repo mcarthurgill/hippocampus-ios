@@ -158,7 +158,7 @@
     self.pickerController = [[UIImagePickerController alloc]
                                                  init];
     [self.pickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-    [self.pickerController setMediaTypes:[[NSArray alloc] initWithObjects:(NSString *)kUTTypeMovie, nil]];
+    [self.pickerController setMediaTypes:[[NSArray alloc] initWithObjects:(NSString *)kUTTypeMovie, (NSString *)kUTTypeImage, nil]];
     [self.pickerController setEditing:YES animated:YES];
     self.pickerController.delegate = self;
 }
