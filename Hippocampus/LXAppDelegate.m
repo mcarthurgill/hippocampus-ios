@@ -8,6 +8,7 @@
 
 #import "LXAppDelegate.h"
 #import "HCPermissionViewController.h"
+#import <AudioToolbox/AudioServices.h>
 
 @implementation LXAppDelegate
 
@@ -54,6 +55,8 @@
 {
     NSLog(@"applicationWillResignActive");
     
+    active = NO;
+    
     UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
     }];
     
@@ -91,6 +94,8 @@
     if ([LXSession locationPermissionDetermined]) {
         [[LXSession thisSession] startLocationUpdates];
     }
+    
+    active = YES;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -201,6 +206,22 @@
     NSLog(@"Failed to get token, error: %@", error);
 }
 
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"ITEM ID: %@", [userInfo objectForKey:@"item_id"]);
+    //parse for variables
+    if (active) {
+        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        return;
+    }
+    if ([userInfo objectForKey:@"bucket_id"] && [[userInfo objectForKey:@"bucket_id"] respondsToSelector:@selector(intValue)]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"pushBucketView" object:nil userInfo:@{@"bucket_id" : [userInfo objectForKey:@"bucket_id"]}];
+    }
+    if ([userInfo objectForKey:@"item_id"] && [[userInfo objectForKey:@"item_id"] respondsToSelector:@selector(intValue)]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"pushItemTableView" object:nil userInfo:@{@"item_id" : [userInfo objectForKey:@"item_id"]}];
+    }
+}
+
 
 - (void) setBadgeIcon {
     if ([LXSession areNotificationsEnabled]) {
@@ -211,6 +232,9 @@
         }
     }
 }
+
+
+# pragma mark other actions
 
 - (void) incrementAppLaunchCount
 {
@@ -239,6 +263,7 @@
 
 
 # pragma mark - contacts
+
 - (void) loadAddressBook
 {
     if ([[LXAddressBook thisBook] permissionGranted]) {

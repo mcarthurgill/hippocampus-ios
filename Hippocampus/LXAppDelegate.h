@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface LXAppDelegate : UIResponder <UIApplicationDelegate>
+{
+    BOOL active;
+}
 
 @property (strong, nonatomic) UIWindow *window;
 

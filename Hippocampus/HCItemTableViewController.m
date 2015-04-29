@@ -49,8 +49,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-        
-    [[self navItem] setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item createdAt]]];
+    
+    [self setNavTitle];
     
     self.originalItem = self.item;
     
@@ -94,8 +94,16 @@
 
 #pragma mark - Table view data source
 
+- (void) setNavTitle
+{
+    if ([self.item createdAt]) {
+        [[self navItem] setTitle:[NSDate timeAgoInWordsFromDatetime:[self.item createdAt]]];
+    }
+}
+
 - (void) reloadScreen
 {
+    [self setNavTitle];
     [self.tableView reloadData];
 }
 

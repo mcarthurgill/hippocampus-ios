@@ -176,6 +176,7 @@
 {
     [self.tableView reloadData];
     [self toggleSaveButton];
+    [self setNavTitle];
 }
 
 - (void) setTableScrollToIndex:(NSInteger)index animated:(BOOL)animated
