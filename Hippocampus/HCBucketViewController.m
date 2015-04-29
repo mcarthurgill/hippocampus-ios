@@ -62,7 +62,6 @@
     
     //remove extra table view lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    
     [self setupProperties];
     
     [self setNavTitle];
@@ -159,7 +158,8 @@
     self.pickerController = [[UIImagePickerController alloc]
                                                  init];
     [self.pickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-    [self.pickerController setMediaTypes:[[NSArray alloc] initWithObjects:(NSString *)kUTTypeMovie, (NSString *)kUTTypeImage, nil]];
+    [self.pickerController setMediaTypes:[[NSArray alloc] initWithObjects:(NSString *)kUTTypeMovie, nil]];
+    [self.pickerController setEditing:YES animated:YES];
     self.pickerController.delegate = self;
 }
 
@@ -361,7 +361,8 @@
                     [mediaURLS addObject:path];
                     [tempNote setObject:@"image" forKey:@"media_type"];
                 } else if ([[d objectForKey:@"type"] isEqualToString:@"video"]) {
-                    [mediaURLS addObject:[[d objectForKey:@"mediaURL"] absoluteString]]; //had to use absoluteString since you can't store nsurl's in nsuserdefaults. 
+                    NSURL *inputURL = [NSURL fileURLWithPath:[((NSURL*)[d objectForKey:@"mediaURL"]) path]];
+                    [mediaURLS addObject:[inputURL path]];
                     [tempNote setObject:@"video" forKey:@"media_type"];
                 }
             }
