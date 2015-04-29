@@ -8,6 +8,7 @@
 
 #import "LXSession.h"
 
+
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
 static LXSession* thisSession = nil;
@@ -143,12 +144,60 @@ static LXSession* thisSession = nil;
 {
     NSMutableDictionary* unsavedNote = [[NSMutableDictionary alloc] initWithDictionary:note];
     NSMutableArray* mediaURLS = [[NSMutableArray alloc] initWithArray:[unsavedNote objectForKey:@"media_urls"]];
+    
+    if ([[unsavedNote objectForKey:@"media_type"] isEqualToString:@"video"]) {
+        NSURL *copyURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:@"temp"]];
+        NSURL *inputURL = [NSURL fileURLWithPath:[mediaURLS firstObject]];
+        [self convertVideoToLowQuailtyWithInputURL:inputURL outputURL:copyURL handler:^(AVAssetExportSession* exportSession) {
+            NSMutableArray *copyURLArray = [[NSMutableArray alloc] initWithObjects:copyURL, nil];
+            [self createAndShareActionWithMediaUrls:copyURLArray andUnsavedNote:unsavedNote
+                                            success:^(id responseObject) {
+                                                if (successCallback) {
+                                                    successCallback(responseObject);
+                                                }
+                                            }
+                                            failure:^(NSError* error) {
+                                                if (failureCallback) {
+                                                    failureCallback(error);
+                                                }
+                                            }
+            ];
+        }];
+    } else if ([[unsavedNote objectForKey:@"media_type"] isEqualToString:@"image"]) {
+        [self createAndShareActionWithMediaUrls:mediaURLS andUnsavedNote:unsavedNote
+                                        success:^(id responseObject) {
+                                            if (successCallback) {
+                                                successCallback(responseObject);
+                                            }
+                                        }
+                                        failure:^(NSError* error) {
+                                            if (failureCallback) {
+                                                failureCallback(error);
+                                            }
+                                        }
+         ];
+
+    }
+
+}
+
+- (void) createAndShareActionWithMediaUrls:(NSMutableArray *)mediaURLS andUnsavedNote:(NSMutableDictionary *)unsavedNote  success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
+    }];
+    
     [unsavedNote removeObjectForKey:@"media_urls"];
+    NSString *mediaType = [unsavedNote objectForKey:@"media_type"];
+    [unsavedNote removeObjectForKey:@"media_type"];
+    
     [[LXServer shared] requestPath:@"/items.json" withMethod:@"POST" withParamaters:@{@"item":unsavedNote}
          constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
              if (mediaURLS && [mediaURLS count] > 0) {
-                 if ([NSData dataWithContentsOfFile:[mediaURLS firstObject]]) {
+                 if ([mediaType isEqualToString:@"image"]) {
                      [formData appendPartWithFileData:[NSData dataWithContentsOfFile:[mediaURLS firstObject]] name:@"file" fileName:@"image.jpg" mimeType:@"image/jpeg"];
+                 } else if ([mediaType isEqualToString:@"video"]) {
+                     NSData *video = [NSData dataWithContentsOfFile:[mediaURLS firstObject]];
+                     [formData appendPartWithFileData:video name:@"video" fileName:@"video.mov" mimeType:@"video/quicktime"];
                  }
              }
          }
@@ -164,7 +213,48 @@ static LXSession* thisSession = nil;
                                }
                            }
      ];
+
 }
+
+- (void) convertVideoToLowQuailtyWithInputURL:(NSURL*)inputURL outputURL:(NSURL*)outputURL handler:(void (^)(AVAssetExportSession*))handler
+{
+    [[NSFileManager defaultManager] removeItemAtURL:outputURL error:nil];
+    AVURLAsset *a = [AVURLAsset URLAssetWithURL:inputURL options:nil];
+    AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:a presetName:AVAssetExportPresetMediumQuality];
+    NSLog(@"tracks = %@", [a tracks]);
+    AVAssetTrack *clipVideoTrack = [[a tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
+    //create a video composition and preset some settings
+    AVMutableVideoComposition* videoComposition = [AVMutableVideoComposition videoComposition];
+    videoComposition.frameDuration = CMTimeMake(1, 30);
+
+    videoComposition.renderSize = CGSizeMake(clipVideoTrack.naturalSize.height, clipVideoTrack.naturalSize.width);
+
+    //create a video instruction
+    AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
+    instruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(60, 30));
+    AVMutableVideoCompositionLayerInstruction* transformer = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:clipVideoTrack];
+
+    CGAffineTransform t1 = CGAffineTransformMakeTranslation(clipVideoTrack.naturalSize.height, 0);
+    //Make sure the square is portrait
+    CGAffineTransform t2 = CGAffineTransformRotate(t1, M_PI_2);
+
+    CGAffineTransform finalTransform = t2;
+    [transformer setTransform:finalTransform atTime:kCMTimeZero];
+    //add the transformer layer instructions, then add to video composition
+    instruction.layerInstructions = [NSArray arrayWithObject:transformer];
+    videoComposition.instructions = [NSArray arrayWithObject: instruction];
+
+    //Export
+    exportSession.videoComposition = videoComposition;
+
+    exportSession.outputURL = outputURL;
+    exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+    [exportSession exportAsynchronouslyWithCompletionHandler:^(void)
+    {
+      handler(exportSession);
+    }];
+}
+
 
 - (void) attemptUnsavedNoteSaving
 {

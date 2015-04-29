@@ -158,6 +158,9 @@
 -(void) cacheImagePickerController {
     self.pickerController = [[UIImagePickerController alloc]
                                                  init];
+    [self.pickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    [self.pickerController setMediaTypes:[[NSArray alloc] initWithObjects:(NSString *)kUTTypeMovie, (NSString *)kUTTypeImage, nil]];
+    self.pickerController.delegate = self;
 }
 
 
@@ -348,16 +351,21 @@
         }
         
         NSLog(@"%@", self.composeTextView.attributedText.string);
-        
+
         if (self.imageAttachments && [self.imageAttachments count] > 0) {
             NSMutableArray* mediaURLS = [[NSMutableArray alloc] init];
-            for (UIImage* i in self.imageAttachments) {
-                NSString* path = [LXSession writeImageToDocumentsFolder:i];
-                [mediaURLS addObject:path];
+            for (NSMutableDictionary *d in self.imageAttachments) {
+                if ([[d objectForKey:@"type"] isEqualToString:@"image"]) {
+                    NSString* path = [LXSession writeImageToDocumentsFolder:[d objectForKey:@"media"]];
+                    [mediaURLS addObject:path];
+                    [tempNote setObject:@"image" forKey:@"media_type"];
+                } else if ([[d objectForKey:@"type"] isEqualToString:@"video"]) {
+                    [mediaURLS addObject:[[d objectForKey:@"mediaURL"] absoluteString]]; //had to use absoluteString since you can't store nsurl's in nsuserdefaults. 
+                    [tempNote setObject:@"video" forKey:@"media_type"];
+                }
             }
             [tempNote setObject:mediaURLS forKey:@"media_urls"];
         }
-        
         [self addItemToTable:[NSDictionary dictionaryWithDictionary:tempNote]];
         [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
         [self setScrollToPosition:@"bottom"];
@@ -367,6 +375,7 @@
         
         [[LXSession thisSession] attemptNoteSave:tempNote
                                          success:^(id responseObject) {
+                                             NSLog(@"callback for attempt note save");
                                              [self replacingWithItem:responseObject];
                                              [self reloadScreenToIndex:[self currentArray].count animated:YES];
                                }
@@ -377,7 +386,7 @@
         [self incrementNoteCreatedInApp];
         
         if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
-            AudioServicesPlaySystemSound (1352); //works ALWAYS as of this post
+            AudioServicesPlaySystemSound (1352); //vibrate
         }
     }
 }
@@ -837,7 +846,6 @@
 
 - (IBAction)uploadImage:(id)sender {
     [self showHUDWithMessage:@"Loading pictures"];
-    self.pickerController.delegate = self;
     [self presentViewController:self.pickerController animated:YES completion:nil];
     [self hideHUD];
 }
@@ -846,7 +854,6 @@
 {
     [self textViewDidBeginEditing:self.composeTextView];
     [self.saveButton setEnabled:YES];
-    
     
     metadata = [[NSMutableDictionary alloc] init];
     
@@ -867,7 +874,11 @@
         [assetsLib assetForURL:tempURL resultBlock:resultBlock failureBlock:nil];
     }
     
-    [self updateComposeViewWithImage:[info objectForKey:UIImagePickerControllerOriginalImage]];
+    if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeImage]) {
+        [self updateComposeViewWithImage:[info objectForKey:UIImagePickerControllerOriginalImage]];
+    } else if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(NSString*)kUTTypeMovie]) {
+        [self updateComposeViewWithVideo:[info objectForKey:UIImagePickerControllerMediaURL]];
+    }
     
     [self dismissViewControllerAnimated:YES completion:^(void){
         [self.composeTextView becomeFirstResponder];
@@ -880,7 +891,8 @@
     NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
     
     self.imageAttachments = [[NSMutableArray alloc] init];
-    [self.imageAttachments addObject:image];
+    NSMutableDictionary *imgDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:image, @"media", @"image", @"type", nil];
+    [self.imageAttachments addObject:imgDict];
     
     [attributedString setAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f] forKey:NSFontAttributeName] range:NSMakeRange(0, attributedString.length)];
     
@@ -894,6 +906,42 @@
     [self dismissViewControllerAnimated:YES completion:^(void){
         [self.composeTextView becomeFirstResponder];
     }];
+}
+
+- (void) updateComposeViewWithVideo:(NSURL*)mediaURL
+{
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"\r%@", self.composeTextView.attributedText.string]];
+    NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
+    
+    self.imageAttachments = [[NSMutableArray alloc] init];
+    UIImage *image = [self grabThumbnail:mediaURL];
+    NSMutableDictionary *vidDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:image, @"media", @"video", @"type", mediaURL, @"mediaURL", nil];
+    
+    [self.imageAttachments addObject:vidDict];
+    
+    [attributedString setAttributes:[NSDictionary dictionaryWithObject:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f] forKey:NSFontAttributeName] range:NSMakeRange(0, attributedString.length)];
+    
+    textAttachment.image = [image scaledToSize:200.0f];
+    NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
+    [attributedString replaceCharactersInRange:NSMakeRange(0, 0) withAttributedString:attrStringWithImage];
+    
+    self.composeTextView.attributedText = attributedString;
+    self.textViewHeightConstraint.constant = self.composeTextView.intrinsicContentSize.height;
+    
+    [self dismissViewControllerAnimated:YES completion:^(void){
+        [self.composeTextView becomeFirstResponder];
+    }];
+}
+
+- (UIImage*)grabThumbnail:(NSURL*)vidURL
+{
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:vidURL options:nil];
+    AVAssetImageGenerator *generate = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    generate.appliesPreferredTrackTransform = YES;
+    NSError *err = NULL;
+    CMTime time = CMTimeMake(1, 60);
+    CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
+    return [[UIImage alloc] initWithCGImage:imgRef];
 }
 
 - (UIImageOrientation) properOrientationForImage:(UIImage *)image

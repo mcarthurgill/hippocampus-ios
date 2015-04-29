@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "HCUser.h"
 #import <CoreLocation/CoreLocation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface LXSession : NSObject <CLLocationManagerDelegate>
 
@@ -38,6 +40,7 @@
 
 + (NSString*) documentsPathForFileName:(NSString*) name;
 + (NSString*) writeImageToDocumentsFolder:(UIImage*)image;
+- (void) convertVideoToLowQuailtyWithInputURL:(NSURL*)inputURL outputURL:(NSURL*)outputURL handler:(void (^)(AVAssetExportSession*))handler;
 
 
 
