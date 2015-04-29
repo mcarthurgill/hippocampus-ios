@@ -63,6 +63,8 @@
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshChangeAfterDelay) name:@"appAwake" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushItemTableView:) name:@"pushItemTableView" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushBucketViewController:) name:@"pushBucketView" object:nil];
     
     [self setupProperties];
 
@@ -894,4 +896,36 @@
                                           }];
                      }];
 }
+
+
+
+# pragma mark pushing view controllers (push notifications)
+
+- (void) pushBucketViewController:(NSNotification*)notification
+{
+    [self.navigationController popToRootViewControllerAnimated:NO];
+    NSMutableDictionary* b = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[notification userInfo] objectForKey:@"bucket_id"], @"id", nil];
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+    [btvc setBucket:b];
+    [btvc setDelegate:self];
+    [self.navigationController pushViewController:btvc animated:NO];
+}
+
+- (void) pushItemTableView:(NSNotification*)notification
+{
+    NSMutableDictionary* i = [[NSMutableDictionary alloc] initWithObjectsAndKeys:[[notification userInfo] objectForKey:@"item_id"], @"id", nil];
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
+    [itvc setItem:i];
+    [itvc setItems:[[NSMutableArray alloc] initWithObjects:i, nil]];
+    [itvc setDelegate:self];
+    [self.navigationController pushViewController:itvc animated:NO];
+}
+
+
+
+
 @end
+
+
