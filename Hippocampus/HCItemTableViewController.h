@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "HCItemPageViewController.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface HCItemTableViewController : UITableViewController <UITextViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
 {
@@ -30,6 +31,8 @@
 
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (strong, nonatomic) UITextView* messageTextView;
+
+@property (strong, nonatomic) MPMoviePlayerViewController *moviePlayerController;
 
 - (void) saveReminder:(NSString*)reminder withType:(NSString*)type;
 - (void) saveUpdatedMessage:(NSString *)updatedMessage;

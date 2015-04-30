@@ -172,6 +172,7 @@ static LXSession* thisSession = nil;
                  } else if ([mediaType isEqualToString:@"video"]) {
                      NSData *video = [NSData dataWithContentsOfFile:[mediaURLS firstObject]];
                      [formData appendPartWithFileData:video name:@"file" fileName:@"video.mov" mimeType:@"video/quicktime"];
+                     [formData appendPartWithFileData:[NSData dataWithContentsOfFile:[mediaURLS lastObject]] name:@"screenshot" fileName:@"image.jpg" mimeType:@"image/jpeg"];
                  }
              }
          }
@@ -189,45 +190,6 @@ static LXSession* thisSession = nil;
      ];
 
 }
-
-//- (void) convertVideoToLowQuailtyWithInputURL:(NSURL*)inputURL outputURL:(NSURL*)outputURL handler:(void (^)(AVAssetExportSession*))handler
-//{
-//    [[NSFileManager defaultManager] removeItemAtURL:outputURL error:nil];
-//    AVURLAsset *a = [AVURLAsset URLAssetWithURL:inputURL options:nil];
-//    AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:a presetName:AVAssetExportPresetMediumQuality];
-//    NSLog(@"tracks = %@", [a tracks]);
-//    AVAssetTrack *clipVideoTrack = [[a tracksWithMediaType:AVMediaTypeVideo] objectAtIndex:0];
-//    //create a video composition and preset some settings
-//    AVMutableVideoComposition* videoComposition = [AVMutableVideoComposition videoComposition];
-//    videoComposition.frameDuration = CMTimeMake(1, 30);
-//
-//    videoComposition.renderSize = CGSizeMake(clipVideoTrack.naturalSize.height, clipVideoTrack.naturalSize.width);
-//
-//    //create a video instruction
-//    AVMutableVideoCompositionInstruction *instruction = [AVMutableVideoCompositionInstruction videoCompositionInstruction];
-//    instruction.timeRange = CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(60, 30));
-//    AVMutableVideoCompositionLayerInstruction* transformer = [AVMutableVideoCompositionLayerInstruction videoCompositionLayerInstructionWithAssetTrack:clipVideoTrack];
-//
-//    CGAffineTransform t1 = CGAffineTransformMakeTranslation(clipVideoTrack.naturalSize.height, 0);
-//    //Make sure the square is portrait
-//    CGAffineTransform t2 = CGAffineTransformRotate(t1, M_PI_2);
-//
-//    CGAffineTransform finalTransform = t2;
-//    [transformer setTransform:finalTransform atTime:kCMTimeZero];
-//    //add the transformer layer instructions, then add to video composition
-//    instruction.layerInstructions = [NSArray arrayWithObject:transformer];
-//    videoComposition.instructions = [NSArray arrayWithObject: instruction];
-//
-//    //Export
-//    exportSession.videoComposition = videoComposition;
-//
-//    exportSession.outputURL = outputURL;
-//    exportSession.outputFileType = AVFileTypeQuickTimeMovie;
-//    [exportSession exportAsynchronouslyWithCompletionHandler:^(void)
-//    {
-//      handler(exportSession);
-//    }];
-//}
 
 
 - (void) attemptUnsavedNoteSaving

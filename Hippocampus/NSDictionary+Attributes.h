@@ -134,6 +134,7 @@
 
 - (NSMutableDictionary*) bucketNames;
 
+- (int)indexOfMatchingVideoUrl:(NSString*)imageURL;
 
 // actions
 

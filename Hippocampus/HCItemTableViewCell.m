@@ -61,46 +61,48 @@
     if ([item croppedMediaURLs]) {
         for (NSString* url in [item croppedMediaURLs]) {
             
-            UIImageView* iv = [self.contentView viewWithTag:(200+i)] ? (UIImageView*)[self.contentView viewWithTag:(200+i)] : [[UIImageView alloc] init];
-            [iv setFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*i, self.contentView.frame.size.width-40.0f, PICTURE_HEIGHT)];
-            [iv setTag:(200+i)];
-            ++i;
-            
-            [iv setContentMode:UIViewContentModeScaleAspectFill];
-            [iv setClipsToBounds:YES];
-            [iv.layer setCornerRadius:8.0f];
-            if ([item hasID]) {
+            if ([url isImageUrl]) {
+                UIImageView* iv = [self.contentView viewWithTag:(200+i)] ? (UIImageView*)[self.contentView viewWithTag:(200+i)] : [[UIImageView alloc] init];
+                [iv setFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*i, self.contentView.frame.size.width-40.0f, PICTURE_HEIGHT)];
+                [iv setTag:(200+i)];
+                ++i;
                 
-                if ([SGImageCache haveImageForURL:url]) {
-                    iv.image = [SGImageCache imageForURL:url];
-                    [iv setAlpha:1.0f];
-                } else if (![iv.image isEqual:[SGImageCache imageForURL:url]]) {
-                    iv.image = nil;
-                    [iv setAlpha:1.0f];
-                    [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
-                        if (image) {
-                            float curAlpha = [iv alpha];
-                            [iv setAlpha:0.0f];
-                            iv.image = image;
-                            [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
-                                [iv setAlpha:curAlpha];
-                            }];
-                        }
-                    }];
-                }
-                
-
-            } else {
-                if ([NSData dataWithContentsOfFile:url] && ![iv.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
-                    [iv setAlpha:0.0f];
-                    iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
-                    [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+                [iv setContentMode:UIViewContentModeScaleAspectFill];
+                [iv setClipsToBounds:YES];
+                [iv.layer setCornerRadius:8.0f];
+                if ([item hasID]) {
+                    
+                    if ([SGImageCache haveImageForURL:url]) {
+                        iv.image = [SGImageCache imageForURL:url];
                         [iv setAlpha:1.0f];
-                    }];
+                    } else if (![iv.image isEqual:[SGImageCache imageForURL:url]]) {
+                        iv.image = nil;
+                        [iv setAlpha:1.0f];
+                        [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                            if (image) {
+                                float curAlpha = [iv alpha];
+                                [iv setAlpha:0.0f];
+                                iv.image = image;
+                                [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
+                                    [iv setAlpha:curAlpha];
+                                }];
+                            }
+                        }];
+                    }
+                    
+
+                } else {
+                    if ([NSData dataWithContentsOfFile:url] && ![iv.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
+                        [iv setAlpha:0.0f];
+                        iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
+                        [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+                            [iv setAlpha:1.0f];
+                        }];
+                    }
                 }
-            }
-            if (!iv.superview) {
-                [self.contentView addSubview:iv];
+                if (!iv.superview) {
+                    [self.contentView addSubview:iv];
+                }
             }
         }
     }
@@ -117,6 +119,7 @@
         ++i;
     }
 }
+
 
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {

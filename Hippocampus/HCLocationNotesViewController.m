@@ -218,7 +218,13 @@
         NSDictionary *item = [self.allItems objectAtIndex:indexPath.row];
         int additional = 0;
         if ([item hasMediaURLs]) {
-            additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*[[item mediaURLs] count];
+            int numImages = 0;
+            for (NSString *url in [item mediaURLs]) {
+                if ([url isImageUrl]) {
+                    numImages++;
+                }
+            }
+            additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*numImages;
         }
         return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {

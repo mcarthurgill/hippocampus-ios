@@ -32,6 +32,7 @@
 @synthesize sections;
 @synthesize actions;
 @synthesize bucketToRemove;
+@synthesize moviePlayerController;
 
 @synthesize messageTextView;
 
@@ -260,19 +261,21 @@
     NSString* url = [[self.item croppedMediaURLs] objectAtIndex:indexPath.row];
     
     if ([self.mediaDictionary objectForKey:url]) {
-        UIImage* i = [self.mediaDictionary objectForKey:url];
-        [iv setFrame:CGRectMake(iv.frame.origin.x, iv.frame.origin.y, iv.frame.size.width, i.size.height*(iv.frame.size.width/i.size.width))];
-        
-        if (![iv image]) {
-            [iv setImage:[self.mediaDictionary objectForKey:url]];
-            [iv setAlpha:0.0f];
-            [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
-                [iv setAlpha:1.0f];
-            }];
+        if ([url isImageUrl]) {
+            UIImage* i = [self.mediaDictionary objectForKey:url];
+            [iv setFrame:CGRectMake(iv.frame.origin.x, iv.frame.origin.y, iv.frame.size.width, i.size.height*(iv.frame.size.width/i.size.width))];
+            
+            if (![iv image]) {
+                [iv setImage:[self.mediaDictionary objectForKey:url]];
+                [iv setAlpha:0.0f];
+                [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
+                    [iv setAlpha:1.0f];
+                }];
+            }
+            
+            [iv setClipsToBounds:YES];
+            [iv.layer setCornerRadius:8.0f];
         }
-        
-        [iv setClipsToBounds:YES];
-        [iv.layer setCornerRadius:8.0f];
     } else {
         [iv setImage:nil];
     }
@@ -475,8 +478,16 @@
         
     
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[self.item mediaURLs] objectAtIndex:indexPath.row]]];
-    
+        NSString *urlString = [[self.item croppedMediaURLs] objectAtIndex:indexPath.row];
+        NSUInteger indexOfVideoUrl = [self.item indexOfMatchingVideoUrl:urlString];
+        if (indexOfVideoUrl != -1) {
+            NSURL *movieURL = [NSURL URLWithString:[[self.item mediaURLs] objectAtIndex:indexOfVideoUrl]];
+            self.moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:movieURL];
+            [self presentMoviePlayerViewControllerAnimated:self.moviePlayerController];
+            [self.moviePlayerController.moviePlayer play];
+        } else {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+        }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"assign"]) {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
@@ -630,12 +641,14 @@
 {
     if ([self.item croppedMediaURLs]) {
         for (NSString* url in [self.item croppedMediaURLs]) {
-            [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
-                if (![self.mediaDictionary objectForKey:url]) {
-                    [self.mediaDictionary setObject:image forKey:url];
-                    [self reloadScreen];
-                }
-            }];
+            if ([url isImageUrl]) {
+                [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                    if (![self.mediaDictionary objectForKey:url]) {
+                        [self.mediaDictionary setObject:image forKey:url];
+                        [self reloadScreen];
+                    }
+                }];
+            }
         }
     }
 }

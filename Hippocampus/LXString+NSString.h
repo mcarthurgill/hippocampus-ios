@@ -16,4 +16,10 @@
 
 - (NSString*) croppedImageURLToScreenWidth;
 
+- (NSString*) fileExtension;
+
+- (BOOL) isImageUrl;
+
+- (NSString*) cloudinaryPublicID;
+
 @end

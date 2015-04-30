@@ -84,8 +84,10 @@
         NSMutableArray* cropped = [[NSMutableArray alloc] init];
         int i = 0;
         for (NSString* edited in [self mediaURLs]) {
-            [cropped addObject:[edited croppedImageURLToScreenWidth]];
-            ++i;
+            if ([edited isImageUrl]) {
+                [cropped addObject:[edited croppedImageURLToScreenWidth]];
+                ++i;
+            }
         }
         return cropped;
     }
@@ -391,6 +393,18 @@
 - (BOOL) hasItemUserName
 {
     return [self objectForKey:@"user"] && [[self objectForKey:@"user"] respondsToSelector:@selector(objectForKey:)] && NULL_TO_NIL([[self objectForKey:@"user"] objectForKey:@"name"]);
+}
+
+
+- (int)indexOfMatchingVideoUrl:(NSString*)imageURL
+{
+    NSString *imagePublicID = [imageURL cloudinaryPublicID];
+    for (NSString*url in [self mediaURLs]) {
+        if ([url containsString:imagePublicID] && !([[imageURL fileExtension] isEqualToString:[url fileExtension]])) {
+            return (int)[[self mediaURLs] indexOfObject:url];
+        }
+    }
+    return -1;
 }
 
 # pragma mark other dictionary helpers

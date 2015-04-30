@@ -24,6 +24,7 @@
 @synthesize updatedBucketName;
 @synthesize delegate;
 @synthesize bucketUserPairForDeletion;
+@synthesize moviePlayerController;
 
 
 - (void)viewDidLoad {
@@ -114,7 +115,7 @@
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contactCard"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
-        return ([self.bucket mediaURLs].count%2 == 0) ? [self.bucket mediaURLs].count/2 : [self.bucket mediaURLs].count/2 + 1;
+        return ([self.bucket croppedMediaURLs].count%2 == 0) ? [self.bucket croppedMediaURLs].count/2 : [self.bucket croppedMediaURLs].count/2 + 1;
     }
     return 0;
 }
@@ -230,11 +231,11 @@
     UIImageView *leftImage = (UIImageView*)[cell.contentView viewWithTag:1];
     UIImageView *rightImage = (UIImageView*)[cell.contentView viewWithTag:2];
     
-    [cell configureWithMediaUrl:[[self.bucket mediaURLs] objectAtIndex:(indexPath.row)*2] andImageView:leftImage];
+    [cell configureWithMediaUrl:[[self.bucket croppedMediaURLs] objectAtIndex:(indexPath.row)*2] andImageView:leftImage];
     [self finishConfigurationForImageView:leftImage];
 
-    if ((indexPath.row)*2 + 1 < [[self.bucket mediaURLs] count]) {
-        [cell configureWithMediaUrl:[[self.bucket mediaURLs] objectAtIndex:(indexPath.row)*2 + 1] andImageView:rightImage];
+    if ((indexPath.row)*2 + 1 < [[self.bucket croppedMediaURLs] count]) {
+        [cell configureWithMediaUrl:[[self.bucket croppedMediaURLs] objectAtIndex:(indexPath.row)*2 + 1] andImageView:rightImage];
         [self finishConfigurationForImageView:rightImage];
     } else {
         [rightImage setImage:nil];
@@ -450,13 +451,27 @@
     NSString *mediaUrl;
     UIImageView *imageView = (UIImageView*)[[[self.tableView cellForRowAtIndexPath:indexPath] contentView] viewWithTag:gestureRecognizer.view.tag];
     
-    if (imageView.image) {
-        if (gestureRecognizer.view.tag == 1) {
-            mediaUrl = [[self.bucket mediaURLs] objectAtIndex:(indexPath.row)*2];
-        } else {
-            mediaUrl = [[self.bucket mediaURLs] objectAtIndex:(indexPath.row)*2 + 1];
+    if (gestureRecognizer.view.tag == 1) {
+        mediaUrl = [[self.bucket croppedMediaURLs] objectAtIndex:(indexPath.row)*2];
+    } else {
+        mediaUrl = [[self.bucket croppedMediaURLs] objectAtIndex:(indexPath.row)*2 + 1];
+    }
+    
+    NSUInteger indexOfVideoUrl = [self.bucket indexOfMatchingVideoUrl:mediaUrl];
+    if (indexOfVideoUrl != -1) {
+        NSURL *movieURL = [NSURL URLWithString:[[self.bucket mediaURLs] objectAtIndex:indexOfVideoUrl]];
+        self.moviePlayerController = [[MPMoviePlayerViewController alloc] initWithContentURL:movieURL];
+        [self presentMoviePlayerViewControllerAnimated:self.moviePlayerController];
+        [self.moviePlayerController.moviePlayer play];
+    } else {
+        if (imageView.image) {
+            if (gestureRecognizer.view.tag == 1) {
+                mediaUrl = [[self.bucket croppedMediaURLs] objectAtIndex:(indexPath.row)*2];
+            } else {
+                mediaUrl = [[self.bucket croppedMediaURLs] objectAtIndex:(indexPath.row)*2 + 1];
+            }
+            [self openImageWithUrl:mediaUrl];
         }
-        [self openImageWithUrl:mediaUrl];
     }
 }
 
@@ -599,7 +614,7 @@
 
 - (BOOL) bucketHasMediaUrls
 {
-    return [self.bucket mediaURLs] && [[self.bucket mediaURLs] count] > 0;
+    return [self.bucket croppedMediaURLs] && [[self.bucket croppedMediaURLs] count] > 0;
 }
 
 

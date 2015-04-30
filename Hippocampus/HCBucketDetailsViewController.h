@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MediaPlayer/MediaPlayer.h>
+
 
 #define PICTURE_HEIGHT 180
 #define PICTURE_MARGIN_TOP 4
@@ -32,5 +34,7 @@
 
 @property (strong, nonatomic) NSString *updatedBucketName;
 @property (strong, nonatomic) NSDictionary *bucketUserPairForDeletion;
+
+@property (strong, nonatomic) MPMoviePlayerViewController *moviePlayerController;
 
 @end

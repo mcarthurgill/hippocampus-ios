@@ -40,8 +40,6 @@
 
 + (NSString*) documentsPathForFileName:(NSString*) name;
 + (NSString*) writeImageToDocumentsFolder:(UIImage*)image;
-- (void) convertVideoToLowQuailtyWithInputURL:(NSURL*)inputURL outputURL:(NSURL*)outputURL handler:(void (^)(AVAssetExportSession*))handler;
-
 
 
 + (CLLocation*) currentLocation;
