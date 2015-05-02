@@ -951,7 +951,21 @@
     NSError *err = NULL;
     CMTime time = CMTimeMake(1, 60);
     CGImageRef imgRef = [generate copyCGImageAtTime:time actualTime:NULL error:&err];
-    return [[UIImage alloc] initWithCGImage:imgRef];
+    
+    UIImage *thumbnailImage = [[UIImage alloc] initWithCGImage:imgRef];
+    UIImage *playButton = [UIImage imageNamed:@"playButton.png"];
+    
+    NSLog(@"thumbnail width = %f", thumbnailImage.size.width);
+        NSLog(@"thumbnail height = %f", thumbnailImage.size.height);
+        NSLog(@"play width = %f", playButton.size.width);
+            NSLog(@"play height = %f", playButton.size.height);
+    
+    UIGraphicsBeginImageContext(thumbnailImage.size);
+    [thumbnailImage drawInRect:CGRectMake(0, 0, thumbnailImage.size.width, thumbnailImage.size.height)];
+    [playButton drawInRect:CGRectMake(thumbnailImage.size.width/2 - playButton.size.width/2, thumbnailImage.size.height/2 - playButton.size.height/2, playButton.size.width, playButton.size.height)];
+    UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return finalImage;
 }
 
 - (UIImageOrientation) properOrientationForImage:(UIImage *)image
