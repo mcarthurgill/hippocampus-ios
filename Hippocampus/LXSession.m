@@ -23,6 +23,8 @@ static LXSession* thisSession = nil;
 @synthesize managedObjectContext;
 @synthesize persistentStoreCoordinator;
 
+@synthesize backgroundTask;
+
 @synthesize locationManager;
 
 //constructor
@@ -142,6 +144,8 @@ static LXSession* thisSession = nil;
 
 - (void) attemptNoteSave:(NSDictionary*)note success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
+    NSLog(@"attempt note save");
+    
     NSMutableDictionary* unsavedNote = [[NSMutableDictionary alloc] initWithDictionary:note];
     NSMutableArray* mediaURLS = [[NSMutableArray alloc] initWithArray:[unsavedNote objectForKey:@"media_urls"]];
     [self createAndShareActionWithMediaUrls:mediaURLS andUnsavedNote:unsavedNote
@@ -208,7 +212,7 @@ static LXSession* thisSession = nil;
     }
 }
 
-+ (NSString*) documentsPathForFileName:(NSString*) name
+- (NSString*) documentsPathForFileName:(NSString*) name
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsPath = [paths objectAtIndex:0];
@@ -216,19 +220,47 @@ static LXSession* thisSession = nil;
     return [documentsPath stringByAppendingPathComponent:name];
 }
 
-+ (NSString*) writeImageToDocumentsFolder:(UIImage *)image
+- (NSString*) writeImageToDocumentsFolder:(UIImage *)image
 {
-    // Get image data. Here you can use UIImagePNGRepresentation if you need transparency
-    NSData *imageData = UIImageJPEGRepresentation(image, 1);
+    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        [self endBackgroundUpdateTask];
+    }];
+    
     // Get image path in user's folder and store file with name image_CurrentTimestamp.jpg (see documentsPathForFileName below)
     NSString *imagePath = [self documentsPathForFileName:[NSString stringWithFormat:@"image_%f.jpg", [NSDate timeIntervalSinceReferenceDate]]];
-    // Write image data to user's folder
+    NSData *imageData = UIImageJPEGRepresentation(image, 1);
     [imageData writeToFile:imagePath atomically:YES];
+    
+    [self endBackgroundUpdateTask];
+    
     return imagePath;
 }
 
+//- (NSString*) writeVideoToDocumentsFolder:(NSURL*)videoURL
+//{
+//    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+//        [self endBackgroundUpdateTask];
+//    }];
+//    
+//    NSString *videoPath = [self documentsPathForFileName:[NSString stringWithFormat:@"video_%f.mov", [NSDate timeIntervalSinceReferenceDate]]];
+//    NSData *videoData = [NSData dataWithContentsOfURL:videoURL];
+//    
+//    if (![[NSFileManager defaultManager] fileExistsAtPath:videoPath])
+//        [[NSFileManager defaultManager] createDirectoryAtPath:videoPath withIntermediateDirectories:NO attributes:nil error:nil];
+//    
+//    [videoData writeToFile:videoPath atomically:YES];
+//
+//    [self endBackgroundUpdateTask];
+//
+//    return videoPath;
+//}
 
 
+- (void) endBackgroundUpdateTask
+{
+    [[UIApplication sharedApplication] endBackgroundTask: self.backgroundTask];
+    self.backgroundTask = UIBackgroundTaskInvalid;
+}
 
 + (CLLocation*) currentLocation
 {

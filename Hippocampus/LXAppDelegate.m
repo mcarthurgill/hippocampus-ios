@@ -57,9 +57,6 @@
     
     active = NO;
     
-    UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
-    }];
-    
     NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
     NSError* error;
     if (![moc save:&error]) {
@@ -69,7 +66,6 @@
         [[LXServer shared] getAllBucketsWithSuccess:nil failure:nil];
     }
     
-    [[UIApplication sharedApplication] endBackgroundTask:bgt];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application

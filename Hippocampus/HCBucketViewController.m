@@ -298,7 +298,7 @@
                                              [self.tableView reloadData];
                                              [self hideHUD];
                                          }
-                                         failure:^(NSError* error) {
+                                         failure:^(NSError* error){
                                              [self hideHUD];
                                          }
          ];
@@ -363,19 +363,20 @@
             NSMutableArray* mediaURLS = [[NSMutableArray alloc] init];
             for (NSMutableDictionary *d in self.imageAttachments) {
                 if ([[d objectForKey:@"type"] isEqualToString:@"image"]) {
-                    NSString* path = [LXSession writeImageToDocumentsFolder:[d objectForKey:@"media"]];
+                    NSString* path = [[LXSession thisSession] writeImageToDocumentsFolder:[d objectForKey:@"media"]];
                     [mediaURLS addObject:path];
                     [tempNote setObject:@"image" forKey:@"media_type"];
                 } else if ([[d objectForKey:@"type"] isEqualToString:@"video"]) {
                     NSURL *inputURL = [NSURL fileURLWithPath:[((NSURL*)[d objectForKey:@"mediaURL"]) path]];
                     [mediaURLS addObject:[inputURL path]];
-                    NSString* path = [LXSession writeImageToDocumentsFolder:[d objectForKey:@"media"]]; //screenshot
-                    [mediaURLS addObject:path];
+                    NSString* imgPath = [[LXSession thisSession] writeImageToDocumentsFolder:[d objectForKey:@"media"]]; //screenshot
+                    [mediaURLS addObject:imgPath];
                     [tempNote setObject:@"video" forKey:@"media_type"];
                 }
             }
             [tempNote setObject:mediaURLS forKey:@"media_urls"];
         }
+                
         [self addItemToTable:[NSDictionary dictionaryWithDictionary:tempNote]];
         [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
         [self setScrollToPosition:@"bottom"];

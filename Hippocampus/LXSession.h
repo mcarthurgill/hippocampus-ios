@@ -25,6 +25,7 @@
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 @property (strong, nonatomic) CLLocationManager* locationManager;
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 
 - (void) setVariables;
 
@@ -38,8 +39,8 @@
 - (void) attemptNoteSave:(NSDictionary*)unsavedNote success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) attemptUnsavedNoteSaving;
 
-+ (NSString*) documentsPathForFileName:(NSString*) name;
-+ (NSString*) writeImageToDocumentsFolder:(UIImage*)image;
+- (NSString*) documentsPathForFileName:(NSString*) name;
+- (NSString*) writeImageToDocumentsFolder:(UIImage*)image;
 
 
 + (CLLocation*) currentLocation;
