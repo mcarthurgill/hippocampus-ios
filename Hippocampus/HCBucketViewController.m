@@ -560,7 +560,6 @@
     
     if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
         [self setPage:([[responseObject objectForKey:@"page"] integerValue] + 1)];
-        NSLog(@"page: %i", self.page);
     }
 }
 
@@ -954,11 +953,6 @@
     
     UIImage *thumbnailImage = [[UIImage alloc] initWithCGImage:imgRef];
     UIImage *playButton = [UIImage imageNamed:@"playButton.png"];
-    
-    NSLog(@"thumbnail width = %f", thumbnailImage.size.width);
-        NSLog(@"thumbnail height = %f", thumbnailImage.size.height);
-        NSLog(@"play width = %f", playButton.size.width);
-            NSLog(@"play height = %f", playButton.size.height);
     
     UIGraphicsBeginImageContext(thumbnailImage.size);
     [thumbnailImage drawInRect:CGRectMake(0, 0, thumbnailImage.size.width, thumbnailImage.size.height)];
