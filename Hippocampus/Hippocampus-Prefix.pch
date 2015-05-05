@@ -31,4 +31,5 @@
     #import "UILabel+Bold.h"
     #import "NSNumber+Helpers.h"
     #import "LXSetup.h"
+    #import "UIImageView+Helpers.h"
 #endif

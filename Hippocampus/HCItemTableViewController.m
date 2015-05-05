@@ -58,7 +58,7 @@
     //remove extra cell lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.allowsMultipleSelectionDuringEditing = NO;
-
+    
     [self setLongPressGestureToRemoveBucket];
     
     self.mediaDictionary = [[NSMutableDictionary alloc] init];
@@ -275,6 +275,10 @@
             
             [iv setClipsToBounds:YES];
             [iv.layer setCornerRadius:8.0f];
+            
+            if ([item shouldOverlayPlayButtonForUrl:url]) {
+                [iv overlayPlayButton];
+            }
         }
     } else {
         [iv setImage:nil];
@@ -288,10 +292,10 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"itemCell" forIndexPath:indexPath];
     
     UITextView *note = (UITextView*)[cell.contentView viewWithTag:1];
-
+    
     note.textContainer.lineFragmentPadding = 0;
     note.textContainerInset = UIEdgeInsetsZero;
-
+    
     note.delegate = self;
     [note setText:[self.item message]];
     [note setTag:1];
@@ -410,10 +414,10 @@
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         return [self heightForText:[self.item message] width:(self.view.frame.size.width-20.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 36.0f;
-    
+        
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return 56.0f;
-    
+        
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         if ([self.mediaDictionary objectForKey:[[self.item croppedMediaURLs] objectAtIndex:indexPath.row]]) {
             UIImage* i = [self.mediaDictionary objectForKey:[[self.item croppedMediaURLs] objectAtIndex:indexPath.row]];
@@ -467,16 +471,16 @@
         [itvc setItem:self.item];
         [itvc setDelegate:self];
         [self presentViewController:itvc animated:YES completion:nil];
-    
+        
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucket"]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCBucketViewController* itvc = (HCBucketViewController *)[storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
         [itvc setBucket:[[self.item buckets] objectAtIndex:indexPath.row]];
         [self.navigationController pushViewController:itvc animated:YES];
-    
+        
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         
-    
+        
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         NSString *urlString = [[self.item croppedMediaURLs] objectAtIndex:indexPath.row];
         NSUInteger indexOfVideoUrl = [self.item indexOfMatchingVideoUrl:urlString];
@@ -499,8 +503,8 @@
             [self showAlertViewWithTitle:@"Are you sure?" message:@"Deleting this note means it is gone forever."];
         } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"define"]) {
             //if ([UIReferenceLibraryViewController dictionaryHasDefinitionForTerm:@"word"]) {
-                UIReferenceLibraryViewController* ref = [[UIReferenceLibraryViewController alloc] initWithTerm:[self.item firstWord]];
-                [self presentViewController:ref animated:YES completion:nil];
+            UIReferenceLibraryViewController* ref = [[UIReferenceLibraryViewController alloc] initWithTerm:[self.item firstWord]];
+            [self presentViewController:ref animated:YES completion:nil];
             //}
         } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"copy"]) {
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
@@ -533,24 +537,24 @@
 - (void) saveReminder:(NSString*)reminder withType:(NSString*)type
 {
     [self setUnsavedChanges:YES andSavingChanges:YES];
-
+    
     [self.item setObject:reminder forKey:@"reminder_date"];
     [self.item setObject:type forKey:@"item_type"];
     [self.item setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_request_timestamp"];
     
     [self showHUDWithMessage:[NSString stringWithFormat:@"Setting Nudge"]];
-
+    
     [[LXServer shared] saveReminderForItem:self.item
-                                        success:^(id responseObject) {
-                                            [self setUnsavedChanges:NO andSavingChanges:NO];
-                                            [self hideHUD];
-                                            [self reloadScreen];
-                                        }failure:^(NSError *error){
-                                            NSLog(@"unsuccessfully updated reminder date");
-                                            [self setUnsavedChanges:YES andSavingChanges:NO];
-                                            [self hideHUD];
-                                            [self reloadScreen];
-    }];
+                                   success:^(id responseObject) {
+                                       [self setUnsavedChanges:NO andSavingChanges:NO];
+                                       [self hideHUD];
+                                       [self reloadScreen];
+                                   }failure:^(NSError *error){
+                                       NSLog(@"unsuccessfully updated reminder date");
+                                       [self setUnsavedChanges:YES andSavingChanges:NO];
+                                       [self hideHUD];
+                                       [self reloadScreen];
+                                   }];
 }
 
 - (void) saveUpdatedMessage:(NSString*)updatedMessage
@@ -561,19 +565,19 @@
     
     [[LXServer shared] saveUpdatedMessageForItem:self.item
                                          success:^(id responseObject){
-                                            [self setUnsavedChanges:NO andSavingChanges:NO];
-                                            [self updateBackgroundArrays];
-                                        }failure:^(NSError *error) {
-                                            [self setUnsavedChanges:YES andSavingChanges:NO];
-                                            [self reloadScreen];
-                                        }];
+                                             [self setUnsavedChanges:NO andSavingChanges:NO];
+                                             [self updateBackgroundArrays];
+                                         }failure:^(NSError *error) {
+                                             [self setUnsavedChanges:YES andSavingChanges:NO];
+                                             [self reloadScreen];
+                                         }];
 }
 
 
 - (void) addToStack:(NSDictionary*)bucket
 {
     [self setUnsavedChanges:YES andSavingChanges:YES];
-
+    
     [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Collection", [bucket objectForKey:@"first_name"]]];
     
     [[LXServer shared] addItem:self.item toBucket:bucket
@@ -586,11 +590,11 @@
                            [self reloadScreen];
                            [self updateBucketInBackground:bucket];
                        }failure:^(NSError *error){
-                            NSLog(@"unsuccessfully added to stack");
-                            [self setUnsavedChanges:YES andSavingChanges:NO];
-                            [self hideHUD];
-                            [self reloadScreen];
-                        }];
+                           NSLog(@"unsuccessfully added to stack");
+                           [self setUnsavedChanges:YES andSavingChanges:NO];
+                           [self hideHUD];
+                           [self reloadScreen];
+                       }];
 }
 
 - (void) saveAction:(id)sender
@@ -701,7 +705,7 @@
         if (buttonIndex == 1) {
             [self deleteItem];
         }
-
+        
     }
 }
 
@@ -747,13 +751,13 @@
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
     NSString *result = [textView.text stringByReplacingCharactersInRange:range withString:text];
-
+    
     [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
     [self performSelector:@selector(saveUpdatedMessage:) withObject:result afterDelay:0.5];
     [self performSelector:@selector(updateTableViewCellSizes:) withObject:textView afterDelay:0];
     
     [self setUnsavedChanges:YES andSavingChanges:NO];
-
+    
     
     return YES;
 }

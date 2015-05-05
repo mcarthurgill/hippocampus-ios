@@ -6,15 +6,19 @@
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>218F1223-E7CE-4323-A56C-574143918826</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Hippocampus</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>71342EC39F2F24752509D7529D34BD79E1F1F41F</key>
 		<string>https://github.com/mcarthurgill/hippocampus-ios.git</string>
 	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Hippocampus.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>71342EC39F2F24752509D7529D34BD79E1F1F41F</key>
-		<string>hippocampus-ios/</string>
+		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://github.com/mcarthurgill/hippocampus-ios.git</string>
