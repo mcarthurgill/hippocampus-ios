@@ -407,6 +407,15 @@
     return -1;
 }
 
+
+- (BOOL) shouldOverlayPlayButtonForUrl:(NSString*)url
+{
+    if ([self indexOfMatchingVideoUrl:url] != -1) {
+        return YES;
+    }
+    return NO;
+}
+
 # pragma mark other dictionary helpers
 
 - (NSMutableDictionary*) cleanDictionary
@@ -448,7 +457,7 @@
             [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
         }
     }
-    return bucketNamesDict; 
+    return bucketNamesDict;
 }
 
 

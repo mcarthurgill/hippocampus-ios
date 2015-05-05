@@ -20,7 +20,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -35,7 +35,7 @@
     CGFloat width = self.contentView.frame.size.width - 10 - 25;
     
     note = [[UILabel alloc] initWithFrame:CGRectMake(leftMargin, topMargin, width, [self heightForText:[item truncatedMessage] width:width font:font]+4.0f)];
-
+    
     [note setFont:font];
     [note setText:[item truncatedMessage]];
     [note setTag:1];
@@ -70,6 +70,13 @@
                 [iv setContentMode:UIViewContentModeScaleAspectFill];
                 [iv setClipsToBounds:YES];
                 [iv.layer setCornerRadius:8.0f];
+                
+                if ([item shouldOverlayPlayButtonForUrl:url]) {
+                    [iv overlayPlayButton];
+                } else {
+                    [iv removePlayButtonOverlay];
+                }
+                
                 if ([item hasID]) {
                     
                     if ([SGImageCache haveImageForURL:url]) {
@@ -90,7 +97,6 @@
                         }];
                     }
                     
-
                 } else {
                     if ([NSData dataWithContentsOfFile:url] && ![iv.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
                         [iv setAlpha:0.0f];
@@ -100,6 +106,7 @@
                         }];
                     }
                 }
+                
                 if (!iv.superview) {
                     [self.contentView addSubview:iv];
                 }
@@ -119,7 +126,6 @@
         ++i;
     }
 }
-
 
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {
