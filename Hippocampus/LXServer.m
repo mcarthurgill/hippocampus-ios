@@ -553,16 +553,26 @@
 
 - (void) createContactCardWithBucket:(NSDictionary*)bucket andContact:(NSMutableDictionary*)contact success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback {
     NSError *error;
+    
+    UIImage *img = (UIImage*)[contact objectForKey:@"image"];
+    NSString* path = [[LXSession thisSession] writeImageToDocumentsFolder:img];
+    [contact removeObjectForKey:@"image"];
+    
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:contact options:NSJSONWritingPrettyPrinted error:&error];
     NSString* jsonContact = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     
     [[LXServer shared] requestPath:@"/contact_cards.json" withMethod:@"POST" withParamaters:@{@"contact_card":@{@"bucket_id":[bucket ID], @"contact_info":jsonContact}}
+         constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+             if (img) {
+                 [formData appendPartWithFileData:[NSData dataWithContentsOfFile:path] name:@"file" fileName:@"image.jpg" mimeType:@"image/jpeg"];
+             }
+         }
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
                            }
-                           failure:^(NSError *error) {
+                           failure:^(NSError* error) {
                                if (failureCallback) {
                                    failureCallback(error);
                                }

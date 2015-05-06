@@ -151,7 +151,7 @@
 - (void) addContact
 {
     [self showHUDWithMessage:@"Adding contact"];
-    [[LXServer shared] createContactCardWithBucket:self.bucket andContact:[self.contactsToInvite firstObject] success:^(id responseObject) {
+    [[LXServer shared] createContactCardWithBucket:self.bucket andContact:[[self.contactsToInvite firstObject] mutableCopy] success:^(id responseObject) {
         [self hideHUD];
         [self showHUDWithMessage:@"Success!"];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1*NSEC_PER_SEC), dispatch_get_main_queue(), ^{

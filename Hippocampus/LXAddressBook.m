@@ -89,9 +89,10 @@ static LXAddressBook* thisBook = nil;
                 NSString *company = [self getContactCompany:[orderedContacts objectAtIndex:i]];
                 NSNumber *recordID = [self getContactRecordID:[orderedContacts objectAtIndex:i]];
                 UIImage *image = [self getContactImage:[orderedContacts objectAtIndex:i]];
+                NSMutableArray *socialMedia = [self getContactSocials:[orderedContacts objectAtIndex:i]];
                 
                 if (name && name.length > 1) {
-                    NSDictionary *contactInfo = [[NSDictionary alloc] initWithObjectsAndKeys:name, @"name", firstName, @"first_name", lastName, @"last_name", emails, @"emails", phones, @"phones", recordID, @"record_id", note, @"note", bday, @"birthday", company, @"company", image, @"image", nil];
+                    NSDictionary *contactInfo = [[NSDictionary alloc] initWithObjectsAndKeys:name, @"name", firstName, @"first_name", lastName, @"last_name", emails, @"emails", phones, @"phones", recordID, @"record_id", note, @"note", bday, @"birthday", company, @"company", image, @"image", socialMedia, @"socials", nil];
                     [self.allContacts addObject:contactInfo];
                     
                     if (![bucketNames objectForKey:name]) {
@@ -156,29 +157,45 @@ static LXAddressBook* thisBook = nil;
 
 - (NSString*) getContactNote:(NSDictionary *)contact
 {
-    return (__bridge NSString *)ABRecordCopyValue((__bridge ABRecordRef)contact, kABPersonNoteProperty);
+    NSString *note = (__bridge NSString *)ABRecordCopyValue((__bridge ABRecordRef)contact, kABPersonNoteProperty);
+    return note && note.length > 0 ? note : @"";
 }
 
 - (NSString*) getContactBirthday:(NSDictionary *)contact
 {
-    return (__bridge NSString *)ABRecordCopyValue((__bridge ABRecordRef)contact, kABPersonBirthdayProperty);
+    NSString *bday = (__bridge NSString *)ABRecordCopyValue((__bridge ABRecordRef)contact, kABPersonBirthdayProperty);
+    return bday && bday.length > 0 ? bday : @"";
 }
 
 - (NSString*) getContactCompany:(NSDictionary *)contact
 {
-    return (__bridge NSString *)ABRecordCopyValue((__bridge ABRecordRef)contact, kABPersonOrganizationProperty);
+    NSString *company = (__bridge NSString *)ABRecordCopyValue((__bridge ABRecordRef)contact, kABPersonOrganizationProperty);
+    return company && company.length > 0 ? company : @"";
 }
 
 - (UIImage*) getContactImage:(NSDictionary *)contact
 {
+    UIImage *imgd;
     if (ABPersonHasImageData((__bridge ABRecordRef)contact)) {
         NSData* data = (__bridge_transfer NSData*) ABPersonCopyImageData((__bridge ABRecordRef)contact);
-        UIImage* imgd = [UIImage imageWithData:data];
-        if (imgd) {
-            return imgd;
-        }
+        imgd = [UIImage imageWithData:data];
     }
-    return nil;
+    return imgd;
+}
+
+
+- (NSMutableArray*) getContactSocials:(NSDictionary*)contact
+{
+    NSMutableArray *socialsArray = [[NSMutableArray alloc] init];
+    
+    ABMultiValueRef socials = ABRecordCopyValue((__bridge ABRecordRef)contact, kABPersonSocialProfileProperty);
+    CFIndex socialsCount = ABMultiValueGetCount(socials);
+    
+    for (int k=0 ; k<socialsCount ; k++) {
+        [socialsArray addObject:(__bridge NSDictionary*)ABMultiValueCopyValueAtIndex(socials, k)];
+    }
+    
+    return socialsArray;
 }
 
 - (void) sortContacts
