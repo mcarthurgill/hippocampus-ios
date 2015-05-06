@@ -63,6 +63,7 @@
             
             if ([url isImageUrl]) {
                 UIImageView* iv = [self.contentView viewWithTag:(200+i)] ? (UIImageView*)[self.contentView viewWithTag:(200+i)] : [[UIImageView alloc] init];
+                [iv setBackgroundColor:[UIColor clearColor]];
                 [iv setFrame:CGRectMake(20, note.frame.origin.y+note.frame.size.height+PICTURE_MARGIN_TOP+(PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*i, self.contentView.frame.size.width-40.0f, PICTURE_HEIGHT)];
                 [iv setTag:(200+i)];
                 ++i;
@@ -71,17 +72,18 @@
                 [iv setClipsToBounds:YES];
                 [iv.layer setCornerRadius:8.0f];
                 
-                if ([item shouldOverlayPlayButtonForUrl:url]) {
-                    [iv overlayPlayButton];
-                } else {
-                    [iv removePlayButtonOverlay];
-                }
+                UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+                activityIndicator.alpha = 1.0;
+                [activityIndicator setFrame:CGRectMake(iv.frame.size.width/2, iv.frame.size.height/2, activityIndicator.frame.size.width, activityIndicator.frame.size.height)];
+                [iv addSubview:activityIndicator];
+                [activityIndicator startAnimating];
                 
                 if ([item hasID]) {
                     
                     if ([SGImageCache haveImageForURL:url]) {
                         iv.image = [SGImageCache imageForURL:url];
                         [iv setAlpha:1.0f];
+                        activityIndicator.alpha = 0.0;
                     } else if (![iv.image isEqual:[SGImageCache imageForURL:url]]) {
                         iv.image = nil;
                         [iv setAlpha:1.0f];
@@ -92,6 +94,7 @@
                                 iv.image = image;
                                 [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
                                     [iv setAlpha:curAlpha];
+                                    activityIndicator.alpha = 0.0;
                                 }];
                             }
                         }];
@@ -103,6 +106,7 @@
                         iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
                         [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
                             [iv setAlpha:1.0f];
+                            activityIndicator.alpha = 0.0;
                         }];
                     }
                 }

@@ -144,8 +144,6 @@ static LXSession* thisSession = nil;
 
 - (void) attemptNoteSave:(NSDictionary*)note success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    NSLog(@"attempt note save");
-    
     NSMutableDictionary* unsavedNote = [[NSMutableDictionary alloc] initWithDictionary:note];
     NSMutableArray* mediaURLS = [[NSMutableArray alloc] initWithArray:[unsavedNote objectForKey:@"media_urls"]];
     [self createAndShareActionWithMediaUrls:mediaURLS andUnsavedNote:unsavedNote
@@ -176,7 +174,6 @@ static LXSession* thisSession = nil;
                  } else if ([mediaType isEqualToString:@"video"]) {
                      NSData *video = [NSData dataWithContentsOfFile:[mediaURLS firstObject]];
                      [formData appendPartWithFileData:video name:@"file" fileName:@"video.mov" mimeType:@"video/quicktime"];
-                     [formData appendPartWithFileData:[NSData dataWithContentsOfFile:[mediaURLS lastObject]] name:@"screenshot" fileName:@"image.jpg" mimeType:@"image/jpeg"];
                  }
              }
          }

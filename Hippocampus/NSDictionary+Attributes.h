@@ -135,7 +135,6 @@
 - (NSMutableDictionary*) bucketNames;
 
 - (int)indexOfMatchingVideoUrl:(NSString*)imageURL;
-- (BOOL) shouldOverlayPlayButtonForUrl:(NSString*)url;
 
 // actions
 

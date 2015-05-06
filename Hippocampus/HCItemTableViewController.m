@@ -275,10 +275,6 @@
             
             [iv setClipsToBounds:YES];
             [iv.layer setCornerRadius:8.0f];
-            
-            if ([item shouldOverlayPlayButtonForUrl:url]) {
-                [iv overlayPlayButton];
-            }
         }
     } else {
         [iv setImage:nil];

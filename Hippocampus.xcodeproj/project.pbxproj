@@ -89,8 +89,6 @@
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
 		76B029741AC1EE21003539B4 /* HCContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029731AC1EE21003539B4 /* HCContactTableViewCell.m */; };
 		76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029761AC20247003539B4 /* UILabel+Bold.m */; };
-		76B38A2B1AF946BD00E4E6AB /* UIImageView+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B38A2A1AF946BD00E4E6AB /* UIImageView+Helpers.m */; };
-		76B38A2D1AF9664000E4E6AB /* playButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 76B38A2C1AF9664000E4E6AB /* playButton.png */; };
 		76B57C2C1AB0D65A00A67DE0 /* HCLocationNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B57C2B1AB0D65A00A67DE0 /* HCLocationNotesViewController.m */; };
 		76BE801B1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BE801A1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m */; };
 		76BFE0721A7C0662005AD98C /* Introduction.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76BFE0711A7C0662005AD98C /* Introduction.storyboard */; };
@@ -242,9 +240,6 @@
 		76B029731AC1EE21003539B4 /* HCContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCContactTableViewCell.m; sourceTree = "<group>"; };
 		76B029751AC20247003539B4 /* UILabel+Bold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Bold.h"; sourceTree = "<group>"; };
 		76B029761AC20247003539B4 /* UILabel+Bold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Bold.m"; sourceTree = "<group>"; };
-		76B38A291AF946BD00E4E6AB /* UIImageView+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Helpers.h"; sourceTree = "<group>"; };
-		76B38A2A1AF946BD00E4E6AB /* UIImageView+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Helpers.m"; sourceTree = "<group>"; };
-		76B38A2C1AF9664000E4E6AB /* playButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = playButton.png; sourceTree = "<group>"; };
 		76B57C2A1AB0D65A00A67DE0 /* HCLocationNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCLocationNotesViewController.h; sourceTree = "<group>"; };
 		76B57C2B1AB0D65A00A67DE0 /* HCLocationNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCLocationNotesViewController.m; sourceTree = "<group>"; };
 		76BE80191AB7559F006262CB /* HCDetailsPhotoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCDetailsPhotoTableViewCell.h; sourceTree = "<group>"; };
@@ -537,8 +532,6 @@
 				28A0857B1A700CB200BA1368 /* LXString+NSString.m */,
 				28431DE21A93914200B12548 /* NSDictionary+Attributes.h */,
 				28431DE31A93914200B12548 /* NSDictionary+Attributes.m */,
-				76B38A291AF946BD00E4E6AB /* UIImageView+Helpers.h */,
-				76B38A2A1AF946BD00E4E6AB /* UIImageView+Helpers.m */,
 				286F434F1A9F71DB0086AAC9 /* UIFont+HCFonts.h */,
 				286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */,
 				76B029751AC20247003539B4 /* UILabel+Bold.h */,
@@ -571,7 +564,6 @@
 		2826C60E1ADDA5BF008DC533 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				76B38A2C1AF9664000E4E6AB /* playButton.png */,
 				2826C60F1ADDA5D1008DC533 /* txt_scrnsht.png */,
 			);
 			name = Images;
@@ -744,7 +736,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				28CD3FBE1AEA0F8700B3ABB6 /* item-screen.jpg in Resources */,
-				76B38A2D1AF9664000E4E6AB /* playButton.png in Resources */,
 				281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */,
 				281CA923196C29F800E6BE96 /* 179-notepad@2x.png in Resources */,
 				28431DDD1A8D692E00B12548 /* 11-clock@2x.png in Resources */,
@@ -848,7 +839,6 @@
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
 				76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,
-				76B38A2B1AF946BD00E4E6AB /* UIImageView+Helpers.m in Sources */,
 				2837E8061AC11D2A0089FA33 /* HCInitialViewController.m in Sources */,
 				2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */,
 				2837E8031AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m in Sources */,
