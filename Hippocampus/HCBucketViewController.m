@@ -379,8 +379,8 @@
                 
         [self addItemToTable:[NSDictionary dictionaryWithDictionary:tempNote]];
         [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
+        
         [self setScrollToPosition:@"bottom"];
-        [self reloadScreenToIndex:[self currentArray].count animated:YES];
         [self clearTextField:NO];
         [self saveBucket];
         
@@ -399,6 +399,14 @@
         if ([[UIDevice currentDevice].model isEqualToString:@"iPhone"]) {
             AudioServicesPlaySystemSound (1352); //vibrate
         }
+        
+        //this is because the scrolling to bottom was behaving oddly, trying this out.
+        double delayInSeconds = 0.01;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [self setScrollToPosition:@"bottom"];
+            [self reloadScreenToIndex:([self currentArray].count-1) animated:YES];
+        });
     }
 }
 
