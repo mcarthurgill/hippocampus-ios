@@ -867,7 +867,7 @@
 - (void) createContactCardWithBucket:(NSDictionary*)bucket andContact:(NSMutableDictionary*)contact
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[LXServer shared] createContactCardWithBucket:bucket andContact:contact
+        [[LXServer shared] createContactCardWithBucket:bucket andContact:[contact mutableCopy]
             success:^(id responseObject) {
                 NSLog(@"contact created successfully responseObject = %@", responseObject);
             } failure:^(NSError *error) {
