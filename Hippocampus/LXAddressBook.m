@@ -164,7 +164,7 @@ static LXAddressBook* thisBook = nil;
 - (NSString*) getContactBirthday:(NSDictionary *)contact
 {
     NSString *bday = (__bridge NSString *)ABRecordCopyValue((__bridge ABRecordRef)contact, kABPersonBirthdayProperty);
-    return bday && bday.length > 0 ? bday : @"";
+    return bday ? bday : @"";
 }
 
 - (NSString*) getContactCompany:(NSDictionary *)contact
