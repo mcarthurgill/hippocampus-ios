@@ -32,9 +32,9 @@
     // Configure the view for the selected state
 }
 
-- (void) configureWithItem:(NSDictionary*) item
+- (void) configureWithItem:(NSDictionary*) itm
 {
-    self.item = [[NSDictionary alloc] initWithDictionary:item];
+    self.item = [[NSDictionary alloc] initWithDictionary:itm];
     UILabel* note = (UILabel*)[self.contentView viewWithTag:1];
     UIFont* font = note.font;
     float leftMargin = note.frame.origin.x;
@@ -238,7 +238,6 @@
         // Add the subview to the main window
         [mainWindow addSubview:self.mediaView];
     }
-    NSLog(@"long press!");
 }
 
 - (void) playerItemDidReachEnd:(NSNotification*)notification
@@ -260,11 +259,11 @@
     return rect.size.height;
 }
 
-- (NSString*) dateToDisplayForItem:(NSDictionary*)item {
-    if (item && [item hasNextReminderDate]) {
-        return [NSString stringWithFormat:@"%@ - %@", [item itemType], [NSDate formattedDateFromString:[item nextReminderDate]]];
+- (NSString*) dateToDisplayForItem:(NSDictionary*)i {
+    if (i && [i hasNextReminderDate]) {
+        return [NSString stringWithFormat:@"%@ - %@", [i itemType], [NSDate formattedDateFromString:[i nextReminderDate]]];
     } else {
-        return [NSDate timeAgoInWordsFromDatetime:[item createdAt]];
+        return [NSDate timeAgoInWordsFromDatetime:[i createdAt]];
     }
 }
 @end

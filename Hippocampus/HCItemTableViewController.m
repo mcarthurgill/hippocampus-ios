@@ -903,7 +903,6 @@
         // Add the subview to the main window
         [mainWindow addSubview:self.mediaView];
     }
-    NSLog(@"long press!");
 }
 
 - (void) playerItemDidReachEnd:(NSNotification*)notification

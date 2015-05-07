@@ -19,7 +19,7 @@
 @property (strong, nonatomic) AVAsset* asset;
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 
-- (void) configureWithItem:(NSDictionary*)item;
+- (void) configureWithItem:(NSDictionary*)itm;
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font;
 - (NSString*) dateToDisplayForItem:(NSDictionary*)item;
 
