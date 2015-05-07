@@ -202,17 +202,15 @@
     if ([[self currentDictionary] objectForKey:@"Recent"] && [[[self currentDictionary] objectForKey:@"Recent"] count] > 0) {
         [self.sections addObject:@"Recent"];
     }
-    if ([[self currentDictionary] objectForKey:@"Other"] && [[[self currentDictionary] objectForKey:@"Other"] count] > 0) {
-        [self.sections addObject:@"Other"];
+    
+    if ([[self currentDictionary] objectForKey:@"groups"] && [[[self currentDictionary] objectForKey:@"groups"] count] > 0) {
+        for (int i = 0; i < [[[self currentDictionary] objectForKey:@"groups"] count]; ++i) {
+            [self.sections addObject:[NSString stringWithFormat:@"%i", i]];
+        }
     }
-    if ([[self currentDictionary] objectForKey:@"Person"] && [[[self currentDictionary] objectForKey:@"Person"] count] > 0) {
-        [self.sections addObject:@"Person"];
-    }
-    if ([[self currentDictionary] objectForKey:@"Event"] && [[[self currentDictionary] objectForKey:@"Event"] count] > 0) {
-        [self.sections addObject:@"Event"];
-    }
-    if ([[self currentDictionary] objectForKey:@"Place"] && [[[self currentDictionary] objectForKey:@"Place"] count] > 0) {
-        [self.sections addObject:@"Place"];
+    
+    if ([[self currentDictionary] objectForKey:@"buckets"] && [[[self currentDictionary] objectForKey:@"buckets"] count] > 0) {
+        [self.sections addObject:@"buckets"];
     }
     
     if ([self searchActivated] && ![self assignMode]) {
@@ -237,14 +235,8 @@
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Recent"]) {
         return [[[self currentDictionary] objectForKey:@"Recent"] count];
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Other"]) {
-        return [[[self currentDictionary] objectForKey:@"Other"] count];
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Person"]) {
-        return [[[self currentDictionary] objectForKey:@"Person"] count];
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Event"]) {
-        return [[[self currentDictionary] objectForKey:@"Event"] count];
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Place"]) {
-        return [[[self currentDictionary] objectForKey:@"Place"] count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
+        return [[[self currentDictionary] objectForKey:@"buckets"] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"searchResults"]) {
@@ -253,6 +245,9 @@
         return [[[self currentDictionary] objectForKey:@"Contacts"] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"info"]) {
         return 1;
+    } else {
+        //these are groups
+        return [[[[[self currentDictionary] objectForKey:@"groups"] objectAtIndex:[[self.sections objectAtIndex:section] integerValue]] objectForKey:@"sorted_buckets"] count];
     }
     // Return the number of rows in the section.
     return 0;
@@ -300,7 +295,8 @@
 
 - (UITableViewCell*) bucketCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSDictionary* bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+    NSDictionary* bucket = [self bucketAtIndexPath:indexPath];
+    
     NSString* identifier = @"bucketCell";
     //if (NULL_TO_NIL([bucket objectForKey:@"description_text"]) || [[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Event"]) {
         identifier = @"bucketAndDescriptionCell";
@@ -422,7 +418,7 @@
         } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]) {
             [self createBucketFromContact:[[[self currentDictionary] objectForKey:@"Contacts"] objectAtIndex:indexPath.row]];
         } else {
-            [self.delegate addToStack:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
+            [self.delegate addToStack:[self bucketAtIndexPath:indexPath]];
             [self updateAllBucketsInBackground];
             [self.navigationController popViewControllerAnimated:YES];
         }
@@ -440,11 +436,22 @@
         } else {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
-            [btvc setBucket:[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row]];
+            [btvc setBucket:[self bucketAtIndexPath:indexPath]];
             [btvc setDelegate:self];
             [self.navigationController pushViewController:btvc animated:YES];
         }
     
+    }
+}
+
+- (NSDictionary*) bucketAtIndexPath:(NSIndexPath*) indexPath
+{
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Recent"]) {
+        return [[[self currentDictionary] objectForKey:@"Recent"] objectAtIndex:indexPath.row];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+        return [[[self currentDictionary] objectForKey:@"buckets"] objectAtIndex:indexPath.row];
+    } else {
+        return [[[[[self currentDictionary] objectForKey:@"groups"] objectAtIndex:[[self.sections objectAtIndex:indexPath.section] integerValue]] objectForKey:@"sorted_buckets"] objectAtIndex:indexPath.row];
     }
 }
 
@@ -467,8 +474,14 @@
         return @"Contacts";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"info"]) {
         return @"Info";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
+        return @"Ungrouped";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Recent"]) {
+        return @"Recent";
+    } else if ([[self.sections objectAtIndex:section] integerValue] < [[[self currentDictionary] objectForKey:@"groups"] count]) {
+        return [NSString stringWithFormat:@"%@", [[[[self currentDictionary] objectForKey:@"groups"] objectAtIndex:[[self.sections objectAtIndex:section] integerValue]] objectForKey:@"group_name"]];
     }
-    return [NSString stringWithFormat:@"%@ Collections",[self.sections objectAtIndex:section]];
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -684,15 +697,34 @@
     NSMutableDictionary* oldDictionary = [term length] > 1 && [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] ? [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] : [self drawFromDictionary];
 
     for (NSString* key in [oldDictionary allKeys]) {
-        NSArray* buckets = [oldDictionary objectForKey:key];
-        NSMutableArray* newBuckets = [[NSMutableArray alloc] init];
         NSString *keyToSearch = [key isEqualToString:@"Contacts"] ? @"name" : @"first_name";
-        for (NSDictionary* bucket in buckets) {
-            if ([[[bucket objectForKey:keyToSearch] lowercaseString] rangeOfString:term].length > 0) {
-                [newBuckets addObject:bucket];
+        if ([key isEqualToString:@"Recent"] || [key isEqualToString:@"buckets"] || [key isEqualToString:@"Contacts"]) {
+            NSArray* buckets = [oldDictionary objectForKey:key];
+            NSMutableArray* newBuckets = [[NSMutableArray alloc] init];
+            for (NSDictionary* bucket in buckets) {
+                if ([[[bucket objectForKey:keyToSearch] lowercaseString] rangeOfString:term].length > 0) {
+                    [newBuckets addObject:bucket];
+                }
             }
+            [newDictionary setObject:newBuckets forKey:key];
+        } else if ([key isEqualToString:@"groups"]) {
+            NSMutableArray* newGroups = [[NSMutableArray alloc] init];
+            for (NSDictionary* group in [oldDictionary objectForKey:@"groups"]) {
+                NSMutableDictionary* newGroup = [[NSMutableDictionary alloc] initWithDictionary:group];
+                NSArray* buckets = [group objectForKey:@"sorted_buckets"];
+                NSMutableArray* newBuckets = [[NSMutableArray alloc] init];
+                for (NSDictionary* bucket in buckets) {
+                    if ([[[bucket objectForKey:keyToSearch] lowercaseString] rangeOfString:term].length > 0) {
+                        [newBuckets addObject:bucket];
+                    }
+                }
+                if ([newBuckets count] > 0) {
+                    [newGroup setObject:newBuckets forKey:@"sorted_buckets"];
+                    [newGroups addObject:newGroup];
+                }
+            }
+            [newDictionary setObject:newGroups forKey:@"groups"];
         }
-        [newDictionary setObject:newBuckets forKey:key];
     }
     
     return newDictionary;
@@ -796,7 +828,7 @@
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
     
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        NSDictionary *bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
+        NSDictionary *bucket = [self bucketAtIndexPath:indexPath];
         if (bucket && ![bucket isAllNotesBucket] && ![self assignMode]) {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];

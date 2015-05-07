@@ -215,13 +215,14 @@
 
 - (void) getAllBucketsWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/grouped_buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
                            success:^(id responseObject) {
                                //NSLog(@"allBuckets: %@", responseObject);
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    NSMutableDictionary* bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
                                    if (bucketsDictionary) {
-                                       [[NSUserDefaults standardUserDefaults] setObject:[self bucketToSave:bucketsDictionary] forKey:@"buckets"];
+                                       //[[NSUserDefaults standardUserDefaults] setObject:[self bucketToSave:bucketsDictionary] forKey:@"buckets"];
+                                       [[NSUserDefaults standardUserDefaults] setObject:[bucketsDictionary cleanDictionary] forKey:@"buckets"];
                                        [[NSUserDefaults standardUserDefaults] synchronize];
                                        [(LXAppDelegate *)[[UIApplication sharedApplication] delegate] setBadgeIcon];
                                    }

@@ -444,11 +444,19 @@
 - (NSMutableDictionary*) bucketNames
 {
     NSMutableDictionary *bucketNamesDict = [[NSMutableDictionary alloc] init];
-    for (NSDictionary*bucketType in self) {
-        for (NSDictionary*bucket in [self objectForKey:bucketType]) {
+    //for (NSDictionary*bucketType in self) {
+    for (NSDictionary*bucket in [self objectForKey:@"Recent"]) {
+        [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
+    }
+    for (int i = 0; i < [[self objectForKey:@"groups"] count]; ++i) {
+        for (NSDictionary*bucket in [[[self objectForKey:@"groups"] objectAtIndex:i] objectForKey:@"sorted_buckets"]) {
             [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
         }
     }
+    for (NSDictionary*bucket in [self objectForKey:@"buckets"]) {
+        [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
+    }
+    //}
     return bucketNamesDict;
 }
 

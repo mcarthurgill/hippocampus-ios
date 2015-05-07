@@ -324,12 +324,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "451965861.767104"
+            timestampString = "452716569.285002"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "558"
-            endingLineNumber = "558"
-            landmarkName = "-searchBarShouldBeginEditing:"
+            startingLineNumber = "571"
+            endingLineNumber = "571"
+            landmarkName = "-moreButtonClicked:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -340,13 +340,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "451965861.767104"
+            timestampString = "452716569.285002"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "560"
-            endingLineNumber = "560"
-            landmarkName = "-searchBarShouldBeginEditing:"
-            landmarkType = "5">
+            startingLineNumber = "573"
+            endingLineNumber = "573"
+            landmarkName = "@implementation HCBucketsTableViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -820,7 +820,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/LXServer.m"
-            timestampString = "451499115.481035"
+            timestampString = "452714890.018658"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "224"
@@ -1146,6 +1146,38 @@
             startingLineNumber = "212"
             endingLineNumber = "212"
             landmarkName = "-longPressMedia:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hippocampus/HCBucketsTableViewController.m"
+            timestampString = "452717763.155427"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "711"
+            endingLineNumber = "711"
+            landmarkName = "-searchedDictionaryWithTerm:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hippocampus/HCBucketsTableViewController.m"
+            timestampString = "452717763.155427"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "714"
+            endingLineNumber = "714"
+            landmarkName = "-searchedDictionaryWithTerm:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
