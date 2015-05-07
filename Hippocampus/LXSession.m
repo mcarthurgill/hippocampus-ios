@@ -111,10 +111,11 @@ static LXSession* thisSession = nil;
 {
     NSMutableDictionary* temp = [self unsavedNotesDictionary];
     NSMutableArray* tempArray = [self unsavedNotesForBucket:bucketID];
+    NSMutableArray *enumeratingArray = [NSMutableArray arrayWithArray:tempArray];
     if (tempArray) {
-        for (NSDictionary* dict in tempArray) {
+        for (NSDictionary* dict in enumeratingArray) {
             if ([[dict objectForKey:@"device_timestamp"] isEqualToString:[note objectForKey:@"device_timestamp"]]) {
-                [tempArray removeObject:dict];
+                [tempArray removeObjectAtIndex:[enumeratingArray indexOfObject:dict]];
             }
         }
     }
@@ -166,30 +167,33 @@ static LXSession* thisSession = nil;
     NSString *mediaType = [unsavedNote objectForKey:@"media_type"];
     [unsavedNote removeObjectForKey:@"media_type"];
     
-    [[LXServer shared] requestPath:@"/items.json" withMethod:@"POST" withParamaters:@{@"item":unsavedNote}
-         constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-             if (mediaURLS && [mediaURLS count] > 0) {
-                 if ([mediaType isEqualToString:@"image"]) {
-                     [formData appendPartWithFileData:[NSData dataWithContentsOfFile:[mediaURLS firstObject]] name:@"file" fileName:@"image.jpg" mimeType:@"image/jpeg"];
-                 } else if ([mediaType isEqualToString:@"video"]) {
-                     NSData *video = [NSData dataWithContentsOfFile:[mediaURLS firstObject]];
-                     [formData appendPartWithFileData:video name:@"file" fileName:@"video.mov" mimeType:@"video/quicktime"];
+    if (mediaURLS.count == 0 || [NSData dataWithContentsOfFile:[mediaURLS firstObject]]) {
+        [[LXServer shared] requestPath:@"/items.json" withMethod:@"POST" withParamaters:@{@"item":unsavedNote}
+             constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+                 if (mediaURLS && [mediaURLS count] > 0) {
+                     if ([mediaType isEqualToString:@"image"]) {
+                         [formData appendPartWithFileData:[NSData dataWithContentsOfFile:[mediaURLS firstObject]] name:@"file" fileName:@"image.jpg" mimeType:@"image/jpeg"];
+                     } else if ([mediaType isEqualToString:@"video"]) {
+                         NSData *video = [NSData dataWithContentsOfFile:[mediaURLS firstObject]];
+                         [formData appendPartWithFileData:video name:@"file" fileName:@"video.mov" mimeType:@"video/quicktime"];
+                     }
                  }
              }
-         }
-                           success:^(id responseObject) {
-                               [self removeUnsavedNote:responseObject fromBucket:[NSString stringWithFormat:@"%@",[unsavedNote objectForKey:@"bucket_id"]]];
-                               if (successCallback) {
-                                   successCallback(responseObject);
+                               success:^(id responseObject) {
+                                   [self removeUnsavedNote:responseObject fromBucket:[NSString stringWithFormat:@"%@",[unsavedNote objectForKey:@"bucket_id"]]];
+                                   if (successCallback) {
+                                       successCallback(responseObject);
+                                   }
                                }
-                           }
-                           failure:^(NSError* error) {
-                               if (failureCallback) {
-                                   failureCallback(error);
+                               failure:^(NSError* error) {
+                                   if (failureCallback) {
+                                       failureCallback(error);
+                                   }
                                }
-                           }
-     ];
-
+         ];
+    } else {
+        [self removeUnsavedNote:unsavedNote fromBucket:[NSString stringWithFormat:@"%@",[unsavedNote objectForKey:@"bucket_id"]]];
+    }
 }
 
 
