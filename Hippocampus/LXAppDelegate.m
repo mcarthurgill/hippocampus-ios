@@ -35,6 +35,8 @@
     [self loadAddressBook];
 //    [[LXSetup theSetup] getSetupQuestions];
     
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
+    
     return YES;
 }
 

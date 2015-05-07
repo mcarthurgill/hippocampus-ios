@@ -58,6 +58,8 @@
 {
     [super viewDidLoad];
     
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshChangeBottom) name:@"appAwake" object:nil];
     
     //remove extra table view lines
@@ -1026,9 +1028,9 @@
 
 # pragma mark - Gesture Recognizers
 
-- (void) setLongPressGestureToRemoveItem {
-    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(handleLongPress:)];
+- (void) setLongPressGestureToRemoveItem
+{
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     lpgr.minimumPressDuration = 0.7; //seconds
     lpgr.delegate = self;
     [self.tableView addGestureRecognizer:lpgr];
@@ -1036,14 +1038,16 @@
 
 -(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
-    NSLog(@"handle long press");
-    CGPoint p = [gestureRecognizer locationInView:self.tableView];
-    
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[self currentArray] objectAtIndex:indexPath.row]) {
-            [self setItemForDeletion:[[self currentArray] objectAtIndex:indexPath.row]];
-            [self alertForDeletion];
+    if ([[gestureRecognizer view] isKindOfClass:[UITableView class]]) {
+        NSLog(@"handle long press");
+        CGPoint p = [gestureRecognizer locationInView:self.tableView];
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+        if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+            if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[self currentArray] objectAtIndex:indexPath.row]) {
+                [self setItemForDeletion:[[self currentArray] objectAtIndex:indexPath.row]];
+                [self alertForDeletion];
+            }
         }
     }
 }

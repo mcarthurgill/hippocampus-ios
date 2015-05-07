@@ -14,6 +14,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import "HCPopUpViewController.h"
 @import MapKit;
+#import "LXAppDelegate.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define IMAGE_FADE_IN_TIME 0.3f
@@ -37,6 +38,9 @@
 @synthesize messageTextView;
 
 @synthesize mediaDictionary;
+
+@synthesize mediaView;
+@synthesize player, playerLayer, asset, playerItem;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -279,6 +283,12 @@
     } else {
         [iv setImage:nil];
     }
+    
+    UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressMedia:)];
+    [longPress setMinimumPressDuration:0.15f];
+    [iv addGestureRecognizer:longPress];
+    [iv setUserInteractionEnabled:YES];
+    [iv setExclusiveTouch:YES];
     
     return cell;
 }
@@ -801,6 +811,105 @@
             [self alertForRemovalFromBucket:[[self.item buckets] objectAtIndex:indexPath.row]];
         }
     }
+}
+
+# pragma mark long press media
+
+- (void) longPressMedia:(UILongPressGestureRecognizer*)gesture
+{
+    if (gesture.state == UIGestureRecognizerStateCancelled || gesture.state == UIGestureRecognizerStateFailed || gesture.state == UIGestureRecognizerStateEnded) {
+        if (self.mediaView) {
+            [self.mediaView removeFromSuperview];
+            [self setMediaView:nil];
+        }
+        if (self.player) {
+            [self.player pause];
+            [self setPlayer:nil];
+            [self setAsset:nil];
+            [self setPlayerItem:nil];
+            [self setPlayerLayer:nil];
+        }
+        [[[[UIApplication sharedApplication] delegate] window] setWindowLevel:UIWindowLevelNormal];
+    }
+    
+    else if (!self.mediaView) {
+        
+        id cell = [gesture view];
+        while (![cell isKindOfClass:[UITableViewCell class]]) {
+            cell = [cell superview];
+        }
+        
+        int index = (int)[[self.tableView indexPathForCell:cell] row];
+        [[[[UIApplication sharedApplication] delegate] window] setWindowLevel:UIWindowLevelStatusBar+1];
+        // Get main window reference
+        UIWindow* mainWindow = (((LXAppDelegate *)[UIApplication sharedApplication].delegate).window);
+        
+        NSString *url = [[self.item croppedMediaURLs] objectAtIndex:index];
+        NSUInteger indexOfVideoUrl = [self.item indexOfMatchingVideoUrl:url];
+        
+        // Create a full-screen subview
+        self.mediaView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height+[[UIApplication sharedApplication] statusBarFrame].size.height)];
+        // Set up some properties of the subview
+        self.mediaView.backgroundColor = [UIColor blackColor];
+        [self.mediaView setContentMode:UIViewContentModeScaleAspectFit];
+        
+        if (indexOfVideoUrl != -1) {
+            //VIDEO
+            
+            if (!self.player) {
+                
+                self.asset = [AVAsset assetWithURL:[NSURL URLWithString:[[self.item mediaURLs] objectAtIndex:indexOfVideoUrl]]];
+                if (!self.playerItem) {
+                    self.playerItem = [[AVPlayerItem alloc] initWithAsset:self.asset];
+                }
+                if (!self.player) {
+                    self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
+                    self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:[self.player currentItem]];
+                }
+                
+                if (!self.playerLayer) {
+                    self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+                    [self.playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+                    [self.playerLayer setFrame:self.mediaView.frame];
+                    [self.mediaView.layer addSublayer:self.playerLayer];
+                }
+                [self.player play];
+                
+            }
+            
+        } else {
+            
+            //IMAGE
+            if ([self.item hasID]) {
+                if ([SGImageCache haveImageForURL:url]) {
+                    [self.mediaView setImage:[SGImageCache imageForURL:url]];
+                } else if (![self.mediaView.image isEqual:[SGImageCache imageForURL:url]]) {
+                    self.mediaView.image = nil;
+                    [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                        if (image) {
+                            self.mediaView.image = image;
+                        }
+                    }];
+                }
+            } else {
+                if ([NSData dataWithContentsOfFile:url] && ![self.mediaView.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
+                    self.mediaView.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
+                }
+            }
+            
+        }
+        
+        // Add the subview to the main window
+        [mainWindow addSubview:self.mediaView];
+    }
+    NSLog(@"long press!");
+}
+
+- (void) playerItemDidReachEnd:(NSNotification*)notification
+{
+    AVPlayerItem *p = [notification object];
+    [p seekToTime:kCMTimeZero];
 }
 
 

@@ -34,6 +34,12 @@
 
 @property (strong, nonatomic) MPMoviePlayerViewController *moviePlayerController;
 
+@property (strong, nonatomic) UIImageView* mediaView;
+@property (strong, nonatomic) AVPlayer* player;
+@property (strong, nonatomic) AVPlayerLayer* playerLayer;
+@property (strong, nonatomic) AVAsset* asset;
+@property (strong, nonatomic) AVPlayerItem* playerItem;
+
 - (void) saveReminder:(NSString*)reminder withType:(NSString*)type;
 - (void) saveUpdatedMessage:(NSString *)updatedMessage;
 - (void) addToStack:(id)stackID;
