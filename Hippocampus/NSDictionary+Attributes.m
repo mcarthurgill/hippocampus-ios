@@ -35,6 +35,31 @@
     return [self objectForKey:@"user_id"];
 }
 
+- (NSString*) groupID
+{
+    return NULL_TO_NIL([self objectForKey:@"group_id"]);
+}
+
+- (NSString*) phoneNumber
+{
+    return NULL_TO_NIL([self objectForKey:@"phone_number"]);
+}
+
+- (NSString*) getGroupID
+{
+    if (NULL_TO_NIL([self objectForKey:@"group"]) && [[self objectForKey:@"group"] ID]) {
+        return [[self objectForKey:@"group"] ID];
+    }
+    if ([self bucketUserPairs] && [[self bucketUserPairs] respondsToSelector:@selector(count)]) {
+        for (NSDictionary* bup in [self bucketUserPairs]) {
+            if ([[bup phoneNumber] isEqualToString:[[[LXSession thisSession] user] phone]]) {
+                return [bup groupID];
+            }
+        }
+    }
+    return nil;
+}
+
 - (BOOL) belongsToCurrentUser
 {
     return [[NSString stringWithFormat:@"%@", [self userID]] isEqualToString:[[HCUser loggedInUser] userID]];
@@ -458,6 +483,11 @@
     }
     //}
     return bucketNamesDict;
+}
+
+- (NSArray*) groups
+{
+    return [self objectForKey:@"groups"];
 }
 
 

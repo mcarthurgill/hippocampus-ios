@@ -24,9 +24,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.typeOptions = @[@"Other", @"Person", @"Event", @"Place"];
-    self.selectedBucketType = [self.bucketDict bucketType];
-    [self.pickerView selectRow:[self.typeOptions indexOfObject:selectedBucketType] inComponent:0 animated:NO];
+    
+    self.typeOptions = [[NSMutableArray alloc] initWithArray:[[NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"]] groups]]; //@[@"Other", @"Person", @"Event", @"Place"];
+    [self.typeOptions insertObject:@{@"group_name":@"Ungrouped",@"id":@"0"} atIndex:0];
+    
+    NSString* groupID = [self.bucketDict getGroupID];
+    if (groupID) {
+        for (NSDictionary* group in self.typeOptions) {
+            if ([[group ID] isEqual:groupID]) {
+                self.selectedBucketType = group;
+            }
+        }
+    }
+    
+    if (self.selectedBucketType && [self.typeOptions indexOfObject:selectedBucketType]) {
+        [self.pickerView selectRow:[self.typeOptions indexOfObject:selectedBucketType] inComponent:0 animated:NO];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -50,7 +63,7 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return [self.typeOptions objectAtIndex:row];
+    return [[self.typeOptions objectAtIndex:row] objectForKey:@"group_name"];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component

@@ -14,10 +14,10 @@
 
 @interface HCChangeBucketTypeViewController : UIViewController <UIPickerViewDataSource, UIPickerViewDelegate>
 
-@property (strong, nonatomic) NSArray* typeOptions;
+@property (strong, nonatomic) NSMutableArray* typeOptions;
 @property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
 @property (weak, nonatomic) NSMutableDictionary *bucketDict;
-@property (weak, nonatomic) NSString *selectedBucketType; 
+@property (weak, nonatomic) NSDictionary *selectedBucketType;
 @property (nonatomic,assign) id delegate;
 
 - (IBAction)saveAction:(id)sender;

@@ -78,7 +78,7 @@
     //figure out action cells here
     if ([self.bucket belongsToCurrentUser]) {
         [self.actionCells addObject:@"deleteBucket"];
-        [self.actionCells addObject:@"changeBucketType"];
+        //[self.actionCells addObject:@"changeBucketType"];
     }
     
     if ([self.bucket hasCollaborators]) {
@@ -175,7 +175,7 @@
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"bucketTypeCell" forIndexPath:indexPath];
     UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
     [changeTypeLabel setText:[self.bucket bucketType]];
-    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
     return cell;
 }
 
@@ -307,6 +307,12 @@
         } else if ([[self.actionCells objectAtIndex:indexPath.row] isEqualToString:@"leaveThread"]) {
             [self alertForLeavingThread];
         }
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucketType"]) {
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCChangeBucketTypeViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"changeBucketTypeViewController"];
+        [vc setBucketDict:self.bucket];
+        [vc setDelegate:self];
+        [self.navigationController presentViewController:vc animated:YES completion:nil];
     } else if (([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborate"]) && ([self.bucket hasCollaborators] ? indexPath.row == [[self.bucket bucketUserPairs] count] : indexPath.row == 0)) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCCollaborateViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"collaborateViewController"];
@@ -425,6 +431,7 @@
     if (![self.bucket isAllNotesBucket]) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [[LXServer shared] getBucketInfoWithPage:0 bucketID:[self.bucket ID] success:^(id responseObject) {
+//                NSLog(@"bucketInfo: %@", responseObject);
                 [self refreshWithResponseObject:responseObject];
             }failure:^(NSError *error) {
                 NSLog(@"damn!");
