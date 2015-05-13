@@ -850,17 +850,21 @@
         } else if ([key isEqualToString:@"groups"]) {
             NSMutableArray* newGroups = [[NSMutableArray alloc] init];
             for (NSDictionary* group in [oldDictionary objectForKey:@"groups"]) {
-                NSMutableDictionary* newGroup = [[NSMutableDictionary alloc] initWithDictionary:group];
-                NSArray* buckets = [group objectForKey:@"sorted_buckets"];
-                NSMutableArray* newBuckets = [[NSMutableArray alloc] init];
-                for (NSDictionary* bucket in buckets) {
-                    if ([[[bucket objectForKey:keyToSearch] lowercaseString] rangeOfString:term].length > 0) {
-                        [newBuckets addObject:bucket];
+                if ([[[group groupName] lowercaseString] rangeOfString:term].length > 0) {
+                    [newGroups addObject:group];
+                } else {
+                    NSMutableDictionary* newGroup = [[NSMutableDictionary alloc] initWithDictionary:group];
+                    NSArray* buckets = [group objectForKey:@"sorted_buckets"];
+                    NSMutableArray* newBuckets = [[NSMutableArray alloc] init];
+                    for (NSDictionary* bucket in buckets) {
+                        if ([[[bucket objectForKey:keyToSearch] lowercaseString] rangeOfString:term].length > 0) {
+                            [newBuckets addObject:bucket];
+                        }
                     }
-                }
-                if ([newBuckets count] > 0) {
-                    [newGroup setObject:newBuckets forKey:@"sorted_buckets"];
-                    [newGroups addObject:newGroup];
+                    if ([newBuckets count] > 0) {
+                        [newGroup setObject:newBuckets forKey:@"sorted_buckets"];
+                        [newGroups addObject:newGroup];
+                    }
                 }
             }
             [newDictionary setObject:newGroups forKey:@"groups"];

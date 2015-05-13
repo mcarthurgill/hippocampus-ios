@@ -47,6 +47,7 @@
     
     if (self.selectedBucketType && [self.typeOptions indexOfObject:selectedBucketType]) {
         [self.pickerView selectRow:[self.typeOptions indexOfObject:selectedBucketType] inComponent:0 animated:NO];
+        self.selectedGroup = self.selectedBucketType;
     }
     
     [self showHidePicker];

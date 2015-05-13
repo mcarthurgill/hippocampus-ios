@@ -1172,11 +1172,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCBucketsTableViewController.m"
-            timestampString = "453180002.92048"
+            timestampString = "453212897.65549"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "853"
-            endingLineNumber = "853"
+            startingLineNumber = "868"
+            endingLineNumber = "868"
             landmarkName = "-searchedDictionaryWithTerm:"
             landmarkType = "5">
          </BreakpointContent>
