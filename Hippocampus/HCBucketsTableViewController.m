@@ -23,12 +23,14 @@
 #import "LXAppDelegate.h"
 #import "HCPopUpViewController.h"
 #import "HCPermissionViewController.h"
+#import "HCChangeBucketTypeViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.3f
 #define IMAGE_FADE_IN_TIME 0.3f
 #define PICTURE_HEIGHT_IN_CELL 280
 #define PICTURE_MARGIN_TOP_IN_CELL 8
+#define HEADER_HEIGHT 40.0f
 
 @interface HCBucketsTableViewController ()
 
@@ -42,12 +44,15 @@
 @synthesize refreshControl;
 @synthesize searchBar;
 @synthesize sections;
+@synthesize collapsedSections;
 @synthesize bucketsDictionary;
 @synthesize bucketsSearchDictionary;
 @synthesize serverSearchDictionary;
 @synthesize cachedDiskDictionary;
 
 @synthesize composeBucketController;
+
+@synthesize groupAlertView;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -155,6 +160,7 @@
     //remove extra cell lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
+    self.collapsedSections = [[NSMutableDictionary alloc] init];
     self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
     self.serverSearchDictionary = [[NSMutableDictionary alloc] init];
     
@@ -205,12 +211,16 @@
     
     if ([[self currentDictionary] objectForKey:@"groups"] && [[[self currentDictionary] objectForKey:@"groups"] count] > 0) {
         for (int i = 0; i < [[[self currentDictionary] objectForKey:@"groups"] count]; ++i) {
-            [self.sections addObject:[NSString stringWithFormat:@"%i", i]];
+            if ([[[[[self currentDictionary] objectForKey:@"groups"] objectAtIndex:i] objectForKey:@"sorted_buckets"] count] > 0) {
+                [self.sections addObject:[NSString stringWithFormat:@"%i", i]];
+            }
         }
     }
     
     if ([[self currentDictionary] objectForKey:@"buckets"] && [[[self currentDictionary] objectForKey:@"buckets"] count] > 0) {
-        [self.sections addObject:@"buckets"];
+        if (![self assignMode] && (![self searchActivated] && [[[self currentDictionary] objectForKey:@"Recent"] count]-1) < [[[self currentDictionary] objectForKey:@"buckets"] count]) {
+            [self.sections addObject:@"buckets"];
+        }
     }
     
     if ([self searchActivated] && ![self assignMode]) {
@@ -231,6 +241,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if ([self sectionIsCollapsed:section]) {
+        return 0;
+    }
     if ([[self.sections objectAtIndex:section] isEqualToString:@"new"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Recent"]) {
@@ -308,6 +321,8 @@
     [note setText:[bucket objectForKey:@"first_name"]];
     if (NULL_TO_NIL([bucket bucketType]) && [[bucket bucketType] isEqualToString:@"Person"]) {
         [note boldSubstring:[[note.text componentsSeparatedByString:@" "] objectAtIndex:0]];
+    } else if ([bucket isAllNotesBucket]) {
+        [note boldSubstring:[note text]];
     }
     
     UILabel* description = (UILabel*)[cell.contentView viewWithTag:2];
@@ -389,7 +404,7 @@
             }
             additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*numImages;
         }
-        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
+        return [self heightForText:[item truncatedMessage] width:(self.view.frame.size.width-40.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
         
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"info"]) {
         
@@ -436,7 +451,7 @@
         } else {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
-            [btvc setBucket:[self bucketAtIndexPath:indexPath]];
+            [btvc setBucket:[[self bucketAtIndexPath:indexPath] mutableCopy]];
             [btvc setDelegate:self];
             [self.navigationController pushViewController:btvc animated:YES];
         }
@@ -453,6 +468,19 @@
     } else {
         return [[[[[self currentDictionary] objectForKey:@"groups"] objectAtIndex:[[self.sections objectAtIndex:indexPath.section] integerValue]] objectForKey:@"sorted_buckets"] objectAtIndex:indexPath.row];
     }
+}
+
+- (NSDictionary*) groupAtIndexPath:(NSIndexPath*)indexPath
+{
+    NSInteger section = indexPath.section;
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"Recent"]) {
+        
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"requesting"] || [[self.sections objectAtIndex:section] isEqualToString:@"new"] || [[self.sections objectAtIndex:section] isEqualToString:@"searchResults"] || [[self.sections objectAtIndex:section] isEqualToString:@"Contacts"] || [[self.sections objectAtIndex:section] isEqualToString:@"info"] || [[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
+        return nil;
+    } else if ([[self.sections objectAtIndex:section] integerValue] < [[[self currentDictionary] objectForKey:@"groups"] count]) {
+        return [[[self currentDictionary] objectForKey:@"groups"] objectAtIndex:[[self.sections objectAtIndex:section] integerValue]];
+    }
+    return nil;
 }
 
 - (void) updateAllBucketsInBackground
@@ -475,7 +503,7 @@
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"info"]) {
         return @"Info";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
-        return @"Ungrouped";
+        return [[[self currentDictionary] objectForKey:@"groups"] count] == 0 ? @"All"  : @"Ungrouped";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"Recent"]) {
         return @"Recent";
     } else if ([[self.sections objectAtIndex:section] integerValue] < [[[self currentDictionary] objectForKey:@"groups"] count]) {
@@ -484,21 +512,128 @@
     return nil;
 }
 
+- (UIView*) tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (![self tableView:tableView titleForHeaderInSection:section]) {
+        return nil;
+    }
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, HEADER_HEIGHT)];
+    [view setBackgroundColor:[UIColor colorWithRed:241.0f/255.0f green:241.0f/255.0f blue:241.0f/255.0f alpha:1.0]];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, HEADER_HEIGHT)];
+    [label setFont:[UIFont boldSystemFontOfSize:14]];
+    [label setText:[self tableView:tableView titleForHeaderInSection:section]];
+    [label setTextAlignment:NSTextAlignmentCenter];
+    [view addSubview:label];
+    
+    UILabel *displayedLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.tableView.frame.size.width-HEADER_HEIGHT, 0, HEADER_HEIGHT, HEADER_HEIGHT)];
+    [displayedLabel setText:([self sectionIsCollapsed:section] ? @"+" : @"-")];
+    [displayedLabel setTextAlignment:NSTextAlignmentCenter];
+    [view addSubview:displayedLabel];
+    
+    UIButton* sectionButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, HEADER_HEIGHT)];
+    [sectionButton setBackgroundColor:[UIColor clearColor]];
+    [sectionButton setTag:section];
+    [sectionButton addTarget:self action:@selector(sectionTapped:) forControlEvents:UIControlEventTouchUpInside];
+    [view addSubview:sectionButton];
+    
+    UILabel *line = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, tableView.frame.size.width, 1)];
+    [line setBackgroundColor:[UIColor whiteColor]];
+    [view addSubview:line];
+    
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleSectionLongPress:)];
+    lpgr.minimumPressDuration = 0.3; //seconds
+    lpgr.delegate = self;
+    [sectionButton addGestureRecognizer:lpgr];
+    
+    return view;
+}
+
+- (void) sectionTapped:(UIButton*)sender
+{
+    if ([self sectionIsCollapsed:[sender tag]]) {
+        [self uncollapseSection:[sender tag]];
+    } else {
+        [self collapseSection:[sender tag]];
+    }
+}
+
+- (BOOL) sectionIsCollapsed:(NSInteger)section
+{
+    return [self.collapsedSections objectForKey:[self.sections objectAtIndex:section]] && [[self.collapsedSections objectForKey:[self.sections objectAtIndex:section]] isEqualToNumber:@YES];
+}
+
+- (void) collapseSection:(NSInteger)section
+{
+    [self.collapsedSections setObject:@YES forKey:[self.sections objectAtIndex:section]];
+    [self reloadScreen];
+}
+
+- (void) uncollapseSection:(NSInteger)section
+{
+    [self.collapsedSections removeObjectForKey:[self.sections objectAtIndex:section]];
+    [self reloadScreen];
+}
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return [self tableView:tableView titleForHeaderInSection:section] ? HEADER_HEIGHT : 0;
+}
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSDictionary *bucket = [[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row];
-        if (bucket && ![bucket isAllNotesBucket] && ![self assignMode] && [bucket belongsToCurrentUser]) {
+        NSDictionary *bucket = [self bucketAtIndexPath:indexPath];
+        if ([bucket belongsToCurrentUser]) {
+            [self setBucketToDelete:bucket];
+            [self alertForDeletion];
+        } else {
+            UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You can't delete this collection since you didn't create it." delegate:self cancelButtonTitle:@"Okay." otherButtonTitles:nil];
+            [av show];
+        }
+    }
+}
+
+- (void) alertForDeletion
+{
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete this collection?" message:@"This will also delete all thoughts that only belong to this collection." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+    [alert addButtonWithTitle:@"Delete Collection"];
+    [alert setTag:(NSInteger)99999999999999];
+    [alert show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1 && alertView.tag == (NSInteger)99999999999999) {
+        if (self.bucketToDelete && ![self.bucketToDelete isAllNotesBucket] && ![self assignMode] && [self.bucketToDelete belongsToCurrentUser]) {
             [self showHUDWithMessage:@"Deleting Collection..."];
-            [[LXServer shared] deleteBucketWithBucketID:[bucket ID] success:^(id responseObject){
+            [[LXServer shared] deleteBucketWithBucketID:[self.bucketToDelete ID] success:^(id responseObject){
                 [self refreshChange];
             }failure:^(NSError *error){
                 [self hideHUD];
             }];
         }
+    } else if (buttonIndex == 1) {
+        NSString* title = [[alertView textFieldAtIndex: 0] text];
+        if ([title length] > 0) {
+            [self showHUDWithMessage:@"Updating Group"];
+            NSString* groupID = [NSString stringWithFormat:@"%ld", (long)alertView.tag];
+            [[LXServer shared] requestPath:[NSString stringWithFormat:@"/groups/%@.json", groupID] withMethod:@"PUT" withParamaters:@{@"group":@{@"group_name":title}}
+                                   success:^(id responseObject) {
+                                       [self hideHUD];
+                                       [self refreshChange];
+                                       [self showHUDWithMessage:@"Refreshing"];
+                                   }
+                                   failure:^(NSError* error) {
+                                       [self hideHUD];
+                                   }
+             ];
+        } else {
+            UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You must enter a name for this group!" delegate:nil cancelButtonTitle:@"Okay." otherButtonTitles:nil];
+            [av show];
+        }
     }
+    [self setGroupAlertView:nil];
 }
-
-
 
 # pragma mark helpers
 
@@ -524,10 +659,12 @@
         return;
     requestMade = YES;
     [[LXServer shared] getAllBucketsWithSuccess:^(id responseObject) {
-            self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
-            requestMade = NO;
-            [self reloadScreen];
-            [self hideHUD];
+        //NSLog(@"allBuckets: %@", responseObject);
+        self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
+        self.bucketsDictionary = [NSMutableDictionary dictionaryWithDictionary:responseObject];
+        requestMade = NO;
+        [self reloadScreen];
+        [self hideHUD];
     } failure:^(NSError *error) {
         NSLog(@"error: %@", [error localizedDescription]);
         requestMade = NO;
@@ -562,7 +699,7 @@
 - (IBAction)moreButtonClicked:(id)sender
 {
     NSString *other1 = @"Nudges";
-    NSString *other2 = @"Thoughts Nearby";
+    NSString *other2 = @"Map";
     NSString *other3 = @"Random Thought";
     NSString *cancelTitle = @"Cancel";
     
@@ -617,6 +754,7 @@
 {
     [[LXServer shared] getSearchResults:term
                                 success:^(id responseObject) {
+                                    //NSLog(@"search: %@", responseObject);
                                     [self.serverSearchDictionary setObject:[self modifiedSearchArrayWithResponseObject:[responseObject objectForKey:@"items"]] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
                                     [self reloadScreen];
                                 }
@@ -695,6 +833,8 @@
     
     NSMutableDictionary* newDictionary = [[NSMutableDictionary alloc] init];
     NSMutableDictionary* oldDictionary = [term length] > 1 && [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] ? [self.bucketsSearchDictionary objectForKey:[term substringToIndex:([term length]-1)]] : [self drawFromDictionary];
+    
+    //NSLog(@"keys: %@", [oldDictionary allKeys]);
 
     for (NSString* key in [oldDictionary allKeys]) {
         NSString *keyToSearch = [key isEqualToString:@"Contacts"] ? @"name" : @"first_name";
@@ -815,28 +955,53 @@
 
 - (void) setLongPressGestureToRemoveBucket
 {
-    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
-                                          initWithTarget:self action:@selector(handleLongPress:)];
-    lpgr.minimumPressDuration = 0.7; //seconds
+    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    lpgr.minimumPressDuration = 0.3; //seconds
     lpgr.delegate = self;
     [self.tableView addGestureRecognizer:lpgr];
 }
 
--(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+- (void) handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
     CGPoint p = [gestureRecognizer locationInView:self.tableView];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-    
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan && cell.isHighlighted) {
         NSDictionary *bucket = [self bucketAtIndexPath:indexPath];
         if (bucket && ![bucket isAllNotesBucket] && ![self assignMode]) {
+            //UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+            //HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];
+            //[dvc setBucket:[[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] mutableCopy]];
+            //[self.navigationController pushViewController:dvc animated:YES];
+            
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-            HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];
-            [dvc setBucket:[[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] mutableCopy]];
-            [self.navigationController pushViewController:dvc animated:YES];
+            HCChangeBucketTypeViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"changeBucketTypeViewController"];
+            NSMutableDictionary* temp = [bucket mutableCopy];
+            if ([self groupAtIndexPath:indexPath]) {
+                [temp setObject:[self groupAtIndexPath:indexPath] forKey:@"group"];
+            }
+            [vc setBucketDict:temp];
+            [vc setDelegate:self];
+            [self.navigationController presentViewController:vc animated:YES completion:nil];
         }
     }
 }
+
+- (void) handleSectionLongPress:(UILongPressGestureRecognizer*)gestureRecognizer
+{
+    NSLog(@"section: %li", (long)gestureRecognizer.view.tag);
+    if (!self.groupAlertView) {
+        NSDictionary* group = [self groupAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:gestureRecognizer.view.tag]];
+        if (group) {
+            self.groupAlertView = [[UIAlertView alloc] initWithTitle:@"Change Group Name" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Save", nil];
+            [self.groupAlertView setAlertViewStyle:UIAlertViewStylePlainTextInput];
+            [self.groupAlertView setTag:[[group ID] integerValue]];
+            [[self.groupAlertView textFieldAtIndex:0] setText:[group groupName]];
+            [self.groupAlertView show];
+        }
+    }
+}
+
 
 # pragma mark hud delegate
 
@@ -962,6 +1127,14 @@
 }
 
 
+
+
+# pragma mark sorting collections delegate
+
+-(void)updateBucketGroup:(NSMutableDictionary *)updatedBucket
+{
+    [self sendRequestForUpdatedBucket];
+}
 
 
 @end

@@ -469,6 +469,24 @@
 
 }
 
+- (void) createBucketWithFirstName:(NSString*)firstName andGroupID:(NSString*)groupID success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"buckets.json" withMethod:@"POST"
+                    withParamaters:@{@"bucket" : @{@"first_name": firstName, @"user_id": [[[LXSession thisSession] user] userID] }, @"group_id":groupID }
+                           success:^(id responseObject) {
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError* error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+    
+}
+
 
 - (void) saveReminderForItem:(NSDictionary*)item success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {

@@ -172,20 +172,31 @@
 {
     NSLog(@"set user stats");
     if ([dict objectForKey:@"number_buckets"] && [[dict objectForKey:@"number_buckets"] respondsToSelector:@selector(integerValue)]) {
-        [self setNumberBuckets:[NSNumber numberWithInt:[[dict objectForKey:@"number_buckets"] integerValue]]];
+        [self setNumberBuckets:[NSNumber numberWithInt:(int)[[dict objectForKey:@"number_buckets"] integerValue]]];
     }
     if ([dict objectForKey:@"number_items"] && [[dict objectForKey:@"number_items"] respondsToSelector:@selector(integerValue)]) {
-        [self setNumberItems:[NSNumber numberWithInt:[[dict objectForKey:@"number_items"] integerValue]]];
+        [self setNumberItems:[NSNumber numberWithInt:(int)[[dict objectForKey:@"number_items"] integerValue]]];
     }
     if ([dict objectForKey:@"score"] && [[dict objectForKey:@"score"] respondsToSelector:@selector(integerValue)]) {
-        [self setScore:[NSNumber numberWithInt:[[dict objectForKey:@"score"] integerValue]]];
+        [self setScore:[NSNumber numberWithInt:(int)[[dict objectForKey:@"score"] integerValue]]];
     }
     if ([dict objectForKey:@"setup_completion"] && [[dict objectForKey:@"setup_completion"] respondsToSelector:@selector(integerValue)]) {
-        [self setSetupCompletion:[NSNumber numberWithInt:[[dict objectForKey:@"setup_completion"] integerValue]]];
+        [self setSetupCompletion:[NSNumber numberWithInt:(int)[[dict objectForKey:@"setup_completion"] integerValue]]];
     }
     if (dict) {
         [[self managedObjectContext] save:nil];
     }
+}
+
+- (void) updateTimeZone
+{
+    NSLog(@"timeZone: %@", [[NSTimeZone localTimeZone] name]);
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [self userID]] withMethod:@"PUT" withParamaters:@{@"user":@{@"time_zone":[[NSTimeZone localTimeZone] name]}}
+                           success:^(id responseObject) {
+                           }
+                           failure:^(NSError* error) {
+                           }
+     ];
 }
 
 @end

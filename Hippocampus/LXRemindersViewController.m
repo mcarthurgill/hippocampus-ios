@@ -158,7 +158,7 @@
             }
             additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*numImages;
         }
-        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
+        return [self heightForText:[item truncatedMessage] width:(self.view.frame.size.width-40.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
         return 120.0f;
     }

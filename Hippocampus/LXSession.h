@@ -33,6 +33,8 @@
 - (NSMutableDictionary*) unsavedNotesDictionary;
 - (NSMutableArray*) unsavedNotesForBucket:(NSString*)bucketID;
 
+- (NSMutableArray*) groups;
+
 - (void) addUnsavedNote:(NSMutableDictionary*)note toBucket:(NSString*)bucketID;
 - (void) removeUnsavedNote:(NSMutableDictionary*)note fromBucket:(NSString*)bucketID;
 

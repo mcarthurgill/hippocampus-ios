@@ -23,6 +23,10 @@
 
 - (NSString*) getGroupID;
 
+- (NSString*) groupName;
+
+- (NSString*) getGroupName;
+
 - (BOOL) belongsToCurrentUser;
 
 - (NSString*) createdAt;

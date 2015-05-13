@@ -40,11 +40,6 @@
     return NULL_TO_NIL([self objectForKey:@"group_id"]);
 }
 
-- (NSString*) phoneNumber
-{
-    return NULL_TO_NIL([self objectForKey:@"phone_number"]);
-}
-
 - (NSString*) getGroupID
 {
     if (NULL_TO_NIL([self objectForKey:@"group"]) && [[self objectForKey:@"group"] ID]) {
@@ -57,7 +52,36 @@
             }
         }
     }
+    if ([[LXSession thisSession] groups]) {
+        for (NSDictionary* group in [[LXSession thisSession] groups]) {
+            if ([group objectForKey:@"sorted_buckets"]) {
+                for (NSDictionary* bucket in [group objectForKey:@"sorted_buckets"]) {
+                    if ([[bucket ID] isEqual:[self ID]]) {
+                        return [group ID];
+                    }
+                }
+            }
+        }
+    }
     return nil;
+}
+
+- (NSString*) groupName
+{
+    return NULL_TO_NIL([self objectForKey:@"group_name"]);
+}
+
+- (NSString*) getGroupName
+{
+    if (NULL_TO_NIL([self objectForKey:@"group"]) && [[self objectForKey:@"group"] groupName]) {
+        return [[self objectForKey:@"group"] groupName];
+    }
+    return @"Ungrouped";
+}
+
+- (NSString*) phoneNumber
+{
+    return NULL_TO_NIL([self objectForKey:@"phone_number"]);
 }
 
 - (BOOL) belongsToCurrentUser

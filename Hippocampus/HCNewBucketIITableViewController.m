@@ -21,6 +21,7 @@
 @synthesize saveButton;
 @synthesize firstName;
 @synthesize typeOptions;
+@synthesize descriptionLabel;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -35,7 +36,16 @@
 {
     [super viewDidLoad];
     
-    self.typeOptions = @[@"Other", @"Person", @"Event", @"Place"];
+    self.typeOptions = [[LXSession thisSession] groups];
+    [self.typeOptions insertObject:@{@"group_name":@"Ungrouped",@"id":@"0"} atIndex:0];
+    
+    if ([self.typeOptions count] > 1) {
+        [self.typePicker setHidden:NO];
+        [self.descriptionLabel setHidden:NO];
+    } else {
+        [self.typePicker setHidden:YES];
+        [self.descriptionLabel setHidden:YES];
+    }
     
     [self.firstName becomeFirstResponder];
 }
@@ -43,7 +53,7 @@
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.typePicker selectRow:1 inComponent:0 animated:NO];
+    //[self.typePicker selectRow:1 inComponent:0 animated:NO];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -58,7 +68,7 @@
         HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
         [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
         [vc setImageForMainImageView:[UIImage imageNamed:@"new-collection-screen.jpg"]];
-        [vc setMainLabelText:@"Name your collection. Then choose whether it's a Person (e.g. 'Sarah Smith'), Event ('Christmas Party'), Place ('The Office'), or Other ('Quotes')."];
+        [vc setMainLabelText:@"Name your collection. Collections contain thoughts."];
         [self.navigationController presentViewController:vc animated:NO completion:nil];
     }
 }
@@ -82,7 +92,7 @@
         [self.firstName resignFirstResponder];
         [self showHUDWithMessage:@"Creating Collection"];
         
-        [[LXServer shared] createBucketWithFirstName:self.firstName.text andBucketType:[self.typeOptions objectAtIndex:[self.typePicker selectedRowInComponent:0]]
+        [[LXServer shared] createBucketWithFirstName:self.firstName.text andGroupID:[[self.typeOptions objectAtIndex:[self.typePicker selectedRowInComponent:0]] ID]
                                              success:^(id responseObject) {
                                                 [self hideHUD];
                                                 NSDictionary* bucket = responseObject;
@@ -126,7 +136,7 @@
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    return [self.typeOptions objectAtIndex:row];
+    return [[self.typeOptions objectAtIndex:row] groupName];
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component

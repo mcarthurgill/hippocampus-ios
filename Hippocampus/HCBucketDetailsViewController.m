@@ -10,6 +10,7 @@
 #import "HCDetailsPhotoTableViewCell.h"
 #import "HCChangeBucketTypeViewController.h"
 #import "HCCollaborateViewController.h"
+#import "LXAppDelegate.h"
 
 @interface HCBucketDetailsViewController ()
 
@@ -25,6 +26,11 @@
 @synthesize delegate;
 @synthesize bucketUserPairForDeletion;
 @synthesize moviePlayerController;
+@synthesize mediaView;
+@synthesize player;
+@synthesize playerLayer;
+@synthesize asset;
+@synthesize playerItem;
 
 
 - (void)viewDidLoad {
@@ -155,15 +161,26 @@
 
 - (UITableViewCell*) collaborateCellForTableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"collaborateCell" forIndexPath:indexPath];
-    UILabel* collaborateLabel = (UILabel*)[cell.contentView viewWithTag:1];
+    UITableViewCell *cell;
     if ([self.bucket hasCollaborators] && indexPath.row != [[self.bucket bucketUserPairs] count]) {
-        [collaborateLabel setText:[[[self.bucket bucketUserPairs] objectAtIndex:indexPath.row] objectForKey:@"name"]];
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"collaborateCell" forIndexPath:indexPath];
+
+        UILabel* collaborateLabel = (UILabel*)[cell.contentView viewWithTag:1];
+        [collaborateLabel setText:[[[self.bucket bucketUserPairs] objectAtIndex:indexPath.row] name]];
+        //UILabel* phoneLabel = (UILabel*)[cell.contentView viewWithTag:2];
+        //[phoneLabel setText:[[[self.bucket bucketUserPairs] objectAtIndex:indexPath.row] phoneNumber]];
+        
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     } else if ([self.bucket hasCollaborators]) {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"collaborateCell" forIndexPath:indexPath];
+        
+        UILabel* collaborateLabel = (UILabel*)[cell.contentView viewWithTag:1];
         [collaborateLabel setText:@"+ Add Collaborators"];
         [collaborateLabel boldSubstring:collaborateLabel.text];
     } else {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:@"collaborateCell" forIndexPath:indexPath];
+        
+        UILabel* collaborateLabel = (UILabel*)[cell.contentView viewWithTag:1];
         [collaborateLabel setText:@"+ Add Collaborators"];
         [collaborateLabel boldSubstring:collaborateLabel.text];
     }
@@ -174,7 +191,7 @@
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"bucketTypeCell" forIndexPath:indexPath];
     UILabel* changeTypeLabel = (UILabel*)[cell.contentView viewWithTag:1];
-    [changeTypeLabel setText:[self.bucket bucketType]];
+    [changeTypeLabel setText:[self.bucket getGroupName]];
     [cell setSelectionStyle:UITableViewCellSelectionStyleDefault];
     return cell;
 }
@@ -231,28 +248,54 @@
     UIImageView *leftImage = (UIImageView*)[cell.contentView viewWithTag:1];
     UIImageView *rightImage = (UIImageView*)[cell.contentView viewWithTag:2];
     
-    [cell configureWithMediaUrl:[[self.bucket croppedMediaURLs] objectAtIndex:(indexPath.row)*2] andImageView:leftImage];
+    [cell configureWithMediaUrl:[self mediaUrlAtIndexPath:indexPath withTag:leftImage.tag] andImageView:leftImage];
     [self finishConfigurationForImageView:leftImage];
 
     if ((indexPath.row)*2 + 1 < [[self.bucket croppedMediaURLs] count]) {
-        [cell configureWithMediaUrl:[[self.bucket croppedMediaURLs] objectAtIndex:(indexPath.row)*2 + 1] andImageView:rightImage];
+        [cell configureWithMediaUrl:[self mediaUrlAtIndexPath:indexPath withTag:rightImage.tag] andImageView:rightImage];
         [self finishConfigurationForImageView:rightImage];
     } else {
         [rightImage setImage:nil];
     }
     
+    for (UIGestureRecognizer *recognizer in leftImage.gestureRecognizers) {
+        [leftImage removeGestureRecognizer:recognizer];
+    }
+    for (UIGestureRecognizer *recognizer in rightImage.gestureRecognizers) {
+        [rightImage removeGestureRecognizer:recognizer];
+    }
+    
+    UILongPressGestureRecognizer* longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressMedia:)];
+    [longPress setMinimumPressDuration:0.15f];
+    [leftImage addGestureRecognizer:longPress];
+    [leftImage setUserInteractionEnabled:YES];
+    [leftImage setExclusiveTouch:YES];
+    [self addTapGestureToImageView:leftImage];
+    
+    UILongPressGestureRecognizer* longPressRight = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressMedia:)];
+    [longPressRight setMinimumPressDuration:0.15f];
+    [rightImage addGestureRecognizer:longPressRight];
+    [rightImage setUserInteractionEnabled:YES];
+    [rightImage setExclusiveTouch:YES];
+    [self addTapGestureToImageView:rightImage];
+    
     return cell;
+}
+
+- (NSString*) mediaUrlAtIndexPath:(NSIndexPath*)indexPath withTag:(NSInteger)tag
+{
+    return [[self.bucket croppedMediaURLs] objectAtIndex:(indexPath.row)*2 + tag-1];
 }
 
 
 - (void) finishConfigurationForImageView:(UIImageView*)imageView
 {
-    [self addTapGestureToImageView:imageView];
     [self setConstraintsForImageView:imageView];
 }
 
 
-- (void) addTapGestureToImageView:(UIImageView *)imageView {
+- (void) addTapGestureToImageView:(UIImageView *)imageView
+{
     
     UITapGestureRecognizer *tapped = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
     tapped.delegate = self;
@@ -340,7 +383,7 @@
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"collaborate"]) {
         return @"Collaborators";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucketType"]) {
-        return @"Collection Type";
+        return @"Group";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contactCard"]) {
@@ -443,6 +486,9 @@
 - (void) refreshWithResponseObject:(NSDictionary*)responseObject
 {
     [self setBucket:[[responseObject objectForKey:@"bucket"] mutableCopy]];
+    if ([responseObject objectForKey:@"group"]) {
+        [self.bucket setObject:[responseObject objectForKey:@"group"] forKey:@"group"];
+    }
     [self.tableView reloadData];
 }
 
@@ -627,19 +673,23 @@
 
 # pragma mark - HCUpdateBucketTypeDelegate
 
--(void)updateBucketType:(NSMutableDictionary *)updatedBucket
+-(void)updateBucketGroup:(NSMutableDictionary *)updatedBucket
 {
     self.bucket = updatedBucket;
-    [self saveInfo]; 
+    
+    [self setUnsavedChanges:NO andSavingChanges:NO];
+    [self reloadScreen];
+    [self.delegate updateBucket:self.bucket];
 }
 
 
 # pragma mark - Gesture Recognizers
 
-- (void) setLongPressGestureToRemoveCollaborator {
+- (void) setLongPressGestureToRemoveCollaborator
+{
     UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handleLongPress:)];
-    lpgr.minimumPressDuration = 0.7; //seconds
+    lpgr.minimumPressDuration = 0.4; //seconds
     lpgr.delegate = self;
     [self.tableView addGestureRecognizer:lpgr];
 }
@@ -656,6 +706,111 @@
         }
     }
 }
+
+
+# pragma mark long press media
+
+- (void) longPressMedia:(UILongPressGestureRecognizer*)gesture
+{
+    
+    CGPoint p = [gesture locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    
+    if (gesture.state == UIGestureRecognizerStateCancelled || gesture.state == UIGestureRecognizerStateFailed || gesture.state == UIGestureRecognizerStateEnded) {
+        if (self.mediaView) {
+            [self.mediaView removeFromSuperview];
+            [self setMediaView:nil];
+        }
+        if (self.player) {
+            [self.player pause];
+            [self setPlayer:nil];
+            [self setAsset:nil];
+            [self setPlayerItem:nil];
+            [self setPlayerLayer:nil];
+        }
+        [[[[UIApplication sharedApplication] delegate] window] setWindowLevel:UIWindowLevelNormal];
+    }
+    
+    else if (!self.mediaView) {
+        
+        id cell = [gesture view];
+        while (![cell isKindOfClass:[UITableViewCell class]]) {
+            cell = [cell superview];
+        }
+        
+        //int index = (int)[[self.tableView indexPathForCell:cell] row];
+        [[[[UIApplication sharedApplication] delegate] window] setWindowLevel:UIWindowLevelStatusBar+1];
+        // Get main window reference
+        UIWindow* mainWindow = (((LXAppDelegate *)[UIApplication sharedApplication].delegate).window);
+        
+        NSString *url = [self mediaUrlAtIndexPath:indexPath withTag:gesture.view.tag];
+        NSUInteger indexOfVideoUrl = [self.bucket indexOfMatchingVideoUrl:url];
+        
+        // Create a full-screen subview
+        self.mediaView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] applicationFrame].size.width, [[UIScreen mainScreen] applicationFrame].size.height+[[UIApplication sharedApplication] statusBarFrame].size.height)];
+        // Set up some properties of the subview
+        self.mediaView.backgroundColor = [UIColor blackColor];
+        [self.mediaView setContentMode:UIViewContentModeScaleAspectFit];
+        
+        if (indexOfVideoUrl != -1) {
+            //VIDEO
+            
+            if (!self.player) {
+                
+                //NSLog(@"mediaURL: %@", [[self.bucket mediaURLs] objectAtIndex:indexOfVideoUrl]);
+                self.asset = [AVAsset assetWithURL:[NSURL URLWithString:[[self.bucket mediaURLs] objectAtIndex:indexOfVideoUrl]]];
+                if (!self.playerItem) {
+                    self.playerItem = [[AVPlayerItem alloc] initWithAsset:self.asset];
+                }
+                if (!self.player) {
+                    self.player = [[AVPlayer alloc] initWithPlayerItem:self.playerItem];
+                    self.player.actionAtItemEnd = AVPlayerActionAtItemEndNone;
+                    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidReachEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:[self.player currentItem]];
+                }
+                
+                if (!self.playerLayer) {
+                    self.playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
+                    [self.playerLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+                    [self.playerLayer setFrame:self.mediaView.frame];
+                    [self.mediaView.layer addSublayer:self.playerLayer];
+                }
+                [self.player play];
+                
+            }
+            
+        } else {
+            
+            //IMAGE
+            //if ([self.item hasID]) {
+                if ([SGImageCache haveImageForURL:url]) {
+                    [self.mediaView setImage:[SGImageCache imageForURL:url]];
+                } else if (![self.mediaView.image isEqual:[SGImageCache imageForURL:url]]) {
+                    self.mediaView.image = nil;
+                    [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                        if (image) {
+                            self.mediaView.image = image;
+                        }
+                    }];
+                }
+            //} else {
+            //    if ([NSData dataWithContentsOfFile:url] && ![self.mediaView.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
+            //        self.mediaView.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:url]];
+            //    }
+            //}
+            
+        }
+        
+        // Add the subview to the main window
+        [mainWindow addSubview:self.mediaView];
+    }
+}
+
+- (void) playerItemDidReachEnd:(NSNotification*)notification
+{
+    AVPlayerItem *p = [notification object];
+    [p seekToTime:kCMTimeZero];
+}
+
 
 
 

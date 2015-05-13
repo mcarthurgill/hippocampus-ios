@@ -10,7 +10,7 @@
 #import "HCBucketViewController.h"
 #import "HCSetupViewController.h"
 
-@interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate>
+@interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
 {
     BOOL requestMade;
     MBProgressHUD* hud;
@@ -23,12 +23,18 @@
 @property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @property (strong, nonatomic) NSMutableArray* sections;
+@property (strong, nonatomic) NSMutableDictionary* collapsedSections;
+
 @property (strong, nonatomic) NSMutableDictionary* bucketsDictionary;
 @property (strong, nonatomic) NSMutableDictionary* bucketsSearchDictionary;
 @property (strong, nonatomic) NSMutableDictionary* serverSearchDictionary;
 @property (strong, nonatomic) NSMutableDictionary* cachedDiskDictionary;
 
+@property (strong, nonatomic) NSDictionary* bucketToDelete;
+
 @property (strong, nonatomic) HCBucketViewController* composeBucketController;
+
+@property (strong, nonatomic) UIAlertView* groupAlertView;
 
 - (IBAction)refreshControllerChanged:(id)sender;
 - (IBAction)composeButtonClicked:(id)sender;

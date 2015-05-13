@@ -48,6 +48,8 @@
 
 - (void) setUserStats:(NSMutableDictionary*)dict;
 
+- (void) updateTimeZone;
+
 
 //helpers
 

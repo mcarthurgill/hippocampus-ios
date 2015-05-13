@@ -94,6 +94,15 @@ static LXSession* thisSession = nil;
     return nil;
 }
 
+- (NSMutableArray*) groups
+{
+    NSMutableDictionary* temp = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"]];
+    if (temp && [temp objectForKey:@"groups"]) {
+        return [[temp objectForKey:@"groups"] mutableCopy];
+    }
+    return [@[] mutableCopy];
+}
+
 - (void) addUnsavedNote:(NSMutableDictionary*)note toBucket:(NSString*)bucketID
 {
     NSMutableDictionary* temp = [self unsavedNotesDictionary];
