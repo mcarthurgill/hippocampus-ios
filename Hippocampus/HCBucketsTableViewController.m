@@ -218,7 +218,7 @@
     }
     
     if ([[self currentDictionary] objectForKey:@"buckets"] && [[[self currentDictionary] objectForKey:@"buckets"] count] > 0) {
-        if (![self assignMode] && (![self searchActivated] && [[[self currentDictionary] objectForKey:@"Recent"] count]-1) < [[[self currentDictionary] objectForKey:@"buckets"] count]) {
+        if ([self assignMode] || (![self searchActivated] && [[[self currentDictionary] objectForKey:@"Recent"] count]-1) < [[[self currentDictionary] objectForKey:@"buckets"] count]) {
             [self.sections addObject:@"buckets"];
         }
     }

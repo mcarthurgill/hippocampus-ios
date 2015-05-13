@@ -41,7 +41,7 @@
         for (NSDictionary* group in self.typeOptions) {
             if ([[group ID] isEqual:groupID]) {
                 self.selectedBucketType = group;
-                self.selectedGroup = self.selectedBucketType
+                self.selectedGroup = self.selectedBucketType;
             }
         }
     }
