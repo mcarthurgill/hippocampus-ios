@@ -41,6 +41,7 @@
         for (NSDictionary* group in self.typeOptions) {
             if ([[group ID] isEqual:groupID]) {
                 self.selectedBucketType = group;
+                self.selectedGroup = self.selectedBucketType
             }
         }
     }
@@ -115,6 +116,9 @@
 
 - (void) addToGroupAction
 {
+    if (!self.selectedGroup) {
+        return;
+    }
     [self showHUDWithMessage:@"Moving..."];
     
     [self.bucketDict setObject:[self.selectedGroup ID] forKey:@"group_id"];
