@@ -35,6 +35,55 @@
     return [self objectForKey:@"user_id"];
 }
 
+- (NSString*) groupID
+{
+    return NULL_TO_NIL([self objectForKey:@"group_id"]);
+}
+
+- (NSString*) getGroupID
+{
+    if (NULL_TO_NIL([self objectForKey:@"group"]) && [[self objectForKey:@"group"] ID]) {
+        return [[self objectForKey:@"group"] ID];
+    }
+    if ([self bucketUserPairs] && [[self bucketUserPairs] respondsToSelector:@selector(count)]) {
+        for (NSDictionary* bup in [self bucketUserPairs]) {
+            if ([[bup phoneNumber] isEqualToString:[[[LXSession thisSession] user] phone]]) {
+                return [bup groupID];
+            }
+        }
+    }
+    if ([[LXSession thisSession] groups]) {
+        for (NSDictionary* group in [[LXSession thisSession] groups]) {
+            if ([group objectForKey:@"sorted_buckets"]) {
+                for (NSDictionary* bucket in [group objectForKey:@"sorted_buckets"]) {
+                    if ([[bucket ID] isEqual:[self ID]]) {
+                        return [group ID];
+                    }
+                }
+            }
+        }
+    }
+    return nil;
+}
+
+- (NSString*) groupName
+{
+    return NULL_TO_NIL([self objectForKey:@"group_name"]);
+}
+
+- (NSString*) getGroupName
+{
+    if (NULL_TO_NIL([self objectForKey:@"group"]) && [[self objectForKey:@"group"] groupName]) {
+        return [[self objectForKey:@"group"] groupName];
+    }
+    return @"Ungrouped";
+}
+
+- (NSString*) phoneNumber
+{
+    return NULL_TO_NIL([self objectForKey:@"phone_number"]);
+}
+
 - (BOOL) belongsToCurrentUser
 {
     return [[NSString stringWithFormat:@"%@", [self userID]] isEqualToString:[[HCUser loggedInUser] userID]];
@@ -444,12 +493,25 @@
 - (NSMutableDictionary*) bucketNames
 {
     NSMutableDictionary *bucketNamesDict = [[NSMutableDictionary alloc] init];
-    for (NSDictionary*bucketType in self) {
-        for (NSDictionary*bucket in [self objectForKey:bucketType]) {
+    //for (NSDictionary*bucketType in self) {
+    for (NSDictionary*bucket in [self objectForKey:@"Recent"]) {
+        [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
+    }
+    for (int i = 0; i < [[self objectForKey:@"groups"] count]; ++i) {
+        for (NSDictionary*bucket in [[[self objectForKey:@"groups"] objectAtIndex:i] objectForKey:@"sorted_buckets"]) {
             [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
         }
     }
+    for (NSDictionary*bucket in [self objectForKey:@"buckets"]) {
+        [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
+    }
+    //}
     return bucketNamesDict;
+}
+
+- (NSArray*) groups
+{
+    return [self objectForKey:@"groups"];
 }
 
 

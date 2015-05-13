@@ -274,7 +274,7 @@
             }
             additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*numImages;
         }
-        return [self heightForText:[item truncatedMessage] width:280.0f font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
+        return [self heightForText:[item truncatedMessage] width:(self.view.frame.size.width-40.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
     }
     return 44.0;
 }
@@ -570,7 +570,12 @@
     }
     
     if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
-        [self setPage:([[responseObject objectForKey:@"page"] integerValue] + 1)];
+        [self setPage:([[responseObject objectForKey:@"page"] integerValue] + (NSInteger)1)];
+    }
+    
+    if ([responseObject objectForKey:@"group"] && NULL_TO_NIL([responseObject objectForKey:@"group"])) {
+        self.bucket = [self.bucket mutableCopy];
+        [self.bucket setObject:[responseObject objectForKey:@"group"] forKey:@"group"];
     }
 }
 

@@ -51,8 +51,13 @@
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:name bundle:[NSBundle mainBundle]];
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
+    if ([name isEqualToString:@"Messages"] && [[LXSession thisSession] user]) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [[[LXSession thisSession] user] updateTimeZone];
+        });
+    }
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     NSLog(@"applicationWillResignActive");
@@ -161,6 +166,9 @@
 
 -(void)application:(UIApplication *)application performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
+    if ([[LXSession thisSession] user]) {
+        [[[LXSession thisSession] user] updateTimeZone];
+    }
    [[LXServer shared] getAllBucketsWithSuccess:^(id responseObject){
                         completionHandler(UIBackgroundFetchResultNewData);
                     }failure:^(NSError *error){
@@ -189,12 +197,12 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 8*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [[LXServer shared] updateDeviceToken:deviceToken success:^(id responseObject) {
-                                        NSLog(@"My token is: %@", deviceToken);
-                                    } failure:^(NSError *error){
-                                        NSLog(@"Didn't successfully submit device token: %@", deviceToken);
-                                    }
+            NSLog(@"My token is: %@", deviceToken);
+        } failure:^(NSError *error){
+            NSLog(@"Didn't successfully submit device token: %@", deviceToken);
+        }
          ];
     });
 }
@@ -241,7 +249,7 @@
         NSInteger appLaunches = [userDefaults integerForKey:@"appLaunches"];
         [userDefaults setInteger:appLaunches+1 forKey:@"appLaunches"];
         if ([userDefaults integerForKey:@"appLaunches"] > 7) {
-            if (![LXSession areNotificationsEnabled] && ![userDefaults objectForKey:@"doneAskingForPushNotificationPermission"] && appLaunches%2 == 1) {
+            if (![LXSession areNotificationsEnabled] && (![userDefaults objectForKey:@"doneAskingForPushNotificationPermission"] && appLaunches%4 == 3)) {
                 UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
                 HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
                 [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
@@ -251,6 +259,8 @@
                 [vc setDelegate:self];
                 [vc setButtonText:@"Turn On Notifications"];
                 [self.window.rootViewController presentViewController:vc animated:NO completion:nil];
+            } else if ([LXSession areNotificationsEnabled]) {
+                [self getPushNotificationPermission];
             }
         }
     } else {
@@ -270,6 +280,7 @@
         }];
     }
 }
+
 
 
 @end

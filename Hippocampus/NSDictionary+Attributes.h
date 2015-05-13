@@ -19,6 +19,14 @@
 
 - (NSString*) userID;
 
+- (NSString*) groupID;
+
+- (NSString*) getGroupID;
+
+- (NSString*) groupName;
+
+- (NSString*) getGroupName;
+
 - (BOOL) belongsToCurrentUser;
 
 - (NSString*) createdAt;
@@ -133,6 +141,7 @@
 - (NSMutableDictionary*) cleanDictionary;
 
 - (NSMutableDictionary*) bucketNames;
+- (NSMutableArray*) groups;
 
 - (int)indexOfMatchingVideoUrl:(NSString*)imageURL;
 

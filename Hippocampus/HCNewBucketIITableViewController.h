@@ -19,8 +19,9 @@
 
 @property (strong, nonatomic) IBOutlet UIPickerView *typePicker;
 @property (strong, nonatomic) IBOutlet UITextField *firstName;
+@property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 
-@property (strong, nonatomic) NSArray* typeOptions;
+@property (strong, nonatomic) NSMutableArray* typeOptions;
 
 - (IBAction)saveAction:(id)sender;
 
