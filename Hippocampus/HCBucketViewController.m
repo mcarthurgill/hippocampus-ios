@@ -802,7 +802,7 @@
         NSDictionary *info = [sender userInfo];
         NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         CGRect frame = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-        self.bottomConstraint.constant = frame.origin.y - CGRectGetHeight(self.view.frame);
+        self.bottomConstraint.constant = frame.origin.y - CGRectGetHeight(self.view.frame)-([UIApplication sharedApplication].statusBarFrame.size.height-20.0);
         
         self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
         
@@ -869,7 +869,8 @@
 
 # pragma mark upload images
 
-- (IBAction)uploadImage:(id)sender {
+- (IBAction)uploadImage:(id)sender
+{
     [self showHUDWithMessage:@"Loading pictures"];
     [self presentViewController:self.pickerController animated:YES completion:nil];
     [self hideHUD];
@@ -1000,7 +1001,8 @@
 
 # pragma  mark - AlertView Delegate
 
-- (void) alertForDeletion {
+- (void) alertForDeletion
+{
     NSString *title = @"Sorry";
     NSString *message = @"You cannot delete a thought you did not add!";
     NSString *buttonTitle = @"Okay";
@@ -1022,7 +1024,8 @@
 }
 
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     if (buttonIndex == 1) {
         if(self.itemForDeletion) {
             [self deleteItemFromServerAndTable:self.itemForDeletion];

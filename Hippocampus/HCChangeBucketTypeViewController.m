@@ -25,7 +25,7 @@
 @synthesize descriptionLabel;
 
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
     [super viewDidLoad];
     
