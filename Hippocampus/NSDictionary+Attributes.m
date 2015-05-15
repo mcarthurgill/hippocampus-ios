@@ -445,8 +445,10 @@
 {
     NSMutableDictionary *bucketNamesDict = [[NSMutableDictionary alloc] init];
     for (NSDictionary*bucketType in self) {
-        for (NSDictionary*bucket in [self objectForKey:bucketType]) {
-            [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
+        for (NSDictionary *bucket in [self objectForKey:bucketType]) {
+            if ([bucket firstName]) {
+                [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
+            }
         }
     }
     return bucketNamesDict;

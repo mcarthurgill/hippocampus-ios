@@ -9,6 +9,8 @@
 #import "HCUser.h"
 #import "LXAppDelegate.h"
 
+#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+
 @implementation HCUser
 
 @dynamic loggedInUser;
@@ -36,7 +38,9 @@
                                                              @"createdAt": @"created_at",
                                                              @"updatedAt": @"updated_at",
                                                              @"countryCode": @"country_code",
-                                                             @"phone": @"phone"
+                                                             @"phone": @"phone",
+                                                             @"email": @"email",
+                                                             @"salt": @"salt"
                                                              }];
 }
 
@@ -172,16 +176,24 @@
 {
     NSLog(@"set user stats");
     if ([dict objectForKey:@"number_buckets"] && [[dict objectForKey:@"number_buckets"] respondsToSelector:@selector(integerValue)]) {
-        [self setNumberBuckets:[NSNumber numberWithInt:[[dict objectForKey:@"number_buckets"] integerValue]]];
+        [self setNumberBuckets:[NSNumber numberWithInt:[[dict objectForKey:@"number_buckets"] intValue]]];
     }
     if ([dict objectForKey:@"number_items"] && [[dict objectForKey:@"number_items"] respondsToSelector:@selector(integerValue)]) {
-        [self setNumberItems:[NSNumber numberWithInt:[[dict objectForKey:@"number_items"] integerValue]]];
+        [self setNumberItems:[NSNumber numberWithInt:[[dict objectForKey:@"number_items"] intValue]]];
     }
     if ([dict objectForKey:@"score"] && [[dict objectForKey:@"score"] respondsToSelector:@selector(integerValue)]) {
-        [self setScore:[NSNumber numberWithInt:[[dict objectForKey:@"score"] integerValue]]];
+        [self setScore:[NSNumber numberWithInt:[[dict objectForKey:@"score"] intValue]]];
     }
     if ([dict objectForKey:@"setup_completion"] && [[dict objectForKey:@"setup_completion"] respondsToSelector:@selector(integerValue)]) {
-        [self setSetupCompletion:[NSNumber numberWithInt:[[dict objectForKey:@"setup_completion"] integerValue]]];
+        [self setSetupCompletion:[NSNumber numberWithInt:[[dict objectForKey:@"setup_completion"] intValue]]];
+    }
+    if ([dict objectForKey:@"email"] && NULL_TO_NIL([dict objectForKey:@"email"])) {
+        [self setEmail:[dict objectForKey:@"email"]];
+    } else {
+        [self setEmail:nil];
+    }
+    if ([dict objectForKey:@"salt"] && NULL_TO_NIL([dict objectForKey:@"salt"])) {
+        [self setSalt:[dict objectForKey:@"salt"]];
     }
     if (dict) {
         [[self managedObjectContext] save:nil];

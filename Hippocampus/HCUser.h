@@ -24,6 +24,8 @@
 @property (nonatomic, retain) NSNumber * lastItemUpdateTime;
 @property (nonatomic, retain) NSNumber * lastBucketUpdateTime;
 @property (nonatomic, retain) NSNumber * setupCompletion;
+@property (nonatomic, retain) NSString * email;
+@property (nonatomic, retain) NSString * salt;
 
 
 // logged in user

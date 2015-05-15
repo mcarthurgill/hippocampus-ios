@@ -7,8 +7,8 @@
 //
 
 #import "LXAppDelegate.h"
-#import "HCPermissionViewController.h"
 #import <AudioToolbox/AudioServices.h>
+#import "NSString+SHAEncryption.h"
 
 @implementation LXAppDelegate
 
@@ -27,13 +27,11 @@
         [self setRootStoryboard:@"Login"];
     } else {
         [self setRootStoryboard:@"Messages"];
-        //[self setRootStoryboard:@"Login"];
     }
     
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     [self loadAddressBook];
-//    [[LXSetup theSetup] getSetupQuestions];
     
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
     
@@ -236,11 +234,25 @@
 
 - (void) incrementAppLaunchCount
 {
+    if (![[LXSession thisSession] user]) {
+        return;
+    }
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     if ([userDefaults objectForKey:@"appLaunches"]) {
         NSInteger appLaunches = [userDefaults integerForKey:@"appLaunches"];
         [userDefaults setInteger:appLaunches+1 forKey:@"appLaunches"];
-        if ([userDefaults integerForKey:@"appLaunches"] > 7) {
+        if (appLaunches%5 == 2 && ![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) { //if (![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) {
+            NSLog(@"No email!");
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+            HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
+            [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+            [vc setImageForMainImageView:[UIImage imageNamed:@"email-screen.jpg"]];
+            [vc setMainLabelText:@"You can quickly email thoughts to your Hippocampus if you verify your email address. No spam, we promise."];
+            [vc setPermissionType:@"email"];
+            [vc setDelegate:self];
+            [vc setButtonText:@"Verify Email"];
+            [self.window.rootViewController presentViewController:vc animated:NO completion:nil];
+        } else if ([userDefaults integerForKey:@"appLaunches"] > 7) {
             if (![LXSession areNotificationsEnabled] && ![userDefaults objectForKey:@"doneAskingForPushNotificationPermission"] && appLaunches%2 == 1) {
                 UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
                 HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
@@ -259,6 +271,46 @@
     [userDefaults synchronize];
 }
 
+- (void) permissionsDelegate:(NSString*)type
+{
+    NSLog(@"permissions delegate!");
+    if ([type isEqualToString:@"email"]) {
+        MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
+        mc.mailComposeDelegate = self;
+        [mc setSubject:[NSString stringWithFormat:@"My Token: (%@==%@", [NSString userAuthToken], [[[LXSession thisSession] user] userID]]];
+        [mc setMessageBody:@"Hit 'Send' in the top right corner to verify this email address! (and don't delete/change the subject of this email)\n\nVerify me! Cheers," isHTML:NO];
+        [mc setToRecipients:@[@"thought@hppcmps.com"]];
+        // Present mail view controller on screen
+        [self.window.rootViewController presentViewController:mc animated:YES completion:nil];
+    }
+}
+
+- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail sent");
+            break;
+        case MFMailComposeResultFailed:
+            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
+            break;
+        default:
+            break;
+    }
+    // Close the Mail Interface
+    [controller dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void) permissionsDelegate
+{
+}
 
 # pragma mark - contacts
 
