@@ -162,7 +162,9 @@
 {
     [super viewDidDisappear:animated];
     
-    [self saveCollapsedSections];
+    if (![self assignMode]) {
+        [self saveCollapsedSections];
+    }
 }
 
 - (void) saveCollapsedSections
