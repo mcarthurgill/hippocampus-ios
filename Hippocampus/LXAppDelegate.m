@@ -71,6 +71,8 @@
         [[LXServer shared] getAllBucketsWithSuccess:nil failure:nil];
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationWillResignActive" object:nil];
+    
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -249,7 +251,7 @@
     if ([userDefaults objectForKey:@"appLaunches"]) {
         NSInteger appLaunches = [userDefaults integerForKey:@"appLaunches"];
         [userDefaults setInteger:appLaunches+1 forKey:@"appLaunches"];
-        if (appLaunches%5 == 2 && ![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) { //if (![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) {
+        if (appLaunches%8 == 2 && ![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) { //if (![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) {
             NSLog(@"No email!");
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];

@@ -85,6 +85,10 @@
         [btvc setDelegate:self];
         [self.navigationController pushViewController:btvc animated:NO];
     }
+    
+    if (![self assignMode]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(saveCollapsedSections) name:@"applicationWillResignActive" object:nil];
+    }
 }
 
 - (void) viewWillAppear:(BOOL)animated
@@ -93,6 +97,12 @@
     
     self.bucketsDictionary = nil;
     self.cachedDiskDictionary = nil;
+    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"collapsed-sections"]) {
+        self.collapsedSections = [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"collapsed-sections"]];
+    } else {
+        self.collapsedSections = [[NSMutableDictionary alloc] init];
+    }
     
     [self refreshChange];
     [self reloadScreen];
@@ -148,6 +158,19 @@
     [self.searchBar resignFirstResponder];
 }
 
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    [self saveCollapsedSections];
+}
+
+- (void) saveCollapsedSections
+{
+    [[NSUserDefaults standardUserDefaults] setObject:self.collapsedSections forKey:@"collapsed-sections"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -160,7 +183,6 @@
     //remove extra cell lines
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    self.collapsedSections = [[NSMutableDictionary alloc] init];
     self.bucketsSearchDictionary = [[NSMutableDictionary alloc] init];
     self.serverSearchDictionary = [[NSMutableDictionary alloc] init];
     
@@ -231,7 +253,7 @@
         [self.sections addObject:@"Contacts"];
     }
     
-    if (![self assignMode]) {
+    if (![self assignMode] && ![self searchActivated]) {
         [self.sections addObject:@"info"];
     }
     
@@ -302,7 +324,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"infoCell" forIndexPath:indexPath];
     UITextView* textView = (UITextView*) [cell.contentView viewWithTag:2];
-    [textView setText:[NSString stringWithFormat:@"Text thoughts to: +1 (615) 724-9333\n\n%@ Thoughts\n%@ Collections\n\nHippocampus %@\nMade with <3 in Nashville", [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
+    [textView setText:[NSString stringWithFormat:@"SMS entry: +1 (615) 724-9333%@\n\n%@ Thoughts\n%@ Collections\n\nHippocampus %@\nMade with <3 in Nashville", ([[[LXSession thisSession] user] email] ? @"\nEmail entry: thoughts@hppcmps.com" : @""), [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
     return cell;
 }
 
@@ -408,7 +430,7 @@
         
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"info"]) {
         
-        return 180.0f;
+        return 240.0f;
         
     }
     
