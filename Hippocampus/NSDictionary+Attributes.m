@@ -499,7 +499,9 @@
     }
     for (int i = 0; i < [[self objectForKey:@"groups"] count]; ++i) {
         for (NSDictionary*bucket in [[[self objectForKey:@"groups"] objectAtIndex:i] objectForKey:@"sorted_buckets"]) {
-            [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
+            if ([bucket firstName]) {
+                [bucketNamesDict setObject:@"" forKey:[bucket firstName]];
+            }
         }
     }
     for (NSDictionary*bucket in [self objectForKey:@"buckets"]) {

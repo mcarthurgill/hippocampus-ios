@@ -37,4 +37,18 @@
    return self;
 }
 
++ (NSString*) userAuthToken
+{
+    NSString* salt = [[[LXSession thisSession] user] salt];
+    if (salt && [salt length] > 0) {
+        int userID = [[[[LXSession thisSession] user] userID] intValue];
+        double time = [[NSDate date] timeIntervalSince1970] ;
+        int time_spec = (int)time / 1000 + userID%116;
+        NSString* pre = [salt substringToIndex:8];
+        NSString* post = [salt substringFromIndex:8];
+        return [[[NSString stringWithFormat:@"%@%i%@", pre, time_spec, post] shaEncrypted] shaEncrypted];
+    }
+    return [@"" shaEncrypted];
+}
+
 @end

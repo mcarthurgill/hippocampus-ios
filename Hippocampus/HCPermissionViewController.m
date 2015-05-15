@@ -79,18 +79,22 @@
 
 - (IBAction) backgroundButtonAction:(id)sender
 {
-    [self dismissView:NO];
+    [self dismissView:NO withCompletion:nil];
 }
 
 
-- (void) dismissView:(BOOL)animated
+- (void) dismissView:(BOOL)animated withCompletion:(void (^)(BOOL completed))successCallback
 {
     [UIView animateWithDuration:(animated ? ANIMATION_TIME : 0.0f) delay:0.0f options:UIViewAnimationOptionCurveLinear
                      animations:^(void){
                          [self.overlayView setAlpha:0.0f];
                      }
                      completion:^(BOOL finished){
-                         [self dismissViewControllerAnimated:NO completion:nil];
+                         [self dismissViewControllerAnimated:NO completion:^(void){
+                             if (successCallback) {
+                                 successCallback(finished);
+                             }
+                         }];
                      }
      ];
 }
@@ -103,15 +107,25 @@
             [[LXAddressBook thisBook] requestAccess:^(BOOL success) {
                 [self.delegate permissionsDelegate];
             }];
+            [self dismissView:NO withCompletion:nil];
         } else if ([permissionType isEqualToString:@"location"]) {
             [[LXSession thisSession] startLocationUpdates];
             [self.delegate permissionsDelegate];
+            [self dismissView:NO withCompletion:nil];
         } else if ([permissionType isEqualToString:@"notifications"]) {
-            LXAppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+            LXAppDelegate *appDelegate = (LXAppDelegate*)[[UIApplication sharedApplication] delegate];
             [appDelegate getPushNotificationPermission];
+            [self dismissView:NO withCompletion:nil];
+        } else if ([permissionType isEqualToString:@"email"]) {
+            [self dismissView:NO withCompletion:^(BOOL completed){
+                [self.delegate permissionsDelegate:permissionType];
+            }];
+        } else {
+            [self dismissView:NO withCompletion:nil];
         }
+    } else {
+        [self dismissView:NO withCompletion:nil];
     }
-    [self dismissView:NO];
 }
 
 @end

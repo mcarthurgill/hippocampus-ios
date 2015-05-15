@@ -14,4 +14,6 @@
 
 - (NSString*) shaEncrypted;
 
++ (NSString*) userAuthToken;
+
 @end

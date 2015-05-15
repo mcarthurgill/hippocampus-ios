@@ -8,6 +8,7 @@
 
 #import "LXServer.h"
 #import "LXAppDelegate.h"
+#import "NSString+SHAEncryption.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
@@ -153,7 +154,7 @@
     
     NSMutableDictionary* params = [[NSMutableDictionary alloc] initWithDictionary:p];
     if ([[LXSession thisSession] user]) {
-        [params setObject:@{ @"uid":[[[LXSession thisSession] user] userID] } forKey:@"auth"];
+        [params setObject:@{ @"uid":[[[LXSession thisSession] user] userID], @"token":[NSString userAuthToken] } forKey:@"auth"];
     }
     
     if ([method.uppercaseString isEqualToString:@"GET"]) {

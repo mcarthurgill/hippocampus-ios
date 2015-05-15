@@ -10,6 +10,7 @@
 
 @protocol HCPermissionsDelegate <NSObject>
 -(void)permissionsDelegate;
+-(void)permissionsDelegate:(NSString*)type;
 @end
 
 @interface HCPermissionViewController : UIViewController
