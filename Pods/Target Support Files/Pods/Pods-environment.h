@@ -48,6 +48,12 @@
 #define COCOAPODS_VERSION_MINOR_AFNetworking_UIKit 3
 #define COCOAPODS_VERSION_PATCH_AFNetworking_UIKit 1
 
+// AlgoliaSearch-Client
+#define COCOAPODS_POD_AVAILABLE_AlgoliaSearch_Client
+#define COCOAPODS_VERSION_MAJOR_AlgoliaSearch_Client 3
+#define COCOAPODS_VERSION_MINOR_AlgoliaSearch_Client 4
+#define COCOAPODS_VERSION_PATCH_AlgoliaSearch_Client 3
+
 // MBProgressHUD
 #define COCOAPODS_POD_AVAILABLE_MBProgressHUD
 #define COCOAPODS_VERSION_MAJOR_MBProgressHUD 0
