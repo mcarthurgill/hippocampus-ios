@@ -25,6 +25,8 @@
 @dynamic lastItemUpdateTime;
 @dynamic lastBucketUpdateTime;
 @dynamic setupCompletion;
+@dynamic email;
+@dynamic salt;
 
 + (NSMutableDictionary *)resourceKeysForPropertyKeys
 {

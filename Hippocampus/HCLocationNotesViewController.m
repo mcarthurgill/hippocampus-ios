@@ -266,7 +266,7 @@
 
 - (void) getItemsNearCurrentLocation
 {
-    if (![LXSession locationPermissionDetermined]) {
+    if (![[LXSession thisSession] locationPermissionDetermined]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
         [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];

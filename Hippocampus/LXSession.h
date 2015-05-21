@@ -47,7 +47,7 @@
 
 + (CLLocation*) currentLocation;
 - (BOOL) hasLocation;
-+ (BOOL) locationPermissionDetermined;
+- (BOOL) locationPermissionDetermined;
 - (void) startLocationUpdates;
 
 + (BOOL) areNotificationsEnabled;

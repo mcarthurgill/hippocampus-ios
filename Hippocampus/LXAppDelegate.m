@@ -40,7 +40,6 @@
 
 - (BOOL) shouldPresentIntroductionViews
 {
-    NSLog(@"USER: %@", [[LXSession thisSession] user]);
     return ![[LXSession thisSession] user];
 }
 
@@ -94,9 +93,11 @@
     });
     [self incrementAppLaunchCount];
     
-    if ([LXSession locationPermissionDetermined]) {
-        [[LXSession thisSession] startLocationUpdates];
-    }
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        if ([[LXSession thisSession] locationPermissionDetermined]) {
+            [[LXSession thisSession] startLocationUpdates];
+        }
+    });
     
     active = YES;
 }

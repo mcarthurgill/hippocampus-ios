@@ -141,7 +141,7 @@
         if ([self.item messageIsOneWord] && [self.item notBlank] && [self.item lettersOnly]) {
             [self.actions addObject:@"define"];
         }
-        if ([self.item notBlank]) {
+        if ([self.item notBlank] || [self.item hasMediaURLs]) {
             [self.actions addObject:@"copy"];
         }
         if ([self.item belongsToCurrentUser]) {
@@ -419,7 +419,7 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
-        return [self heightForText:[self.item message] width:(self.view.frame.size.width-20.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 36.0f;
+        return [self heightForText:[self.item message] width:(self.view.frame.size.width-20.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 36.0f + [UIApplication sharedApplication].statusBarFrame.size.height;
         
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return 56.0f;
@@ -515,6 +515,15 @@
         } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"copy"]) {
             UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
             pasteboard.string = [self.item message];
+            if ([self.item croppedMediaURLs] && [[self.item croppedMediaURLs] count] > 0) {
+                NSMutableArray* images = [[NSMutableArray alloc] init];
+                for (NSString* url in [self.item croppedMediaURLs]) {
+                    if ([self.mediaDictionary objectForKey:url]) {
+                        [images addObject:[self.mediaDictionary objectForKey:url]];
+                    }
+                }
+                [pasteboard setImages:(NSArray*)images];
+            }
             [self showHUDWithMessage:@"Copying"];
             [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5f];
         }

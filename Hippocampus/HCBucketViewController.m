@@ -76,7 +76,7 @@
     [self shouldSetKeyboardAsFirstResponder];
 
     [self setTableScrollToIndex:([self currentArray].count) animated:NO];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.00001*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self setTableScrollToIndex:([self currentArray].count) animated:NO];
     });
 }
@@ -112,12 +112,12 @@
 {
     [super viewWillDisappear:animated];
     [self setInitializeWithKeyboardUp:NO];
+    [self.composeTextView resignFirstResponder];
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [self.composeTextView resignFirstResponder];
 }
 
 - (void) setNavTitle
@@ -136,7 +136,8 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void) setupProperties {
+- (void) setupProperties
+{
     requestMade = NO;
     shouldContinueRequesting = YES;
     
@@ -154,9 +155,12 @@
 
     [self cacheImagePickerController];
     self.itemForDeletion = [[NSMutableDictionary alloc] init];
+    
+    maxComposeTextViewSize = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - ([UIApplication sharedApplication].statusBarFrame.size.height-20.0) - (self.composeView.frame.size.height - self.composeTextView.frame.size.height);
 }
 
--(void) cacheImagePickerController {
+-(void) cacheImagePickerController
+{
     self.pickerController = [[UIImagePickerController alloc]
                                                  init];
     [self.pickerController setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
@@ -183,17 +187,19 @@
 
 - (void) setTableScrollToIndex:(NSInteger)index animated:(BOOL)animated
 {
-    if (index >= [[self currentArray] count]) {
-        --index;
-    }
-    if ([self currentArray].count > 0 && index < [self currentArray].count) {
-        NSIndexPath *ipath = [NSIndexPath indexPathForRow:index inSection: 0];
-        if ([self.scrollToPosition isEqualToString:@"bottom"]) {
-            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: animated];
-        } else if ([self.scrollToPosition isEqualToString:@"top"]){
-            [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: animated];
-        } else if ([self.scrollToPosition isEqualToString:@"note"]) {
-            //do nothing
+    if ([self isVisible] && self.tableView && [self.tableView respondsToSelector:@selector(scrollToRowAtIndexPath:atScrollPosition:animated:)]) {
+        if (index >= [[self currentArray] count]) {
+            --index;
+        }
+        if ([self currentArray].count > 0 && index < [self currentArray].count) {
+            NSIndexPath *ipath = [NSIndexPath indexPathForRow:index inSection: 0];
+            if ([self.scrollToPosition isEqualToString:@"bottom"]) {
+                [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionBottom animated: animated];
+            } else if ([self.scrollToPosition isEqualToString:@"top"]){
+                [self.tableView scrollToRowAtIndexPath: ipath atScrollPosition: UITableViewScrollPositionTop animated: animated];
+            } else if ([self.scrollToPosition isEqualToString:@"note"]) {
+                //do nothing
+            }
         }
     }
 }
@@ -346,6 +352,8 @@
         
         if (![self.bucket isAllNotesBucket]) {
             [tempNote setObject:@"assigned" forKey:@"status"];
+        } else {
+            [tempNote setObject:@"outstanding" forKey:@"status"];
         }
         
         [tempNote setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
@@ -380,7 +388,7 @@
         }
                 
         [self addItemToTable:[NSDictionary dictionaryWithDictionary:tempNote]];
-        [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket objectForKey:@"id"]]];
+        [[LXSession thisSession] addUnsavedNote:tempNote toBucket:[NSString stringWithFormat:@"%@",[self.bucket ID]]];
         
         [self setScrollToPosition:@"bottom"];
         [self clearTextField:NO];
@@ -419,7 +427,7 @@
         if ([userDefaults objectForKey:@"noteCreatedInApp"]) {
             NSInteger createdNotes = [userDefaults integerForKey:@"noteCreatedInApp"];
             [userDefaults setInteger:createdNotes+1 forKey:@"noteCreatedInApp"];
-            if ([userDefaults integerForKey:@"noteCreatedInApp"] == 4 && ![LXSession locationPermissionDetermined]) {
+            if ([userDefaults integerForKey:@"noteCreatedInApp"] == 4 && ![[LXSession thisSession] locationPermissionDetermined]) {
                 [self.congratsView setAlpha:0.0f];
                 UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
                 HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
@@ -539,13 +547,7 @@
         if (indexes.count == 0) {
             shouldContinueRequesting = NO;
         }
-        if ([[responseObject objectForKey:@"page"] integerValue] == 0) {
-            NSMutableArray* pending = [[LXSession thisSession] unsavedNotesForBucket:[NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]]];
-            self.allItems = [[NSMutableArray alloc] initWithArray:(pending ? pending : @[])];
-            [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
-        } else {
-            [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
-        }
+        [self.allItems insertObjects:[responseObject objectForKey:@"items"] atIndexes:indexes];
         [self reloadScreen]; 
     }
     
@@ -569,8 +571,16 @@
         [self reloadScreenToIndex:indexes.count animated:NO];
     }
     
+    if ([[responseObject objectForKey:@"page"] integerValue] == 0) {
+        NSMutableArray* pending = [[LXSession thisSession] unsavedNotesForBucket:[NSString stringWithFormat:@"%@", [self.bucket objectForKey:@"id"]]];
+        if (pending) {
+            [self.allItems addObjectsFromArray:pending];
+            [self reloadScreenToIndex:([self currentArray].count-1) animated:YES];
+        }
+    }
+    
     if ([[responseObject objectForKey:@"items"] count] > 0 || [[responseObject objectForKey:@"bottom_items"] count] > 0) {
-        [self setPage:([[responseObject objectForKey:@"page"] integerValue] + (NSInteger)1)];
+        [self setPage:([[responseObject objectForKey:@"page"] intValue] + (NSInteger)1)];
     }
     
     if ([responseObject objectForKey:@"group"] && NULL_TO_NIL([responseObject objectForKey:@"group"])) {
@@ -657,7 +667,8 @@
     return (self.composeTextView.text && self.composeTextView.text.length > 0 && [self.composeTextView.textColor isEqual:[UIColor blackColor]]) || [self hasUploadedImageFromLibrary];
 }
 
-- (BOOL) hasUploadedImageFromLibrary {
+- (BOOL) hasUploadedImageFromLibrary
+{
     __block BOOL attached = NO;
     [self.composeTextView.attributedText enumerateAttribute:NSAttachmentAttributeName
                                  inRange:NSMakeRange(0, self.composeTextView.attributedText.length)
@@ -729,24 +740,43 @@
 
 - (void) textViewDidChange:(UITextView *)textView
 {
-    [self updateConstraintsForTextView:textView];
     [self toggleSaveButton];
     if (textView.text.length == 0) {
         [textView setText:@""];
         [textView setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:15.0f]];
+        if (self.imageAttachments) {
+            [self.imageAttachments removeAllObjects];
+        }
     } else {
         textView.textColor = [UIColor blackColor];
     }
+    [self updateConstraintsForTextView:textView];
 }
 
-- (void) updateConstraintsForTextView:(UITextView *)textView {
-    float difference = textView.intrinsicContentSize.height - self.textViewHeightConstraint.constant;
-    if (difference != 0.0) {
-        self.textViewHeightConstraint.constant = textView.intrinsicContentSize.height;
+- (void) updateConstraintsForTextView:(UITextView *)textView
+{
+    CGFloat contentSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, 10000.0f)].height;
+    CGFloat newSize = MIN(maxComposeTextViewSize, contentSize);
+    CGFloat curSize = self.textViewHeightConstraint.constant;
+    CGFloat difference = newSize-curSize;
+    
+    if (contentSize > newSize) {
+        [textView setScrollEnabled:YES];
+    } else {
+        [textView setScrollEnabled:NO];
+    }
+    
+    if (difference!=0.0f) {
+        self.textViewHeightConstraint.constant = newSize;
         self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - difference - self.textViewTopVerticalSpaceConstraint.constant - self.textViewBottomVerticalSpaceConstraint.constant;
-        [UIView animateWithDuration:0.0 animations:^{
-            [self.view layoutIfNeeded];
-        }];
+        
+        [UIView animateWithDuration:0.0
+                         animations:^{
+                             [self.view layoutIfNeeded];
+                         }
+                         completion:^(BOOL finished) {
+                         }
+         ];
         [self setTableScrollToIndex:[[self currentArray] count] animated:YES];
     }
 }
@@ -795,7 +825,7 @@
 
 - (void) keyboardWillShow:(NSNotification *)sender
 {
-    if (self.isViewLoaded && self.view.window) {
+    //if ([self isVisible]) {
         [self setScrollToPosition:@"bottom"];
         [self setTableScrollToIndex:[self currentArray].count animated:YES];
         
@@ -805,32 +835,38 @@
         self.bottomConstraint.constant = frame.origin.y - CGRectGetHeight(self.view.frame)-([UIApplication sharedApplication].statusBarFrame.size.height-20.0);
         
         self.tableviewHeightConstraint.constant = self.tableviewHeightConstraint.constant - frame.size.height;
+        //self.textViewHeightConstraint.constant = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - ([UIApplication sharedApplication].statusBarFrame.size.height-20.0) - frame.size.height;
         
         [UIView animateWithDuration:animationDuration animations:^{
             [self.view layoutIfNeeded];
         }];
-    }
+    //}
 }
 
 - (void) keyboardWillHide:(NSNotification *)sender
 {
-    if (self.isViewLoaded && self.view.window) {
+    //if ([self isVisible]) {
         NSDictionary *info = [sender userInfo];
         NSTimeInterval animationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         
         self.bottomConstraint.constant = 0;
 
         self.tableviewHeightConstraint.constant = self.view.frame.size.height - self.saveButton.frame.size.height;
+        //self.textViewHeightConstraint.constant = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - ([UIApplication sharedApplication].statusBarFrame.size.height-20.0);
 
         [UIView animateWithDuration:animationDuration animations:^{
             [self.view layoutIfNeeded];
         }];
-    }
+    //}
 }
 
 - (void) keyboardWillChangeFrame:(NSNotification *)sender
 {
-    NSLog(@"changed frame");
+    //if ([self isVisible]) {
+        NSLog(@"changed frame");
+        CGRect frame = [self.view convertRect:[[[sender userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue] fromView:nil];
+        maxComposeTextViewSize = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - ([UIApplication sharedApplication].statusBarFrame.size.height) - (self.composeView.frame.size.height - self.composeTextView.frame.size.height) - frame.size.height;
+    //}
 }
 
 
@@ -927,7 +963,8 @@
     [attributedString replaceCharactersInRange:NSMakeRange(0, 0) withAttributedString:attrStringWithImage];
     
     self.composeTextView.attributedText = attributedString;
-    self.textViewHeightConstraint.constant = self.composeTextView.intrinsicContentSize.height;
+    
+    [self updateConstraintsForTextView:self.composeTextView];
 
     [self dismissViewControllerAnimated:YES completion:^(void){
         [self.composeTextView becomeFirstResponder];
@@ -952,7 +989,8 @@
     [attributedString replaceCharactersInRange:NSMakeRange(0, 0) withAttributedString:attrStringWithImage];
     
     self.composeTextView.attributedText = attributedString;
-    self.textViewHeightConstraint.constant = self.composeTextView.intrinsicContentSize.height;
+    
+    [self updateConstraintsForTextView:self.composeTextView];
     
     [self dismissViewControllerAnimated:YES completion:^(void){
         [self.composeTextView becomeFirstResponder];
@@ -1081,7 +1119,7 @@
     [self.congratsView setBackgroundColor:[UIColor whiteColor]];
     [self.congratsView setAlpha:0.0];
     
-    LXAppDelegate *appDelegate = [UIApplication sharedApplication].delegate;
+    LXAppDelegate *appDelegate = (LXAppDelegate*)[UIApplication sharedApplication].delegate;
     [appDelegate.window addSubview:self.congratsView];
 }
 
@@ -1101,6 +1139,15 @@
     [UIView animateWithDuration:0.5 animations:^{
         [self.congratsView setAlpha:0.0];
     }];
+}
+
+
+
+# pragma mark visible
+
+- (BOOL) isVisible
+{
+    return self.isViewLoaded && self.view.window && [[self.navigationController visibleViewController] isEqual:self];
 }
 
 @end

@@ -81,6 +81,7 @@
     if ([self allNotesDictionary]) {
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCBucketViewController* btvc = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+        [btvc setInitializeWithKeyboardUp:YES];
         [btvc setBucket:[[NSMutableDictionary alloc] initWithDictionary:[self allNotesDictionary]]];
         [btvc setDelegate:self];
         [self.navigationController pushViewController:btvc animated:NO];
@@ -112,44 +113,12 @@
         [self.navigationItem setRightBarButtonItem:nil];
         [self.navigationItem setLeftBarButtonItem:nil];
     }
-    
-    //    if (![[[LXSession thisSession] user] completedSetup] && ![self assignMode]) {
-    //        [self setTitle:[NSString stringWithFormat:@"Hippocampus | %@", [[[[LXSession thisSession] user] setupCompletion] formattedPercentage]]];
-    //    }
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-//    if ([[LXSetup theSetup] shouldPromptForCompletion] && [self.navigationController.visibleViewController isKindOfClass:[HCBucketsTableViewController class]] && ![self assignMode]) {
-//        [self showSetup];
-//    }
-    
-    if ([self.navigationController.visibleViewController isKindOfClass:[HCBucketsTableViewController class]]) {
-        if ([[LXSetup theSetup] visitedThisScreen:self withAssignMode:[self assignMode]]) {
-            NSLog(@"already visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
-            if ([self assignMode]) {
-                [self getAddressBookPermissionIfUndetermined];
-            }
-        } else {
-            NSLog(@"have not visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
-            if ([self assignMode]) {
-                UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-                HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
-                [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
-                [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
-                [vc setMainLabelText:@"Thoughts belong to collections. Assign this thought to an existing collection or create a new one."];
-                [self.navigationController presentViewController:vc animated:NO completion:nil];
-            } else {
-                UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-                HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
-                [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
-                [vc setImageForMainImageView:[UIImage imageNamed:@"compose-screen.jpg"]];
-                [vc setMainLabelText:@"Welcome! Tap 'Compose' in the top right corner to add a thought."];
-                [self.navigationController presentViewController:vc animated:NO completion:nil];
-            }
-        }
-    }
+    [self handleVisitAndPermissions];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -169,14 +138,43 @@
 
 - (void) saveCollapsedSections
 {
-    [[NSUserDefaults standardUserDefaults] setObject:self.collapsedSections forKey:@"collapsed-sections"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    if (![self assignMode]) {
+        [[NSUserDefaults standardUserDefaults] setObject:self.collapsedSections forKey:@"collapsed-sections"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) handleVisitAndPermissions
+{
+    if ([[LXSetup theSetup] visitedThisScreen:self withAssignMode:[self assignMode]]) {
+        NSLog(@"already visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
+        if ([self assignMode]) {
+            [self getAddressBookPermissionIfUndetermined];
+        }
+    } else {
+        NSLog(@"have not visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
+        if ([self assignMode]) {
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+            HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+            [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+            [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
+            [vc setMainLabelText:@"Thoughts belong to collections. Assign this thought to an existing collection or create a new one."];
+            [self.navigationController presentViewController:vc animated:NO completion:nil];
+        } else {
+            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+            HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
+            [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
+            [vc setImageForMainImageView:[UIImage imageNamed:@"compose-screen.jpg"]];
+            [vc setMainLabelText:@"Welcome! Tap 'Compose' in the top right corner to add a thought."];
+            [self.navigationController presentViewController:vc animated:NO completion:nil];
+        }
+    }
 }
 
 
@@ -489,6 +487,8 @@
         return [[[self currentDictionary] objectForKey:@"Recent"] objectAtIndex:indexPath.row];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
         return [[[self currentDictionary] objectForKey:@"buckets"] objectAtIndex:indexPath.row];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
+        return [[self searchArray] objectAtIndex:indexPath.row];
     } else {
         return [[[[[self currentDictionary] objectForKey:@"groups"] objectAtIndex:[[self.sections objectAtIndex:indexPath.section] integerValue]] objectForKey:@"sorted_buckets"] objectAtIndex:indexPath.row];
     }
@@ -584,6 +584,8 @@
 
 - (BOOL) sectionIsCollapsed:(NSInteger)section
 {
+    if ([self searchActivated] || !self.collapsedSections)
+        return NO;
     return [self.collapsedSections objectForKey:[self.sections objectAtIndex:section]] && [[self.collapsedSections objectForKey:[self.sections objectAtIndex:section]] isEqualToNumber:@YES];
 }
 

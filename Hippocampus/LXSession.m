@@ -285,7 +285,7 @@ static LXSession* thisSession = nil;
     return ([self locationManager] && [[self locationManager] location]);
 }
 
-+ (BOOL) locationPermissionDetermined
+- (BOOL) locationPermissionDetermined
 {
     if ([CLLocationManager locationServicesEnabled]) {
         NSLog(@"Location Services Enabled");
@@ -309,7 +309,7 @@ static LXSession* thisSession = nil;
         locationManager = [[CLLocationManager alloc] init];
     locationManager.delegate = self;
     
-    if ([LXSession locationPermissionDetermined]) {
+    if ([self locationPermissionDetermined]) {
         [self getCurrentLocation];
     } else {
         if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]) {

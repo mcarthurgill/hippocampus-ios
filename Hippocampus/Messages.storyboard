@@ -1026,12 +1026,12 @@
                                             <action selector="uploadImage:" destination="NRV-Pe-zK1" eventType="touchUpInside" id="gmc-2S-rel"/>
                                         </connections>
                                     </button>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" scrollEnabled="NO" text="Add Thought" translatesAutoresizingMaskIntoConstraints="NO" id="bUM-CL-Fv8">
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" showsHorizontalScrollIndicator="NO" text="Add Thought" translatesAutoresizingMaskIntoConstraints="NO" id="bUM-CL-Fv8">
                                         <rect key="frame" x="41" y="4" width="506" height="32"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="201" id="ZY6-ZM-wrB"/>
-                                            <constraint firstAttribute="height" constant="32" id="Zxe-fW-utz"/>
+                                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="32" id="Zxe-fW-utz"/>
                                         </constraints>
                                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
