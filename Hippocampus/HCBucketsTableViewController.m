@@ -324,7 +324,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"infoCell" forIndexPath:indexPath];
     UITextView* textView = (UITextView*) [cell.contentView viewWithTag:2];
-    [textView setText:[NSString stringWithFormat:@"SMS entry: +1 (615) 724-9333%@\n\n%@ Thoughts\n%@ Collections\n\nHippocampus %@\nMade with <3 in Nashville", ([[[LXSession thisSession] user] email] ? @"\nEmail entry: thoughts@hppcmps.com" : @""), [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
+    [textView setText:[NSString stringWithFormat:@"SMS entry: +1 (615) 724-9333%@\n\n%@ Thoughts\n%@ Collections\n\nHippocampus %@\nMade with <3 in Nashville", ([[[LXSession thisSession] user] email] ? @"\nEmail entry: thought@hppcmps.com" : @""), [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
     return cell;
 }
 
