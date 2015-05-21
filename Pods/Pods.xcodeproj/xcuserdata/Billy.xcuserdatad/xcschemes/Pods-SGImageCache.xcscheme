@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "403BDBE96DC8EFD2797D5363"
+               BlueprintIdentifier = "76E6C69A1D2ED8696AA3294A"
                BuildableName = "libPods-SGImageCache.a"
                BlueprintName = "Pods-SGImageCache"
                ReferencedContainer = "container:Pods.xcodeproj">

@@ -26,7 +26,7 @@
 #import "HCChangeBucketTypeViewController.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
-#define SEARCH_DELAY 0.3f
+#define SEARCH_DELAY 0.05f
 #define IMAGE_FADE_IN_TIME 0.3f
 #define PICTURE_HEIGHT_IN_CELL 280
 #define PICTURE_MARGIN_TOP_IN_CELL 8
@@ -746,8 +746,9 @@
 - (void) searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     if (![self assignMode]) {
-        [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(searchWithCurrentText) object:nil];
-        [self performSelector:@selector(searchWithCurrentText) withObject:nil afterDelay:SEARCH_DELAY];
+        //[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(searchWithCurrentText) object:nil];
+        //[self performSelector:@selector(searchWithCurrentText) withObject:nil afterDelay:SEARCH_DELAY];
+        [self searchWithCurrentText];
     }
     [self reloadScreen];
 }
@@ -778,15 +779,18 @@
 
 - (void) searchWithTerm:(NSString*)term
 {
-    [[LXServer shared] getSearchResults:term
-                                success:^(id responseObject) {
-                                    //NSLog(@"search: %@", responseObject);
-                                    [self.serverSearchDictionary setObject:[self modifiedSearchArrayWithResponseObject:[responseObject objectForKey:@"items"]] forKey:[[responseObject objectForKey:@"term"] lowercaseString]];
-                                    [self reloadScreen];
-                                }
-                                failure:^(NSError* error) {
-                                    [self reloadScreen];
-                                }];
+    ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"FVGQB7HR19" apiKey:@"ddecc3b35feb56ab0a9d2570ac964a82"];
+    ASRemoteIndex *index = [apiClient getIndex:@"Item"];
+    ASQuery* query = [ASQuery queryWithFullTextQuery:term];
+    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] userID]];
+    [index search:query
+          success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
+              // answer object contains a "hits" attribute that contains all results
+              // each result contains your attributes and a _highlightResult attribute that contains highlighted version of your attributes
+              [self.serverSearchDictionary setObject:[answer objectForKey:@"hits"] forKey:[[query fullTextQuery] lowercaseString]];
+              [self reloadScreen];
+          } failure:nil
+     ];
 }
 
 

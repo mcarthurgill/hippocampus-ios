@@ -1,0 +1,1 @@
+PODS_ALGOLIASEARCH_CLIENT_OTHER_LDFLAGS = -framework "MobileCoreServices" -framework "Security" -framework "SystemConfiguration"

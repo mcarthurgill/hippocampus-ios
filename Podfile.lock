@@ -1,11 +1,11 @@
 PODS:
   - AFNetworking (2.3.1):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
+    - AFNetworking/NSURLConnection (= 2.3.1)
+    - AFNetworking/NSURLSession (= 2.3.1)
+    - AFNetworking/Reachability (= 2.3.1)
+    - AFNetworking/Security (= 2.3.1)
+    - AFNetworking/Serialization (= 2.3.1)
+    - AFNetworking/UIKit (= 2.3.1)
   - AFNetworking/NSURLConnection (2.3.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
@@ -20,6 +20,8 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - AlgoliaSearch-Client (3.4.3):
+    - AFNetworking (~> 2.2)
   - MBProgressHUD (0.8)
   - MGEvents (1.0.3)
   - SGHTTPRequest (1.0.3):
@@ -27,21 +29,23 @@ PODS:
   - SGImageCache (1.2.0):
     - MGEvents
     - SGHTTPRequest
-    - SGImageCache/base
+    - SGImageCache/base (= 1.2.0)
   - SGImageCache/base (1.2.0):
     - MGEvents
     - SGHTTPRequest
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
+  - AlgoliaSearch-Client (~> 3.0)
   - MBProgressHUD (~> 0.8)
   - SGImageCache
 
 SPEC CHECKSUMS:
-  AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
-  MGEvents: e6254d7873bcb90b266801d171f9948194010927
-  SGHTTPRequest: 6c9c51babed3eebd182945e61f5543c66d5df46e
-  SGImageCache: e7f9b353bac495d1c9698f50581eb47fb2022216
+  AFNetworking: 05b9f6e3aa5ac45bc383b4bb108ef338080a26c7
+  AlgoliaSearch-Client: a6aa25fef1af9db992a4d392fbf7f4c08f5ec774
+  MBProgressHUD: 8688c331cb64702283be37ab8d7d329cdd25f251
+  MGEvents: 739ea3e582a8df05bd1044500c7fb6d8f7aff5c8
+  SGHTTPRequest: 1f92e8a164a4d732fb4db8322320e3a33bff19d0
+  SGImageCache: 484258fba14d6b48b1609c279edbd9deddc1b70d
 
-COCOAPODS: 0.34.2
+COCOAPODS: 0.36.3
