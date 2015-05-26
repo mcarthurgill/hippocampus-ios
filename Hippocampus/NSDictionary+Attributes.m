@@ -150,7 +150,7 @@
 
 - (NSString*) truncatedMessage
 {
-    return ([self message] && [[self message] length] > 0) ? [[self message] truncated:320] : @"";
+    return ([self message] && NULL_TO_NIL([self message]) && [[self message] length] > 0) ? [[self message] truncated:320] : @"";
 }
 
 - (NSString*) itemType
@@ -270,7 +270,7 @@
 
 - (BOOL) hasMessage
 {
-    return [self message] && [[self message] length] > 0;
+    return [self message] && NULL_TO_NIL([self message]) && [[self message] length] > 0;
 }
 
 - (BOOL) hasReminder
