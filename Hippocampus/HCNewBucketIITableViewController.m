@@ -40,8 +40,8 @@
     [self.typeOptions insertObject:@{@"group_name":@"Ungrouped",@"id":@"0"} atIndex:0];
     
     if ([self.typeOptions count] > 1) {
-        [self.typePicker setHidden:NO];
-        [self.descriptionLabel setHidden:NO];
+        [self.typePicker setHidden:YES];
+        [self.descriptionLabel setHidden:YES];
     } else {
         [self.typePicker setHidden:YES];
         [self.descriptionLabel setHidden:YES];
