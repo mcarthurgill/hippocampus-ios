@@ -13,9 +13,6 @@
 #import "HCIndicatorTableViewCell.h"
 #import "HCExplanationTableViewCell.h"
 
-#define PICTURE_HEIGHT_IN_CELL 280
-#define PICTURE_MARGIN_TOP_IN_CELL 8
-
 @interface LXRemindersViewController ()
 
 @end

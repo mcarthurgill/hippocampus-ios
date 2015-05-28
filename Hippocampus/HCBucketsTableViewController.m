@@ -28,8 +28,6 @@
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 #define SEARCH_DELAY 0.05f
 #define IMAGE_FADE_IN_TIME 0.3f
-#define PICTURE_HEIGHT_IN_CELL 280
-#define PICTURE_MARGIN_TOP_IN_CELL 8
 #define HEADER_HEIGHT 40.0f
 
 @interface HCBucketsTableViewController ()

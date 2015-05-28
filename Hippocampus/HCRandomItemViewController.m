@@ -13,8 +13,6 @@
 #import "HCExplanationTableViewCell.h"
 
 #define IMAGE_FADE_IN_TIME 0.1f
-#define PICTURE_HEIGHT_IN_CELL 280
-#define PICTURE_MARGIN_TOP_IN_CELL 8
 
 @interface HCRandomItemViewController ()
 
