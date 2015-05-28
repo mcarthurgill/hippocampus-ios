@@ -97,7 +97,11 @@
                                                 [self hideHUD];
                                                 NSDictionary* bucket = responseObject;
                                                 [self.delegate addToStack:bucket];
-                                                [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
+                                                 if ([self.delegate respondsToSelector:@selector(pageControllerDelegate)]) {
+                                                     [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
+                                                 } else {
+                                                     [self.navigationController popToViewController:self.delegate animated:YES];
+                                                 }
                                             }failure:^(NSError* error) {
                                                 [self hideHUD];
                                                 UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the collection." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];

@@ -17,7 +17,7 @@
 
 
 
-@interface HCBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate>
+@interface HCBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate>
 {
     BOOL requestMade;
     BOOL shouldContinueRequesting;
@@ -54,7 +54,7 @@
 
 @property (strong, nonatomic) UIImagePickerController *pickerController;
 @property (strong, nonatomic) NSMutableDictionary* metadata;
-@property (strong, nonatomic) NSMutableDictionary *itemForDeletion;
+@property (strong, nonatomic) NSMutableDictionary *itemForAction;
 
 - (IBAction)addAction:(id)sender;
 - (IBAction)uploadImage:(id)sender;
@@ -63,7 +63,8 @@
 - (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n;
 - (void) scrollToNote:(NSMutableDictionary*)original;
 
-
+- (void) addToStack:(NSDictionary*)b;
+- (void) saveReminder:(NSString*)reminder withType:(NSString*)type;
 
 
 @end

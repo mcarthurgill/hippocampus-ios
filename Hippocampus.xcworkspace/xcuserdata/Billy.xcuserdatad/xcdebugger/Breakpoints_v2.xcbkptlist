@@ -329,7 +329,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "742"
             endingLineNumber = "742"
-            landmarkName = "-searchBarSearchButtonClicked:"
+            landmarkName = "-moreButtonClicked:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -345,8 +345,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "744"
             endingLineNumber = "744"
-            landmarkName = "-scrollViewDidScroll:"
-            landmarkType = "5">
+            landmarkName = "@implementation HCBucketsTableViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1145,7 +1145,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "889"
             endingLineNumber = "889"
-            landmarkName = "-searchArray"
+            landmarkName = "-searchedDictionaryWithTerm:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1161,7 +1161,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "906"
             endingLineNumber = "906"
-            landmarkName = "-cacheComposeBucketController"
+            landmarkName = "-searchedDictionaryWithTerm:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1177,7 +1177,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "604"
             endingLineNumber = "604"
-            landmarkName = "-alertView:clickedButtonAtIndex:"
+            landmarkName = "-tableView:commitEditingStyle:forRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1241,7 +1241,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "558"
             endingLineNumber = "558"
-            landmarkName = "-sectionIsCollapsed:"
+            landmarkName = "-sectionTapped:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1273,7 +1273,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "697"
             endingLineNumber = "697"
-            landmarkName = "-composeButtonClicked:"
+            landmarkName = "-refreshChange"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1561,7 +1561,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "641"
             endingLineNumber = "641"
-            landmarkName = "-assignMode"
+            landmarkName = "-alertView:clickedButtonAtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1577,8 +1577,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "783"
             endingLineNumber = "783"
-            landmarkName = "@implementation HCBucketsTableViewController"
-            landmarkType = "3">
+            landmarkName = "-searchWithCurrentText"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1593,7 +1593,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "797"
             endingLineNumber = "797"
-            landmarkName = "-currentDictionary"
+            landmarkName = "-searchWithTerm:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
