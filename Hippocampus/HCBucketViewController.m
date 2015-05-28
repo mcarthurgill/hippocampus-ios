@@ -17,6 +17,8 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import "HCPopUpViewController.h"
 #import "HCPermissionViewController.h"
+#import "HCBucketsTableViewController.h"
+#import "HCReminderViewController.h"
 
 @import AssetsLibrary;
 
@@ -48,7 +50,7 @@
 @synthesize delegate;
 @synthesize pickerController;
 @synthesize metadata;
-@synthesize itemForDeletion;
+@synthesize itemForAction;
 @synthesize congratsView;
 
 
@@ -152,7 +154,7 @@
     [self getBucketInfo];
 
     [self cacheImagePickerController];
-    self.itemForDeletion = [[NSMutableDictionary alloc] init];
+    self.itemForAction = [[NSMutableDictionary alloc] init];
     
     maxComposeTextViewSize = self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - ([UIApplication sharedApplication].statusBarFrame.size.height-20.0) - (self.composeView.frame.size.height - self.composeTextView.frame.size.height);
 }
@@ -290,10 +292,11 @@
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-            [self setItemForDeletion:[[self currentArray] objectAtIndex:indexPath.row]];
+            [self setItemForAction:[[self currentArray] objectAtIndex:indexPath.row]];
             [self alertForDeletion];
         }
     }
@@ -302,7 +305,8 @@
 
 # pragma  mark actions
 
-- (IBAction)detailsAction:(id)sender {
+- (IBAction)detailsAction:(id)sender
+{
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
     HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];
     [dvc setBucket:[self.bucket mutableCopy]];
@@ -1021,7 +1025,7 @@
     NSString *buttonTitle = @"Okay";
     NSString *cancelTitle = nil;
     
-    if (self.itemForDeletion && [self.itemForDeletion belongsToCurrentUser]) {
+    if (self.itemForAction && [self.itemForAction belongsToCurrentUser]) {
         title = @"Are you sure?";
         message = @"Do you want to delete this thought?";
         buttonTitle = @"Delete";
@@ -1037,11 +1041,11 @@
 }
 
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        if(self.itemForDeletion) {
-            [self deleteItemFromServerAndTable:self.itemForDeletion];
+        if(self.itemForAction) {
+            [self deleteItemFromServerAndTable:self.itemForAction];
         }
     }
 }
@@ -1057,27 +1061,98 @@
     [self.tableView addGestureRecognizer:lpgr];
 }
 
--(void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+-(void) handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
-    if ([[gestureRecognizer view] isKindOfClass:[UITableView class]]) {
-        NSLog(@"handle long press");
-        CGPoint p = [gestureRecognizer locationInView:self.tableView];
-        
-        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-        if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-            if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[self currentArray] objectAtIndex:indexPath.row]) {
-                [self setItemForDeletion:[[self currentArray] objectAtIndex:indexPath.row]];
-                [self alertForDeletion];
-            }
-        }
+    CGPoint p = [gestureRecognizer locationInView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
+    if ([[gestureRecognizer view] isKindOfClass:[UITableView class]] && gestureRecognizer.state == UIGestureRecognizerStateBegan && [[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[self currentArray] objectAtIndex:indexPath.row]) {
+        UIActionSheet* aS = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Add to Collection", @"Set Nudge", @"Copy", nil];
+        [aS showInView:self.view];
+        [self setItemForAction:[[self currentArray] objectAtIndex:indexPath.row]];
     }
 }
 
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        //DELETE
+        [self alertForDeletion];
+    } else if (buttonIndex == 1) {
+        //ADD TO COLLECTION
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCBucketsTableViewController* itvc = (HCBucketsTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketsTableViewController"];
+        [itvc setMode:@"assign"];
+        [itvc setDelegate:self];
+        [self.navigationController pushViewController:itvc animated:YES];
+    } else if (buttonIndex == 2) {
+        //SET NUDGE
+        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+        HCReminderViewController* itvc = (HCReminderViewController*)[storyboard instantiateViewControllerWithIdentifier:@"reminderViewController"];
+        [itvc setItem:[self.itemForAction mutableCopy]];
+        [itvc setDelegate:self];
+        [self presentViewController:itvc animated:YES completion:nil];
+    } else if (buttonIndex == 3) {
+        //COPY
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        pasteboard.string = [self.itemForAction message];
+        if ([self.itemForAction croppedMediaURLs] && [[self.itemForAction croppedMediaURLs] count] > 0) {
+            NSMutableArray* images = [[NSMutableArray alloc] init];
+            for (NSString* url in [self.itemForAction croppedMediaURLs]) {
+                if ([SGImageCache haveImageForURL:url]) {
+                    [images addObject:[SGImageCache imageForURL:url]];
+                }
+            }
+            [pasteboard setImages:(NSArray*)images];
+        }
+        [self showHUDWithMessage:@"Copying"];
+        [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5f];
+    }
+}
+
+- (void) addToStack:(NSDictionary*)b
+{
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Collection", [b objectForKey:@"first_name"]]];
+    
+    [[LXServer shared] addItem:self.itemForAction toBucket:b
+                       success:^(id responseObject) {
+                           NSMutableDictionary* itemActionCopy = [self.itemForAction mutableCopy];
+                           [itemActionCopy setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
+                           [itemActionCopy setObject:@"assigned" forKey:@"status"];
+                           [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:self.itemForAction] withObject:itemActionCopy];
+                           [self hideHUD];
+                           [self reloadScreen];
+                       }failure:^(NSError *error){
+                           [self hideHUD];
+                           [self reloadScreen];
+                       }];
+}
+
+- (void) saveReminder:(NSString*)reminder withType:(NSString*)type
+{
+    NSMutableDictionary* itemActionCopy = [self.itemForAction mutableCopy];
+    [itemActionCopy setObject:reminder forKey:@"reminder_date"];
+    [itemActionCopy setObject:type forKey:@"item_type"];
+    [itemActionCopy setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_request_timestamp"];
+    
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Setting Nudge"]];
+    
+    [[LXServer shared] saveReminderForItem:itemActionCopy
+                                   success:^(id responseObject) {
+                                       [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:self.itemForAction] withObject:itemActionCopy];
+                                       [self hideHUD];
+                                       [self reloadScreen];
+                                   }failure:^(NSError *error){
+                                       NSLog(@"unsuccessfully updated reminder date");
+                                       [self hideHUD];
+                                       [self reloadScreen];
+                                   }];
+}
 
 
 # pragma mark - Congratulations Notifications
 
-- (void) buildCongrats {
+- (void) buildCongrats
+{
     self.congratsView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.navigationController.navigationBar.frame.size.height+[UIApplication sharedApplication].statusBarFrame.size.height)];
     
     UILabel *congratsLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, [UIApplication sharedApplication].statusBarFrame.size.height, self.congratsView.frame.size.width, self.navigationController.navigationBar.frame.size.height)];
@@ -1098,20 +1173,22 @@
     [appDelegate.window addSubview:self.congratsView];
 }
 
-- (void) displayCongrats {
+- (void) displayCongrats
+{
     UILabel *lbl = (UILabel *)[self.congratsView viewWithTag:1];
     
     
     [lbl setText:[NSString randomCongratulations]];
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.35 animations:^{
         [self.congratsView setAlpha:1.0];
     }];
     
-    [self performSelector:@selector(hideCongrats) withObject:nil afterDelay:2.0];
+    [self performSelector:@selector(hideCongrats) withObject:nil afterDelay:1.0];
 }
 
-- (void) hideCongrats {
-    [UIView animateWithDuration:0.5 animations:^{
+- (void) hideCongrats
+{
+    [UIView animateWithDuration:0.35 animations:^{
         [self.congratsView setAlpha:0.0];
     }];
 }

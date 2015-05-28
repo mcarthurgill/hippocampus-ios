@@ -428,6 +428,7 @@
             [self.navigationController pushViewController:btvc animated:YES];
         } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"Contacts"]) {
             [self createBucketFromContact:[[[self currentDictionary] objectForKey:@"Contacts"] objectAtIndex:indexPath.row]];
+            [self updateAllBucketsInBackground];
         } else {
             [self.delegate addToStack:[self bucketAtIndexPath:indexPath]];
             [self updateAllBucketsInBackground];
@@ -582,13 +583,24 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        NSDictionary *bucket = [self bucketAtIndexPath:indexPath];
-        if ([bucket belongsToCurrentUser]) {
-            [self setBucketToDelete:bucket];
-            [self alertForDeletion];
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
+            NSDictionary *item = [[self searchArray] objectAtIndex:indexPath.row];
+            if ([item belongsToCurrentUser]) {
+                [self setBucketToDelete:item];
+                [self alertForItemDeletion];
+            } else {
+                UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You can't delete this thought since you didn't create it." delegate:self cancelButtonTitle:@"Okay." otherButtonTitles:nil];
+                [av show];
+            }
         } else {
-            UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You can't delete this collection since you didn't create it." delegate:self cancelButtonTitle:@"Okay." otherButtonTitles:nil];
-            [av show];
+            NSDictionary *bucket = [self bucketAtIndexPath:indexPath];
+            if ([bucket belongsToCurrentUser]) {
+                [self setBucketToDelete:bucket];
+                [self alertForDeletion];
+            } else {
+                UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You can't delete this collection since you didn't create it." delegate:self cancelButtonTitle:@"Okay." otherButtonTitles:nil];
+                [av show];
+            }
         }
     }
 }
@@ -601,6 +613,14 @@
     [alert show];
 }
 
+- (void) alertForItemDeletion
+{
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete this thought?" message:@"You can't undo this action." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+    [alert addButtonWithTitle:@"Delete Thought"];
+    [alert setTag:(NSInteger)99999999999998];
+    [alert show];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1 && alertView.tag == (NSInteger)99999999999999) {
@@ -608,6 +628,19 @@
             [self showHUDWithMessage:@"Deleting Collection..."];
             [[LXServer shared] deleteBucketWithBucketID:[self.bucketToDelete ID] success:^(id responseObject){
                 [self refreshChange];
+            }failure:^(NSError *error){
+                [self hideHUD];
+            }];
+        }
+    } else if (buttonIndex == 1 && alertView.tag == (NSInteger)99999999999998) {
+        if (self.bucketToDelete && ![self assignMode] && [self.bucketToDelete belongsToCurrentUser]) {
+            [self showHUDWithMessage:@"Deleting Thought..."];
+            [self.bucketToDelete deleteItemWithSuccess:^(id responseObject){
+                if ([self searchActivated]) {
+                    [self performSelector:@selector(searchWithCurrentText) withObject:nil afterDelay:2];
+                    [self performSelector:@selector(hideHUD) withObject:nil afterDelay:3.98];
+                    [self performSelector:@selector(searchWithCurrentText) withObject:nil afterDelay:4];
+                }
             }failure:^(NSError *error){
                 [self hideHUD];
             }];

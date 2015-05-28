@@ -529,8 +529,14 @@
                                        [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:nil failure:nil];
                                    }
                                }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
                            }
                            failure:^(NSError* error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
                            }
      ];
 }
