@@ -35,5 +35,7 @@
 - (NSString*) dayOfWeek;
 - (NSInteger) dayOfWeekIndex;
 
+- (int) daysInSelectedMonth;
+
 
 @end

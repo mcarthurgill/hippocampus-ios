@@ -180,7 +180,7 @@
             if (component == 0) {
                 return 12;
             } else if (component == 1) {
-                return 31;
+                return [self.currentlySelectedDate daysInSelectedMonth];
             } else if (component == 2) {
                 return 800;
             }
@@ -190,13 +190,13 @@
             } else if (component == 1) {
                 return 12;
             } else if (component == 2) {
-                return 31;
+                return [self.currentlySelectedDate daysInSelectedMonth];
             }
         } else if ([self monthlyMode]) {
             if (component == 0) {
                 return 1;
             } else if (component == 1) {
-                return 31;
+                return [self.currentlySelectedDate daysInSelectedMonth];
             } else if (component == 2) {
                 return 1;
             }
@@ -337,6 +337,9 @@
         return [[NSDate date] dateByAddingTimeInterval:(60*60*24*(toIndex-todayIndex))];
     } else if ([self dailyMode]) {
         
+    }
+    if ([NSArray daysInMonthAtIndex:(month-1) forYear:year] < day) {
+        day = [NSArray daysInMonthAtIndex:(month-1) forYear:year];
     }
     NSString* format = [NSString stringWithFormat:@"%i-%@%i-%@%i", year, (month < 10 ? @"0" : @""), month, (day < 10 ? @"0" : @""), day];
     return [NSDate timeWithString:format];

@@ -146,5 +146,10 @@
     return [weekdayComponents weekday]-1;
 }
 
+- (int) daysInSelectedMonth
+{
+    return [NSArray daysInMonthAtIndex:(int)[self monthIndex] forYear:(int)[self yearInteger]];
+}
+
 
 @end

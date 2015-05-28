@@ -138,7 +138,7 @@
 
 - (void) saveCollapsedSections
 {
-    if (![self assignMode]) {
+    if (![self assignMode] && ![self searchActivated]) {
         [[NSUserDefaults standardUserDefaults] setObject:self.collapsedSections forKey:@"collapsed-sections"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
@@ -1002,7 +1002,7 @@
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan && cell.isHighlighted) {
         NSDictionary *bucket = [self bucketAtIndexPath:indexPath];
-        if (bucket && ![bucket isAllNotesBucket] && ![self assignMode]) {
+        if (bucket && ![bucket isAllNotesBucket] && ![self assignMode] && ![[self.sections objectAtIndex:indexPath.section] isEqualToString:@"searchResults"]) {
             //UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             //HCBucketDetailsViewController* dvc = (HCBucketDetailsViewController*)[storyboard instantiateViewControllerWithIdentifier:@"detailsViewController"];
             //[dvc setBucket:[[[[self currentDictionary] objectForKey:[self.sections objectAtIndex:indexPath.section]] objectAtIndex:indexPath.row] mutableCopy]];

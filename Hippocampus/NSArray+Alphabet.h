@@ -20,6 +20,10 @@
 
 + (NSArray*) months;
 
++ (int) daysInMonth:(NSString*)month;
++ (int) daysInMonthAtIndex:(int)index;
++ (int) daysInMonthAtIndex:(int)index forYear:(int)year;
+
 + (NSArray*) daysOfWeek;
 
 + (NSArray*) daysOfWeekShort;

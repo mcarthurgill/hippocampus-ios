@@ -253,15 +253,22 @@
 - (void) getItemsWithCenterX:(CGFloat)centerx andCenterY:(CGFloat)centery andDX:(CGFloat)dx andDY:(CGFloat)dy
 {
     requestMade = YES;
-    [[LXServer shared] getItemsNearCenterX:centerx andCenterY:centery andDX:dx andDY:dy success:^(id responseObject) {
-        self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
-        requestMade = NO;
-        [self addAnnotationsToMapView];
-        [self.tableView reloadData];
-    } failure:^(NSError *error) {
-        requestMade = NO;
-        [self.tableView reloadData];
-    }];
+    ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"FVGQB7HR19" apiKey:@"ddecc3b35feb56ab0a9d2570ac964a82"];
+    ASRemoteIndex *index = [apiClient getIndex:@"Item"];
+    ASQuery* query = [[ASQuery alloc] init];
+    [query searchInsideBoundingBoxWithLatitudeP1:centery-dy longitudeP1:centerx-dx latitudeP2:centery+dy longitudeP2:centerx+dx];
+    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] userID]];
+    [index search:query
+          success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
+              self.allItems = [answer objectForKey:@"hits"];
+              requestMade = NO;
+              [self addAnnotationsToMapView];
+              [self.tableView reloadData];
+          } failure:^(ASRemoteIndex*index, ASQuery *query, NSString* errorMessage) {
+              requestMade = NO;
+              [self.tableView reloadData];
+          }
+     ];
 }
 
 - (void) getItemsNearCurrentLocation
@@ -276,9 +283,8 @@
         [vc setDelegate:self];
         [vc setButtonText:@"Grant Location Permission"];
         [self.navigationController presentViewController:vc animated:NO completion:nil];
-    } else {
-        [self requestItemsNearMeFromServer];
     }
+    [self requestItemsNearMeFromServer];
 }
 
 - (void) permissionsDelegate
@@ -289,16 +295,28 @@
 - (void) requestItemsNearMeFromServer
 {
     requestMade = YES;
-    [[LXServer shared] getItemsNearCurrentLocation:^(id responseObject) {
-        firstRequest = NO;
-        self.allItems = [self itemsSortedByDistance:[[responseObject objectForKey:@"items"] mutableCopy]];
-        requestMade = NO;
-        [self setupMapView];
-        [self.tableView reloadData];
-    } failure:^(NSError *error) {
-        requestMade = NO;
-        [self.tableView reloadData];
-    }];
+    ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"FVGQB7HR19" apiKey:@"ddecc3b35feb56ab0a9d2570ac964a82"];
+    ASRemoteIndex *index = [apiClient getIndex:@"Item"];
+    ASQuery* query = [[ASQuery alloc] init];
+    if (![[LXSession thisSession] locationPermissionDetermined]) {
+        [query searchAroundLatitudeLongitudeViaIP:10000];
+    } else {
+        CLLocation *loc = [LXSession currentLocation];
+        [query searchAroundLatitude:loc.coordinate.latitude longitude:loc.coordinate.longitude maxDist:10000];
+    }
+    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] userID]];
+    [index search:query
+          success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
+              firstRequest = NO;
+              self.allItems = [answer objectForKey:@"hits"];
+              requestMade = NO;
+              [self setupMapView];
+              [self.tableView reloadData];
+          } failure:^(ASRemoteIndex*index, ASQuery *query, NSString* errorMessage) {
+              requestMade = NO;
+              [self.tableView reloadData];
+          }
+     ];
 }
 
 - (NSMutableArray*) itemsSortedByDistance:(NSMutableArray*)items
