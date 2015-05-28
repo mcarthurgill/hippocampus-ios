@@ -23,4 +23,7 @@
 - (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font;
 - (NSString*) dateToDisplayForItem:(NSDictionary*)item;
 
++ (CGFloat) heightForCellWithItem:(NSDictionary*)item;
++ (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font;
+
 @end

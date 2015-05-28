@@ -119,37 +119,11 @@
     return cell;
 }
 
-
-- (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
-{
-    if (!text || [text length] == 0) {
-        return 0.0f;
-    }
-    NSDictionary *attributes = @{NSFontAttributeName: font};
-    // NSString class method: boundingRectWithSize:options:attributes:context is
-    // available only on ios7.0 sdk.
-    CGRect rect = [text boundingRectWithSize:CGSizeMake(width, 100000)
-                                     options:NSStringDrawingUsesLineFragmentOrigin
-                                  attributes:attributes
-                                     context:nil];
-    return rect.size.height;
-}
-
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         NSDictionary *i = self.item;
-        int additional = 0;
-        if ([i hasMediaURLs]) {
-            int numImages = 0;
-            for (NSString *url in [i mediaURLs]) {
-                if ([url isImageUrl]) {
-                    numImages++;
-                }
-            }
-            additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*numImages;
-        }
-        return [self heightForText:[i truncatedMessage] width:(self.view.frame.size.width-40.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
+        return [HCItemTableViewCell heightForCellWithItem:i];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"explanation"]) {
         return 120.0f;
     }

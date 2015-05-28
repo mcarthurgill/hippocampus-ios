@@ -21,8 +21,6 @@
 @import AssetsLibrary;
 
 #define IMAGE_FADE_IN_TIME 0.3f
-#define PICTURE_HEIGHT_IN_CELL 280
-#define PICTURE_MARGIN_TOP_IN_CELL 8
 
 @interface HCBucketViewController ()
 
@@ -253,34 +251,11 @@
     return cell;
 }
 
-- (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
-{
-    if (!text || [text length] == 0) {
-        return 0.0f;
-    }
-    NSDictionary *attributes = @{NSFontAttributeName: font};
-    CGRect rect = [text boundingRectWithSize:CGSizeMake(width, 100000)
-                                     options:NSStringDrawingUsesLineFragmentOrigin
-                                  attributes:attributes
-                                     context:nil];
-    return rect.size.height;
-}
-
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
         NSDictionary* item = [[self currentArray] objectAtIndex:indexPath.row];
-        int additional = 0;
-        if ([item hasMediaURLs]) {
-            int numImages = 0;
-            for (NSString *url in [item mediaURLs]) {
-                if ([url isImageUrl]) {
-                    numImages++;
-                }
-            }
-            additional = (PICTURE_MARGIN_TOP_IN_CELL+PICTURE_HEIGHT_IN_CELL)*numImages;
-        }
-        return [self heightForText:[item truncatedMessage] width:(self.view.frame.size.width-40.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
+        return [HCItemTableViewCell heightForCellWithItem:item];
     }
     return 44.0;
 }

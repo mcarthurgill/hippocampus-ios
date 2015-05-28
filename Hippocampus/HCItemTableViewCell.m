@@ -247,7 +247,7 @@
     [p seekToTime:kCMTimeZero];
 }
 
-- (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
++ (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
 {
     if (!text || [text length] == 0) {
         return 0.0f;
@@ -260,11 +260,34 @@
     return rect.size.height;
 }
 
-- (NSString*) dateToDisplayForItem:(NSDictionary*)i {
+- (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
+{
+    return [HCItemTableViewCell heightForText:text width:width font:font];
+}
+
+- (NSString*) dateToDisplayForItem:(NSDictionary*)i
+{
     if (i && [i hasNextReminderDate]) {
         return [NSString stringWithFormat:@"%@ - %@", [i itemType], [NSDate formattedDateFromString:[i nextReminderDate]]];
     } else {
         return [NSDate timeAgoInWordsFromDatetime:[i createdAt]];
     }
 }
+
+
++ (CGFloat) heightForCellWithItem:(NSDictionary *)item
+{
+    int additional = 0;
+    if ([item hasMediaURLs]) {
+        int numImages = 0;
+        for (NSString *url in [item mediaURLs]) {
+            if ([url isImageUrl]) {
+                numImages++;
+            }
+        }
+        additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*numImages;
+    }
+    return [self heightForText:[item truncatedMessage] width:((int)[[UIScreen mainScreen] bounds].size.width-40.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
+}
+
 @end
