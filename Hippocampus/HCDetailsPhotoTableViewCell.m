@@ -32,14 +32,14 @@
     if (![SGImageCache haveImageForURL:mediaUrl] || ![imageView.image isEqual:[SGImageCache imageForURL:mediaUrl]]) {
         imageView.image = nil;
         [imageView setAlpha:0.0f];
-        [SGImageCache getImageForURL:mediaUrl thenDo:^(UIImage* image) {
+        [SGImageCache getImageForURL:mediaUrl].then(^(UIImage* image) {
             if (image) {
                 imageView.image = image;
                 [UIView animateWithDuration:0.4f animations:^(void){
                     [imageView setAlpha:1.0f];
                 }];
             }
-        }];
+        });
     }
 }
 

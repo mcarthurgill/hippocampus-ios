@@ -1,0 +1,1 @@
+../../../SGImageCache/SGCachePrivate.h

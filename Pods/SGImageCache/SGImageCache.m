@@ -2,24 +2,13 @@
 //  Created by matt on 18/03/13.
 //
 
+#import <MGEvents/MGEvents.h>
 #import "SGImageCache.h"
 #import "SGImageCacheTask.h"
-#import <MGEvents/MGEvents.h>
+#import "SGCachePrivate.h"
 
-#define FOLDER_NAME @"generic_images_cache"
+#define FOLDER_NAME @"SGImageCache"
 #define MAX_RETRIES 5
-
-SGImageCacheLogging gSGImageCacheLogging = SGImageCacheLogNothing;
-
-void backgroundDo(void(^block)()) {
-    if (NSThread.isMainThread) { // we're on the main thread. ew
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            block();
-        });
-    } else { // we're already off the main thread. chillax
-        block();
-    }
-}
 
 @implementation SGImageCache
 
@@ -44,34 +33,47 @@ void backgroundDo(void(^block)()) {
 #pragma mark - Public API
 
 + (BOOL)haveImageForURL:(NSString *)url {
-    if (![url isKindOfClass:NSString.class]) {
-        return NO;
-    }
-    return [NSFileManager.defaultManager fileExistsAtPath:[self.cache pathForURL:url]];
+    return [self haveFileForURL:url];
+}
+
++ (BOOL)haveImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers {
+    return [self haveFileForURL:url requestHeaders:headers];
+}
+
++ (BOOL)haveImageForCacheKey:(NSString *)cacheKey {
+    return [self haveFileForCacheKey:cacheKey];
 }
 
 + (UIImage *)imageForURL:(NSString *)url {
-    UIImage *image = [self.globalMemCache objectForKey:url];
+    return [self imageForURL:url requestHeaders:nil];
+}
+
++ (UIImage *)imageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers {
+    id cacheKey = [self.cache cacheKeyFor:url requestHeaders:headers];
+    return [self imageForCacheKey:cacheKey];
+}
+
++ (UIImage *)imageForCacheKey:(NSString *)cacheKey {
+    UIImage *image = [self.globalMemCache objectForKey:cacheKey];
     if (image) {
         return image;
     }
 
-    NSData *imageData = [NSData dataWithContentsOfFile:[self.cache pathForURL:url]];
-    image = [UIImage imageWithData:imageData];
+    NSData *data = [NSData dataWithContentsOfFile:[self.cache pathForCacheKey:cacheKey]];
+    image = [UIImage imageWithData:data];
     if (!image) {
         return nil;
     }
 
     // quickly guess rough byte size of the image
-    int height = image.size.height,
-    width = image.size.width;
+    int height = image.size.height, width = image.size.width;
     int bytesPerRow = 4 * width;
     if (bytesPerRow % 16) {
         bytesPerRow = ((bytesPerRow / 16) + 1) * 16;
     }
 
     NSUInteger imageCost = height * bytesPerRow;
-    [self.globalMemCache setObject:image forKey:url cost:imageCost];
+    [self.globalMemCache setObject:image forKey:cacheKey cost:imageCost];
 
     return image;
 }
@@ -101,14 +103,73 @@ void backgroundDo(void(^block)()) {
     return image;
 }
 
-+ (void)getImageForURL:(NSString *)url thenDo:(SGCacheFetchCompletion)completion {
++ (PMKPromise *)getImageForURL:(NSString *)url {
+    return [self getImageForURL:url requestHeaders:nil];
+}
+
++ (PMKPromise *)getImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers {
+    id cacheKey = [self.cache cacheKeyFor:url requestHeaders:headers];
+    return [self getImageForURL:url requestHeaders:headers cacheKey:cacheKey];
+}
+
++ (PMKPromise *)getImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers
+      cacheKey:(NSString *)cacheKey {
+    return [PMKPromise new:^(PMKPromiseFulfiller fulfill, PMKPromiseRejecter reject) {
+        [self getImageForURL:url requestHeaders:headers cacheKey:cacheKey remoteFetchOnly:NO
+                      thenDo:^(UIImage *image) {
+            fulfill(image);
+        }];
+    }];
+}
+
++ (PMKPromise *)getRemoteImageForURL:(NSString *)url {
+    return [self getRemoteImageForURL:url requestHeaders:nil];
+}
+
++ (PMKPromise *)getRemoteImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers {
+    id cacheKey = [self.cache cacheKeyFor:url requestHeaders:headers];
+    return [self getRemoteImageForURL:url requestHeaders:headers cacheKey:cacheKey];
+}
+
++ (PMKPromise *)getRemoteImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers
+                            cacheKey:(NSString *)cacheKey {
+    return [PMKPromise new:^(PMKPromiseFulfiller fulfill, PMKPromiseRejecter reject) {
+        [self getImageForURL:url requestHeaders:headers cacheKey:cacheKey remoteFetchOnly:YES
+                      thenDo:^(UIImage *image) {
+                          fulfill(image);
+        }];
+    }];
+}
+
++ (PMKPromise *)slowGetImageForURL:(NSString *)url {
+    return [self slowGetImageForURL:url requestHeaders:nil];
+}
+
++ (PMKPromise *)slowGetImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers {
+    id cacheKey = [self.cache cacheKeyFor:url requestHeaders:headers];
+    return [self slowGetImageForURL:url requestHeaders:headers cacheKey:cacheKey];
+}
+
++ (PMKPromise *)slowGetImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers
+      cacheKey:(NSString *)cacheKey {
+    return [PMKPromise new:^(PMKPromiseFulfiller fulfill, PMKPromiseRejecter reject) {
+        [self slowGetImageForURL:url requestHeaders:headers cacheKey:cacheKey
+              thenDo:^(UIImage *image) {
+                  fulfill(image);
+              }];
+    }];
+}
+
++ (void)getImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers
+      cacheKey:(NSString *)cacheKey  remoteFetchOnly:(BOOL)remoteOnly
+                thenDo:(SGCacheFetchCompletion)completion {
     if (![url isKindOfClass:NSString.class] || !url.length) {
         return;
     }
 
     backgroundDo(^{
-        SGImageCacheTask *slowTask = [self existingSlowQueueTaskFor:url];
-        SGImageCacheTask *fastTask = [self existingFastQueueTaskFor:url];
+        SGImageCacheTask *slowTask = (id)[self existingSlowQueueTaskFor:cacheKey];
+        SGImageCacheTask *fastTask = (id)[self existingFastQueueTaskFor:cacheKey];
 
         if (slowTask.isExecuting) { // reuse an executing slow task
             [slowTask addCompletion:completion];
@@ -120,7 +181,9 @@ void backgroundDo(void(^block)()) {
             [fastTask addCompletions:slowTask.completions];
             [slowTask cancel];
         } else { // add a fresh task to fast queue
-            SGImageCacheTask *task = [self taskForURL:url attempt:1];
+            SGImageCacheTask *task = (id)[self taskForURL:url requestHeaders:headers
+                  cacheKey:cacheKey attempt:1];
+            task.remoteFetchOnly = remoteOnly;
             [task addCompletion:completion];
             task.forceDecompress = YES;
             [self.cache.fastQueue addOperation:task];
@@ -128,14 +191,15 @@ void backgroundDo(void(^block)()) {
     });
 }
 
-+ (void)slowGetImageForURL:(NSString *)url thenDo:(SGCacheFetchCompletion)completion {
++ (void)slowGetImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers
+      cacheKey:(NSString *)cacheKey thenDo:(SGCacheFetchCompletion)completion {
     if (![url isKindOfClass:NSString.class] || !url.length) {
         return;
     }
 
     backgroundDo(^{
-        SGImageCacheTask *slowTask = [self existingSlowQueueTaskFor:url];
-        SGImageCacheTask *fastTask = [self existingFastQueueTaskFor:url];
+        SGImageCacheTask *slowTask = (id)[self existingSlowQueueTaskFor:cacheKey];
+        SGImageCacheTask *fastTask = (id)[self existingFastQueueTaskFor:cacheKey];
 
         if (fastTask && !slowTask.isExecuting) { // reuse existing fast task
             [fastTask addCompletion:completion];
@@ -146,77 +210,24 @@ void backgroundDo(void(^block)()) {
             [slowTask addCompletions:fastTask.completions];
             [fastTask cancel];
         } else { // add a fresh task to slow queue
-            SGImageCacheTask *task = [self taskForURL:url attempt:1];
+            SGImageCacheTask *task = (id)[self taskForURL:url requestHeaders:headers
+                  cacheKey:cacheKey attempt:1];
             [task addCompletion:completion];
             [self.cache.slowQueue addOperation:task];
         }
     });
 }
 
-+ (void)moveTaskToSlowQueueForURL:(NSString *)url {
-    if (![url isKindOfClass:NSString.class] || !url.length) {
-        return;
-    }
-
-    backgroundDo(^{
-        SGImageCacheTask *fastTask = [self existingFastQueueTaskFor:url];
-
-        if (fastTask) {
-            SGImageCacheTask *slowTask = [self existingSlowQueueTaskFor:url];
-            
-            if (slowTask) { // reuse an executing slow task
-                [slowTask addCompletions:fastTask.completions];
-            } else { // add a fresh task to slow queue
-                SGImageCacheTask *task = [self taskForURL:url attempt:1];
-                [task addCompletions:fastTask.completions];
-                [self.cache.slowQueue addOperation:task];
-            }
-            [fastTask cancel];
-        }
-    });
-}
-
 + (void)flushImagesOlderThan:(NSTimeInterval)age {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-
-        // let the queues finish, then suspend them
-        [self.cache.slowQueue waitUntilAllOperationsAreFinished];
-        self.cache.slowQueue.suspended = YES;
-        [self.cache.fastQueue waitUntilAllOperationsAreFinished];
-        self.cache.fastQueue.suspended = YES;
-
-        NSArray *files = [NSFileManager.defaultManager contentsOfDirectoryAtPath:self.cache
-              .cachePath error:nil];
-
-        for (NSString *file in files) {
-            if ([file isEqualToString:@"."] || [file isEqualToString:@".."]) {
-                continue;
-            }
-
-            NSString *path = [self.cache.cachePath stringByAppendingPathComponent:file];
-            NSDate *created = [NSFileManager.defaultManager attributesOfItemAtPath:path
-                  error:nil].fileCreationDate;
-
-            // too old. delete it
-            if (-created.timeIntervalSinceNow > age) {
-                [NSFileManager.defaultManager removeItemAtPath:path error:nil];
-            }
-        }
-
-        // let the queues run wild again
-        self.cache.fastQueue.suspended = NO;
-        self.cache.slowQueue.suspended = NO;
-    });
-}
-
-+ (void)addImageData:(NSData *)data forURL:(NSString *)url {
-    [data writeToFile:[self.cache pathForURL:url] atomically:YES];
+    [self flushFilesOlderThan:age];
 }
 
 #pragma mark - Task Factory
 
-+ (SGImageCacheTask *)taskForURL:(NSString *)url attempt:(int)attempt {
-    SGImageCacheTask *task = [SGImageCacheTask taskForURL:url attempt:attempt];
++ (SGCacheTask *)taskForURL:(NSString *)url requestHeaders:(NSDictionary *)headers
+      cacheKey:(NSString *)cacheKey attempt:(int)attempt {
+    SGImageCacheTask *task = [SGImageCacheTask taskForURL:url requestHeaders:headers cacheKey:cacheKey
+          attempt:attempt];
     __weak SGImageCacheTask *wTask = task;
     task.completionBlock = ^{
         if (!wTask.succeeded) {
@@ -226,59 +237,8 @@ void backgroundDo(void(^block)()) {
     return task;
 }
 
-#pragma mark - Task Finders
-
-+ (SGImageCacheTask *)existingSlowQueueTaskFor:(NSString *)url {
-    for (SGImageCacheTask *task in self.cache.slowQueue.operations) {
-        if ([task.url isEqualToString:url]) {
-            return task;
-        }
-    }
-    return nil;
-}
-
-+ (SGImageCacheTask *)existingFastQueueTaskFor:(NSString *)url {
-    for (SGImageCacheTask *task in self.cache.fastQueue.operations) {
-        if ([task.url isEqualToString:url]) {
-            return task;
-        }
-    }
-    return nil;
-}
-
-#pragma mark - Fail Handle
-
-+ (void)taskFailed:(SGImageCacheTask *)task {
-
-    // too many retries?
-    if (task.attempt >= MAX_RETRIES) {
-        for (SGCacheFetchCompletion completion in task.completions) {
-            completion(nil);
-        }
-        return;
-    }
-
-    // make and add a retry task
-    SGImageCacheTask *retryTask = [self taskForURL:task.url attempt:task.attempt + 1];
-    [retryTask addCompletions:task.completions];
-    [self.cache.fastQueue addOperation:retryTask];
-}
-
-#pragma mark - File and Memory Cache Setup
-
-- (NSString *)makeCachePath {
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask,
-          YES)[0];
-    path = [path stringByAppendingFormat:@"/%@", self.folderName];
-
-    // make the cache directory if necessary
-    BOOL isDir;
-    if (![NSFileManager.defaultManager fileExistsAtPath:path isDirectory:&isDir]) {
-        [NSFileManager.defaultManager createDirectoryAtPath:path withIntermediateDirectories:NO
-              attributes:nil error:nil];
-    }
-
-    return path;
++ (void)setMemoryCacheSize:(NSUInteger)megaBytes {
+    self.globalMemCache.totalCostLimit = megaBytes * 1000000;
 }
 
 + (NSCache *)globalMemCache {
@@ -299,60 +259,10 @@ void backgroundDo(void(^block)()) {
                  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                      globalCache.totalCostLimit = costLimit;
                  });
-                 [SGImageCache trigger:SGImageCacheFlushed];
+                 [SGImageCache trigger:SGCacheFlushed];
              }];
     });
     return globalCache;
-}
-
-+ (void)setMemoryCacheSize:(NSUInteger)megaBytes {
-    self.globalMemCache.totalCostLimit = megaBytes * 1000000;
-}
-
-#pragma mark - Getters
-
-- (NSString *)pathForURL:(NSString *)url {
-    return [NSString stringWithFormat:@"%@/%@", self.cachePath, @(url.hash)];
-}
-
-- (NSString *)relativePathForURL:(NSString *)url {
-    return [NSString stringWithFormat:@"../Library/Caches/%@/%@", self.folderName,
-                                      @(url.hash)];
-}
-
-- (NSOperationQueue *)fastQueue {
-    if (_fastQueue) {
-        return _fastQueue;
-    }
-
-    _fastQueue = NSOperationQueue.new;
-
-    // suspend slowQueue while fastQueue is active
-    __weakSelf me = self;
-    __weak NSOperationQueue *wQueue = _fastQueue;
-    [_fastQueue onChangeOf:@"operationCount" do:^{
-        me.slowQueue.suspended = !!wQueue.operationCount;
-    }];
-
-    return _fastQueue;
-}
-
-- (NSOperationQueue *)slowQueue {
-    if (!_slowQueue) {
-        _slowQueue = NSOperationQueue.new;
-        _slowQueue.maxConcurrentOperationCount = 1;
-    }
-    return _slowQueue;
-}
-
-#pragma mark - Logging
-
-+ (void)setLogging:(SGImageCacheLogging)logging {
-    gSGImageCacheLogging = logging;
-}
-
-+ (SGImageCacheLogging)logging {
-    return gSGImageCacheLogging;
 }
 
 @end

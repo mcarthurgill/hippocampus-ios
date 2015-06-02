@@ -32,4 +32,6 @@
     #import "NSNumber+Helpers.h"
     #import "LXSetup.h"
     #import "ASAPIClient.h"
+    #import "MGSwipeTableCell.h"
+    #import "MGSwipeButton.h"
 #endif

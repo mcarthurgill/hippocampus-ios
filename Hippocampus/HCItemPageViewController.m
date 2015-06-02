@@ -119,7 +119,9 @@
 {
     int index = (int)[self.items indexOfObject:original];
     if (index && index < self.items.count) {
-        [self.items replaceObjectAtIndex:index withObject:n];
+        if ([self.items respondsToSelector:@selector(replaceObjectAtIndex:withObject:)]) {
+            [self.items replaceObjectAtIndex:index withObject:n];
+        }
     }
     if ([[(HCContainerViewController*)[self parentViewController] delegate] respondsToSelector:@selector(updateItemsArrayWithOriginal:new:)]) {
         [[(HCContainerViewController*)[self parentViewController] delegate] updateItemsArrayWithOriginal:original new:n];

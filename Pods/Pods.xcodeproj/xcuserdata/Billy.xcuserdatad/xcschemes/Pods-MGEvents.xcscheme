@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9B40B66646795A73E602A8AA"
+               BlueprintIdentifier = "F8B62D26ADCBF5849DF96E61"
                BuildableName = "libPods-MGEvents.a"
                BlueprintName = "Pods-MGEvents"
                ReferencedContainer = "container:Pods.xcodeproj">

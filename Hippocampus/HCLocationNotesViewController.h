@@ -8,21 +8,26 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import "HCItemTableViewCell.h"
 
 #define PICTURE_HEIGHT 280
 #define PICTURE_MARGIN_TOP 8
 
-@interface HCLocationNotesViewController : UIViewController <MKMapViewDelegate>
+@interface HCLocationNotesViewController : UIViewController <MKMapViewDelegate, HCItemCellDelegate>
 {
     BOOL requestMade;
     BOOL firstRequest;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray *sections;
-@property (strong, nonatomic) NSMutableArray *allItems;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *mapViewHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewHeightConstraint;
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
+
+@property (strong, nonatomic) NSMutableArray *sections;
+@property (strong, nonatomic) NSMutableArray *allItems;
+
+@property (strong, nonatomic) NSMutableDictionary* includedItems;
+@property (strong, nonatomic) NSMutableDictionary* includedItemsByCoordinateTag;
 
 @end

@@ -86,6 +86,10 @@
 
 - (CLLocation*) location;
 
+- (NSString*) latitude;
+- (NSString*) longitude;
+- (NSString*) latLongKey;
+
 - (BOOL) hasID;
 
 - (BOOL) isAllNotesBucket;

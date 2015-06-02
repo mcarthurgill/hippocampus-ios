@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HCItemTableViewCell.h"
 
 #define PICTURE_HEIGHT 280
 #define PICTURE_MARGIN_TOP 8
 
-@interface HCRandomItemViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface HCRandomItemViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HCItemCellDelegate>
 {
     BOOL requestMade;
 }

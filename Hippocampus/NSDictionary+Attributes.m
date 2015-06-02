@@ -233,6 +233,28 @@
     return nil;
 }
 
+- (NSString*) latitude
+{
+    if ([self objectForKey:@"latitude"] && NULL_TO_NIL([self objectForKey:@"latitude"])) {
+        return [NSString stringWithFormat:@"%@", [self objectForKey:@"latitude"]];
+    }
+    return nil;
+}
+- (NSString*) longitude
+{
+    if ([self objectForKey:@"longitude"] && NULL_TO_NIL([self objectForKey:@"longitude"])) {
+        return [NSString stringWithFormat:@"%@", [self objectForKey:@"longitude"]];
+    }
+    return nil;
+}
+- (NSString*) latLongKey
+{
+    if ([self latitude] && [self longitude]) {
+        return [NSString stringWithFormat:@"%@,%@", [self latitude], [self longitude]];
+    }
+    return @"no-key";
+}
+
 - (BOOL) hasID
 {
     return [self objectForKey:@"id"] && NULL_TO_NIL([self objectForKey:@"id"]);

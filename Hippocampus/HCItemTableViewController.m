@@ -661,12 +661,12 @@
     if ([self.item croppedMediaURLs]) {
         for (NSString* url in [self.item croppedMediaURLs]) {
             if ([url isImageUrl]) {
-                [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                [SGImageCache getImageForURL:url].then(^(UIImage* image) {
                     if (![self.mediaDictionary objectForKey:url]) {
                         [self.mediaDictionary setObject:image forKey:url];
                         [self reloadScreen];
                     }
-                }];
+                });
             }
         }
     }
@@ -895,11 +895,11 @@
                     [self.mediaView setImage:[SGImageCache imageForURL:url]];
                 } else if (![self.mediaView.image isEqual:[SGImageCache imageForURL:url]]) {
                     self.mediaView.image = nil;
-                    [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                    [SGImageCache getImageForURL:url].then(^(UIImage* image) {
                         if (image) {
                             self.mediaView.image = image;
                         }
-                    }];
+                    });
                 }
             } else {
                 if ([NSData dataWithContentsOfFile:url] && ![self.mediaView.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
