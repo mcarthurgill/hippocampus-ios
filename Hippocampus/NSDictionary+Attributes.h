@@ -57,6 +57,8 @@
 
 - (NSString*) status;
 
+- (NSString*) audioURL;
+
 - (NSString*) inputMethod;
 
 - (NSString*) description;
@@ -74,6 +76,8 @@
 - (NSString*) itemUserName;
 
 - (NSArray*) bucketUserPairs;
+
+- (NSArray*) links;
 
 - (NSArray*) phones;
 - (NSArray*) emails;
@@ -110,9 +114,14 @@
 
 - (BOOL) hasNextReminderDate;
 
+- (BOOL) hasAudioURL;
+
 - (BOOL) hasItemType;
 
 - (BOOL) hasBuckets;
+
+- (BOOL) hasLinks;
+- (BOOL) messageIsOnlyLinks;
 
 - (BOOL) equalsObjectBasedOnTimestamp:(NSDictionary*)other;
 

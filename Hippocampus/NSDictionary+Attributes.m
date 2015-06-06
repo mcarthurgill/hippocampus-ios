@@ -105,9 +105,7 @@
 
 - (NSMutableArray*) buckets
 {
-    if ([self objectForKey:@"buckets"] && [[self objectForKey:@"buckets"] respondsToSelector:@selector(count)])
-        return [[NSMutableArray alloc] initWithArray:[self objectForKey:@"buckets"]];
-    return nil;
+    return [self objectForKey:@"buckets"] && [[self objectForKey:@"buckets"] respondsToSelector:@selector(count)] ? [[NSMutableArray alloc] initWithArray:[self objectForKey:@"buckets"]] : nil;
 }
 
 - (NSString*) bucketsString
@@ -145,12 +143,12 @@
 
 - (NSString*) message
 {
-    return [self objectForKey:@"message"];
+    return [self objectForKey:@"message"] && NULL_TO_NIL([self objectForKey:@"message"]) ? [self objectForKey:@"message"] : nil;
 }
 
 - (NSString*) truncatedMessage
 {
-    return ([self message] && NULL_TO_NIL([self message]) && [[self message] length] > 0) ? [[self message] truncated:320] : @"";
+    return ([self message] && [[self message] length] > 0) ? [[self message] truncated:320] : @"";
 }
 
 - (NSString*) itemType
@@ -176,6 +174,11 @@
 - (NSString*) status
 {
     return [self objectForKey:@"status"];
+}
+
+- (NSString*) audioURL
+{
+    return [self objectForKey:@"audio_url"] && NULL_TO_NIL([self objectForKey:@"audio_url"]) ? [self objectForKey:@"audio_url"] : nil;
 }
 
 - (NSString*) inputMethod
@@ -223,6 +226,11 @@
 - (NSArray*) bucketUserPairs
 {
     return [self objectForKey:@"bucket_user_pairs"];
+}
+
+- (NSArray*) links
+{
+    return [self objectForKey:@"links"] && [[self objectForKey:@"links"] respondsToSelector:@selector(count)] ? [self objectForKey:@"links"] : @[];
 }
 
 - (CLLocation*) location
@@ -292,7 +300,7 @@
 
 - (BOOL) hasMessage
 {
-    return [self message] && NULL_TO_NIL([self message]) && [[self message] length] > 0;
+    return [self message] && [[self message] length] > 0;
 }
 
 - (BOOL) hasReminder
@@ -305,6 +313,11 @@
     return [self nextReminderDate] && NULL_TO_NIL([self objectForKey:@"next_reminder_date"]);
 }
 
+- (BOOL) hasAudioURL
+{
+    return [self objectForKey:@"audio_url"] && [self audioURL];
+}
+
 - (BOOL) hasItemType
 {
     return [self itemType] && NULL_TO_NIL([self objectForKey:@"item_type"]);
@@ -313,6 +326,23 @@
 - (BOOL) hasBuckets
 {
     return [self buckets] && [[self buckets] count] > 0;
+}
+
+- (BOOL) hasLinks
+{
+    return [self links] && [[self links] count] > 0;
+}
+
+- (BOOL) messageIsOnlyLinks
+{
+    if (![self hasLinks] || ![self hasMessage])
+        return NO;
+    NSArray *wordsInMessages = [[[self message] componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"length > 0"]];
+    for (NSString* potentialLink in wordsInMessages) {
+        if (![[self links] containsObject:potentialLink])
+            return NO;
+    }
+    return YES;
 }
 
 - (BOOL) equalsObjectBasedOnTimestamp:(NSDictionary*)other
