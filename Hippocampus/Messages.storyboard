@@ -1454,11 +1454,11 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="gcg-6W-33W"/>
                                             <exclude reference="1Uu-Y8-ANb"/>
-                                            <exclude reference="MPV-Ld-HIe"/>
-                                            <exclude reference="A1K-DS-esz"/>
                                             <exclude reference="2yH-ng-O9c"/>
+                                            <exclude reference="A1K-DS-esz"/>
+                                            <exclude reference="MPV-Ld-HIe"/>
+                                            <exclude reference="gcg-6W-33W"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -1489,11 +1489,11 @@
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="TLG-4o-rf1"/>
-                                            <exclude reference="tyK-oD-wbe"/>
-                                            <exclude reference="mog-Uq-eJj"/>
-                                            <exclude reference="L3D-wt-jRB"/>
                                             <exclude reference="GNd-7D-Npm"/>
+                                            <exclude reference="L3D-wt-jRB"/>
+                                            <exclude reference="TLG-4o-rf1"/>
+                                            <exclude reference="mog-Uq-eJj"/>
+                                            <exclude reference="tyK-oD-wbe"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
