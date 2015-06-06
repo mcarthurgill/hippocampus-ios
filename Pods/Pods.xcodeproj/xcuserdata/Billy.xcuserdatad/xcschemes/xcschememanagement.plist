@@ -24,6 +24,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-MGSwipeTableCell.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-PromiseKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-SGHTTPRequest.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -42,37 +52,47 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>5822C19852730EE7A146C51C</key>
+		<key>1233C44B91B9982845E44566</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>66D09C88747C0DE019658003</key>
+		<key>40E39AC06353F46115CBE82E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>76E6C69A1D2ED8696AA3294A</key>
+		<key>5CB1FA6205976CF1F6FF2EFB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>909B245ABD9FB7711D11FC79</key>
+		<key>6F0D1D69B9EE9F386668D952</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9B40B66646795A73E602A8AA</key>
+		<key>885EDA9FA44C091C9F15DACB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BF527F5A8DB6487078123FE8</key>
+		<key>8BB1CE4BDAD2944E86384064</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>EEC0B22C43FC3C9D6942B07F</key>
+		<key>DE9094726CB9FA335BB2D995</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F8B62D26ADCBF5849DF96E61</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FBED1C0CC972C6BD28FD0858</key>
 		<dict>
 			<key>primary</key>
 			<true/>

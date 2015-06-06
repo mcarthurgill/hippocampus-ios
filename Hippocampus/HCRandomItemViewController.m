@@ -24,17 +24,20 @@
 @synthesize allItems;
 @synthesize item;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self setupProperties];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (void) setupProperties {
+- (void) setupProperties
+{
     requestMade = NO;
     [self.navigationItem setTitle:@"Random Thought"];
     UIBarButtonItem *randButton = [[UIBarButtonItem alloc]
@@ -144,7 +147,8 @@
 
 # pragma mark - Randomizing Notes
                                    
-- (void) askServerForRandomItemsWithLimit:(int)limit {
+- (void) askServerForRandomItemsWithLimit:(int)limit
+{
     requestMade = YES;
     [[LXServer shared] getRandomItemsWithLimit:limit
                 success:^(id responseObject){
@@ -160,11 +164,13 @@
                 }];
 }
 
-- (BOOL) firstRequest {
+- (BOOL) firstRequest
+{
     return (self.allItems && self.allItems.count > 0) ? NO : YES;
 }
 
-- (void) setRandomItemAndReplace:(BOOL)replace {
+- (void) setRandomItemAndReplace:(BOOL)replace
+{
     if (self.item) {
         [self.allItems removeObject:self.item];
     }
@@ -174,7 +180,8 @@
     [self getMoreItemsIfNeeded];
 }
 
-- (void) getMoreItemsIfNeeded {
+- (void) getMoreItemsIfNeeded
+{
     if (self.allItems && self.allItems.count < 5 && requestMade == NO) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             [self askServerForRandomItemsWithLimit:15];
@@ -185,9 +192,27 @@
 
 # pragma mark - Actions
 
-- (void) getRandom {
+- (void) getRandom
+{
     [self setRandomItemAndReplace:YES];
     [self.tableView reloadData];
+}
+
+
+- (void) actionTaken:(NSString *)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary *)newI
+{
+    NSLog(@"actionTaken callback: %@", action);
+    if ([action isEqualToString:@"delete"]) {
+        [self getRandom];
+    } else if ([action isEqualToString:@"setReminder"]) {
+        [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:i] withObject:newI];
+        self.item = newI;
+        [self.tableView reloadData];
+    } else if ([action isEqualToString:@"addToStack"]) {
+        [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:i] withObject:newI];
+        self.item = newI;
+        [self.tableView reloadData];
+    }
 }
                                    
 @end

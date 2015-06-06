@@ -9,7 +9,14 @@
 #import <UIKit/UIKit.h>
 @import MediaPlayer;
 
-@interface HCItemTableViewCell : UITableViewCell
+@protocol HCItemCellDelegate <NSObject>
+- (void) actionTaken:(NSString*)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary*)newI;
+@end
+
+@interface HCItemTableViewCell : MGSwipeTableCell <MGSwipeTableCellDelegate, UIActionSheetDelegate>
+{
+    MBProgressHUD* hud;
+}
 
 @property (strong, nonatomic) UIImageView* mediaView;
 @property (strong, nonatomic) NSDictionary* item;

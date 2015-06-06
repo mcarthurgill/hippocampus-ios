@@ -9,8 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "HCBucketViewController.h"
 #import "HCSetupViewController.h"
+#import "HCItemTableViewCell.h"
 
-@interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate>
+@protocol HCAssignBucketDelegate <NSObject>
+- (void) addToStack:(NSDictionary *)i;
+@end
+
+@interface HCBucketsTableViewController : UITableViewController <UISearchBarDelegate, UIActionSheetDelegate, UIGestureRecognizerDelegate, UIAlertViewDelegate, HCItemCellDelegate>
 {
     BOOL requestMade;
     MBProgressHUD* hud;

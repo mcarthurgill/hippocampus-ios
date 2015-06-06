@@ -786,11 +786,11 @@
                     [self.mediaView setImage:[SGImageCache imageForURL:url]];
                 } else if (![self.mediaView.image isEqual:[SGImageCache imageForURL:url]]) {
                     self.mediaView.image = nil;
-                    [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                    [SGImageCache getImageForURL:url].then(^(UIImage* image) {
                         if (image) {
                             self.mediaView.image = image;
                         }
-                    }];
+                    });
                 }
             //} else {
             //    if ([NSData dataWithContentsOfFile:url] && ![self.mediaView.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {

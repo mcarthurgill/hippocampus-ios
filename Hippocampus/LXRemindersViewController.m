@@ -48,7 +48,7 @@
 
 - (void) reloadScreenToIndex:(NSUInteger)index
 {
-    [self.tableView reloadData];
+    [self reloadScreen];
     [self setTableScrollToIndex:index];
 }
 
@@ -163,7 +163,13 @@
     [self getReminders];
 }
 
-- (void) getReminders {
+- (void) reloadScreen
+{
+    [self.tableView reloadData];
+}
+
+- (void) getReminders
+{
     [[LXServer shared] getUpcomingRemindersWithPage:self.page
         success:^(id responseObject){
             requestMade = NO;
@@ -185,9 +191,10 @@
         }];
 }
 
-- (void) shouldShowExplanationCell {
+- (void) shouldShowExplanationCell
+{
     if (self.allItems.count == 0) {
-        [self.tableView reloadData];
+        [self reloadScreen];
     }
 }
 
@@ -200,8 +207,26 @@
     }
 }
 
-- (void) incrementPage {
+- (void) incrementPage
+{
     self.page = self.page + 1;
+}
+
+# pragma mark item cell callback
+
+- (void) actionTaken:(NSString *)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary *)newI
+{
+    NSLog(@"actionTaken callback: %@", action);
+    if ([action isEqualToString:@"delete"]) {
+        [self.allItems removeObject:i];
+        [self reloadScreen];
+    } else if ([action isEqualToString:@"setReminder"]) {
+        [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:i] withObject:newI];
+        [self reloadScreen];
+    } else if ([action isEqualToString:@"addToStack"]) {
+        [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:i] withObject:newI];
+        [self reloadScreen];
+    }
 }
 
 @end

@@ -10,7 +10,6 @@
 #import "AFNetworking.h"
 #import "SGActivityIndicator.h"
 
-NSMutableDictionary *gOperationManagers;
 NSMutableDictionary *gReachabilityManagers;
 SGActivityIndicator *gNetworkIndicator;
 NSMutableDictionary *gRetryQueues;
@@ -24,6 +23,16 @@ SGHTTPLogging gLogging = SGHTTPLogNothing;
 @property (nonatomic, strong) NSError *error;
 @property (nonatomic, assign) BOOL cancelled;
 @end
+
+void doOnMain(void(^block)()) {
+    if (NSThread.isMainThread) { // we're on the main thread. yay
+        block();
+    } else { // we're off the main thread. Bump off.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block();
+        });
+    }
+}
 
 @implementation SGHTTPRequest
 
@@ -77,6 +86,15 @@ SGHTTPLogging gLogging = SGHTTPLogNothing;
     AFHTTPRequestOperationManager *manager = [self.class managerForBaseURL:baseURL
           requestType:self.requestFormat responseType:self.responseFormat];
 
+    if (!manager) {
+        [self failedWithError:nil operation:nil retryURL:baseURL];
+        return;
+    }
+
+    for (NSString *field in self.requestHeaders) {
+        [manager.requestSerializer setValue:self.requestHeaders[field] forHTTPHeaderField:field];
+    }
+
     id success = ^(AFHTTPRequestOperation *operation, id responseObject) {
         [self success:operation];
     };
@@ -110,14 +128,14 @@ SGHTTPLogging gLogging = SGHTTPLogNothing;
 
 - (void)cancel {
     _cancelled = YES;
-    if (self.onNetworkReachable) {
-        NSString *baseURL = [SGHTTPRequest baseURLFrom:self.url];
-        if ([[SGHTTPRequest retryQueueFor:baseURL] containsObject:self.onNetworkReachable]) {
-            [[SGHTTPRequest retryQueueFor:baseURL] removeObject:self.onNetworkReachable];
+
+    doOnMain(^{
+        if (self.onNetworkReachable) {
+           [SGHTTPRequest removeRetryCompletion:self.onNetworkReachable forHost:self.url.host];
+            self.onNetworkReachable = nil;
         }
-        self.onNetworkReachable = nil;
-    }
-    [_operation cancel]; // will call the failure block
+        [_operation cancel]; // will call the failure block
+    });
 }
 
 #pragma mark - Private
@@ -145,23 +163,14 @@ SGHTTPLogging gLogging = SGHTTPLogNothing;
                                         responseType:(SGHTTPDataType)responseType {
     static dispatch_once_t token = 0;
     dispatch_once(&token, ^{
-        gOperationManagers = NSMutableDictionary.new;
         gReachabilityManagers = NSMutableDictionary.new;
     });
 
-    id key = [NSString stringWithFormat:@"%@+%@+%@",
-                                        @(requestType),
-                                        @(responseType),
-                                        baseURL];
-
-    AFHTTPRequestOperationManager *manager = gOperationManagers[key];
-    if (manager) {
-        return manager;
-    }
-
     NSURL *url = [NSURL URLWithString:baseURL];
-    manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];
-    gOperationManagers[key] = manager;
+    AFHTTPRequestOperationManager *manager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:url];
+    if (!manager) {
+        return nil;
+    }
 
     //responses default to JSON
     if (responseType == SGHTTPDataTypeHTTP) {
@@ -177,7 +186,7 @@ SGHTTPLogging gLogging = SGHTTPLogNothing;
         manager.requestSerializer = AFJSONRequestSerializer.serializer;
     }
 
-    if (!gReachabilityManagers[url.host]) {
+    if (url.host && !gReachabilityManagers[url.host]) {
         AFNetworkReachabilityManager *reacher = [AFNetworkReachabilityManager managerForDomain:url
               .host];
         gReachabilityManagers[url.host] = reacher;
@@ -235,8 +244,71 @@ SGHTTPLogging gLogging = SGHTTPLogNothing;
     self.statusCode = operation.response.statusCode;
 
     if (self.logErrors) {
-        NSLog(@"%@ failed with status: %@\nResponse:%@\nError:%@",
-              self.url, @(self.statusCode), self.responseString, error);
+        NSString *responseString = self.responseString;
+        NSObject *requestParameters = self.parameters;
+
+        if (self.responseData &&
+            [operation.responseSerializer isKindOfClass:AFJSONResponseSerializer.class] &&
+            [NSJSONSerialization isValidJSONObject:operation.responseObject]) {
+            NSError *error;
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:operation.responseObject
+                                                               options:NSJSONWritingPrettyPrinted
+                                                                 error:&error];
+            if (jsonData) {
+               responseString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            }
+        }
+        if (self.parameters &&
+            self.requestFormat == SGHTTPDataTypeJSON &&
+            [NSJSONSerialization isValidJSONObject:self.parameters]) {
+            NSError *error;
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self.parameters
+                                                               options:NSJSONWritingPrettyPrinted
+                                                                 error:&error];
+            if (jsonData) {
+                requestParameters = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            }
+        }
+        NSLog(@"\n╔══════════════════════╗\n"
+                 "║ HTTP Request failed! ║\n"
+                 "╚══════════════════════╝\n"
+
+                 "┌──────┐\n"
+                 "│ URL: │\n"
+                 "└──────┘\n"
+                 "%@\n"
+
+                 "┌──────────────────┐\n"
+                 "│ Request Headers: │\n"
+                 "└──────────────────┘\n"
+                 "%@\n"
+
+                 "┌────────────┐\n"
+                 "│ POST Data: │\n"
+                 "└────────────┘\n"
+                 "%@\n"
+
+                 "┌─────────────┐\n"
+                 "│ Error Code: │\n"
+                 "└─────────────┘\n"
+                 "%@\n"
+
+                 "┌───────────┐\n"
+                 "│ Response: │\n"
+                 "└───────────┘\n"
+                 "%@\n"
+
+                 "┌──────────┐\n"
+                 "│ NSError: │\n"
+                 "└──────────┘\n"
+                 "%@\n"
+                 "═══════════════════════\n\n",
+                 self.url,
+                 self.requestHeaders,
+                 requestParameters,
+                 @(self.statusCode),
+                 responseString,
+                 error);
     }
 
     if (self.onFailure) {
@@ -244,13 +316,21 @@ SGHTTPLogging gLogging = SGHTTPLogNothing;
     }
     self.error = nil;
 
-    if (self.onNetworkReachable) {
+    if (self.onNetworkReachable && retryURL) {
         NSURL *url = [NSURL URLWithString:retryURL];
-        [[SGHTTPRequest retryQueueFor:url.host] addObject:self.onNetworkReachable];
+        if (url.host) {
+            [[SGHTTPRequest retryQueueFor:url.host] addObject:self.onNetworkReachable];
+        }
     }
 }
 
 #pragma mark - Getters
+
+- (id)responseJSON {
+    return self.responseData
+          ? [NSJSONSerialization JSONObjectWithData:self.responseData options:0 error:nil]
+          : nil;
+}
 
 + (NSMutableArray *)retryQueueFor:(NSString *)baseURL {
     if (!baseURL) {
@@ -280,6 +360,13 @@ SGHTTPLogging gLogging = SGHTTPLogNothing;
     for (SGHTTPRetryBlock retryBlock in localCopy) {
         retryBlock();
     }
+}
+
++ (void)removeRetryCompletion:(SGHTTPRetryBlock)onNetworkReachable forHost:(NSString *)host {
+    doOnMain(^{
+        if ([[SGHTTPRequest retryQueueFor:host] containsObject:onNetworkReachable]) {
+            [[SGHTTPRequest retryQueueFor:host] removeObject:onNetworkReachable];
+    }});
 }
 
 + (NSString *)baseURLFrom:(NSURL *)url {

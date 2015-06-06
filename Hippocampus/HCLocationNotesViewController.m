@@ -16,7 +16,8 @@
 @import MapKit;
 
 #define IMAGE_FADE_IN_TIME 0.1f
-
+#define TRUNCATED_TITLE_LENGTH 100
+#define NUMBER_ITEMS_RETURNED 512
 
 @interface HCLocationNotesViewController ()
 
@@ -29,6 +30,8 @@
 @synthesize mapViewHeightConstraint;
 @synthesize tableViewHeightConstraint;
 @synthesize mapView;
+
+@synthesize includedItems;
 
 - (void)viewDidLoad
 {
@@ -46,11 +49,16 @@
 {
     requestMade = NO;
     firstRequest = YES;
+    
     self.allItems = [[NSMutableArray alloc] init];
-    [self getItemsNearCurrentLocation];
+    self.includedItems = [[NSMutableDictionary alloc] init];
+    self.includedItemsByCoordinateTag = [[NSMutableDictionary alloc] init];
+    
     [self.navigationItem setTitle:@"Thoughts Nearby"];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
     [self setupMapView];
+    [self getItemsNearCurrentLocation];
 }
 
 # pragma mark - Create and Setup MapView
@@ -59,23 +67,37 @@
 {
     [self.mapView setDelegate:self];
     [self setupMapAndTableConstraints];
-    [self addAnnotationsToMapView];
     [self makeMapViewVisible];
 }
 
-- (void) addAnnotationsToMapView
+- (void) addAnnotationsToMapView:(NSArray*)items
 {
-    for (NSDictionary*item in self.allItems) {
-        MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-        [annotation setCoordinate:[item location].coordinate];
-        [annotation setTitle:[[item message] truncated:25]];
-        [self.mapView addAnnotation:annotation];
+    for (NSDictionary *item in items) {
+        [self addAnnotationToMapView:item];
     }
 }
+
+- (void) addAnnotationToMapView:(NSDictionary*)item
+{
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    [annotation setCoordinate:[item location].coordinate];
+    [annotation setTitle:[[item message] truncated:TRUNCATED_TITLE_LENGTH]];
+    [self.mapView addAnnotation:annotation];
+}
+
+- (void) removeAllAnnotationsFromMapView
+{
+    for (MKPointAnnotation* a in [self.mapView annotations]) {
+        [self.mapView removeAnnotation:a];
+    }
+}
+
+
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
 {
     [self showItem:(UIButton*)[view rightCalloutAccessoryView]];
 }
+
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 {
@@ -93,21 +115,26 @@
     }
     
     MKPinAnnotationView* customPinView = [[MKPinAnnotationView alloc]
-                                           initWithAnnotation:annotation reuseIdentifier:@"annotation"];
+                                          initWithAnnotation:annotation reuseIdentifier:@"annotation"];
     customPinView.canShowCallout = YES;
     
     UIButton* rightButton = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-    rightButton.tag = [self indexOfItemWithMessage:[annotation title] truncated:25];
+    NSDictionary* item = [self itemWithMessage:[annotation title] truncated:TRUNCATED_TITLE_LENGTH];
+    if (item) {
+        rightButton.tag = [[item ID] integerValue];
+    }
     if (rightButton.tag >= 0) {
         customPinView.rightCalloutAccessoryView = rightButton;
     }
     return customPinView;
 }
 
-- (void) showItem:(UIButton*)sender {
+- (void) showItem:(UIButton*)sender
+{
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
     HCContainerViewController* itvc = (HCContainerViewController*)[storyboard instantiateViewControllerWithIdentifier:@"containerViewController"];
-    [itvc setItem:[self.allItems objectAtIndex:sender.tag]];
+    NSMutableDictionary* item = [[self.includedItems objectForKey:[NSString stringWithFormat:@"%li",(long)sender.tag]] mutableCopy];
+    [itvc setItem:item];
     [itvc setItems:self.allItems];
     [itvc setDelegate:self];
     [self.navigationController pushViewController:itvc animated:YES];
@@ -221,6 +248,12 @@
 }
 
 
+
+
+
+
+
+
 # pragma mark - Location Based Notes
 
 - (void) getItemsWithCenterX:(CGFloat)centerx andCenterY:(CGFloat)centery andDX:(CGFloat)dx andDY:(CGFloat)dy
@@ -231,11 +264,11 @@
     ASQuery* query = [[ASQuery alloc] init];
     [query searchInsideBoundingBoxWithLatitudeP1:centery-dy longitudeP1:centerx-dx latitudeP2:centery+dy longitudeP2:centerx+dx];
     query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] userID]];
+    query.hitsPerPage = NUMBER_ITEMS_RETURNED;
     [index search:query
           success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
-              self.allItems = [answer objectForKey:@"hits"];
               requestMade = NO;
-              [self addAnnotationsToMapView];
+              [self addItems:[answer objectForKey:@"hits"]];
               [self.tableView reloadData];
           } failure:^(ASRemoteIndex*index, ASQuery *query, NSString* errorMessage) {
               requestMade = NO;
@@ -243,6 +276,38 @@
           }
      ];
 }
+
+
+
+- (void) requestItemsNearMeFromServer
+{
+    requestMade = YES;
+    ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"FVGQB7HR19" apiKey:@"ddecc3b35feb56ab0a9d2570ac964a82"];
+    ASRemoteIndex *index = [apiClient getIndex:@"Item"];
+    ASQuery* query = [[ASQuery alloc] init];
+    if (![[LXSession thisSession] locationPermissionDetermined]) {
+        [query searchAroundLatitudeLongitudeViaIP:10000];
+    } else {
+        CLLocation *loc = [LXSession currentLocation];
+        [query searchAroundLatitude:loc.coordinate.latitude longitude:loc.coordinate.longitude maxDist:10000];
+        self.mapView.region = MKCoordinateRegionMakeWithDistance(loc.coordinate, 10000, 10000);
+    }
+    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] userID]];
+    query.hitsPerPage = NUMBER_ITEMS_RETURNED;
+    [index search:query
+          success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
+              firstRequest = NO;
+              requestMade = NO;
+              [self addItems:[answer objectForKey:@"hits"]];
+              [self.tableView reloadData];
+          } failure:^(ASRemoteIndex*index, ASQuery *query, NSString* errorMessage) {
+              requestMade = NO;
+              [self.tableView reloadData];
+          }
+     ];
+}
+
+
 
 - (void) getItemsNearCurrentLocation
 {
@@ -260,37 +325,14 @@
     [self requestItemsNearMeFromServer];
 }
 
+
+
 - (void) permissionsDelegate
 {
-    [self requestItemsNearMeFromServer]; 
+    [self requestItemsNearMeFromServer];
 }
 
-- (void) requestItemsNearMeFromServer
-{
-    requestMade = YES;
-    ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"FVGQB7HR19" apiKey:@"ddecc3b35feb56ab0a9d2570ac964a82"];
-    ASRemoteIndex *index = [apiClient getIndex:@"Item"];
-    ASQuery* query = [[ASQuery alloc] init];
-    if (![[LXSession thisSession] locationPermissionDetermined]) {
-        [query searchAroundLatitudeLongitudeViaIP:10000];
-    } else {
-        CLLocation *loc = [LXSession currentLocation];
-        [query searchAroundLatitude:loc.coordinate.latitude longitude:loc.coordinate.longitude maxDist:10000];
-    }
-    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] userID]];
-    [index search:query
-          success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
-              firstRequest = NO;
-              self.allItems = [answer objectForKey:@"hits"];
-              requestMade = NO;
-              [self setupMapView];
-              [self.tableView reloadData];
-          } failure:^(ASRemoteIndex*index, ASQuery *query, NSString* errorMessage) {
-              requestMade = NO;
-              [self.tableView reloadData];
-          }
-     ];
-}
+
 
 - (NSMutableArray*) itemsSortedByDistance:(NSMutableArray*)items
 {
@@ -306,15 +348,55 @@
 }
 
 
+- (void) addItems:(NSArray*)items
+{
+    NSUInteger index = 0;
+    for (NSDictionary* i in items) {
+        if (![self.includedItems objectForKey:[NSString stringWithFormat:@"%@",[i ID]]]) {
+            [self.includedItems setObject:i forKey:[NSString stringWithFormat:@"%@",[i ID]]];
+            //[self.includedItemsByCoordinateTag setObject:i forKey:[i latLongKey]];
+            [self.allItems insertObject:i atIndex:index];
+            [self addAnnotationToMapView:i];
+            ++index;
+        }
+    }
+}
+
+
+
+
+
 # pragma mark - Helpers
-- (NSUInteger) indexOfItemWithMessage:(NSString*)message truncated:(int)truncation
+
+- (NSDictionary*) itemWithMessage:(NSString*)message truncated:(int)truncation
 {
     for (NSDictionary *item in self.allItems) {
         if ([[[item objectForKey:@"message"] truncated:truncation] isEqualToString:message]) {
-            return [self.allItems indexOfObject:item];
+            return item;
         }
     }
-    return -1;
+    return nil;
+}
+
+
+
+
+
+# pragma mark item cell callback
+
+- (void) actionTaken:(NSString *)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary *)newI
+{
+    NSLog(@"actionTaken callback: %@", action);
+    if ([action isEqualToString:@"delete"]) {
+        [self.allItems removeObject:i];
+        [self.tableView reloadData];
+    } else if ([action isEqualToString:@"setReminder"]) {
+        [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:i] withObject:newI];
+        [self.tableView reloadData];
+    } else if ([action isEqualToString:@"addToStack"]) {
+        [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:i] withObject:newI];
+        [self.tableView reloadData];
+    }
 }
 
 @end

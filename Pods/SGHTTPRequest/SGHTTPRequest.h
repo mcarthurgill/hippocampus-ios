@@ -135,6 +135,11 @@ a new identical request.
 - (NSString *)responseString;
 
 /**
+* An NSDictionary or NSArray, assuming the response data is JSON.
+*/
+- (id)responseJSON;
+
+/**
 * The HTTP status code for both successful and failed requests.
 */
 - (NSInteger)statusCode;
@@ -155,6 +160,11 @@ a new identical request.
 * A dictionary of POST fields and values to send with the request.
 */
 @property (nonatomic, strong) NSDictionary *parameters;
+
+/**
+ * An optional dictionary of HTTP header fields and values to send with the request.
+ */
+@property (nonatomic, strong) NSDictionary *requestHeaders;
 
 /**
 * Whether to show the status bar network activity indicator or not. Default is YES.

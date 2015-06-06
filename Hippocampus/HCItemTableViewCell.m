@@ -8,6 +8,9 @@
 
 #import "HCItemTableViewCell.h"
 #import "LXAppDelegate.h"
+#import "HCBucketsTableViewController.h"
+#import "HCBucketViewController.h"
+#import "HCReminderViewController.h"
 
 #define IMAGE_FADE_IN_TIME 0.4f
 #define PICTURE_HEIGHT 280
@@ -35,6 +38,27 @@
 - (void) configureWithItem:(NSDictionary*) itm
 {
     self.item = [[NSDictionary alloc] initWithDictionary:itm];
+    
+    for (UIGestureRecognizer* gr in [self gestureRecognizers]) {
+        if ([gr isMemberOfClass:[UILongPressGestureRecognizer class]]) {
+            [self removeGestureRecognizer:gr];
+        }
+    }
+    if ([self.item hasID]) {
+        UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        lpgr.minimumPressDuration = 0.5; //seconds
+        lpgr.delegate = self;
+        [self addGestureRecognizer:lpgr];
+        
+        //configure left buttons
+        self.rightButtons = @[[MGSwipeButton buttonWithTitle:@"Delete" icon:nil backgroundColor:[UIColor redColor]],
+                              [MGSwipeButton buttonWithTitle:@"+" icon:nil backgroundColor:[UIColor blueColor]]];
+        self.rightSwipeSettings.transition = MGSwipeTransitionBorder;
+        [self setDelegate:self];
+    } else {
+        self.rightButtons = nil;
+    }
+    
     UILabel* note = (UILabel*)[self.contentView viewWithTag:1];
     UIFont* font = note.font;
     float leftMargin = note.frame.origin.x;
@@ -112,7 +136,7 @@
                     } else if (![iv.image isEqual:[SGImageCache imageForURL:url]]) {
                         iv.image = nil;
                         [iv setAlpha:1.0f];
-                        [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                        [SGImageCache getImageForURL:url].then(^(UIImage* image) {
                             if (image) {
                                 float curAlpha = [iv alpha];
                                 [iv setAlpha:0.0f];
@@ -122,7 +146,7 @@
                                     activityIndicator.alpha = 0.0;
                                 }];
                             }
-                        }];
+                        });
                     }
                     
                 } else {
@@ -153,6 +177,69 @@
     while ([self.contentView viewWithTag:(200+i)]) {
         [[self.contentView viewWithTag:(200+i)] removeFromSuperview];
         ++i;
+    }
+}
+
+
+
+
+
+# pragma mark cell helpers
+
++ (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
+{
+    if (!text || [text length] == 0) {
+        return 0.0f;
+    }
+    NSDictionary *attributes = @{NSFontAttributeName: font};
+    CGRect rect = [text boundingRectWithSize:CGSizeMake(width, 100000)
+                                     options:NSStringDrawingUsesLineFragmentOrigin
+                                  attributes:attributes
+                                     context:nil];
+    return rect.size.height;
+}
+
+- (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
+{
+    return [HCItemTableViewCell heightForText:text width:width font:font];
+}
+
+- (NSString*) dateToDisplayForItem:(NSDictionary*)i
+{
+    if (i && [i hasNextReminderDate]) {
+        return [NSString stringWithFormat:@"%@ - %@", [i itemType], [NSDate formattedDateFromString:[i nextReminderDate]]];
+    } else {
+        return [NSDate timeAgoInWordsFromDatetime:[i createdAt]];
+    }
+}
+
++ (CGFloat) heightForCellWithItem:(NSDictionary *)item
+{
+    int additional = 0;
+    if ([item hasMediaURLs]) {
+        int numImages = 0;
+        for (NSString *url in [item mediaURLs]) {
+            if ([url isImageUrl]) {
+                numImages++;
+            }
+        }
+        additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*numImages;
+    }
+    return [self heightForText:[item truncatedMessage] width:((int)[[UIScreen mainScreen] bounds].size.width-40.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
+}
+
+
+
+
+
+# pragma mark gesture recognizers
+
+
+-(void) handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
+    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        UIActionSheet* aS = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Add to Collection", @"Set Nudge", @"Copy", nil];
+        [aS showInView:self.superview];
     }
 }
 
@@ -213,7 +300,7 @@
                 [self.player play];
                 
             }
-        
+            
         } else {
             
             //IMAGE
@@ -222,11 +309,11 @@
                     [self.mediaView setImage:[SGImageCache imageForURL:url]];
                 } else if (![self.mediaView.image isEqual:[SGImageCache imageForURL:url]]) {
                     self.mediaView.image = nil;
-                    [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                    [SGImageCache getImageForURL:url].then(^(UIImage* image) {
                         if (image) {
                             self.mediaView.image = image;
                         }
-                    }];
+                    });
                 }
             } else {
                 if ([NSData dataWithContentsOfFile:url] && ![self.mediaView.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {
@@ -241,53 +328,206 @@
     }
 }
 
+
+
+
+
+# pragma mark MGSwipeDelegate
+
+- (BOOL) swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
+{
+    NSLog(@"tapped button at Index: %li", (long)index);
+    if (index == 0) {
+        //DELETE
+        [self alertForDeletion];
+    } else if (index == 1) {
+        //ADD
+        [self addToCollectionAction];
+    }
+    return YES;
+}
+
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        //DELETE
+        [self alertForDeletion];
+    } else if (buttonIndex == 1) {
+        //ADD TO COLLECTION
+        [self addToCollectionAction];
+    } else if (buttonIndex == 2) {
+        //SET NUDGE
+        [self reminderAction];
+    } else if (buttonIndex == 3) {
+        //COPY
+        [self copyAction];
+    }
+}
+
+- (void) addToCollectionAction
+{
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCBucketsTableViewController* itvc = (HCBucketsTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketsTableViewController"];
+    [itvc setMode:@"assign"];
+    [itvc setDelegate:self];
+    [[[self getParentViewController] navigationController] pushViewController:itvc animated:YES];
+}
+
+- (void) reminderAction
+{
+    UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
+    HCReminderViewController* itvc = (HCReminderViewController*)[storyboard instantiateViewControllerWithIdentifier:@"reminderViewController"];
+    [itvc setItem:[self.item mutableCopy]];
+    [itvc setDelegate:self];
+    [[self getParentViewController] presentViewController:itvc animated:YES completion:nil];
+}
+
+- (void) copyAction
+{
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = [self.item message];
+    if ([self.item croppedMediaURLs] && [[self.item croppedMediaURLs] count] > 0) {
+        NSMutableArray* images = [[NSMutableArray alloc] init];
+        for (NSString* url in [self.item croppedMediaURLs]) {
+            if ([SGImageCache haveImageForURL:url]) {
+                [images addObject:[SGImageCache imageForURL:url]];
+            }
+        }
+        [pasteboard setImages:(NSArray*)images];
+    }
+    [self showHUDWithMessage:@"Copying"];
+    [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5f];
+}
+
+- (void) addToStack:(NSDictionary*)b
+{
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Collection", [b objectForKey:@"first_name"]]];
+    
+    [[LXServer shared] addItem:self.item toBucket:b
+                       success:^(id responseObject) {
+                           NSMutableDictionary* itemActionCopy = [self.item mutableCopy];
+                           [itemActionCopy setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
+                           [itemActionCopy setObject:@"assigned" forKey:@"status"];
+                           //[self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:self.itemForAction] withObject:itemActionCopy];
+                           [self hideHUD];
+                           //[self reloadScreen];
+                           [self initiateDelegateCallbackWithAction:@"addToStack" newItem:itemActionCopy];
+                       }failure:^(NSError *error){
+                           [self hideHUD];
+                           //[self reloadScreen];
+                       }];
+}
+
+- (void) saveReminder:(NSString*)reminder withType:(NSString*)type
+{
+    NSMutableDictionary* itemActionCopy = [self.item mutableCopy];
+    [itemActionCopy setObject:reminder forKey:@"reminder_date"];
+    [itemActionCopy setObject:type forKey:@"item_type"];
+    [itemActionCopy setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_request_timestamp"];
+    
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Setting Nudge"]];
+    
+    [[LXServer shared] saveReminderForItem:itemActionCopy
+                                   success:^(id responseObject) {
+                                       [self hideHUD];
+                                       [self initiateDelegateCallbackWithAction:@"setReminder" newItem:itemActionCopy];
+                                   }failure:^(NSError *error){
+                                       NSLog(@"unsuccessfully updated reminder date");
+                                       [self hideHUD];
+                                   }];
+}
+
+- (void) initiateDelegateCallbackWithAction:(NSString*)action newItem:(NSMutableDictionary*)newI
+{
+    id view = self;
+    while (![view isKindOfClass:[UITableView class]] && [view superview]) {
+        NSLog(@"class of superview: %@", [[[view superview] class] description]);
+        view = [view superview];
+    }
+    if ([[view dataSource] respondsToSelector:@selector(actionTaken:forItem:newItem:)]) {
+        [(HCBucketViewController*)[view dataSource] actionTaken:action forItem:self.item newItem:newI];
+    }
+}
+
+
+
+
+# pragma  mark - AlertView Delegate
+
+- (void) alertForDeletion
+{
+    NSString *title = @"Sorry";
+    NSString *message = @"You cannot delete a thought you did not add!";
+    NSString *buttonTitle = @"Okay";
+    NSString *cancelTitle = nil;
+    
+    if (self.item && [self.item belongsToCurrentUser]) {
+        title = @"Are you sure?";
+        message = @"Do you want to delete this thought?";
+        buttonTitle = @"Delete";
+        cancelTitle = @"Cancel";
+    }
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:title
+                                                     message:message
+                                                    delegate:self
+                                           cancelButtonTitle:cancelTitle
+                                           otherButtonTitles: nil];
+    [alert addButtonWithTitle:buttonTitle];
+    [alert show];
+}
+
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        if (self.item && [self.item belongsToCurrentUser]) {
+            [self showHUDWithMessage:@"Deleting"];
+            [self.item deleteItemWithSuccess:^(id responseObject) {
+                [self hideHUD];
+                //INITIATE CALLBACK!
+                [self initiateDelegateCallbackWithAction:@"delete" newItem:nil];
+            } failure:^(NSError* error) {
+                [self hideHUD];
+            }];
+        }
+    }
+}
+
+- (HCBucketViewController*) getParentViewController
+{
+    id view = self;
+    while (![view isKindOfClass:[UITableView class]] && [view superview]) {
+        NSLog(@"class of superview: %@", [[[view superview] class] description]);
+        view = [view superview];
+    }
+    return (HCBucketViewController*)[view dataSource];
+}
+
+
+
+# pragma mark media handling
+
 - (void) playerItemDidReachEnd:(NSNotification*)notification
 {
     AVPlayerItem *p = [notification object];
     [p seekToTime:kCMTimeZero];
 }
 
-+ (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
-{
-    if (!text || [text length] == 0) {
-        return 0.0f;
-    }
-    NSDictionary *attributes = @{NSFontAttributeName: font};
-    CGRect rect = [text boundingRectWithSize:CGSizeMake(width, 100000)
-                                     options:NSStringDrawingUsesLineFragmentOrigin
-                                  attributes:attributes
-                                     context:nil];
-    return rect.size.height;
-}
-
-- (CGFloat) heightForText:(NSString*)text width:(CGFloat)width font:(UIFont*)font
-{
-    return [HCItemTableViewCell heightForText:text width:width font:font];
-}
-
-- (NSString*) dateToDisplayForItem:(NSDictionary*)i
-{
-    if (i && [i hasNextReminderDate]) {
-        return [NSString stringWithFormat:@"%@ - %@", [i itemType], [NSDate formattedDateFromString:[i nextReminderDate]]];
-    } else {
-        return [NSDate timeAgoInWordsFromDatetime:[i createdAt]];
-    }
-}
 
 
-+ (CGFloat) heightForCellWithItem:(NSDictionary *)item
+
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
 {
-    int additional = 0;
-    if ([item hasMediaURLs]) {
-        int numImages = 0;
-        for (NSString *url in [item mediaURLs]) {
-            if ([url isImageUrl]) {
-                numImages++;
-            }
-        }
-        additional = (PICTURE_MARGIN_TOP+PICTURE_HEIGHT)*numImages;
-    }
-    return [self heightForText:[item truncatedMessage] width:((int)[[UIScreen mainScreen] bounds].size.width-40.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 14.0f + additional + 4.0f;
+    hud = [MBProgressHUD showHUDAddedTo:[self getParentViewController].view animated:YES];
+    hud.labelText = message;
 }
+
+- (void) hideHUD
+{
+    [hud hide:YES];
+}
+
 
 @end

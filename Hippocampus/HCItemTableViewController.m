@@ -144,6 +144,9 @@
         if ([self.item notBlank] || [self.item hasMediaURLs]) {
             [self.actions addObject:@"copy"];
         }
+        if ([self.item notBlank] && [self.item message] && [[self.item message] length] < 200 && ![self.item messageIsOnlyLinks]) {
+            [self.actions addObject:@"search"];
+        }
         if ([self.item belongsToCurrentUser]) {
             [self.actions addObject:@"delete"];
         }
@@ -158,12 +161,20 @@
         [self.sections addObject:@"addedBy"];
     }
     
-    if ([self.item hasMessage]) {
+    if ([self.item hasMessage] && ![self.item messageIsOnlyLinks]) {
         [self.sections addObject:@"message"];
     }
     
     if ([self.item hasMediaURLs]) {
         [self.sections addObject:@"media"];
+    }
+    
+    if ([self.item hasAudioURL]) {
+        [self.sections addObject:@"audio"];
+    }
+    
+    if ([self.item hasLinks]) {
+        [self.sections addObject:@"links"];
     }
     
     [self.sections addObject:@"reminder"];
@@ -197,6 +208,12 @@
         if ([self.item hasMediaURLs]) {
             return [[self.item croppedMediaURLs] count];
         }
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"audio"]) {
+        return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"links"]) {
+        if ([self.item hasLinks]) {
+            return [[self.item links] count];
+        }
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"reminder"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucket"]) {
@@ -222,6 +239,10 @@
         return [self tableView:tableView messageCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return [self tableView:tableView imageCellForIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"audio"]) {
+        return [self tableView:tableView audioCellForIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"links"]) {
+        return [self tableView:tableView linkCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return [self tableView:tableView reminderCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"bucket"]) {
@@ -289,6 +310,26 @@
     [iv addGestureRecognizer:longPress];
     [iv setUserInteractionEnabled:YES];
     [iv setExclusiveTouch:YES];
+    
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView*)tableView audioCellForIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"audioCell" forIndexPath:indexPath];
+    
+    UILabel* label = (UILabel*) [cell.contentView viewWithTag:1];
+    [label setText:@"Play Audio"];
+    
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView*)tableView linkCellForIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"linkSelectCell" forIndexPath:indexPath];
+    
+    UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
+    [label setText:[[self.item links] objectAtIndex:indexPath.row]];
     
     return cell;
 }
@@ -370,7 +411,7 @@
 
 - (UITableViewCell*) tableView:(UITableView*)tableView actionCellForIndexPath:(NSIndexPath*)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"actionSelectCell" forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"search"] ? @"actionSelectWideCell" : @"actionSelectCell") forIndexPath:indexPath];
     
     UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
     
@@ -390,6 +431,8 @@
         [label setText:@"Define"];
     } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"copy"]) {
         [label setText:@"Copy"];
+    } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"search"]) {
+        [label setText:[NSString stringWithFormat:@"Google Search This Thought"]];
     }
     
     return cell;
@@ -432,6 +475,10 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"location"]) {
         return 200.0f;
         
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"links"]) {
+        return 52.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"audio"]) {
+        return 52.0f;
     }
     
     return 44.0f;
@@ -457,6 +504,10 @@
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         return nil;
         return @"Images";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"audio"]) {
+        return @"Audio Clip";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"links"]) {
+        return @"Links";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"reminder"]) {
         return @"Nudge";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucket"]) {
@@ -487,6 +538,9 @@
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         
         
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"links"]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[self.item links] objectAtIndex:indexPath.row]]];
+        
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         NSString *urlString = [[self.item croppedMediaURLs] objectAtIndex:indexPath.row];
         NSUInteger indexOfVideoUrl = [self.item indexOfMatchingVideoUrl:urlString];
@@ -498,6 +552,10 @@
         } else {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
         }
+        
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"audio"]) {
+        
+        
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"assign"]) {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
@@ -526,6 +584,9 @@
             }
             [self showHUDWithMessage:@"Copying"];
             [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5f];
+        } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"search"]) {
+            NSString* searchQuery = [NSString stringWithFormat:@"http://google.com/search?q=%@", (NSString *)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,(CFStringRef)[self.item message],NULL,(CFStringRef)@"!*'();:@&=+$,/?%#[]",kCFStringEncodingUTF8 ))];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:searchQuery]];
         }
     }
     
@@ -661,12 +722,12 @@
     if ([self.item croppedMediaURLs]) {
         for (NSString* url in [self.item croppedMediaURLs]) {
             if ([url isImageUrl]) {
-                [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                [SGImageCache getImageForURL:url].then(^(UIImage* image) {
                     if (![self.mediaDictionary objectForKey:url]) {
                         [self.mediaDictionary setObject:image forKey:url];
                         [self reloadScreen];
                     }
-                }];
+                });
             }
         }
     }
@@ -895,11 +956,11 @@
                     [self.mediaView setImage:[SGImageCache imageForURL:url]];
                 } else if (![self.mediaView.image isEqual:[SGImageCache imageForURL:url]]) {
                     self.mediaView.image = nil;
-                    [SGImageCache getImageForURL:url thenDo:^(UIImage* image) {
+                    [SGImageCache getImageForURL:url].then(^(UIImage* image) {
                         if (image) {
                             self.mediaView.image = image;
                         }
-                    }];
+                    });
                 }
             } else {
                 if ([NSData dataWithContentsOfFile:url] && ![self.mediaView.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:url]]]) {

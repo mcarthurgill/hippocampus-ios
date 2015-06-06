@@ -8,16 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "HCItemTableViewController.h"
+#import "HCItemTableViewCell.h"
 
 @protocol HCSendRequestForUpdatedBuckets <NSObject>
--(void)sendRequestForUpdatedBucket;
+- (void) sendRequestForUpdatedBucket;
 @end
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
 
 
-@interface HCBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate>
+@interface HCBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate, UIActionSheetDelegate, HCItemCellDelegate>
 {
     BOOL requestMade;
     BOOL shouldContinueRequesting;

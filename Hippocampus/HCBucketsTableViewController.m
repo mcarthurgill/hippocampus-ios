@@ -794,7 +794,7 @@
           success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
               // answer object contains a "hits" attribute that contains all results
               // each result contains your attributes and a _highlightResult attribute that contains highlighted version of your attributes
-              [self.serverSearchDictionary setObject:[answer objectForKey:@"hits"] forKey:[[query fullTextQuery] lowercaseString]];
+              [self.serverSearchDictionary setObject:[[answer objectForKey:@"hits"] mutableCopy] forKey:[[query fullTextQuery] lowercaseString]];
               [self reloadScreen];
           } failure:nil
      ];
@@ -875,7 +875,7 @@
 
     for (NSString* key in [oldDictionary allKeys]) {
         NSString *keyToSearch = [key isEqualToString:@"Contacts"] ? @"name" : @"first_name";
-        if ([key isEqualToString:@"Recent"] || [key isEqualToString:@"buckets"] || [key isEqualToString:@"Contacts"]) {
+        if ([key isEqualToString:@"buckets"] || [key isEqualToString:@"Contacts"]) { //[key isEqualToString:@"Recent"] ||
             NSArray* buckets = [oldDictionary objectForKey:key];
             NSMutableArray* newBuckets = [[NSMutableArray alloc] init];
             for (NSDictionary* bucket in buckets) {
@@ -941,6 +941,25 @@
 {
     //UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
     //self.composeBucketController = [storyboard instantiateViewControllerWithIdentifier:@"bucketViewController"];
+}
+
+
+
+# pragma mark item cell callback
+
+- (void) actionTaken:(NSString *)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary *)newI
+{
+    NSLog(@"actionTaken callback: %@", action);
+    if ([action isEqualToString:@"delete"]) {
+        [[self searchArray] removeObject:i];
+        [self reloadScreen];
+    } else if ([action isEqualToString:@"setReminder"]) {
+        [[self searchArray] replaceObjectAtIndex:[[self searchArray] indexOfObject:i] withObject:newI];
+        [self reloadScreen];
+    } else if ([action isEqualToString:@"addToStack"]) {
+        [[self searchArray] replaceObjectAtIndex:[[self searchArray] indexOfObject:i] withObject:newI];
+        [self reloadScreen];
+    }
 }
 
 

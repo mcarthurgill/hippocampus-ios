@@ -12,7 +12,6 @@
 #import "HCBucketDetailsViewController.h"
 #import "LXString+NSString.h"
 #import "LXAppDelegate.h"
-#import "HCItemTableViewCell.h"
 #import "UIImage+Helpers.h"
 #import <AudioToolbox/AudioToolbox.h>
 #import "HCPopUpViewController.h"
@@ -70,7 +69,6 @@
     
     [self setupConstraint];
     [self observeKeyboard];
-    [self setLongPressGestureToRemoveItem];
     
     [self refreshChange];
     [self shouldSetKeyboardAsFirstResponder];
@@ -290,16 +288,6 @@
     }
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"]) {
-            [self setItemForAction:[[self currentArray] objectAtIndex:indexPath.row]];
-            [self alertForDeletion];
-        }
-    }
 }
 
 
@@ -591,23 +579,6 @@
     }
 }
 
-
-- (void) deleteItemFromServerAndTable:(NSDictionary *)item
-{
-    if ([item belongsToCurrentUser]) {
-        [self deleteItem:item];
-        [[self allItems] removeObject:item];
-        [self reloadScreen];
-    }
-}
-
-- (void) deleteItem:(NSDictionary *)item
-{
-    if ([item belongsToCurrentUser]) {
-        [item deleteItemWithSuccess:nil failure:nil];
-    }
-}
-
 - (void) updateItemsArrayWithOriginal:(NSMutableDictionary*)original new:(NSMutableDictionary*)n
 {
     int index = (int)[self.allItems indexOfObject:original];
@@ -868,18 +839,6 @@
 
 
 
-# pragma mark hud delegate
-
-- (void) showHUDWithMessage:(NSString*) message
-{
-    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = message;
-}
-
-- (void) hideHUD
-{
-    [hud hide:YES];
-}
 
 
 # pragma mark upload images
@@ -1006,7 +965,7 @@
 
 # pragma mark - HCUpdateBucketDelegate
 
--(void)updateBucket:(NSMutableDictionary *)updatedBucket
+- (void) updateBucket:(NSMutableDictionary *)updatedBucket
 {
     self.bucket = updatedBucket;
     [self.delegate sendRequestForUpdatedBucket];
@@ -1016,137 +975,27 @@
 
 
 
-# pragma  mark - AlertView Delegate
+# pragma mark item cell callback
 
-- (void) alertForDeletion
+- (void) actionTaken:(NSString *)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary *)newI
 {
-    NSString *title = @"Sorry";
-    NSString *message = @"You cannot delete a thought you did not add!";
-    NSString *buttonTitle = @"Okay";
-    NSString *cancelTitle = nil;
-    
-    if (self.itemForAction && [self.itemForAction belongsToCurrentUser]) {
-        title = @"Are you sure?";
-        message = @"Do you want to delete this thought?";
-        buttonTitle = @"Delete";
-        cancelTitle = @"Cancel";
-    }
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:title
-                                                     message:message
-                                                    delegate:self
-                                           cancelButtonTitle:cancelTitle
-                                           otherButtonTitles: nil];
-    [alert addButtonWithTitle:buttonTitle];
-    [alert show];
-}
-
-
-- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 1) {
-        if(self.itemForAction) {
-            [self deleteItemFromServerAndTable:self.itemForAction];
-        }
+    NSLog(@"actionTaken callback: %@", action);
+    if ([action isEqualToString:@"delete"]) {
+        [self.allItems removeObject:i];
+        [self reloadScreen];
+    } else if ([action isEqualToString:@"setReminder"]) {
+        [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:i] withObject:newI];
+        [self reloadScreen];
+    } else if ([action isEqualToString:@"addToStack"]) {
+        [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:i] withObject:newI];
+        [self reloadScreen];
     }
 }
 
 
-# pragma mark - Gesture Recognizers
 
-- (void) setLongPressGestureToRemoveItem
-{
-    UILongPressGestureRecognizer *lpgr = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    lpgr.minimumPressDuration = 0.7; //seconds
-    lpgr.delegate = self;
-    [self.tableView addGestureRecognizer:lpgr];
-}
 
--(void) handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
-{
-    CGPoint p = [gestureRecognizer locationInView:self.tableView];
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:p];
-    if ([[gestureRecognizer view] isKindOfClass:[UITableView class]] && gestureRecognizer.state == UIGestureRecognizerStateBegan && [[self.sections objectAtIndex:indexPath.section] isEqualToString:@"all"] && [[self currentArray] objectAtIndex:indexPath.row]) {
-        UIActionSheet* aS = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Add to Collection", @"Set Nudge", @"Copy", nil];
-        [aS showInView:self.view];
-        [self setItemForAction:[[self currentArray] objectAtIndex:indexPath.row]];
-    }
-}
-
-- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        //DELETE
-        [self alertForDeletion];
-    } else if (buttonIndex == 1) {
-        //ADD TO COLLECTION
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-        HCBucketsTableViewController* itvc = (HCBucketsTableViewController*)[storyboard instantiateViewControllerWithIdentifier:@"bucketsTableViewController"];
-        [itvc setMode:@"assign"];
-        [itvc setDelegate:self];
-        [self.navigationController pushViewController:itvc animated:YES];
-    } else if (buttonIndex == 2) {
-        //SET NUDGE
-        UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-        HCReminderViewController* itvc = (HCReminderViewController*)[storyboard instantiateViewControllerWithIdentifier:@"reminderViewController"];
-        [itvc setItem:[self.itemForAction mutableCopy]];
-        [itvc setDelegate:self];
-        [self presentViewController:itvc animated:YES completion:nil];
-    } else if (buttonIndex == 3) {
-        //COPY
-        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-        pasteboard.string = [self.itemForAction message];
-        if ([self.itemForAction croppedMediaURLs] && [[self.itemForAction croppedMediaURLs] count] > 0) {
-            NSMutableArray* images = [[NSMutableArray alloc] init];
-            for (NSString* url in [self.itemForAction croppedMediaURLs]) {
-                if ([SGImageCache haveImageForURL:url]) {
-                    [images addObject:[SGImageCache imageForURL:url]];
-                }
-            }
-            [pasteboard setImages:(NSArray*)images];
-        }
-        [self showHUDWithMessage:@"Copying"];
-        [self performSelector:@selector(hideHUD) withObject:nil afterDelay:0.5f];
-    }
-}
-
-- (void) addToStack:(NSDictionary*)b
-{
-    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Collection", [b objectForKey:@"first_name"]]];
-    
-    [[LXServer shared] addItem:self.itemForAction toBucket:b
-                       success:^(id responseObject) {
-                           NSMutableDictionary* itemActionCopy = [self.itemForAction mutableCopy];
-                           [itemActionCopy setObject:[responseObject objectForKey:@"buckets"] forKey:@"buckets"];
-                           [itemActionCopy setObject:@"assigned" forKey:@"status"];
-                           [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:self.itemForAction] withObject:itemActionCopy];
-                           [self hideHUD];
-                           [self reloadScreen];
-                       }failure:^(NSError *error){
-                           [self hideHUD];
-                           [self reloadScreen];
-                       }];
-}
-
-- (void) saveReminder:(NSString*)reminder withType:(NSString*)type
-{
-    NSMutableDictionary* itemActionCopy = [self.itemForAction mutableCopy];
-    [itemActionCopy setObject:reminder forKey:@"reminder_date"];
-    [itemActionCopy setObject:type forKey:@"item_type"];
-    [itemActionCopy setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_request_timestamp"];
-    
-    [self showHUDWithMessage:[NSString stringWithFormat:@"Setting Nudge"]];
-    
-    [[LXServer shared] saveReminderForItem:itemActionCopy
-                                   success:^(id responseObject) {
-                                       [self.allItems replaceObjectAtIndex:[self.allItems indexOfObject:self.itemForAction] withObject:itemActionCopy];
-                                       [self hideHUD];
-                                       [self reloadScreen];
-                                   }failure:^(NSError *error){
-                                       NSLog(@"unsuccessfully updated reminder date");
-                                       [self hideHUD];
-                                       [self reloadScreen];
-                                   }];
-}
+# pragma mark actions with item
 
 
 # pragma mark - Congratulations Notifications
@@ -1200,6 +1049,20 @@
 - (BOOL) isVisible
 {
     return self.isViewLoaded && self.view.window && [[self.navigationController visibleViewController] isEqual:self];
+}
+
+
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
+{
+    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = message;
+}
+
+- (void) hideHUD
+{
+    [hud hide:YES];
 }
 
 @end

@@ -3,24 +3,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
-typedef void(^SGCacheFetchCompletion)(UIImage *image);
-
-typedef NS_OPTIONS(NSInteger, SGImageCacheLogging) {
-    SGImageCacheLogNothing            = 0,
-    SGImageCacheLogRequests           = 1 << 0,
-    SGImageCacheLogResponses          = 1 << 1,
-    SGImageCacheLogErrors             = 1 << 2,
-    SGImageCacheLogMemoryFlushing     = 1 << 3,
-    SGImageCacheLogAll                = (SGImageCacheLogRequests|SGImageCacheLogResponses|
-                                         SGImageCacheLogErrors|SGImageCacheLogMemoryFlushing)
-};
-
-#ifndef __weakSelf
-#define __weakSelf __weak typeof(self)
-#endif
-
-#define SGImageCacheFlushed         @"SGImageCacheFlushed"
+#import <PromiseKit/PromiseKit.h>
+#import "SGCache.h"
 
 /**
 `SGImageCache` provides a fast and simple disk and memory cache for images
@@ -34,7 +18,7 @@ fetched from remote URLs.
     }];
 */
 
-@interface SGImageCache : NSObject
+@interface SGImageCache : SGCache
 
 #pragma mark - Fetching Images
 
@@ -42,44 +26,163 @@ fetched from remote URLs.
 
 /**
 Fetch an image from cache if available, or remote it not.
+Returns a PromiseKit promise that resolves with a UIImage.
 
     NSString *url = @"http://example.com/image.jpg";
 
     __weak typeof(self) me = self;
-    [SGImageCache getImageForURL:url thenDo:^(UIImage *image) {
+    [SGImageCache getImageForURL:url].then(^(UIImage *image) {
         me.imageView.image = image;
-    }];
+    });
 
 - If the URL is not already queued a new image fetch task will be added to
   <fastQueue>.
-- If the URL is already in <fastQueue> the new completion block will be
-  added to the existing task.
+- If the URL is already in <fastQueue> the promise will resolve when the
+  existing task completes.
 - If the URL is already in <slowQueue> it will be moved to <fastQueue> and
-  the new completion block will be added to the existing task.
+  the promise will resolve when the existing task completes.
 */
-+ (void)getImageForURL:(NSString *)url thenDo:(SGCacheFetchCompletion)completion;
++ (PMKPromise *)getImageForURL:(NSString *)url;
+
+/**
+Fetch an image from cache if available, or remote it not, sending HTTP headers
+with the request. Returns a PromiseKit promise that resolves with a UIImage.
+
+    NSString *url = @"http://example.com/image.jpg";
+    NSDictionary *requestHeaders = @{@"Authorization" : @"abcd1234"};
+
+- If the URL is not already queued a new image fetch task will be added to
+<fastQueue>.
+- If the URL is already in <fastQueue> the promise will resolve when the
+existing task completes.
+- If the URL is already in <slowQueue> it will be moved to <fastQueue> and
+the promise will resolve when the existing task completes.
+ */
++ (PMKPromise *)getImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers;
+
+/**
+Fetch an image from cache if available, or remote it not, sending HTTP headers
+with the request and providing an explicit cache key. Returns a PromiseKit
+promise that resolves with a UIImage.
+
+    NSString *url = @"http://example.com/image.jpg";
+    NSDictionary *requestHeaders = @{@"Authorization" : @"abcd1234"};
+    NSStrig *cacheKey = [NSString stringWithFormat:@"%@%@", username, url];
+
+- If the URL is not already queued a new image fetch task will be added to
+<fastQueue>.
+- If the URL is already in <fastQueue> the promise will resolve when the
+existing task completes.
+- If the URL is already in <slowQueue> it will be moved to <fastQueue> and
+the promise will resolve when the existing task completes.
+*/
++ (PMKPromise *)getImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers
+      cacheKey:(NSString *)cacheKey;
+
+/**
+ Fetch an image from remote. Returns a PromiseKit promise that resolves with
+ a UIImage.
+
+ NSString *url = @"http://example.com/image.jpg";
+
+ __weak typeof(self) me = self;
+ [SGImageCache getImageForURL:url].then(^(UIImage *image) {
+ me.imageView.image = image;
+ });
+
+ - If the URL is not already queued a new image fetch task will be added to
+ <fastQueue>.
+ - If the URL is already in <fastQueue> the promise will resolve when the
+ existing task completes.
+ - If the URL is already in <slowQueue> it will be moved to <fastQueue> and
+ the promise will resolve when the existing task completes.
+ */
++ (PMKPromise *)getRemoteImageForURL:(NSString *)url;
+
+
+/**
+ Fetch an image from remote, sending HTTP headers with the request.
+ Returns a PromiseKit promise that resolves with a UIImage.
+
+ NSString *url = @"http://example.com/image.jpg";
+ NSDictionary *requestHeaders = @{@"Authorization" : @"abcd1234"};
+
+ - If the URL is not already queued a new image fetch task will be added to
+ <fastQueue>.
+ - If the URL is already in <fastQueue> the promise will resolve when the
+ existing task completes.
+ - If the URL is already in <slowQueue> it will be moved to <fastQueue> and
+ the promise will resolve when the existing task completes.
+ */
++ (PMKPromise *)getRemoteImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers;
+
+
+/**
+ Fetch an image from remote, sending HTTP headers with the request and providing 
+ an explicit cache key. Returns a PromiseKit promise that resolves with a UIImage.
+
+ NSString *url = @"http://example.com/image.jpg";
+ NSDictionary *requestHeaders = @{@"Authorization" : @"abcd1234"};
+ NSStrig *cacheKey = [NSString stringWithFormat:@"%@%@", username, url];
+
+ - If the URL is not already queued a new image fetch task will be added to
+ <fastQueue>.
+ - If the URL is already in <fastQueue> the promise will resolve when the
+ existing task completes.
+ - If the URL is already in <slowQueue> it will be moved to <fastQueue> and
+ the promise will resolve when the existing task completes.
+ */
++ (PMKPromise *)getRemoteImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers
+                      cacheKey:(NSString *)cacheKey;
 
 /**
 Fetch an image from cache if available, or remote it not.
+Returns a PromiseKit promise that resolves with a UIImage.
 
     NSString *url = @"http://example.com/image.jpg";
 
     __weak typeof(self) me = self;
-    [SGImageCache slowGetImageForURL:url thenDo:^(UIImage *image) {
+    [SGImageCache slowGetImageForURL:url].then(^(UIImage *image) {
         me.imageView.image = image;
-    }];
+    });
 
 - If the URL is not already queued a new image fetch task will be added to
   <slowQueue>.
-- If the URL is already in either <slowQueue> or <fastQueue> the new
-  completion block will be added to the existing task.
+- If the URL is already in either <slowQueue> or <fastQueue> the promise will
+  resolve when the existing task completes.
 */
-+ (void)slowGetImageForURL:(NSString *)url thenDo:(SGCacheFetchCompletion)completion;
++ (PMKPromise *)slowGetImageForURL:(NSString *)url;
 
 /**
-* Move an image fetch task from <fastQueue> to <slowQueue>.
+Fetch an image from cache if available, or remote it not, sending HTTP headers
+with the request. Returns a PromiseKit promise that resolves with a UIImage.
+
+    NSString *url = @"http://example.com/image.jpg";
+    NSDictionary *requestHeaders = @{@"Authorization" : @"abcd1234"};
+
+- If the URL is not already queued a new image fetch task will be added to
+<slowQueue>.
+- If the URL is already in either <slowQueue> or <fastQueue> the promise will
+resolve when the existing task completes.
 */
-+ (void)moveTaskToSlowQueueForURL:(NSString *)url;
++ (PMKPromise *)slowGetImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers;
+
+/**
+Fetch an image from cache if available, or remote it not, sending HTTP headers
+with the request and providing an explicit cache key. Returns a PromiseKit
+promise that resolves with a UIImage.
+
+    NSString *url = @"http://example.com/image.jpg";
+    NSDictionary *requestHeaders = @{@"Authorization" : @"abcd1234"};
+    NSStrig *cacheKey = [NSString stringWithFormat:@"%@%@", username, url];
+
+- If the URL is not already queued a new image fetch task will be added to
+<slowQueue>.
+- If the URL is already in either <slowQueue> or <fastQueue> the promise will
+resolve when the existing task completes.
+*/
++ (PMKPromise *)slowGetImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers
+      cacheKey:(NSString *)cacheKey;
 
 #pragma mark - House Keeping
 
@@ -91,31 +194,22 @@ Fetch an image from cache if available, or remote it not.
 */
 + (void)flushImagesOlderThan:(NSTimeInterval)age;
 
-#pragma mark - Operation Queues
-
-/** @name Operation queues */
-
-/**
-* The operation queue used for non urgent image fetches
-* ([slowGetImageForURL:thenDo:](<+[SGImageCache slowGetImageForURL:thenDo:]>)).
-* By default this is a serial queue.
-*/
-@property (nonatomic, strong) NSOperationQueue *slowQueue;
-
-/**
-* The operation queue used for urgent image fetches
-* ([getImageForURL:thenDo:](<+[SGImageCache getImageForURL:thenDo:]>)). By
-* default this queue uses the maximum number of concurrent operations as
-* determined by iOS.
-*/
-@property (nonatomic, strong) NSOperationQueue *fastQueue;
-
 /** @name Misc helpers */
 
 /**
 * Returns YES if the image is found in the cache.
 */
 + (BOOL)haveImageForURL:(NSString *)url;
+
+/**
+ * Returns YES if the image with matching URL and HTTP headers is found in the cache.
+ */
++ (BOOL)haveImageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers;
+
+/**
+* Returns YES if the image is found in the cache.
+*/
++ (BOOL)haveImageForCacheKey:(NSString *)cacheKey;
 
 /**
 * Retrieves an image from cache. Returns nil if the image is not found in
@@ -128,23 +222,30 @@ Fetch an image from cache if available, or remote it not.
 + (UIImage *)imageForURL:(NSString *)url;
 
 /**
+ * Retrieves an image  with matching URL and HTTP headers if found in the cache.
+ * Returns nil if the image is not found in the cache.
+ *
+ * @warning If you want a single method which will return an image from either
+ * cache or remote, use
+ * [getImageForURL:thenDo:](<+[SGImageCache getImageForURL:thenDo:]>) instead.
+ */
++ (UIImage *)imageForURL:(NSString *)url requestHeaders:(NSDictionary *)headers;
+
+/**
+* Retrieves an imagewith matching cache key if found in the cache.
+* Returns nil if the image is not found in the cache.
+*
+* @warning If you want a single method which will return an image from either
+* cache or remote, use
+* [getImageForURL:thenDo:](<+[SGImageCache getImageForURL:thenDo:]>) instead.
+*/
++ (UIImage *)imageForCacheKey:(NSString *)cacheKey;
+
+/**
  * Retrieves an image from the cache or application asset bundle if not cached.
  */
 
 + (UIImage *)imageNamed:(NSString *)named;
-
-#pragma - mark - Logging
-
-/** @name Logging */
-
-/**
-* Set logging level (defaults to SGImageCacheLogNothing)
-*/
-+ (void)setLogging:(SGImageCacheLogging)logging;
-/**
-* Logging level (defaults to SGImageCacheLogNothing)
-*/
-+ (SGImageCacheLogging)logging;
 
 #pragma - mark - Memory Cache
 
@@ -157,15 +258,6 @@ Fetch an image from cache if available, or remote it not.
  */
 + (void)setMemoryCacheSize:(NSUInteger)megaBytes;
 
-#pragma mark - Ignore below here plz
-
-@property (atomic, copy) NSString *folderName;
-@property (atomic, copy) NSString *cachePath;
-
-+ (SGImageCache *)cache;
-- (NSString *)makeCachePath;
-- (NSString *)pathForURL:(NSString *)url;
-- (NSString *)relativePathForURL:(NSString *)url;
-+ (void)addImageData:(NSData *)data forURL:(NSString *)url;
++ (NSCache *)globalMemCache;
 
 @end
