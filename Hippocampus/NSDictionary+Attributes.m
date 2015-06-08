@@ -178,7 +178,15 @@
 
 - (NSString*) audioURL
 {
-    return [self objectForKey:@"audio_url"] && NULL_TO_NIL([self objectForKey:@"audio_url"]) ? [self objectForKey:@"audio_url"] : nil;
+    if ([self objectForKey:@"audio_url"] && NULL_TO_NIL([self objectForKey:@"audio_url"]) && [[self objectForKey:@"audio_url"] length] > 5) {
+        NSString* stringURL = [self objectForKey:@"audio_url"];
+        NSURL *url = [NSURL URLWithString:stringURL];
+        NSString *path = [url path];
+        NSString *extension = [path pathExtension];
+        //NSLog(@"extension: %@", extension);
+        return !extension || [extension length] == 0 ? [NSString stringWithFormat:@"%@.mp3", stringURL] : stringURL;
+    }
+    return nil;
 }
 
 - (NSString*) inputMethod
