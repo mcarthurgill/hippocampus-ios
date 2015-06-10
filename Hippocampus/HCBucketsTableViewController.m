@@ -97,20 +97,30 @@
     self.bucketsDictionary = nil;
     self.cachedDiskDictionary = nil;
     
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"collapsed-sections"]) {
-        self.collapsedSections = [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"collapsed-sections"]];
+    [self refreshChange];
+
+    if ([self assignMode]) {
+        [self setTitle:@"Add to Bucket"];
+        [self.navigationItem setRightBarButtonItem:nil];
+        [self.navigationItem setLeftBarButtonItem:nil];
+        
+        [self.searchBar setPlaceholder:@"Filter Buckets"];
+    } else {
+        [self.searchBar setPlaceholder:@"Search Your Brain"];
+    }
+    
+    [self performSelector:@selector(setCollapsedSectionsAndReload) withObject:nil afterDelay:0.001];
+}
+
+- (void) setCollapsedSectionsAndReload
+{
+    //NSLog(@"user defaults: %@", [[NSUserDefaults standardUserDefaults] objectForKey:@"collapsedsections"]);
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"collapsedsections"]) {
+        self.collapsedSections = [[NSMutableDictionary alloc] initWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"collapsedsections"]];
     } else {
         self.collapsedSections = [[NSMutableDictionary alloc] init];
     }
-    
-    [self refreshChange];
     [self reloadScreen];
-
-    if ([self assignMode]) {
-        [self setTitle:@"Add to Collection"];
-        [self.navigationItem setRightBarButtonItem:nil];
-        [self.navigationItem setLeftBarButtonItem:nil];
-    }
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -136,8 +146,8 @@
 
 - (void) saveCollapsedSections
 {
-    if (![self assignMode] && ![self searchActivated]) {
-        [[NSUserDefaults standardUserDefaults] setObject:self.collapsedSections forKey:@"collapsed-sections"];
+    if (![self assignMode] && ![self searchActivated] && self.collapsedSections) {
+        [[NSUserDefaults standardUserDefaults] setObject:self.collapsedSections forKey:@"collapsedsections"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
@@ -151,18 +161,18 @@
 - (void) handleVisitAndPermissions
 {
     if ([[LXSetup theSetup] visitedThisScreen:self withAssignMode:[self assignMode]]) {
-        NSLog(@"already visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
+        //NSLog(@"already visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
         if ([self assignMode]) {
             [self getAddressBookPermissionIfUndetermined];
         }
     } else {
-        NSLog(@"have not visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
+        //NSLog(@"have not visited buckets table view controller %@", [self assignMode] ? @"with assign mode" : @"");
         if ([self assignMode]) {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
             HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
             [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
             [vc setImageForMainImageView:[UIImage imageNamed:@"assign-screen.jpg"]];
-            [vc setMainLabelText:@"Thoughts belong to collections. Assign this thought to an existing collection or create a new one."];
+            [vc setMainLabelText:@"Thoughts belong to buckets. Add this thought to an existing bucket or create a new one."];
             [self.navigationController presentViewController:vc animated:NO completion:nil];
         } else {
             UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
@@ -189,11 +199,7 @@
     [self setLongPressGestureToRemoveBucket];
     
     //change back button text when new VC gets popped on the stack
-    self.navigationItem.backBarButtonItem =
-    [[UIBarButtonItem alloc] initWithTitle:@""
-                                      style:UIBarButtonItemStyleBordered
-                                     target:nil
-                                     action:nil];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:nil action:nil];
 }
 
 
@@ -314,7 +320,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"newCell" forIndexPath:indexPath];
     UILabel* label = (UILabel*) [cell.contentView viewWithTag:1];
-    [label setText:@"+ New Collection"];
+    [label setText:@"+ New Bucket"];
     return cell;
 }
 
@@ -322,7 +328,7 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"infoCell" forIndexPath:indexPath];
     UITextView* textView = (UITextView*) [cell.contentView viewWithTag:2];
-    [textView setText:[NSString stringWithFormat:@"SMS entry: +1 (615) 724-9333%@\n\n%@ Thoughts\n%@ Collections\n\nHippocampus %@\nMade with <3 in Nashville", ([[[LXSession thisSession] user] email] ? @"\nEmail entry: thought@hppcmps.com" : @""), [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
+    [textView setText:[NSString stringWithFormat:@"SMS entry: +1 (615) 724-9333%@\n\n%@ Thoughts\n%@ Buckets\n\nHippocampus %@\nMade with <3 in Nashville", ([[[LXSession thisSession] user] email] ? @"\nEmail entry: thought@hppcmps.com" : @""), [[[[LXSession thisSession] user] numberItems] formattedString], [[[[LXSession thisSession] user] numberBuckets] formattedString], [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] ]];
     return cell;
 }
 
@@ -567,12 +573,14 @@
 - (void) collapseSection:(NSInteger)section
 {
     [self.collapsedSections setObject:@YES forKey:[self.sections objectAtIndex:section]];
+    [self saveCollapsedSections];
     [self reloadScreen];
 }
 
 - (void) uncollapseSection:(NSInteger)section
 {
     [self.collapsedSections removeObjectForKey:[self.sections objectAtIndex:section]];
+    [self saveCollapsedSections];
     [self reloadScreen];
 }
 
@@ -598,7 +606,7 @@
                 [self setBucketToDelete:bucket];
                 [self alertForDeletion];
             } else {
-                UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You can't delete this collection since you didn't create it." delegate:self cancelButtonTitle:@"Okay." otherButtonTitles:nil];
+                UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You can't delete this bucket since you didn't create it." delegate:self cancelButtonTitle:@"Okay." otherButtonTitles:nil];
                 [av show];
             }
         }
@@ -607,8 +615,8 @@
 
 - (void) alertForDeletion
 {
-    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete this collection?" message:@"This will also delete all thoughts that only belong to this collection." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
-    [alert addButtonWithTitle:@"Delete Collection"];
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Delete this bucket?" message:@"This will also delete all thoughts that only belong to this bucket." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles: nil];
+    [alert addButtonWithTitle:@"Delete Bucket"];
     [alert setTag:(NSInteger)99999999999999];
     [alert show];
 }
@@ -625,7 +633,7 @@
 {
     if (buttonIndex == 1 && alertView.tag == (NSInteger)99999999999999) {
         if (self.bucketToDelete && ![self.bucketToDelete isAllNotesBucket] && ![self assignMode] && [self.bucketToDelete belongsToCurrentUser]) {
-            [self showHUDWithMessage:@"Deleting Collection..."];
+            [self showHUDWithMessage:@"Deleting Bucket..."];
             [[LXServer shared] deleteBucketWithBucketID:[self.bucketToDelete ID] success:^(id responseObject){
                 [self refreshChange];
             }failure:^(NSError *error){
@@ -949,7 +957,7 @@
 
 - (void) actionTaken:(NSString *)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary *)newI
 {
-    NSLog(@"actionTaken callback: %@", action);
+    //NSLog(@"actionTaken callback: %@", action);
     if ([action isEqualToString:@"delete"]) {
         [[self searchArray] removeObject:i];
         [self reloadScreen];
@@ -1005,7 +1013,7 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
     if (buttonIndex == 3) {
-        NSLog(@"Cancel pressed --> Cancel ActionSheet");
+        //NSLog(@"Cancel pressed --> Cancel ActionSheet");
     }
 }
 
@@ -1049,7 +1057,7 @@
 
 - (void) handleSectionLongPress:(UILongPressGestureRecognizer*)gestureRecognizer
 {
-    NSLog(@"section: %li", (long)gestureRecognizer.view.tag);
+    //NSLog(@"section: %li", (long)gestureRecognizer.view.tag);
     if (!self.groupAlertView) {
         NSDictionary* group = [self groupAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:gestureRecognizer.view.tag]];
         if (group) {
@@ -1087,7 +1095,7 @@
         HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
         [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
         [vc setImageForMainImageView:[UIImage imageNamed:@"permission-screen.jpg"]];
-        [vc setMainLabelText:@"Use your contacts to easily create collections about people you already know."];
+        [vc setMainLabelText:@"Use your contacts to easily create buckets for people you already know."];
         [vc setPermissionType:@"contacts"]; 
         [vc setDelegate:self];
         [vc setButtonText:@"Grant Contact Permission"];
@@ -1104,7 +1112,7 @@
 # pragma mark - create bucket from contacts
 - (void) createBucketFromContact:(NSMutableDictionary*)contact
 {
-    [self showHUDWithMessage:@"Creating Collection"];
+    [self showHUDWithMessage:@"Creating Bucket"];
     
     [[LXServer shared] createBucketWithFirstName:[contact name] andBucketType:@"Person"
                                          success:^(id responseObject) {
@@ -1115,7 +1123,7 @@
                                              [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
                                          }failure:^(NSError* error) {
                                              [self hideHUD];
-                                             UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the collection." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                                             UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the bucket." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
                                              [av show];
                                          }];
 

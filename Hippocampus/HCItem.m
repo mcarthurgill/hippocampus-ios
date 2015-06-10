@@ -87,7 +87,7 @@
     
     for (int i = 0; i < words.count; ++i) {
         if (![[words objectAtIndex:i] isEqualToString:@" "] && ![[words objectAtIndex:i] isEqualToString:@""]) {
-            NSLog(@"Word %i: %@", i, [words objectAtIndex:i]);
+            //NSLog(@"Word %i: %@", i, [words objectAtIndex:i]);
             [predicates addObject:[NSPredicate predicateWithFormat:@"(message CONTAINS[c] %@)", [words objectAtIndex:i]]];
         }
     }

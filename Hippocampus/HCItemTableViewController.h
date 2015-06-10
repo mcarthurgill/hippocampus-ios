@@ -40,6 +40,9 @@
 @property (strong, nonatomic) AVAsset* asset;
 @property (strong, nonatomic) AVPlayerItem* playerItem;
 
+@property (strong, nonatomic) AVPlayer* audioPlayer;
+@property (strong, nonatomic) UILabel* audioLabel;
+
 - (void) saveReminder:(NSString*)reminder withType:(NSString*)type;
 - (void) saveUpdatedMessage:(NSString *)updatedMessage;
 - (void) addToStack:(id)stackID;

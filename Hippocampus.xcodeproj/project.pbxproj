@@ -64,6 +64,7 @@
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
+		28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 28793F001B28743900E2998F /* NSArray+Attributes.m */; };
 		288433BF1A8BD3AA0059FCE1 /* HCItemPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288433BE1A8BD3AA0059FCE1 /* HCItemPageViewController.m */; };
 		288433C21A8BD45E0059FCE1 /* HCContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288433C11A8BD45E0059FCE1 /* HCContainerViewController.m */; };
 		28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A0857B1A700CB200BA1368 /* LXString+NSString.m */; };
@@ -198,6 +199,8 @@
 		286F43521A9F7C290086AAC9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		287423D11B0592B000A3242C /* Model 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 4.xcdatamodel"; sourceTree = "<group>"; };
 		287423D21B059F7200A3242C /* email-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "email-screen.jpg"; sourceTree = "<group>"; };
+		28793EFF1B28743900E2998F /* NSArray+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Attributes.h"; sourceTree = "<group>"; };
+		28793F001B28743900E2998F /* NSArray+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Attributes.m"; sourceTree = "<group>"; };
 		288433BD1A8BD3AA0059FCE1 /* HCItemPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCItemPageViewController.h; sourceTree = "<group>"; };
 		288433BE1A8BD3AA0059FCE1 /* HCItemPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCItemPageViewController.m; sourceTree = "<group>"; };
 		288433C01A8BD45E0059FCE1 /* HCContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCContainerViewController.h; sourceTree = "<group>"; };
@@ -535,6 +538,8 @@
 				28A0857B1A700CB200BA1368 /* LXString+NSString.m */,
 				28431DE21A93914200B12548 /* NSDictionary+Attributes.h */,
 				28431DE31A93914200B12548 /* NSDictionary+Attributes.m */,
+				28793EFF1B28743900E2998F /* NSArray+Attributes.h */,
+				28793F001B28743900E2998F /* NSArray+Attributes.m */,
 				286F434F1A9F71DB0086AAC9 /* UIFont+HCFonts.h */,
 				286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */,
 				76B029751AC20247003539B4 /* UILabel+Bold.h */,
@@ -870,6 +875,7 @@
 				281CA91A1951F4F900E6BE96 /* HCItem.m in Sources */,
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
+				28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */,
 				76450E511AE95308004D7FAD /* HCPopUpViewController.m in Sources */,
 				769DCA701AB860660036E4BB /* HCExplanationTableViewCell.m in Sources */,
 				76D965A61AD45CEB008C1D3B /* HCCollaborateTableViewCell.m in Sources */,

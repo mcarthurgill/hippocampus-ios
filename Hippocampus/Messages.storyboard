@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="4lK-2R-yNE">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -2647,7 +2648,7 @@
             </objects>
             <point key="canvasLocation" x="4250" y="3305"/>
         </scene>
-        <!--New Collection-->
+        <!--New Bucket-->
         <scene sceneID="HGb-p0-MI9">
             <objects>
                 <tableViewController storyboardIdentifier="newBucketIITableViewController" id="bTB-5j-foa" customClass="HCNewBucketIITableViewController" sceneMemberID="viewController">
@@ -2665,7 +2666,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Collection Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Okl-lW-9hj">
+                                                <textField opaque="NO" clipsSubviews="YES" tag="1" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Bucket Name" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Okl-lW-9hj">
                                                     <rect key="frame" x="160" y="21" width="280" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="280" id="pOj-Yx-1ee"/>
@@ -2683,7 +2684,7 @@
                                                         <outlet property="delegate" destination="bTB-5j-foa" id="HSU-8f-dRp"/>
                                                     </connections>
                                                 </pickerView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="go ahead and add this collection to a group:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J1q-6w-OxB">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="go ahead and add this bucket to a group:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J1q-6w-OxB">
                                                     <rect key="frame" x="99" y="59" width="402" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="PVZ-AZ-ZIu"/>
@@ -2736,7 +2737,7 @@
                             <outlet property="delegate" destination="bTB-5j-foa" id="TzN-b9-2pa"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="New Collection" id="lMC-JN-7YN">
+                    <navigationItem key="navigationItem" title="New Bucket" id="lMC-JN-7YN">
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="97E-0o-AvF">
                             <connections>
                                 <action selector="saveAction:" destination="bTB-5j-foa" id="nqm-Np-fWj"/>

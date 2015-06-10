@@ -61,14 +61,14 @@
     [super viewDidAppear:animated];
     
     if ([[LXSetup theSetup] visitedThisScreen:self]) {
-        NSLog(@"already visited new bucket view controller");
+        //NSLog(@"already visited new bucket view controller");
     } else {
-        NSLog(@"have not visited new bucket view controller");
+        //NSLog(@"have not visited new bucket view controller");
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
         [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
         [vc setImageForMainImageView:[UIImage imageNamed:@"new-collection-screen.jpg"]];
-        [vc setMainLabelText:@"Name your collection. Collections contain thoughts."];
+        [vc setMainLabelText:@"Name your bucket. Buckets contain thoughts."];
         [self.navigationController presentViewController:vc animated:NO completion:nil];
     }
 }
@@ -90,7 +90,7 @@
     if (self.firstName.text && [self.firstName.text length] > 0) {
         
         [self.firstName resignFirstResponder];
-        [self showHUDWithMessage:@"Creating Collection"];
+        [self showHUDWithMessage:@"Creating Bucket"];
         
         [[LXServer shared] createBucketWithFirstName:self.firstName.text andGroupID:[[self.typeOptions objectAtIndex:[self.typePicker selectedRowInComponent:0]] ID]
                                              success:^(id responseObject) {
@@ -104,11 +104,11 @@
                                                  }
                                             }failure:^(NSError* error) {
                                                 [self hideHUD];
-                                                UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the collection." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
+                                                UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the bucket." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
                                                 [av show];
                                             }];
     } else {
-        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You must enter a Collection name!" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"You must enter a bucket name!" delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [av show];
     }
 }

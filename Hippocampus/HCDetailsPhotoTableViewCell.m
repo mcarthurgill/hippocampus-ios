@@ -23,7 +23,7 @@
 - (void)configureWithMediaUrl:(NSString*)mediaUrl andImageView:(UIImageView*)imageView {
 
     mediaUrl = [mediaUrl croppedImageURLToScreenWidth];
-    NSLog(@"mediaURL: %@", mediaUrl);
+    //NSLog(@"mediaURL: %@", mediaUrl);
     
     [imageView setClipsToBounds:YES];
     [imageView setContentMode:UIViewContentModeScaleAspectFill];

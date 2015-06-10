@@ -118,8 +118,8 @@
 }
 
 -(BOOL) shouldPassIntroduction {
-    NSLog(@"****self.flagged = %d", self.flagged);
-        NSLog(@"****total Q's = %lu", self.introQuestions.count/2);
+    //NSLog(@"****self.flagged = %d", self.flagged);
+        //NSLog(@"****total Q's = %lu", self.introQuestions.count/2);
     return (long)self.flagged < self.introQuestions.count/2;
 }
 

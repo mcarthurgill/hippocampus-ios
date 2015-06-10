@@ -62,9 +62,9 @@
     [super viewDidAppear:animated];
     
     if ([[LXSetup theSetup] visitedThisScreen:self]) {
-        NSLog(@"already visited reminder view controller");
+        //NSLog(@"already visited reminder view controller");
     } else {
-        NSLog(@"have not visited reminder view controller");
+        //NSLog(@"have not visited reminder view controller");
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
         [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
@@ -90,7 +90,7 @@
 
 - (void) setToCurrentlySelectedDay
 {
-    NSLog(@"%li %li %li", (long)[self.currentlySelectedDate yearIndex], (long)[self.currentlySelectedDate monthIndex], (long)[self.currentlySelectedDate dayIndex]);
+    //NSLog(@"%li %li %li", (long)[self.currentlySelectedDate yearIndex], (long)[self.currentlySelectedDate monthIndex], (long)[self.currentlySelectedDate dayIndex]);
     
     if ([self onceMode]) {
         // month, day, year
@@ -134,7 +134,7 @@
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
     NSString* newDate = [dateFormat stringFromDate:self.currentlySelectedDate];
-    NSLog(@"Nudge Date: %@", newDate);
+    //NSLog(@"Nudge Date: %@", newDate);
     [self.item setObject:newDate forKey:@"reminder_date"];
     [self dismissViewControllerAnimated:NO completion:^(void){
         [(HCItemTableViewController*)self.delegate saveReminder:newDate withType:[self typeSelected]];
@@ -308,7 +308,7 @@
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     if ([pickerView isTypePicker]) {
-        NSLog(@"TYPE ROW SELECTED!");
+        //NSLog(@"TYPE ROW SELECTED!");
         [self refreshDayPicker];
     } else {
         [self refreshAfterSelect];

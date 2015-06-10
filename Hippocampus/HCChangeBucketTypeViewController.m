@@ -31,7 +31,7 @@
     
     self.bucketDict = [[NSMutableDictionary alloc] initWithDictionary:[self.bucketDict mutableCopy]];
     
-    NSLog(@"BUCKET DICT: %@", self.bucketDict);
+    //NSLog(@"BUCKET DICT: %@", self.bucketDict);
     
     self.typeOptions = [[LXSession thisSession] groups];
     [self.typeOptions insertObject:@{@"group_name":@"Ungrouped",@"id":@"0"} atIndex:0];

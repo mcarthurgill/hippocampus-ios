@@ -92,14 +92,14 @@
     if ([self.navigationController.visibleViewController isKindOfClass:[HCBucketViewController class]]) {
         if ([self.bucket isAllNotesBucket]) {
             if ([[LXSetup theSetup] visitedThisScreen:self]) {
-                NSLog(@"already visited bucket view controller");
+                //NSLog(@"already visited bucket view controller");
             } else {
-                NSLog(@"have not visited bucket view controller");
+                //NSLog(@"have not visited bucket view controller");
                 UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
                 HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
                 [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
                 [vc setImageForMainImageView:[UIImage imageNamed:@"all-screen.jpg"]];
-                [vc setMainLabelText:@"These are all your thoughts. A blue dot means the thought doesn't belong to any collections yet."];
+                [vc setMainLabelText:@"These are all your thoughts. A blue dot means the thought doesn't belong to any buckets yet."];
                 [self.navigationController presentViewController:vc animated:NO completion:nil];
             }
         }
@@ -334,7 +334,7 @@
             [tempNote setObject:[NSNumber numberWithDouble:[[LXSession currentLocation] coordinate].longitude]  forKey:@"longitude"];
         }
         
-        NSLog(@"%@", self.composeTextView.attributedText.string);
+        //NSLog(@"%@", self.composeTextView.attributedText.string);
 
         if (self.imageAttachments && [self.imageAttachments count] > 0) {
             NSMutableArray* mediaURLS = [[NSMutableArray alloc] init];
@@ -862,8 +862,8 @@
         ALAssetsLibraryAssetForURLResultBlock resultBlock = ^(ALAsset *myAsset) {
             CLLocation* l = [myAsset valueForProperty:ALAssetPropertyLocation];
             if (l && [l coordinate].latitude && [l coordinate].longitude) {
-                NSLog(@"location: %@", l);
-                NSLog(@"coordinates: %f, %f", [l coordinate].latitude, [l coordinate].longitude);
+                //NSLog(@"location: %@", l);
+                //NSLog(@"coordinates: %f, %f", [l coordinate].latitude, [l coordinate].longitude);
                 [metadata setObject:[NSNumber numberWithDouble:[l coordinate].latitude] forKey:@"latitude"];
                 [metadata setObject:[NSNumber numberWithDouble:[l coordinate].longitude] forKey:@"longitude"];
             } else {
@@ -979,7 +979,7 @@
 
 - (void) actionTaken:(NSString *)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary *)newI
 {
-    NSLog(@"actionTaken callback: %@", action);
+    //NSLog(@"actionTaken callback: %@", action);
     if ([action isEqualToString:@"delete"]) {
         [self.allItems removeObject:i];
         [self reloadScreen];

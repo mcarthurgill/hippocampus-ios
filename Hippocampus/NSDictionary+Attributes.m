@@ -7,6 +7,7 @@
 //
 
 #import "NSDictionary+Attributes.h"
+#import "NSArray+Attributes.h"
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
@@ -521,31 +522,33 @@
 
 - (NSMutableDictionary*) cleanDictionary
 {
-    NSMutableDictionary* tDict = [[NSMutableDictionary alloc] initWithDictionary:self];
-    NSArray* keys = [tDict allKeys];
+    NSMutableDictionary* tDict = [[NSMutableDictionary alloc] init];
+    
+    NSArray* keys = [self allKeys];
+    
     for (NSString* k in keys) {
-        if (!NULL_TO_NIL([tDict objectForKey:k])) {
-            [tDict removeObjectForKey:k];
-        }
-        if ([[tDict objectForKey:k] isKindOfClass:[NSString class]]) {
-            if (!NULL_TO_NIL([tDict objectForKey:k])) {
-                [tDict removeObjectForKey:k];
-            }
-        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]] && [[tDict objectForKey:k] count] == 0) {
-            [tDict removeObjectForKey:k];
-        } else if ([[tDict objectForKey:k] isKindOfClass:[NSArray class]] || [[tDict objectForKey:k] isKindOfClass:[NSMutableArray class]]) {
-            NSMutableArray* temporaryInnerArray = [[NSMutableArray alloc] init];
-            for (id object in [tDict objectForKey:k]) {
-                if ([object isKindOfClass:[NSString class]]) {
-                    [temporaryInnerArray addObject:object];
-                } else {
-                    [temporaryInnerArray addObject:[object cleanDictionary]];
+        
+        if (NULL_TO_NIL([self objectForKey:k])) {
+            if ([[self objectForKey:k] isKindOfClass:[NSArray class]] || [[self objectForKey:k] isKindOfClass:[NSMutableArray class]]) {
+                NSMutableArray* temporaryInnerArray = [[self objectForKey:k] cleanArray];
+                if (temporaryInnerArray) {
+                    [tDict setObject:temporaryInnerArray forKey:k];
                 }
+                
+            } else if ([[self objectForKey:k] isKindOfClass:[NSDictionary class]] || [[self objectForKey:k] isKindOfClass:[NSMutableDictionary class]]) {
+                NSMutableDictionary* temp = [[self objectForKey:k] cleanDictionary];
+                if (temp) {
+                    [tDict setObject:temp forKey:k];
+                }
+            
+            } else if ([[self objectForKey:k] isKindOfClass:[NSString class]] || [[self objectForKey:k] isKindOfClass:[NSNumber class]]) {
+                if (NULL_TO_NIL([self objectForKey:k])) {
+                    [tDict setObject:[self objectForKey:k] forKey:k];
+                }
+                
             }
-            [tDict setObject:temporaryInnerArray forKey:k];
-        } else if ([[tDict objectForKey:k] isKindOfClass:[NSDictionary class]] || [[tDict objectForKey:k] isKindOfClass:[NSMutableDictionary class]]) {
-            return [[tDict objectForKey:k] cleanDictionary];
         }
+        
     }
     return tDict;
 }

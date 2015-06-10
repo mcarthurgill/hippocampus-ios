@@ -41,6 +41,8 @@
 
 @synthesize mediaView;
 @synthesize player, playerLayer, asset, playerItem;
+@synthesize audioPlayer;
+@synthesize audioLabel;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -161,7 +163,7 @@
         [self.sections addObject:@"addedBy"];
     }
     
-    if ([self.item hasMessage] && ![self.item messageIsOnlyLinks]) {
+    if ([self.item hasMessage]) { // && ![self.item messageIsOnlyLinks]) {
         [self.sections addObject:@"message"];
     }
     
@@ -319,7 +321,12 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"audioCell" forIndexPath:indexPath];
     
     UILabel* label = (UILabel*) [cell.contentView viewWithTag:1];
-    [label setText:@"Play Audio"];
+    if ([self audioIsPlaying]) {
+        [label setText:@"Pause Audio"];
+    } else {
+        [label setText:@"Play Audio"];
+    }
+    self.audioLabel = label;
     
     return cell;
 }
@@ -346,6 +353,7 @@
     note.delegate = self;
     [note setText:[self.item message]];
     [note setTag:1];
+    [note setFont:[UIFont fontWithName:@"HelveticaNeue-Light" size:16.0f]];
     [cell.contentView addSubview:note];
     
     [self setMessageTextView:note];
@@ -419,7 +427,7 @@
     [blueDot setHidden:YES];
     
     if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"assign"]) {
-        [label setText:@"Add to Collection"];
+        [label setText:@"Add to Bucket"];
         if ([self.item isOutstanding]) {
             [blueDot.layer setCornerRadius:4];
             [blueDot setClipsToBounds:YES];
@@ -462,7 +470,7 @@
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
-        return [self heightForText:[self.item message] width:(self.view.frame.size.width-20.0f) font:[UIFont noteDisplay]] + 22.0f + 12.0f + 36.0f + [UIApplication sharedApplication].statusBarFrame.size.height;
+        return [self heightForText:[self.item message] width:(self.view.frame.size.width-30.0f) font:[UIFont fontWithName:@"HelveticaNeue-Light" size:16.0f]] + 22.0f + 12.0f + 36.0f + [UIApplication sharedApplication].statusBarFrame.size.height; //(self.view.frame.size.width-self.messageTextView.frame.size.width)
         
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"reminder"]) {
         return 56.0f;
@@ -511,7 +519,7 @@
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"reminder"]) {
         return @"Nudge";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"bucket"]) {
-        return @"Collections";
+        return @"Buckets";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"location"]) {
@@ -555,6 +563,11 @@
         
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"audio"]) {
         
+        if ([self audioIsPlaying]) {
+            [self pauseAudio];
+        } else {
+            [self playAudio];
+        }
         
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"assign"]) {
@@ -592,7 +605,6 @@
     
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
 
 
 
@@ -654,7 +666,7 @@
 {
     [self setUnsavedChanges:YES andSavingChanges:YES];
     
-    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Collection", [bucket objectForKey:@"first_name"]]];
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Bucket", [bucket objectForKey:@"first_name"]]];
     
     [[LXServer shared] addItem:self.item toBucket:bucket
                        success:^(id responseObject){
@@ -706,7 +718,8 @@
     [self getImages];
     
     [[LXServer shared] updateItemInfoWithItem:self.item
-                                      success:^(id responseObject){
+                                      success:^(id responseObject) {
+                                          //NSLog(@"response: %@", responseObject);
                                           self.item = [NSMutableDictionary dictionaryWithDictionary:responseObject];
                                           [self getImages];
                                           [self reloadScreen];
@@ -754,7 +767,7 @@
 - (void) alertForRemovalFromBucket:(NSMutableDictionary *)bucket
 {
     UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Are you sure?"
-                                                     message:[NSString stringWithFormat:@"Do you want to remove this note from the %@ collection?", [bucket firstName]]
+                                                     message:[NSString stringWithFormat:@"Do you want to remove this note from the %@ bucket?", [bucket firstName]]
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles: nil];
@@ -774,7 +787,6 @@
 {
     if (alertView.tag == 2) {
         if (buttonIndex == 1) {
-            NSLog(@"remove!!!!");
             [self destroyBucketItemPair];
         }
     } else {
@@ -830,7 +842,7 @@
     
     [NSRunLoop cancelPreviousPerformRequestsWithTarget:self];
     [self performSelector:@selector(saveUpdatedMessage:) withObject:result afterDelay:0.5];
-    [self performSelector:@selector(updateTableViewCellSizes:) withObject:textView afterDelay:0];
+    [self performSelector:@selector(updateTableViewCellSizes:) withObject:textView afterDelay:0.01];
     
     [self setUnsavedChanges:YES andSavingChanges:NO];
     
@@ -981,5 +993,37 @@
     [p seekToTime:kCMTimeZero];
 }
 
+
+
+# pragma mark audio helpers
+
+- (void) itemDidFinishPlaying:(NSNotification *) notification
+{
+    [self pauseAudio];
+}
+
+- (void) playAudio
+{
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
+    
+    AVPlayerItem *aPlayerItem = [[AVPlayerItem alloc] initWithURL:[NSURL URLWithString:[self.item audioURL]]];
+    self.audioPlayer = [[AVPlayer alloc] initWithPlayerItem:aPlayerItem];
+    [self.audioPlayer play];
+    [self.audioLabel setText:@"Pause Audio"];
+ 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(itemDidFinishPlaying:) name:AVPlayerItemDidPlayToEndTimeNotification object:aPlayerItem];
+}
+
+- (void) pauseAudio
+{
+    [self.audioPlayer pause];
+    [self.audioLabel setText:@"Play Audio"];
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
+}
+
+- (BOOL) audioIsPlaying
+{
+    return self.audioPlayer && [self.audioPlayer rate] > 0.001;
+}
 
 @end

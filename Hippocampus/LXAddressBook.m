@@ -103,7 +103,7 @@ static LXAddressBook* thisBook = nil;
         }
         
         [self sortContacts];
-        NSLog(@"*******sortedContacts*******");
+        //NSLog(@"*******sortedContacts*******");
         completion(YES);
     });
 }

@@ -238,7 +238,7 @@
 -(void) handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
 {
     if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        UIActionSheet* aS = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Add to Collection", @"Set Nudge", @"Copy", nil];
+        UIActionSheet* aS = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete" otherButtonTitles:@"Add to Bucket", @"Set Nudge", @"Copy", nil];
         [aS showInView:self.superview];
     }
 }
@@ -336,7 +336,7 @@
 
 - (BOOL) swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
 {
-    NSLog(@"tapped button at Index: %li", (long)index);
+    //NSLog(@"tapped button at Index: %li", (long)index);
     if (index == 0) {
         //DELETE
         [self alertForDeletion];
@@ -401,7 +401,7 @@
 
 - (void) addToStack:(NSDictionary*)b
 {
-    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Collection", [b objectForKey:@"first_name"]]];
+    [self showHUDWithMessage:[NSString stringWithFormat:@"Adding to the '%@' Bucket", [b objectForKey:@"first_name"]]];
     
     [[LXServer shared] addItem:self.item toBucket:b
                        success:^(id responseObject) {
@@ -441,7 +441,7 @@
 {
     id view = self;
     while (![view isKindOfClass:[UITableView class]] && [view superview]) {
-        NSLog(@"class of superview: %@", [[[view superview] class] description]);
+        //NSLog(@"class of superview: %@", [[[view superview] class] description]);
         view = [view superview];
     }
     if ([[view dataSource] respondsToSelector:@selector(actionTaken:forItem:newItem:)]) {
@@ -497,7 +497,7 @@
 {
     id view = self;
     while (![view isKindOfClass:[UITableView class]] && [view superview]) {
-        NSLog(@"class of superview: %@", [[[view superview] class] description]);
+        //NSLog(@"class of superview: %@", [[[view superview] class] description]);
         view = [view superview];
     }
     return (HCBucketViewController*)[view dataSource];

@@ -201,7 +201,7 @@
 
 - (void) actionTaken:(NSString *)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary *)newI
 {
-    NSLog(@"actionTaken callback: %@", action);
+    //NSLog(@"actionTaken callback: %@", action);
     if ([action isEqualToString:@"delete"]) {
         [self getRandom];
     } else if ([action isEqualToString:@"setReminder"]) {

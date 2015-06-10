@@ -104,10 +104,10 @@
     
     NSMutableArray* predicates = [[NSMutableArray alloc] init];
     
-    NSLog(@"========");
+    //NSLog(@"========");
     for (int i = 0; i < words.count; ++i) {
         if (![[words objectAtIndex:i] isEqualToString:@" "] && ![[words objectAtIndex:i] isEqualToString:@""]) {
-            NSLog(@"Word %i: %@", i, [words objectAtIndex:i]);
+            //NSLog(@"Word %i: %@", i, [words objectAtIndex:i]);
             [predicates addObject:[NSPredicate predicateWithFormat:@"(firstName CONTAINS[c] %@) OR (lastName CONTAINS[c] %@)", [words objectAtIndex:i], [words objectAtIndex:i]]];
         }
     }

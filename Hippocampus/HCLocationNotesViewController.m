@@ -386,7 +386,7 @@
 
 - (void) actionTaken:(NSString *)action forItem:(NSDictionary *)i newItem:(NSMutableDictionary *)newI
 {
-    NSLog(@"actionTaken callback: %@", action);
+    //NSLog(@"actionTaken callback: %@", action);
     if ([action isEqualToString:@"delete"]) {
         [self.allItems removeObject:i];
         [self.tableView reloadData];

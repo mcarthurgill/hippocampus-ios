@@ -36,14 +36,14 @@
     [super viewDidAppear:animated];
     
     if ([[LXSetup theSetup] visitedThisScreen:self]) {
-        NSLog(@"already visited item table view controller");
+        //NSLog(@"already visited item table view controller");
     } else {
-        NSLog(@"have not visited item table view controller");
+        //NSLog(@"have not visited item table view controller");
         UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
         HCPopUpViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"popUpViewController"];
         [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
         [vc setImageForMainImageView:[UIImage imageNamed:@"item-screen.jpg"]];
-        [vc setMainLabelText:@"Assign this thought to a collection. Or set it to nudge you later (like a reminder)."];
+        [vc setMainLabelText:@"Add this thought to a bucket. Or set it to nudge you later (like a reminder)."];
         [self.navigationController.visibleViewController presentViewController:vc animated:NO completion:nil];
     }
     
