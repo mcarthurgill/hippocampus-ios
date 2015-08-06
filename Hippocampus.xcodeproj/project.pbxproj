@@ -24,15 +24,12 @@
 		281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA90A1951ECBA00E6BE96 /* LXSession.m */; };
 		281CA90E1951F34A00E6BE96 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA90D1951F34A00E6BE96 /* CoreData.framework */; };
 		281CA9111951F36700E6BE96 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 281CA90F1951F36700E6BE96 /* Model.xcdatamodeld */; };
-		281CA9141951F4F800E6BE96 /* HCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA9131951F4F800E6BE96 /* HCUser.m */; };
-		281CA91A1951F4F900E6BE96 /* HCItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA9191951F4F900E6BE96 /* HCItem.m */; };
 		281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */ = {isa = PBXBuildFile; fileRef = 281CA91C196C29E500E6BE96 /* 256-box2.png */; };
 		281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 281CA91D196C29E500E6BE96 /* 256-box2@2x.png */; };
 		281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */ = {isa = PBXBuildFile; fileRef = 281CA920196C29F800E6BE96 /* 179-notepad.png */; };
 		281CA923196C29F800E6BE96 /* 179-notepad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 281CA921196C29F800E6BE96 /* 179-notepad@2x.png */; };
 		281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 281CA924196C2B9100E6BE96 /* Login.storyboard */; };
 		281CA929196C2C2900E6BE96 /* HCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA928196C2C2900E6BE96 /* HCLoginViewController.m */; };
-		281CA930196C3C9400E6BE96 /* HCBucket.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA92F196C3C9400E6BE96 /* HCBucket.m */; };
 		281CA937196C458400E6BE96 /* HCBucketsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA936196C458400E6BE96 /* HCBucketsTableViewController.m */; };
 		281CA93F196C8D0500E6BE96 /* HCItemTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA93E196C8D0500E6BE96 /* HCItemTableViewController.m */; };
 		281CA94C196D9EE100E6BE96 /* HCNewBucketIITableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA94B196D9EE100E6BE96 /* HCNewBucketIITableViewController.m */; };
@@ -140,10 +137,6 @@
 		281CA90A1951ECBA00E6BE96 /* LXSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXSession.m; sourceTree = "<group>"; };
 		281CA90D1951F34A00E6BE96 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		281CA9101951F36700E6BE96 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
-		281CA9121951F4F800E6BE96 /* HCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCUser.h; sourceTree = "<group>"; };
-		281CA9131951F4F800E6BE96 /* HCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCUser.m; sourceTree = "<group>"; };
-		281CA9181951F4F900E6BE96 /* HCItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCItem.h; sourceTree = "<group>"; };
-		281CA9191951F4F900E6BE96 /* HCItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCItem.m; sourceTree = "<group>"; };
 		281CA91C196C29E500E6BE96 /* 256-box2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "256-box2.png"; sourceTree = "<group>"; };
 		281CA91D196C29E500E6BE96 /* 256-box2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "256-box2@2x.png"; sourceTree = "<group>"; };
 		281CA920196C29F800E6BE96 /* 179-notepad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "179-notepad.png"; sourceTree = "<group>"; };
@@ -151,8 +144,6 @@
 		281CA924196C2B9100E6BE96 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		281CA927196C2C2900E6BE96 /* HCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCLoginViewController.h; sourceTree = "<group>"; };
 		281CA928196C2C2900E6BE96 /* HCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCLoginViewController.m; sourceTree = "<group>"; };
-		281CA92E196C3C9400E6BE96 /* HCBucket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCBucket.h; sourceTree = "<group>"; };
-		281CA92F196C3C9400E6BE96 /* HCBucket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCBucket.m; sourceTree = "<group>"; };
 		281CA935196C458400E6BE96 /* HCBucketsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCBucketsTableViewController.h; sourceTree = "<group>"; };
 		281CA936196C458400E6BE96 /* HCBucketsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCBucketsTableViewController.m; sourceTree = "<group>"; };
 		281CA93D196C8D0500E6BE96 /* HCItemTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCItemTableViewController.h; sourceTree = "<group>"; };
@@ -419,12 +410,6 @@
 			isa = PBXGroup;
 			children = (
 				281CA90F1951F36700E6BE96 /* Model.xcdatamodeld */,
-				281CA9181951F4F900E6BE96 /* HCItem.h */,
-				281CA9191951F4F900E6BE96 /* HCItem.m */,
-				281CA9121951F4F800E6BE96 /* HCUser.h */,
-				281CA9131951F4F800E6BE96 /* HCUser.m */,
-				281CA92E196C3C9400E6BE96 /* HCBucket.h */,
-				281CA92F196C3C9400E6BE96 /* HCBucket.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -844,7 +829,6 @@
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */,
 				281CA9111951F36700E6BE96 /* Model.xcdatamodeld in Sources */,
-				281CA930196C3C9400E6BE96 /* HCBucket.m in Sources */,
 				765B3D731AAF944700E599F3 /* HCRandomItemViewController.m in Sources */,
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
 				76E6A1FD1A8BCFFA00B3669B /* LXRemindersViewController.m in Sources */,
@@ -852,7 +836,6 @@
 				2837E8061AC11D2A0089FA33 /* HCInitialViewController.m in Sources */,
 				2827B84A1970B6DA00F595D9 /* HCReminderViewController.m in Sources */,
 				2837E8031AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m in Sources */,
-				281CA9141951F4F800E6BE96 /* HCUser.m in Sources */,
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
 				2837E80C1AC11D550089FA33 /* HCMessageViewController.m in Sources */,
 				288433BF1A8BD3AA0059FCE1 /* HCItemPageViewController.m in Sources */,
@@ -872,7 +855,6 @@
 				76AA7BD61AD717FD00291183 /* HCNameViewController.m in Sources */,
 				281CA94C196D9EE100E6BE96 /* HCNewBucketIITableViewController.m in Sources */,
 				76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */,
-				281CA91A1951F4F900E6BE96 /* HCItem.m in Sources */,
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
 				28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */,
