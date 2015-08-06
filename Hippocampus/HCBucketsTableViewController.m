@@ -1120,7 +1120,14 @@
                                              NSDictionary* bucket = responseObject;
                                              [self createContactCardWithBucket:bucket andContact:contact];
                                              [self.delegate addToStack:bucket];
-                                             [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
+                                             if ([self.delegate respondsToSelector:@selector(pageControllerDelegate)]) {
+                                                 [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
+                                             } else if ([self.delegate isKindOfClass:[HCItemTableViewCell class]]) {
+                                                 NSInteger index = [[self.navigationController viewControllers] count] > 1 ? [[self.navigationController viewControllers] count] - 2 : 0;
+                                                 [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
+                                             } else {
+                                                 [self.navigationController popToViewController:self.delegate animated:YES];
+                                             }
                                          }failure:^(NSError* error) {
                                              [self hideHUD];
                                              UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the bucket." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
@@ -1204,6 +1211,14 @@
     [self sendRequestForUpdatedBucket];
 }
 
+
+
+
+
+- (void) addToStack:(NSDictionary*)i
+{
+    [self.delegate addToStack:i];
+}
 
 @end
 

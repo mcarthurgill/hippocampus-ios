@@ -444,7 +444,7 @@
         //NSLog(@"class of superview: %@", [[[view superview] class] description]);
         view = [view superview];
     }
-    if ([[view dataSource] respondsToSelector:@selector(actionTaken:forItem:newItem:)]) {
+    if (view && [view respondsToSelector:@selector(dataSource)] && [view dataSource] && [[view dataSource] respondsToSelector:@selector(actionTaken:forItem:newItem:)]) {
         [(HCBucketViewController*)[view dataSource] actionTaken:action forItem:self.item newItem:newI];
     }
 }

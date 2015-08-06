@@ -10,6 +10,7 @@
 #import "HCItemTableViewController.h"
 #import "HCItemPageViewController.h"
 #import "HCPopUpViewController.h"
+#import "HCItemTableViewCell.h"
 
 @interface HCNewBucketIITableViewController ()
 
@@ -99,10 +100,14 @@
                                                 [self.delegate addToStack:bucket];
                                                  if ([self.delegate respondsToSelector:@selector(pageControllerDelegate)]) {
                                                      [self.navigationController popToViewController:[[(HCItemTableViewController*)self.delegate pageControllerDelegate] parentViewController] animated:YES];
+                                                 } else if ([self.delegate isKindOfClass:[HCItemTableViewCell class]]) {
+                                                     NSInteger index = [[self.navigationController viewControllers] count] > 2 ? [[self.navigationController viewControllers] count] - 3 : 0;
+                                                     [self.navigationController popToViewController:[[self.navigationController viewControllers] objectAtIndex:index] animated:YES];
                                                  } else {
+                                                     NSLog(@"classType: %@", [[self.delegate class] description]);
                                                      [self.navigationController popToViewController:self.delegate animated:YES];
                                                  }
-                                            }failure:^(NSError* error) {
+                                            } failure:^(NSError* error) {
                                                 [self hideHUD];
                                                 UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:@"There was an error creating the bucket." delegate:self cancelButtonTitle:@"Try Again" otherButtonTitles:nil];
                                                 [av show];
