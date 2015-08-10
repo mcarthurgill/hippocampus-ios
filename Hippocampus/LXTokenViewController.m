@@ -46,13 +46,13 @@
     
     [self showHUDWithMessage:@"Working"];
     
-    [HCUser tokenVerify:self.tokenInput.text
+    [LXSession tokenVerify:self.tokenInput.text
               phone:self.phoneNumber
               success:^(id responseObject){
                   //[self dismissViewControllerAnimated:YES completion:nil];
                   [self hideHUD];
                   if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"]) {
-                      [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Messages"];
+                      [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Seahorse"];
                   } else {
                       [self showAlertViewWithTitle:@"Uh-oh" message:@"Token could not be verified. Try again!"];
                   }

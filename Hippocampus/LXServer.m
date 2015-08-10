@@ -27,134 +27,29 @@
     return sharedClient;
 }
 
-+ (id) getObjectFromModel:(NSString*)modelName primaryKeyName:(NSString*)primaryKeyName primaryKey:(NSString*)primaryKey
-{
-    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
-    NSEntityDescription *entityDescription = [NSEntityDescription
-                                              entityForName:modelName inManagedObjectContext:moc];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entityDescription];
-    [request setReturnsObjectsAsFaults:NO];
-    // Set example predicate and sort orderings...
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(%@ == %@)", primaryKeyName, primaryKey]];
-    
-    [request setPredicate:predicate];
-    NSError* error;
-    NSMutableArray *array = [NSMutableArray arrayWithArray:[moc executeFetchRequest:request error:&error]];
-    if (array.count==0) {
-        //NO OBJECT FOUND
-        NSLog(@"NO %@ FOUND", modelName);
-        return nil;
-    } else {
-        NSLog(@"RETURNING A %@, out of %lu total.", modelName, (unsigned long)array.count);
-        return [array objectAtIndex:0];
-    }
-    return nil;
-}
-
-+ (id) addToDatabase:(NSString *)modelName object:(NSDictionary *)object primaryKeyName:(NSString *)primaryKeyName withMapping:(NSDictionary *)mapping
-{
-    
-    //NSLog(@"object: %@", object);
-    
-    if (!NULL_TO_NIL([object valueForKey:@"id"])) {
-        return nil;
-    }
-    
-    NSString* object_id = [NSString stringWithFormat:@"%@",[object valueForKey:@"id"]];
-    
-    id newObject = [LXServer getObjectFromModel:modelName primaryKeyName:primaryKeyName primaryKey:object_id];
-    
-    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
-    
-    NSLog(@"newObject: %@", newObject);
-    
-    if (!newObject) {
-        newObject = [NSEntityDescription
-                   insertNewObjectForEntityForName:modelName
-                   inManagedObjectContext:moc];
-    }
-    
-    NSArray* keys = [mapping allKeys];
-    for (int i = 0; i < keys.count; ++i) {
-        NSString* core_key = keys[i];
-        NSString* json_key = [mapping objectForKey:core_key];
-        if (NULL_TO_NIL([object valueForKey:json_key])) {
-            [newObject setValue:[NSString stringWithFormat:@"%@",[object valueForKey:json_key]] forKey:core_key];
-        }
-    }
-    
-    if ([modelName isEqualToString:@"HCBucket"]) {
-        [newObject setValue:[newObject titleString] forKey:@"name"];
-    }
-    
-    if ([newObject createdAt] && [[newObject createdAt] length] > 0) {
-        NSLog(@"lastCreatedAt: %f", [[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970]);
-        if ([modelName isEqualToString:@"HCItem"]) {
-            //update last item update
-            if ([[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970] > [[[[LXSession thisSession] user] lastItemUpdateTime] doubleValue]) {
-                [[[LXSession thisSession] user] setLastItemUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970]] ];
-            }
-        } else if ([modelName isEqualToString:@"HCBucket"]) {
-            //update last bucket update
-            if ([[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970] > [[[[LXSession thisSession] user] lastBucketUpdateTime] doubleValue]) {
-                [[[LXSession thisSession] user] setLastBucketUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970]] ];
-            }
-        }
-    }
-    
-    [[[LXSession thisSession] managedObjectContext] save:nil];
-    
-    return newObject;
-}
-
-+ (void) addArrayToDatabase:(NSString*)modelName array:(NSArray*)array primaryKeyName:(NSString *)primaryKey withMapping:(NSDictionary *)mapping
-{
-    for (int i = 0; i < array.count; ++i) {
-        [LXServer addToDatabase:modelName object:[array objectAtIndex:i] primaryKeyName:primaryKey withMapping:mapping];
-    }
-    [[[LXSession thisSession] managedObjectContext] save:nil];
-}
-
-+ (void) saveObject:(id)object withPath:(NSString*)path method:(NSString*)method mapping:(NSDictionary*)mapping success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] init];
-    NSArray* keys = [mapping allKeys];
-    NSLog(@"Keys: %@", mapping);
-    for (int i = 0; i < keys.count; ++i) {
-        NSString* core_key = keys[i];
-        NSString* json_key = [mapping objectForKey:core_key];
-        if ([object valueForKey:core_key] && ![core_key isEqualToString:@"createdAt"] && ![core_key isEqualToString:@"updatedAt"] && ![core_key isEqualToString:@"id"]) {
-            [parameters setValue:[object valueForKey:core_key] forKey:json_key];
-        }
-    }
-    NSDictionary* finalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:parameters, [object serverObjectName], nil];
-    NSLog(@"finalParameters: %@", finalParameters);
-    [[LXServer shared] requestPath:path withMethod:method withParamaters:finalParameters
-                           success:^(id responseObject) {
-                               if (successCallback)
-                                   successCallback(responseObject);
-                           }
-                           failure:^(NSError *error) {
-                               if (failureCallback)
-                                   failureCallback(error);
-                           }
-     ];
-}
-
 - (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:params success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [self requestPath:path withMethod:method withParamaters:params constructingBodyWithBlock:nil success:successCallback failure:failureCallback];
+    [self requestPath:path withMethod:method withParamaters:params authType:nil constructingBodyWithBlock:nil success:successCallback failure:failureCallback];
 }
 
-- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:(NSDictionary*)p constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:(NSDictionary*)params constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [self requestPath:path withMethod:method withParamaters:params authType:nil constructingBodyWithBlock:block success:successCallback failure:failureCallback];
+}
+
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:params authType:authType success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [self requestPath:path withMethod:method withParamaters:params authType:authType constructingBodyWithBlock:nil success:successCallback failure:failureCallback];
+}
+
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:(NSDictionary*)p authType:(NSString*)authType constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
     }];
     
     NSMutableDictionary* params = [[NSMutableDictionary alloc] initWithDictionary:p];
     if ([[LXSession thisSession] user]) {
-        [params setObject:@{ @"uid":[[[LXSession thisSession] user] userID], @"token":[NSString userAuthToken] } forKey:@"auth"];
+        [params setObject:@{ @"uid":[[[LXSession thisSession] user] ID], @"token":[NSString userAuthToken] } forKey:@"auth"];
     }
     
     if ([method.uppercaseString isEqualToString:@"GET"]) {
@@ -216,7 +111,7 @@
 
 - (void) getAllBucketsWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/grouped_buckets.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: nil
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/grouped_buckets.json", [[[LXSession thisSession] user] ID]] withMethod:@"GET" withParamaters: nil
                            success:^(id responseObject) {
                                //NSLog(@"allBuckets: %@", responseObject);
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -266,7 +161,7 @@
 
 - (void) getAllItemsWithPage:(int)p success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[[LXSession thisSession] user] ID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
                            success:^(id responseObject) {
                                if ([responseObject objectForKey:@"page"] && [[responseObject objectForKey:@"page"] integerValue] == 0) {
                                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -275,7 +170,7 @@
                                        [[NSUserDefaults standardUserDefaults] setObject:[self itemsToSave:saveArray] forKey:@"0"];
                                        [[NSUserDefaults standardUserDefaults] synchronize];
                                        
-                                       [[[LXSession thisSession] user] setUserStats:responseObject];
+                                       //[[[LXSession thisSession] user] setUserStats:responseObject];
                                    });
                                }
                                if (successCallback) {
@@ -334,7 +229,7 @@
 
 - (void) getMediaUrlsForBucketID:(NSString *)bucketID success:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/media_urls.json", bucketID] withMethod:@"GET" withParamaters:@{@"user_id": [[HCUser loggedInUser] userID]}
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/media_urls.json", bucketID] withMethod:@"GET" withParamaters:@{@"user_id": [[[LXSession thisSession] user] ID]}
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -368,7 +263,7 @@
 
 - (void) getItemsNearCenterX:(CGFloat)centerX andCenterY:(CGFloat)centerY andDX:(CGFloat)dx andDY:(CGFloat)dy success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:@"/items/within_bounds.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"centerx": [NSString stringWithFormat:@"%f", centerX], @"centery": [NSString stringWithFormat:@"%f", centerY], @"dx": [NSString stringWithFormat:@"%f", dx], @"dy": [NSString stringWithFormat:@"%f", dy] }
+    [[LXServer shared] requestPath:@"/items/within_bounds.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[[LXSession thisSession] user] ID], @"centerx": [NSString stringWithFormat:@"%f", centerX], @"centery": [NSString stringWithFormat:@"%f", centerY], @"dx": [NSString stringWithFormat:@"%f", dx], @"dy": [NSString stringWithFormat:@"%f", dy] }
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -386,7 +281,7 @@
 - (void) getItemsNearCurrentLocation:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback
 {
     CLLocation *loc = [LXSession currentLocation];
-    [[LXServer shared] requestPath:@"/items/near_location.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"latitude": [NSString stringWithFormat:@"%f", loc.coordinate.latitude], @"longitude": [NSString stringWithFormat:@"%f", loc.coordinate.longitude] }
+    [[LXServer shared] requestPath:@"/items/near_location.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[[LXSession thisSession] user] ID], @"latitude": [NSString stringWithFormat:@"%f", loc.coordinate.latitude], @"longitude": [NSString stringWithFormat:@"%f", loc.coordinate.longitude] }
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -403,7 +298,7 @@
 
 - (void) getUpcomingRemindersWithPage:(int)p success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/reminders.json", [[HCUser loggedInUser] userID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/reminders.json", [[[LXSession thisSession] user] ID]] withMethod:@"GET" withParamaters: @{ @"page":[NSString stringWithFormat:@"%d", p]}
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -420,7 +315,7 @@
 
 - (void) getRandomItemsWithLimit:(int)limit success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:@"/items/random.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[HCUser loggedInUser] userID], @"limit": [NSString stringWithFormat:@"%d", limit]}
+    [[LXServer shared] requestPath:@"/items/random.json" withMethod:@"GET" withParamaters: @{ @"user_id": [[[LXSession thisSession] user] ID], @"limit": [NSString stringWithFormat:@"%d", limit]}
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -437,7 +332,7 @@
 
 - (void) getSearchResults:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term, @"user_id" : [[HCUser loggedInUser] userID] }
+    [[LXServer shared] requestPath:@"/search.json" withMethod:@"GET" withParamaters: @{ @"t" : term, @"user_id" : [[[LXSession thisSession] user] ID] }
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -455,7 +350,7 @@
 - (void) createBucketWithFirstName:(NSString*)firstName andBucketType:(NSString*)bucketType success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     [[LXServer shared] requestPath:@"buckets.json" withMethod:@"POST"
-                    withParamaters:@{@"bucket" : @{@"first_name": firstName, @"user_id": [[[LXSession thisSession] user] userID], @"bucket_type": bucketType } }
+                    withParamaters:@{@"bucket" : @{@"first_name": firstName, @"user_id": [[[LXSession thisSession] user] ID], @"bucket_type": bucketType } }
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -473,7 +368,7 @@
 - (void) createBucketWithFirstName:(NSString*)firstName andGroupID:(NSString*)groupID success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     [[LXServer shared] requestPath:@"buckets.json" withMethod:@"POST"
-                    withParamaters:@{@"bucket" : @{@"first_name": firstName, @"user_id": [[[LXSession thisSession] user] userID] }, @"group_id":groupID }
+                    withParamaters:@{@"bucket" : @{@"first_name": firstName, @"user_id": [[[LXSession thisSession] user] ID] }, @"group_id":groupID }
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -542,7 +437,7 @@
 
 - (void) updateUser:(NSDictionary*)params success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[[LXSession thisSession] user] userID]] withMethod:@"PUT" withParamaters:params
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@.json", [[[LXSession thisSession] user] ID]] withMethod:@"PUT" withParamaters:params
                            success:^(id responseObject){
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -637,7 +532,7 @@
     NSString *tokenString = [[token description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     tokenString = [tokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
     
-    [[LXServer shared] requestPath:@"/device_tokens" withMethod:@"POST" withParamaters:@{@"device_token": @{@"ios_device_token": tokenString, @"environment": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENVIRONMENT"], @"user_id": [[[LXSession thisSession] user] userID]}} success:^(id responseObject) {
+    [[LXServer shared] requestPath:@"/device_tokens" withMethod:@"POST" withParamaters:@{@"device_token": @{@"ios_device_token": tokenString, @"environment": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENVIRONMENT"], @"user_id": [[[LXSession thisSession] user] ID]}} success:^(id responseObject) {
                                 if (successCallback) {
                                     successCallback(responseObject);
                                 }

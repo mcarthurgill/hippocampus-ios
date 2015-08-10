@@ -324,7 +324,7 @@
         }
         
         [tempNote setObject:[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]] forKey:@"device_timestamp"];
-        [tempNote setObject:[[[LXSession thisSession] user] userID] forKey:@"user_id"];
+        [tempNote setObject:[[[LXSession thisSession] user] ID] forKey:@"user_id"];
         
         if (metadata && [metadata hasLocation]) {
             [tempNote setObject:[metadata objectForKey:@"latitude"]  forKey:@"latitude"];

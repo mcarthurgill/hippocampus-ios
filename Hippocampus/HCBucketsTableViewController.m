@@ -797,7 +797,7 @@
     ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"FVGQB7HR19" apiKey:@"ddecc3b35feb56ab0a9d2570ac964a82"];
     ASRemoteIndex *index = [apiClient getIndex:@"Item"];
     ASQuery* query = [ASQuery queryWithFullTextQuery:term];
-    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] userID]];
+    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] ID]];
     [index search:query
           success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
               // answer object contains a "hits" attribute that contains all results

@@ -22,4 +22,6 @@
 
 - (NSString*) cloudinaryPublicID;
 
+- (CGFloat) heightForTextWithWidth:(CGFloat)width font:(UIFont*)font;
+
 @end

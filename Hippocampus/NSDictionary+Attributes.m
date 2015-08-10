@@ -87,7 +87,7 @@
 
 - (BOOL) belongsToCurrentUser
 {
-    return [[NSString stringWithFormat:@"%@", [self userID]] isEqualToString:[[HCUser loggedInUser] userID]];
+    return [[NSString stringWithFormat:@"%@", [self userID]] isEqualToString:[NSString stringWithFormat:@"%@", [[[LXSession thisSession] user] ID]]];
 }
 
 - (NSString*) createdAt

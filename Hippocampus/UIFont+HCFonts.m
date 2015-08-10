@@ -20,4 +20,14 @@
     return [UIFont systemFontOfSize:17.0f];
 }
 
++ (UIFont*) titleFont
+{
+    return [UIFont fontWithName:@"Roboto-Regular" size:18.0f];
+}
+
++ (UIFont*) itemContentFont
+{
+    return [UIFont fontWithName:@"Roboto-Regular" size:16.0f];
+}
+
 @end

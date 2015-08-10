@@ -52,7 +52,7 @@ static LXSetup* theSetup = nil;
 -(void) getSetupQuestions
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-        [[LXServer shared] getSetupQuestionsForPercentage:[[[HCUser loggedInUser] setupCompletion] formattedString] success:^(id responseObject) {
+        [[LXServer shared] getSetupQuestionsForPercentage:[[[[LXSession thisSession] user] setupCompletion] formattedString] success:^(id responseObject) {
             if ([responseObject objectForKey:@"questions"]) {
                 self.questions = [[responseObject objectForKey:@"questions"] mutableCopy];
             }

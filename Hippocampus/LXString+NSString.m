@@ -43,5 +43,14 @@
     return [[[components lastObject] componentsSeparatedByString:@"."] firstObject];
 }
 
+- (CGFloat) heightForTextWithWidth:(CGFloat)width font:(UIFont*)font
+{
+    if ([self length] == 0)
+        return 0.0f;
+    CGRect rect = [self boundingRectWithSize:CGSizeMake(width, 100000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
+    return rect.size.height;
+}
+
+
 @end
 

@@ -7,6 +7,7 @@
 //
 
 #import "LXSession.h"
+#import "LXObjects.h"
 
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
@@ -17,7 +18,7 @@ static LXSession* thisSession = nil;
 
 @synthesize verifyingTokens;
 
-@synthesize user;
+@synthesize cachedUser;
 
 @synthesize managedObjectModel;
 @synthesize managedObjectContext;
@@ -58,9 +59,20 @@ static LXSession* thisSession = nil;
 //set singleton variables
 - (void) setVariables
 {
-    HCUser* u = [HCUser loggedInUser];
-    if (u) {
-        [self setUser:u];
+}
+
+- (NSMutableDictionary*) user
+{
+    if (self.cachedUser) {
+        return self.cachedUser;
+    } else {
+        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"localUserKey"]) {
+            NSMutableDictionary *u = [LXObjectManager objectWithLocalKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"localUserKey"]];
+            [self setCachedUser:u];
+            return u;
+        } else {
+            return nil;
+        }
     }
 }
 
@@ -246,25 +258,6 @@ static LXSession* thisSession = nil;
     return imagePath;
 }
 
-//- (NSString*) writeVideoToDocumentsFolder:(NSURL*)videoURL
-//{
-//    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-//        [self endBackgroundUpdateTask];
-//    }];
-//    
-//    NSString *videoPath = [self documentsPathForFileName:[NSString stringWithFormat:@"video_%f.mov", [NSDate timeIntervalSinceReferenceDate]]];
-//    NSData *videoData = [NSData dataWithContentsOfURL:videoURL];
-//    
-//    if (![[NSFileManager defaultManager] fileExistsAtPath:videoPath])
-//        [[NSFileManager defaultManager] createDirectoryAtPath:videoPath withIntermediateDirectories:NO attributes:nil error:nil];
-//    
-//    [videoData writeToFile:videoPath atomically:YES];
-//
-//    [self endBackgroundUpdateTask];
-//
-//    return videoPath;
-//}
-
 
 - (void) endBackgroundUpdateTask
 {
@@ -371,6 +364,73 @@ static LXSession* thisSession = nil;
         self.verifyingTokens = [[NSMutableArray alloc] init];
     }
     [self.verifyingTokens addObject:token];
+}
+
+
+
+
+
+
+
+# pragma mark logging in user
+
+
++ (void) loginUser:(NSString*)phone callingCode:(NSString*)callingCode success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"/passcode.json" withMethod:@"POST" withParamaters:@{ @"phone": phone, @"calling_code" : callingCode}
+                           success:^(id responseObject) {
+                               //HCUser* user = [LXServer addToDatabase:@"HCUser" object:responseObject primaryKeyName:@"userID" withMapping:[HCUser resourceKeysForPropertyKeys]];
+                               //[user makeLoggedInUser];
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
++ (void) tokenVerify:(NSString*)code phone:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"/session.json" withMethod:@"POST" withParamaters:@{@"phone": phone, @"passcode": code }
+                           success:^(id responseObject) {
+                               if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"] && [responseObject objectForKey:@"user"]) {
+                                   NSMutableDictionary* user = [[responseObject objectForKey:@"user"] mutableCopy];
+                                   [user makeLoggedInUser];
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
++ (void) loginWithToken:(NSString*)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"/session_token.json" withMethod:@"POST" withParamaters:@{@"token": token }
+                           success:^(id responseObject) {
+                               if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"] && [responseObject objectForKey:@"user"]) {
+                                   NSMutableDictionary* user = [[responseObject objectForKey:@"user"] mutableCopy];
+                                   [user makeLoggedInUser];
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
 }
 
 @end

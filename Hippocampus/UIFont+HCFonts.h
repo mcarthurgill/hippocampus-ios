@@ -13,4 +13,7 @@
 + (UIFont*) noteDisplay;
 + (UIFont*) explanationDisplay;
 
++ (UIFont*) titleFont;
++ (UIFont*) itemContentFont;
+
 @end

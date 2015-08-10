@@ -14,7 +14,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //Default appearance
+    [self.window setTintColor:[UIColor mainColor]];
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:[[UIFont titleFont] fontName] size:13.0f]} forState:UIControlStateNormal];
+    
     // Override point for customization after application launch.
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
+    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     //initialize the core data variables and put in the session
     [self managedObjectContext];
@@ -26,14 +32,9 @@
     if ([self shouldPresentIntroductionViews]) {
         [self setRootStoryboard:@"Login"];
     } else {
-        [self setRootStoryboard:@"Messages"];
+        [self setRootStoryboard:@"Seahorse"];
     }
-    
-    [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-    
     [self loadAddressBook];
-    
-    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
     
     return YES;
 }
@@ -290,7 +291,7 @@
     if ([type isEqualToString:@"email"]) {
         MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
         mc.mailComposeDelegate = self;
-        [mc setSubject:[NSString stringWithFormat:@"My Token: (%@==%@", [NSString userAuthToken], [[[LXSession thisSession] user] userID]]];
+        [mc setSubject:[NSString stringWithFormat:@"My Token: (%@==%@", [NSString userAuthToken], [[[LXSession thisSession] user] ID]]];
         [mc setMessageBody:@"Hit 'Send' in the top right corner to verify this email address! (and don't delete/change the subject of this email)\n\nVerify me! Cheers," isHTML:NO];
         [mc setToRecipients:@[@"thought@hppcmps.com"]];
         // Present mail view controller on screen

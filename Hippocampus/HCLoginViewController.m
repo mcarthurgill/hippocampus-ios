@@ -68,7 +68,7 @@
     
     [self showHUDWithMessage:@"Working"];
     
-    [HCUser loginUser:self.numberTextField.text
+    [LXSession loginUser:self.numberTextField.text
           callingCode:[[[self.countryCodeTextField text] componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]
               success:^(id responseObject){
                   [self hideHUD];

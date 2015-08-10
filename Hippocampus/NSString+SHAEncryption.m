@@ -41,7 +41,7 @@
 {
     NSString* salt = [[[LXSession thisSession] user] salt];
     if (salt && [salt length] > 0) {
-        int userID = [[[[LXSession thisSession] user] userID] intValue];
+        int userID = [[[[LXSession thisSession] user] ID] intValue];
         double time = [[NSDate date] timeIntervalSince1970] ;
         int time_spec = (int)time / 1000 + userID%116;
         NSString* pre = [salt substringToIndex:8];

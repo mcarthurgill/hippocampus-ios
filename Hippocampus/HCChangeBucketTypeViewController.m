@@ -98,7 +98,7 @@
             self.selectedGroup = nil;
             //CREATE THE NEW GROUP HERE!
             [self showHUDWithMessage:@"Creating Group"];
-            [[LXServer shared] requestPath:@"/groups.json" withMethod:@"POST" withParamaters:@{@"group":@{@"group_name":self.groupField.text, @"user_id":[[[LXSession thisSession] user] userID]}}
+            [[LXServer shared] requestPath:@"/groups.json" withMethod:@"POST" withParamaters:@{@"group":@{@"group_name":self.groupField.text, @"user_id":[[[LXSession thisSession] user] ID]}}
                                    success:^(id responseObject) {
                                        self.selectedGroup = responseObject;
                                        [self hideHUD];
@@ -124,7 +124,7 @@
     [self.bucketDict setObject:[self.selectedGroup ID] forKey:@"group_id"];
     [self.bucketDict setObject:self.selectedGroup forKey:@"group"];
     
-    [[LXServer shared] requestPath:@"/buckets/change_group_for_user.json" withMethod:@"PUT" withParamaters:@{@"bucket_id":[self.bucketDict ID], @"group_id":[self.selectedGroup ID], @"user_id":[[[LXSession thisSession] user] userID]} success:^(id responseObject) {
+    [[LXServer shared] requestPath:@"/buckets/change_group_for_user.json" withMethod:@"PUT" withParamaters:@{@"bucket_id":[self.bucketDict ID], @"group_id":[self.selectedGroup ID], @"user_id":[[[LXSession thisSession] user] ID]} success:^(id responseObject) {
         [self.delegate updateBucketGroup:self.bucketDict];
         [self hideHUD];
         [self dismissViewControllerAnimated:YES completion:nil];

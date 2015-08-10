@@ -263,7 +263,7 @@
     ASRemoteIndex *index = [apiClient getIndex:@"Item"];
     ASQuery* query = [[ASQuery alloc] init];
     [query searchInsideBoundingBoxWithLatitudeP1:centery-dy longitudeP1:centerx-dx latitudeP2:centery+dy longitudeP2:centerx+dx];
-    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] userID]];
+    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] ID]];
     query.hitsPerPage = NUMBER_ITEMS_RETURNED;
     [index search:query
           success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
@@ -292,7 +292,7 @@
         [query searchAroundLatitude:loc.coordinate.latitude longitude:loc.coordinate.longitude maxDist:10000];
         self.mapView.region = MKCoordinateRegionMakeWithDistance(loc.coordinate, 10000, 10000);
     }
-    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] userID]];
+    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] ID]];
     query.hitsPerPage = NUMBER_ITEMS_RETURNED;
     [index search:query
           success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {

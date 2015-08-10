@@ -17,9 +17,6 @@
     #import "AFNetworking.h"
     #import "LXServer.h"
     #import <CoreData/CoreData.h>
-    #import "HCUser.h"
-    #import "HCBucket.h"
-    #import "HCItem.h"
     #import "LXDate+RailsTimeConverter.h"
     #import "MBProgressHUD.h"
     #import "NSArray+Alphabet.h"
@@ -34,4 +31,10 @@
     #import "ASAPIClient.h"
     #import "MGSwipeTableCell.h"
     #import "MGSwipeButton.h"
+    #import "LXObjects.h"
+    #import "LXObjectManager.h"
+    #import "LXUser.h"
+    #import "LXBucket.h"
+    #import "LXItem.h"
+    #import "UIColor+HCColors.h"
 #endif

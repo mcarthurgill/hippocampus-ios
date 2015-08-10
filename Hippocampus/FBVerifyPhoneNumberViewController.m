@@ -190,12 +190,12 @@
 
 - (void) checkForLogin
 {
-    [HCUser loginWithToken:[[[LXSession thisSession] verifyingTokens] lastObject]
+    [LXSession loginWithToken:[[[LXSession thisSession] verifyingTokens] lastObject]
                 success:^(id responseObject){
                     //[self dismissViewControllerAnimated:YES completion:nil];
                     [self hideHUD];
                     if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"]) {
-                        [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Messages"];
+                        [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Seahorse"];
                         [[UIApplication sharedApplication] endBackgroundTask:_bgt];
                     } else {
                         [self performSelector:@selector(checkForLogin) withObject:nil afterDelay:1.0];

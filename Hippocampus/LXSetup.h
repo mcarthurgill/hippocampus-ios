@@ -22,5 +22,6 @@
 - (BOOL) questionsLeft;
 - (BOOL) visitedThisScreen:(id)vc;
 - (BOOL) visitedThisScreen:(id)vc withAssignMode:(BOOL)assignMode;
-- (UIImage*) takeScreenshot; 
+- (UIImage*) takeScreenshot;
+
 @end

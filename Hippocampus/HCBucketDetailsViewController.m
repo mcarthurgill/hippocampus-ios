@@ -437,7 +437,7 @@
 - (void) leaveThread
 {
     [self showHUDWithMessage:@"Leaving Bucket..."];
-    [[LXServer shared] deleteBucketUserPairWithBucketID:[self.bucket ID] andPhoneNumber:[[HCUser loggedInUser] phone] success:^(id responseObject) {
+    [[LXServer shared] deleteBucketUserPairWithBucketID:[self.bucket ID] andPhoneNumber:[[[LXSession thisSession] user] phone] success:^(id responseObject) {
         [self.navigationController popToRootViewControllerAnimated:YES];
         [self hideHUD];
     }failure:^(NSError *error){
