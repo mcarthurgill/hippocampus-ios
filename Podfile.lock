@@ -24,7 +24,7 @@ PODS:
     - AFNetworking (~> 2.2)
   - MBProgressHUD (0.9.1)
   - MGEvents (1.0.3)
-  - MGSwipeTableCell (HEAD based on 1.4.3)
+  - MGSwipeTableCell (HEAD based on 1.5.1)
   - PromiseKit/base (1.5.3):
     - PromiseKit/Promise
     - PromiseKit/Until
@@ -42,6 +42,7 @@ PODS:
     - MGEvents
     - PromiseKit/base (~> 1.5)
     - SGHTTPRequest
+  - SlackTextViewController (1.6)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
@@ -49,15 +50,17 @@ DEPENDENCIES:
   - MBProgressHUD (~> 0.8)
   - MGSwipeTableCell (HEAD)
   - SGImageCache
+  - SlackTextViewController
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AlgoliaSearch-Client: a6aa25fef1af9db992a4d392fbf7f4c08f5ec774
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MGEvents: 739ea3e582a8df05bd1044500c7fb6d8f7aff5c8
-  MGSwipeTableCell: cb9805df3cc5cad75ad43a5c1eb424be0316f0bf
-  PromiseKit: 7ecae7c190ab92ae00aae6ba7f88942107532b8f
+  MGSwipeTableCell: a51fa670c01f0aa048f12af040acebf315223137
+  PromiseKit: ecdccab1791b95b4752a9fac57223044f5a6c105
   SGHTTPRequest: f3544a44833166124059f277014707e684abe13b
   SGImageCache: d967eb8c2638c17df52fe1e1d8c21888e278f8e5
+  SlackTextViewController: 84e1e4b7f12a8e3691cf97ca61c934b99058a2e8
 
 COCOAPODS: 0.36.3

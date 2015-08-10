@@ -80,7 +80,7 @@
 - (void) scrollToBottom:(BOOL)animated
 {
     if ([[[self bucket] items] count] > 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:([[[self bucket] items] count]-1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
+        //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:([[[self bucket] items] count]-1) inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:animated];
     }
 }
 
@@ -100,7 +100,7 @@
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 1;
+    return 0;
 }
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

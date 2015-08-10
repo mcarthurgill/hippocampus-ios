@@ -69,8 +69,8 @@
 // MGSwipeTableCell
 #define COCOAPODS_POD_AVAILABLE_MGSwipeTableCell
 #define COCOAPODS_VERSION_MAJOR_MGSwipeTableCell 1
-#define COCOAPODS_VERSION_MINOR_MGSwipeTableCell 4
-#define COCOAPODS_VERSION_PATCH_MGSwipeTableCell 3
+#define COCOAPODS_VERSION_MINOR_MGSwipeTableCell 5
+#define COCOAPODS_VERSION_PATCH_MGSwipeTableCell 1
 
 // PromiseKit/Promise
 #define COCOAPODS_POD_AVAILABLE_PromiseKit_Promise
@@ -107,4 +107,10 @@
 #define COCOAPODS_VERSION_MAJOR_SGImageCache 2
 #define COCOAPODS_VERSION_MINOR_SGImageCache 1
 #define COCOAPODS_VERSION_PATCH_SGImageCache 1
+
+// SlackTextViewController
+#define COCOAPODS_POD_AVAILABLE_SlackTextViewController
+#define COCOAPODS_VERSION_MAJOR_SlackTextViewController 1
+#define COCOAPODS_VERSION_MINOR_SlackTextViewController 6
+#define COCOAPODS_VERSION_PATCH_SlackTextViewController 0
 

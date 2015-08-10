@@ -73,6 +73,7 @@
 		288A74661B75345900F6A618 /* SHThoughtsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A74651B75345900F6A618 /* SHThoughtsViewController.m */; };
 		288A74691B75346800F6A618 /* SHBucketsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A74681B75346800F6A618 /* SHBucketsViewController.m */; };
 		288A746C1B77E6F600F6A618 /* LXObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A746B1B77E6F600F6A618 /* LXObjectManager.m */; };
+		288A746F1B782FB400F6A618 /* SHSlackThoughtsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */; };
 		288F12211B73DE100001E0B0 /* LXObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 288F12201B73DE100001E0B0 /* LXObjects.m */; };
 		288F12241B73DFC90001E0B0 /* LXUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 288F12231B73DFC90001E0B0 /* LXUser.m */; };
 		288F12271B751AF30001E0B0 /* LXBucket.m in Sources */ = {isa = PBXBuildFile; fileRef = 288F12261B751AF30001E0B0 /* LXBucket.m */; };
@@ -225,6 +226,8 @@
 		288A74681B75346800F6A618 /* SHBucketsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHBucketsViewController.m; sourceTree = "<group>"; };
 		288A746A1B77E6F600F6A618 /* LXObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXObjectManager.h; sourceTree = "<group>"; };
 		288A746B1B77E6F600F6A618 /* LXObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXObjectManager.m; sourceTree = "<group>"; };
+		288A746D1B782FB400F6A618 /* SHSlackThoughtsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSlackThoughtsViewController.h; sourceTree = "<group>"; };
+		288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSlackThoughtsViewController.m; sourceTree = "<group>"; };
 		288F121F1B73DE100001E0B0 /* LXObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXObjects.h; sourceTree = "<group>"; };
 		288F12201B73DE100001E0B0 /* LXObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXObjects.m; sourceTree = "<group>"; };
 		288F12221B73DFC90001E0B0 /* LXUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXUser.h; sourceTree = "<group>"; };
@@ -658,6 +661,8 @@
 				288A74651B75345900F6A618 /* SHThoughtsViewController.m */,
 				288A74671B75346800F6A618 /* SHBucketsViewController.h */,
 				288A74681B75346800F6A618 /* SHBucketsViewController.m */,
+				288A746D1B782FB400F6A618 /* SHSlackThoughtsViewController.h */,
+				288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -986,6 +991,7 @@
 				76BE801B1AB7559F006262CB /* HCDetailsPhotoTableViewCell.m in Sources */,
 				288F12271B751AF30001E0B0 /* LXBucket.m in Sources */,
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
+				288A746F1B782FB400F6A618 /* SHSlackThoughtsViewController.m in Sources */,
 				76AA7BD61AD717FD00291183 /* HCNameViewController.m in Sources */,
 				281CA94C196D9EE100E6BE96 /* HCNewBucketIITableViewController.m in Sources */,
 				76BFE0761A7C0FA8005AD98C /* HCIntroductionViewController.m in Sources */,

@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SLKTextViewController.h"
 
-@interface SHThoughtsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SHThoughtsViewController : SLKTextViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) NSString* localKey;
 
