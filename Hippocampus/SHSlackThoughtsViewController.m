@@ -46,10 +46,10 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
     // Dispose of any resources that can be recreated.
 }
 
-
 - (void) setupSettings
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bucketRefreshed:) name:@"bucketRefreshed" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removedItemFromBucket:) name:@"removedItemFromBucket" object:nil];
     
     [self.tableView setContentInset:UIEdgeInsetsMake(-64, 0, 0, 0)];
     
@@ -86,6 +86,15 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 }
 
 # pragma mark action helpers
+
+- (void) removedItemFromBucket:(NSNotification*)notification
+{
+    [self reloadScreen];
+}
+
+
+
+# pragma mark scrolling helpers
 
 - (void) scrollToBottomAnimated
 {
@@ -149,7 +158,7 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
     
     [cell configureWithItem:[[self bucket] itemAtIndex:indexPath.row]];
     
-    NSLog(@"item key: %@", [[[self bucket] itemAtIndex:indexPath.row] localKey]);
+    //NSLog(@"item key: %@", [[[self bucket] itemAtIndex:indexPath.row] localKey]);
     
     return cell;
 }

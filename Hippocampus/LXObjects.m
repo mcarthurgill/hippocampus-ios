@@ -185,6 +185,7 @@
                                }
                            }
                            failure:^(NSError* error) {
+                               [[LXObjectManager defaultManager] addQuery:[self requestPath] withMethod:[self requestMethod] withObject:[self parameterReady] withAuthType:[self authTypeForRequest]];
                                if (failureCallback) {
                                    failureCallback(error);
                                }
@@ -243,6 +244,9 @@
 - (void) destroyRemote:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     //DESTROY ON SERVER
+    if ([self status]) {
+        [self setObject:@"deleted" forKey:@"status"];
+    }
     [[LXServer shared] requestPath:[self requestPath] withMethod:@"DELETE" withParamaters:[self parameterReady] authType:[self authTypeForRequest]
                            success:^(id responseObject) {
                                if (successCallback) {
@@ -250,6 +254,7 @@
                                }
                            }
                            failure:^(NSError* error) {
+                               [[LXObjectManager defaultManager] addQuery:[self requestPath] withMethod:@"DELETE" withObject:[self parameterReady] withAuthType:[self authTypeForRequest]];
                                if (failureCallback) {
                                    failureCallback(error);
                                }

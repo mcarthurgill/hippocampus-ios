@@ -299,7 +299,7 @@
 
 - (BOOL) isOutstanding
 {
-    return [self status] && [[self status] isEqualToString:@"outstanding"];
+    return (![self status] && ![self hasBuckets]) || [[self status] isEqualToString:@"outstanding"];
 }
 
 - (BOOL) hasMediaURLs

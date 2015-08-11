@@ -10,6 +10,8 @@
 #warning "This project uses features only available in iOS SDK 5.0 and later."
 #endif
 
+#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>

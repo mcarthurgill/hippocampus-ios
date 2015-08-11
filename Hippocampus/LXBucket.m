@@ -70,5 +70,20 @@
     [self saveLocal];
 }
 
+- (void) removeItemFromBucket:(NSMutableDictionary*)item
+{
+    NSMutableArray* items = [[self items] mutableCopy];
+    for (NSInteger i = 0; i < [items count]; ++i) {
+        NSMutableDictionary* compareToItem = [items objectAtIndex:i];
+        if ([[compareToItem localKey] isEqualToString:[item localKey]]) {
+            [items removeObjectAtIndex:i];
+            [self setObject:items forKey:@"items"];
+            [self saveLocal];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"removedItemFromBucket" object:nil userInfo:@{@"item":item,@"bucket":self}];
+            return;
+        }
+    }
+}
+
 
 @end

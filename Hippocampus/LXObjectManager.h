@@ -12,10 +12,14 @@
 
 + (LXObjectManager*) defaultManager;
 @property (strong, nonatomic) NSMutableDictionary* library;
+@property (strong, nonatomic) NSMutableArray* queries;
+
+- (void) runQueries;
+- (void) addQuery:(NSString*)path withMethod:(NSString*)method withObject:(NSDictionary*)object withAuthType:(NSString*)authType;
 
 
 // getting
 
-+ (NSMutableDictionary*) objectWithLocalKey:(NSString*)key;
++ (id) objectWithLocalKey:(NSString*)key;
 
 @end

@@ -38,7 +38,7 @@
     [self.message setText:[item message]];
     
     self.nudgeImageViewTrailingSpace.constant = 6.0f;
-    self.outstandingDotTrailingSpace.constant = 6.0f;
+    self.outstandingDotTrailingSpace.constant = 5.0f;
     if ([item hasReminder]) {
         self.outstandingDotTrailingSpace.constant = 5.0f;
         [self.nudgeImageView setHidden:NO];
@@ -66,12 +66,16 @@
 
 - (void) setupSwipeButtons
 {
-    //configure right buttons
-    self.rightButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"trash_icon_white_swipe.png"] backgroundColor:[UIColor SHRed]]];
-    self.rightSwipeSettings.transition = MGSwipeTransitionBorder;
-    self.rightExpansion.buttonIndex = 0;
-    self.rightExpansion.fillOnTrigger = YES;
-    self.rightExpansion.threshold = 2.0f;
+    if ([[LXObjectManager objectWithLocalKey:self.itemLocalKey] belongsToCurrentUser]) {
+        //configure right buttons
+        self.rightButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"trash_icon_white_swipe.png"] backgroundColor:[UIColor SHRed]]];
+        self.rightSwipeSettings.transition = MGSwipeTransitionBorder;
+        self.rightExpansion.buttonIndex = 0;
+        self.rightExpansion.fillOnTrigger = YES;
+        self.rightExpansion.threshold = 3.5f;
+    } else {
+        self.rightButtons = nil;
+    }
     
     //configure left buttons
     self.leftButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"nudge_icon_white_swipe.png"] backgroundColor:[UIColor SHGreen]]];
@@ -101,8 +105,13 @@
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Set a nudge!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
         [av show];
     } else if (direction == MGSwipeDirectionRightToLeft) {
-        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
-        [av show];
+        //UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
+        //[av show];
+        if ([[LXObjectManager objectWithLocalKey:self.itemLocalKey] belongsToCurrentUser]) {
+            [[LXObjectManager objectWithLocalKey:self.itemLocalKey] destroyItem];
+        } else {
+            //not yours!
+        }
     }
     return YES;
 }

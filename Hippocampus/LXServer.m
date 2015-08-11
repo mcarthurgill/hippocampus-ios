@@ -103,6 +103,15 @@
     }
 }
 
++ (BOOL) errorBecauseOfBadConnection:(NSInteger)code
+{
+    for (NSNumber* testAgainst in @[@-999,@-1000,@-1001,@-1002,@-1003,@-1004,@-1005,@-1006,@-1007,@-1008,@-1009,@-1011,@-1018,@-1019,@-1020,@-1100,@-1102]) {
+        if ([testAgainst integerValue] == code) {
+            return YES;
+        }
+    }
+    return NO;
+}
 
 
 
@@ -652,3 +661,35 @@
 
 
 @end
+
+
+//int codes[] = {
+//    //kCFURLErrorUnknown,     //-998
+//    kCFURLErrorCancelled,   //-999
+//    kCFURLErrorBadURL,      //-1000
+//    kCFURLErrorTimedOut,    //-1001
+//    kCFURLErrorUnsupportedURL, //-1002
+//    kCFURLErrorCannotFindHost, //-1003
+//    kCFURLErrorCannotConnectToHost,     //-1004
+//    kCFURLErrorNetworkConnectionLost,   //-1005
+//    kCFURLErrorDNSLookupFailed,         //-1006
+//    kCFURLErrorHTTPTooManyRedirects,    //-1007
+//    kCFURLErrorResourceUnavailable,     //-1008
+//    kCFURLErrorNotConnectedToInternet,  //-1009
+//    //kCFURLErrorRedirectToNonExistentLocation,   //-1010
+//    kCFURLErrorBadServerResponse,               //-1011
+//    //kCFURLErrorUserCancelledAuthentication,     //-1012
+//    //kCFURLErrorUserAuthenticationRequired,      //-1013
+//    //kCFURLErrorZeroByteResource,        //-1014
+//    //kCFURLErrorCannotDecodeRawData,     //-1015
+//    //kCFURLErrorCannotDecodeContentData, //-1016
+//    //kCFURLErrorCannotParseResponse,     //-1017
+//    kCFURLErrorInternationalRoamingOff, //-1018
+//    kCFURLErrorCallIsActive,                //-1019
+//    kCFURLErrorDataNotAllowed,              //-1020
+//    //kCFURLErrorRequestBodyStreamExhausted,  //-1021
+//    kCFURLErrorFileDoesNotExist,            //-1100
+//    //kCFURLErrorFileIsDirectory,             //-1101
+//    kCFURLErrorNoPermissionsToReadFile,     //-1102
+//    //kCFURLErrorDataLengthExceedsMaximum,     //-1103
+//};

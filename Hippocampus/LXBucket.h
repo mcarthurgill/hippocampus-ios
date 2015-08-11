@@ -20,4 +20,6 @@
 
 - (void) addItem:(NSMutableDictionary*)item atIndex:(NSInteger)index;
 
+- (void) removeItemFromBucket:(NSMutableDictionary*)item;
+
 @end

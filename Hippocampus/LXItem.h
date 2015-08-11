@@ -12,4 +12,6 @@
 
 + (NSMutableDictionary*) createItemWithMessage:(NSString*)message;
 
+- (void) destroyItem;
+
 @end

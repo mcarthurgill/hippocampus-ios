@@ -18,4 +18,17 @@
     return i;
 }
 
+- (void) destroyItem
+{
+    if ([self belongsToCurrentUser]) {
+        //remove from all items
+        [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] removeItemFromBucket:self];
+        //remove from each bucket
+        for (NSMutableDictionary* bucket in [self buckets]) {
+            [bucket removeItemFromBucket:self];
+        }
+        [self destroyBoth];
+    }
+}
+
 @end
