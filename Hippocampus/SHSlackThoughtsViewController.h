@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SLKTextViewController.h"
 
-@interface SHSlackThoughtsViewController : UIViewController
+@interface SHSlackThoughtsViewController : SLKTextViewController <UIScrollViewDelegate>
+
+@property (strong, nonatomic) NSString* localKey;
 
 @end

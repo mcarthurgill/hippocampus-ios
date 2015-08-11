@@ -14,5 +14,10 @@
 + (UIColor*) actionColor;
 + (UIColor*) navigationColor;
 + (UIColor*) inactiveColor;
++ (UIColor*) slightBackgroundColor;
+
++ (UIColor*) SHRed;
++ (UIColor*) SHGreen;
++ (UIColor*) SHBlue;
 
 @end

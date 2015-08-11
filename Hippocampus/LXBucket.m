@@ -61,5 +61,14 @@
     return [LXObjectManager objectWithLocalKey:[[[self items] objectAtIndex:index] localKey]] ? [LXObjectManager objectWithLocalKey:[[[self items] objectAtIndex:index] localKey]] : [[self items] objectAtIndex:index];
 }
 
+- (void) addItem:(NSMutableDictionary*)item atIndex:(NSInteger)index
+{
+    NSMutableArray* tempItems = [[self items] mutableCopy];
+    [tempItems insertObject:item atIndex:index];
+    [self setObject:tempItems forKey:@"items"];
+    [self removeObjectForKey:@"updated_at"];
+    [self saveLocal];
+}
+
 
 @end

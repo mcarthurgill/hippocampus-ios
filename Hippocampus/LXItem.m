@@ -10,4 +10,12 @@
 
 @implementation NSMutableDictionary (LXItem)
 
++ (NSMutableDictionary*) createItemWithMessage:(NSString*)message
+{
+    NSMutableDictionary* i = [NSMutableDictionary create:@"item"];
+    [i setObject:message forKey:@"message"];
+    [i setObject:[[[LXSession thisSession] user] ID] forKey:@"user_id"];
+    return i;
+}
+
 @end

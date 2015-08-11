@@ -10,4 +10,6 @@
 
 @interface NSMutableDictionary (LXItem)
 
++ (NSMutableDictionary*) createItemWithMessage:(NSString*)message;
+
 @end

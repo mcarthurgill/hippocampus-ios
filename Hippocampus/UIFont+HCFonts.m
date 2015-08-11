@@ -27,6 +27,11 @@
 
 + (UIFont*) itemContentFont
 {
+    return [UIFont fontWithName:@"Roboto-Regular" size:14.0f];
+}
+
++ (UIFont*) inputFont
+{
     return [UIFont fontWithName:@"Roboto-Regular" size:16.0f];
 }
 

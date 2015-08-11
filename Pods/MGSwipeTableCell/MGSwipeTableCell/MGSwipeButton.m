@@ -73,8 +73,10 @@
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setImage:icon forState:UIControlStateNormal];
+    [button.imageView setContentMode:UIViewContentModeScaleAspectFit];
     button.callback = callback;
     [button setEdgeInsets:insets];
+    [button setButtonWidth:(button.frame.size.width/2.0f)];
     return button;
 }
 

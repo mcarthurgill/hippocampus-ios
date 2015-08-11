@@ -74,6 +74,11 @@
 		288A74691B75346800F6A618 /* SHBucketsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A74681B75346800F6A618 /* SHBucketsViewController.m */; };
 		288A746C1B77E6F600F6A618 /* LXObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A746B1B77E6F600F6A618 /* LXObjectManager.m */; };
 		288A746F1B782FB400F6A618 /* SHSlackThoughtsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */; };
+		288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A74721B7859F600F6A618 /* SHItemTableViewCell.m */; };
+		288A74751B7859F600F6A618 /* SHItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 288A74731B7859F600F6A618 /* SHItemTableViewCell.xib */; };
+		288A74781B79815900F6A618 /* nudge_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74771B79815900F6A618 /* nudge_icon.png */; };
+		288A747B1B7985DA00F6A618 /* nudge_icon_white_swipe.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74791B7985DA00F6A618 /* nudge_icon_white_swipe.png */; };
+		288A747C1B7985DA00F6A618 /* trash_icon_white_swipe.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A747A1B7985DA00F6A618 /* trash_icon_white_swipe.png */; };
 		288F12211B73DE100001E0B0 /* LXObjects.m in Sources */ = {isa = PBXBuildFile; fileRef = 288F12201B73DE100001E0B0 /* LXObjects.m */; };
 		288F12241B73DFC90001E0B0 /* LXUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 288F12231B73DFC90001E0B0 /* LXUser.m */; };
 		288F12271B751AF30001E0B0 /* LXBucket.m in Sources */ = {isa = PBXBuildFile; fileRef = 288F12261B751AF30001E0B0 /* LXBucket.m */; };
@@ -228,6 +233,12 @@
 		288A746B1B77E6F600F6A618 /* LXObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXObjectManager.m; sourceTree = "<group>"; };
 		288A746D1B782FB400F6A618 /* SHSlackThoughtsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSlackThoughtsViewController.h; sourceTree = "<group>"; };
 		288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSlackThoughtsViewController.m; sourceTree = "<group>"; };
+		288A74711B7859F600F6A618 /* SHItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHItemTableViewCell.h; sourceTree = "<group>"; };
+		288A74721B7859F600F6A618 /* SHItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHItemTableViewCell.m; sourceTree = "<group>"; };
+		288A74731B7859F600F6A618 /* SHItemTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHItemTableViewCell.xib; sourceTree = "<group>"; };
+		288A74771B79815900F6A618 /* nudge_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nudge_icon.png; sourceTree = "<group>"; };
+		288A74791B7985DA00F6A618 /* nudge_icon_white_swipe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nudge_icon_white_swipe.png; sourceTree = "<group>"; };
+		288A747A1B7985DA00F6A618 /* trash_icon_white_swipe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash_icon_white_swipe.png; sourceTree = "<group>"; };
 		288F121F1B73DE100001E0B0 /* LXObjects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXObjects.h; sourceTree = "<group>"; };
 		288F12201B73DE100001E0B0 /* LXObjects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXObjects.m; sourceTree = "<group>"; };
 		288F12221B73DFC90001E0B0 /* LXUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXUser.h; sourceTree = "<group>"; };
@@ -431,6 +442,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				288A74701B7859D400F6A618 /* Table View Cells */,
 				288F122D1B7521F90001E0B0 /* Old */,
 				76BFE0731A7C0F5B005AD98C /* Introduction */,
 				281CA926196C2C0B00E6BE96 /* Login */,
@@ -643,6 +655,33 @@
 			name = Search;
 			sourceTree = "<group>";
 		};
+		288A74701B7859D400F6A618 /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				288A74711B7859F600F6A618 /* SHItemTableViewCell.h */,
+				288A74721B7859F600F6A618 /* SHItemTableViewCell.m */,
+				288A74731B7859F600F6A618 /* SHItemTableViewCell.xib */,
+			);
+			name = "Table View Cells";
+			sourceTree = "<group>";
+		};
+		288A74761B79814500F6A618 /* Nudge */ = {
+			isa = PBXGroup;
+			children = (
+				288A74791B7985DA00F6A618 /* nudge_icon_white_swipe.png */,
+				288A74771B79815900F6A618 /* nudge_icon.png */,
+			);
+			name = Nudge;
+			sourceTree = "<group>";
+		};
+		288A747D1B7985DE00F6A618 /* Trash */ = {
+			isa = PBXGroup;
+			children = (
+				288A747A1B7985DA00F6A618 /* trash_icon_white_swipe.png */,
+			);
+			name = Trash;
+			sourceTree = "<group>";
+		};
 		288F122D1B7521F90001E0B0 /* Old */ = {
 			isa = PBXGroup;
 			children = (
@@ -678,6 +717,8 @@
 		288F123D1B752EC90001E0B0 /* Seahorse */ = {
 			isa = PBXGroup;
 			children = (
+				288A747D1B7985DE00F6A618 /* Trash */,
+				288A74761B79814500F6A618 /* Nudge */,
 				288A745D1B7531C900F6A618 /* Search */,
 				288A745C1B75313500F6A618 /* Person */,
 			);
@@ -869,6 +910,8 @@
 				28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
 				2837E8001ABD09400089FA33 /* More-100.png in Resources */,
+				288A74781B79815900F6A618 /* nudge_icon.png in Resources */,
+				288A747B1B7985DA00F6A618 /* nudge_icon_white_swipe.png in Resources */,
 				28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */,
 				283700901A6F366E00C16E87 /* 122-stats.png in Resources */,
 				28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */,
@@ -890,8 +933,10 @@
 				288A74611B7531DD00F6A618 /* search.png in Resources */,
 				2826C6101ADDA5D1008DC533 /* txt_scrnsht.png in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,
+				288A74751B7859F600F6A618 /* SHItemTableViewCell.xib in Resources */,
 				2826C6071AD70828008DC533 /* Tutorial.storyboard in Resources */,
 				2837E7FE1ABD082C0089FA33 /* Photo-100-blue.png in Resources */,
+				288A747C1B7985DA00F6A618 /* trash_icon_white_swipe.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -954,6 +999,7 @@
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
 				288433C21A8BD45E0059FCE1 /* HCContainerViewController.m in Sources */,
 				76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */,
+				288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */,
 				288A74661B75345900F6A618 /* SHThoughtsViewController.m in Sources */,
 				76F5964E1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m in Sources */,
 				76B57C2C1AB0D65A00A67DE0 /* HCLocationNotesViewController.m in Sources */,

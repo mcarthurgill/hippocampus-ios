@@ -18,4 +18,6 @@
 
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index;
 
+- (void) addItem:(NSMutableDictionary*)item atIndex:(NSInteger)index;
+
 @end

@@ -15,5 +15,6 @@
 
 + (UIFont*) titleFont;
 + (UIFont*) itemContentFont;
++ (UIFont*) inputFont;
 
 @end

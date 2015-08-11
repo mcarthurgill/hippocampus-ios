@@ -18,7 +18,7 @@
 
 + (NSMutableDictionary*) create:(NSString*)oT
 {
-    return [[NSMutableDictionary alloc] initWithDictionary:@{@"object_type":oT, @"local_id":[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]]}];
+    return [[NSMutableDictionary alloc] initWithDictionary:@{@"object_type":oT, @"device_timestamp":[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]]}];
 }
 
 
@@ -71,7 +71,7 @@
 
 - (BOOL) updatedMoreRecentThan:(NSMutableDictionary*)otherObject
 {
-    if (!otherObject || ![otherObject updatedAt])
+    if (!otherObject || ![otherObject updatedAt] || ![self updatedAt])
         return YES;
     return [self updatedAt] > [otherObject updatedAt];
 }
@@ -162,9 +162,9 @@
 
 - (void) saveLocalWithKey:(NSString*)key success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[NSUserDefaults standardUserDefaults] setObject:self forKey:key];
+    [[NSUserDefaults standardUserDefaults] setObject:[self cleanDictionary] forKey:key];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [[[LXObjectManager defaultManager] library] setObject:self forKey:key];
+    [[[LXObjectManager defaultManager] library] setObject:[self cleanDictionary] forKey:key];
     if (successCallback) {
         successCallback(@{});
     }

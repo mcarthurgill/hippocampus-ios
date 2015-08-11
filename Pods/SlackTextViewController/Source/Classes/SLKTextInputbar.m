@@ -95,6 +95,9 @@
     
     [self.leftButton.imageView addObserver:self forKeyPath:NSStringFromSelector(@selector(image)) options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
     [self.rightButton.titleLabel addObserver:self forKeyPath:NSStringFromSelector(@selector(font)) options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+    
+    //ADDED BY ME
+    self.backgroundColor = [UIColor whiteColor];
 }
 
 
@@ -112,7 +115,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(UIViewNoIntrinsicMetric, 44.0);
+    return CGSizeMake(UIViewNoIntrinsicMetric, 64.0); //previously 44.0f
 }
 
 + (BOOL)requiresConstraintBasedLayout
@@ -136,14 +139,15 @@
         
         _textView.typingSuggestionEnabled = YES;
         _textView.autocapitalizationType = UITextAutocapitalizationTypeSentences;
-        _textView.keyboardType = UIKeyboardTypeTwitter;
+        _textView.keyboardType = UIKeyboardTypeDefault;
         _textView.returnKeyType = UIReturnKeyDefault;
         _textView.enablesReturnKeyAutomatically = YES;
         _textView.scrollIndicatorInsets = UIEdgeInsetsMake(0.0, -1.0, 0.0, 1.0);
         _textView.textContainerInset = UIEdgeInsetsMake(8.0, 4.0, 8.0, 0.0);
-        _textView.layer.cornerRadius = 5.0;
-        _textView.layer.borderWidth = 0.5;
-        _textView.layer.borderColor =  [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:205.0/255.0 alpha:1.0].CGColor;
+        //_textView.layer.cornerRadius = 5.0;
+        //_textView.layer.borderWidth = 0.5;
+        //_textView.layer.borderColor =  [UIColor colorWithRed:200.0/255.0 green:200.0/255.0 blue:205.0/255.0 alpha:1.0].CGColor;
+        _textView.backgroundColor = [UIColor clearColor];
         
         // Adds an aditional action to a private gesture to detect when the magnifying glass becomes visible
         for (UIGestureRecognizer *gesture in _textView.gestureRecognizers) {

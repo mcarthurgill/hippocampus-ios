@@ -9,6 +9,7 @@
 #import "SHMainViewController.h"
 #import "SHThoughtsViewController.h"
 #import "SHBucketsViewController.h"
+#import "SHSlackThoughtsViewController.h"
 
 @interface SHMainViewController ()
 
@@ -72,9 +73,11 @@
     UIViewController* vc;
     
     if (![self.viewControllersCached objectForKey:toName]) {
-        vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:toName];
         if ([toName isEqualToString:@"thoughtsViewController"]) {
-            [(SHThoughtsViewController*)vc setLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
+            vc = [[SHSlackThoughtsViewController alloc] init];
+            [(SHSlackThoughtsViewController*)vc setLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
+        } else {
+            vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:toName];
         }
         [self.viewControllersCached setObject:vc forKey:toName];
     } else {
