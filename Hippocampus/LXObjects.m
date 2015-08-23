@@ -18,7 +18,9 @@
 
 + (NSMutableDictionary*) create:(NSString*)oT
 {
-    return [[NSMutableDictionary alloc] initWithDictionary:@{@"object_type":oT, @"device_timestamp":[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]]}];
+    NSMutableDictionary* temp = [[NSMutableDictionary alloc] initWithDictionary:@{@"object_type":oT, @"device_timestamp":[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]]}];
+    [temp setObject:[temp localKey] forKey:@"local_key"];
+    return temp;
 }
 
 
@@ -89,6 +91,8 @@
 
 - (NSString*) localKey
 {
+    if ([self objectForKey:@"local_key"] && NULL_TO_NIL([self objectForKey:@"local_key"]))
+        return [self objectForKey:@"local_key"];
     return [NSString stringWithFormat:@"%@-%@-%@", [self objectType], ([self deviceTimestamp] ? [self deviceTimestamp] : @""), ([self isUser] ? @"" : [[[LXSession thisSession] user] ID])];
 }
 

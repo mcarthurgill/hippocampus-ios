@@ -111,6 +111,44 @@ static LXObjectManager* defaultManager = nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (void) refreshObjectTypes:(NSString*)pluralObjectType withAboveUpdatedAt:(NSString*)updatedAtString success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/%@/changes", pluralObjectType] withMethod:@"GET" withParamaters:@{@"updated_at_timestamp":(updatedAtString ? updatedAtString : ([[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]] ? [NSString stringWithFormat:@"%f",[[NSDate timeWithString:[[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]]] timeIntervalSince1970]] : @"0"))}
+                           success:^(id responseObject){
+                               //NSLog(@"responseObject: %@", responseObject);
+                               
+                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                   BOOL shouldRefresh = NO;
+                                   
+                                   for (NSDictionary* object in responseObject) {
+                                       shouldRefresh = [[object mutableCopy] updateLocalVersionIfNeeded] || shouldRefresh;
+                                       [self assignRefreshDate:[object updatedAt] forObjectTypes:pluralObjectType];
+                                   }
+                                   if (shouldRefresh) {
+                                       //[[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
+                                   }
+                                   [[NSUserDefaults standardUserDefaults] synchronize];
+                               });
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError* error){
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (void) assignRefreshDate:(NSString*)updatedAt forObjectTypes:(NSString*)pluralObjectType
+{
+    NSString* currentDate = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]];
+    //NSLog(@"%@|%@", currentDate, updatedAt);
+    if (!currentDate || currentDate < updatedAt) {
+        [[NSUserDefaults standardUserDefaults] setObject:updatedAt forKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]];
+    }
+}
 
 
 

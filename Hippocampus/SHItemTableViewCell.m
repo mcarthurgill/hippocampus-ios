@@ -28,9 +28,13 @@
     [super setSelected:selected animated:animated];
 }
 
-- (void) configureWithItem:(NSMutableDictionary*)item
+- (void) configureWithItemLocalKey:(NSString*)key
 {
-    [self setItemLocalKey:[item localKey]];
+    [self setItemLocalKey:key];
+    
+    NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:self.itemLocalKey];
+    
+    //NSLog(@"local_key: %@\nitem: %@", self.itemLocalKey, item);
     
     [self setupSwipeButtons];
     
@@ -66,16 +70,10 @@
 
 - (void) setupSwipeButtons
 {
-    if ([[LXObjectManager objectWithLocalKey:self.itemLocalKey] belongsToCurrentUser]) {
-        //configure right buttons
-        self.rightButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"trash_icon_white_swipe.png"] backgroundColor:[UIColor SHRed]]];
-        self.rightSwipeSettings.transition = MGSwipeTransitionBorder;
-        self.rightExpansion.buttonIndex = 0;
-        self.rightExpansion.fillOnTrigger = YES;
-        self.rightExpansion.threshold = 3.5f;
-    } else {
-        self.rightButtons = nil;
-    }
+    //if ([[LXObjectManager objectWithLocalKey:self.itemLocalKey] belongsToCurrentUser]) {
+    //} else {
+    //    self.rightButtons = nil;
+    //}
     
     //configure left buttons
     self.leftButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"nudge_icon_white_swipe.png"] backgroundColor:[UIColor SHGreen]]];
@@ -83,6 +81,13 @@
     self.leftExpansion.buttonIndex = 0;
     self.leftExpansion.fillOnTrigger = NO;
     self.leftExpansion.threshold = 1.0f;
+    
+    //configure right buttons
+    self.rightButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"plus_icon_white_swipe.png"] backgroundColor:[UIColor SHBlue]]];
+    self.rightSwipeSettings.transition = MGSwipeTransitionBorder;
+    self.rightExpansion.buttonIndex = 0;
+    self.rightExpansion.fillOnTrigger = NO;
+    self.rightExpansion.threshold = 1.0f;
     
     [self setDelegate:self];
 }
@@ -105,13 +110,11 @@
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Set a nudge!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
         [av show];
     } else if (direction == MGSwipeDirectionRightToLeft) {
-        //UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
-        //[av show];
-        if ([[LXObjectManager objectWithLocalKey:self.itemLocalKey] belongsToCurrentUser]) {
-            [[LXObjectManager objectWithLocalKey:self.itemLocalKey] destroyItem];
-        } else {
-            //not yours!
-        }
+        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Assign!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
+        [av show];
+        //if ([[LXObjectManager objectWithLocalKey:self.itemLocalKey] belongsToCurrentUser]) {
+        //} else {
+        //}
     }
     return YES;
 }

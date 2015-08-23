@@ -14,7 +14,9 @@
 
 + (NSString*) allThoughtsLocalKey;
 
-- (NSArray*) items;
+- (NSMutableArray*) items;
+
+- (NSMutableArray*) itemKeys;
 
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index;
 

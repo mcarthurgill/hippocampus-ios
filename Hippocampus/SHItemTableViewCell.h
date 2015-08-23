@@ -13,7 +13,7 @@
     BOOL inverted;
 }
 
-- (void) configureWithItem:(NSMutableDictionary*)item;
+- (void) configureWithItemLocalKey:(NSString*)key;
 
 @property (strong, nonatomic) NSString* itemLocalKey;
 

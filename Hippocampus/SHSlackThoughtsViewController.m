@@ -14,6 +14,8 @@
 #define THOUGHT_TOP_SIDE_MARGIN 18.0f
 #define THOUGHT_BOTTOM_SIDE_MARGIN 18.0f
 
+#define PAGE_COUNT 64
+
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 
 @interface SHSlackThoughtsViewController ()
@@ -52,6 +54,8 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removedItemFromBucket:) name:@"removedItemFromBucket" object:nil];
     
     [self.tableView setContentInset:UIEdgeInsetsMake(-64, 0, 0, 0)];
+    
+    page = 0;
     
     self.bounces = YES;
     self.shakeToClearEnabled = YES;
@@ -103,15 +107,15 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 
 - (void) scrollToBottom:(BOOL)animated
 {
-    if ([[[self bucket] items] count] > 0) {
+    if ([[[self bucket] itemKeys] count] > 0) {
         [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
 }
 
 - (void) scrollToTop:(BOOL)animated
 {
-    if ([[[self bucket] items] count] > 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:([[[self bucket] items] count]-1) inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+    if ([[[self bucket] itemKeys] count] > 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(MAX(1, [self.tableView numberOfRowsInSection:0])-1) inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
     }
 }
 
@@ -149,16 +153,15 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [[[self bucket] items] count];
+    return MIN(PAGE_COUNT*(page+1), [[[self bucket] itemKeys] count]);
+    return [[[self bucket] itemKeys] count];
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tV cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHItemTableViewCell* cell = (SHItemTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:itemCellIdentifier];
     
-    [cell configureWithItem:[[self bucket] itemAtIndex:indexPath.row]];
-    
-    //NSLog(@"item key: %@", [[[self bucket] itemAtIndex:indexPath.row] localKey]);
+    [cell configureWithItemLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
     
     return cell;
 }
@@ -167,6 +170,14 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 {
     NSMutableDictionary* item = [[self bucket] itemAtIndex:indexPath.row];
     return [[item message] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(THOUGHT_LEFT_SIDE_MARGIN+THOUGHT_RIGHT_SIDE_MARGIN)) font:[UIFont itemContentFont]] + THOUGHT_TOP_SIDE_MARGIN + THOUGHT_BOTTOM_SIDE_MARGIN;
+}
+
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row+1 == [self.tableView numberOfRowsInSection:0] && [self.tableView numberOfRowsInSection:0] < [[[self bucket] itemKeys] count]) {
+        page = page+1;
+        [self reloadScreen];
+    }
 }
 
 
@@ -181,12 +192,12 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
     [self scrollToBottom:YES];
     
     [item saveBoth:^(id responseObject) {
-         [[NSMutableDictionary dictionaryWithDictionary:responseObject] saveLocal];
-         [self reloadScreen];
-     }
-     failure:^(NSError* error){
-     }
-    ];
+        [[NSMutableDictionary dictionaryWithDictionary:responseObject] saveLocal];
+        [self reloadScreen];
+    }
+           failure:^(NSError* error){
+           }
+     ];
     
     [super didPressRightButton:sender];
 }

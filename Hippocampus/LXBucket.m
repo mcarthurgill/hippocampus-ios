@@ -18,11 +18,11 @@
                            success:^(id responseObject) {
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    BOOL shouldRefresh = NO;
-                                   for (NSMutableDictionary* item in [responseObject objectForKey:@"items"]) {
-                                       shouldRefresh = [item updateLocalVersionIfNeeded] || shouldRefresh;
-                                   }
+                                   //for (NSMutableDictionary* item in [responseObject objectForKey:@"items"]) {
+                                   //    shouldRefresh = [item updateLocalVersionIfNeeded] || shouldRefresh;
+                                   //}
                                    NSMutableDictionary* bucket = [[responseObject objectForKey:@"bucket"] mutableCopy];
-                                   [bucket setObject:[responseObject objectForKey:@"items"] forKey:@"items"];
+                                   [bucket setObject:[responseObject objectForKey:@"item_keys"] forKey:@"item_keys"];
                                    shouldRefresh = [bucket updateLocalVersionIfNeeded] || shouldRefresh;
                                    if (shouldRefresh) {
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
@@ -47,27 +47,38 @@
     return [NSString stringWithFormat:@"all-thoughts--%@", [[[LXSession thisSession] user] ID]];
 }
 
-- (NSArray*) items
+- (NSMutableArray*) items
 {
     if ([self objectForKey:@"items"] && NULL_TO_NIL([self objectForKey:@"items"])) {
         return [self objectForKey:@"items"];
     } else {
-        return @[];
+        return [@[] mutableCopy];
+    }
+}
+
+- (NSMutableArray*) itemKeys
+{
+    if ([self objectForKey:@"item_keys"] && NULL_TO_NIL([self objectForKey:@"item_keys"])) {
+        return [self objectForKey:@"item_keys"];
+    } else {
+        return [@[] mutableCopy];
     }
 }
 
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index
 {
-    return [LXObjectManager objectWithLocalKey:[[[self items] objectAtIndex:index] localKey]] ? [LXObjectManager objectWithLocalKey:[[[self items] objectAtIndex:index] localKey]] : [[self items] objectAtIndex:index];
+    return [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] ? [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] : [@{} mutableCopy];
 }
 
 - (void) addItem:(NSMutableDictionary*)item atIndex:(NSInteger)index
 {
-    NSMutableArray* tempItems = [[self items] mutableCopy];
-    [tempItems insertObject:item atIndex:index];
-    [self setObject:tempItems forKey:@"items"];
+    [[self items] insertObject:item atIndex:index];
+    [[self itemKeys] insertObject:[item localKey] atIndex:index];
+    
     [self removeObjectForKey:@"updated_at"];
     [self saveLocal];
+    
+    [item saveLocal];
 }
 
 - (void) removeItemFromBucket:(NSMutableDictionary*)item
@@ -78,6 +89,7 @@
         if ([[compareToItem localKey] isEqualToString:[item localKey]]) {
             [items removeObjectAtIndex:i];
             [self setObject:items forKey:@"items"];
+            [self removeObjectForKey:@"updated_at"];
             [self saveLocal];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"removedItemFromBucket" object:nil userInfo:@{@"item":item,@"bucket":self}];
             return;

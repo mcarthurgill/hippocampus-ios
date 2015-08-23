@@ -10,6 +10,9 @@
 #import "SLKTextViewController.h"
 
 @interface SHSlackThoughtsViewController : SLKTextViewController <UIScrollViewDelegate>
+{
+    NSInteger page;
+}
 
 @property (strong, nonatomic) NSString* localKey;
 

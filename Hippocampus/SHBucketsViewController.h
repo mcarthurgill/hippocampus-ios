@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SHBucketsViewController : UIViewController
+@interface SHBucketsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
+
+@property (strong, nonatomic) NSMutableArray* buckets;
 
 @end

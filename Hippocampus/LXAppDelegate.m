@@ -14,8 +14,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [[LXObjectManager defaultManager] runQueries];
-    
     //Default appearance
     [self.window setTintColor:[UIColor mainColor]];
     [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:[[UIFont titleFont] fontName] size:13.0f]} forState:UIControlStateNormal];
@@ -41,6 +39,22 @@
     return YES;
 }
 
+- (void) refreshObjects
+{
+    [[LXObjectManager defaultManager] refreshObjectTypes:@"buckets" withAboveUpdatedAt:nil
+                                                 success:^(id responseObject){
+                                                 }
+                                                 failure:^(NSError* error){
+                                                 }
+     ];
+    [[LXObjectManager defaultManager] refreshObjectTypes:@"items" withAboveUpdatedAt:nil
+                                                 success:^(id responseObject){
+                                                 }
+                                                 failure:^(NSError* error){
+                                                 }
+     ];
+}
+
 - (BOOL) shouldPresentIntroductionViews
 {
     return ![[LXSession thisSession] user];
@@ -51,10 +65,12 @@
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:name bundle:[NSBundle mainBundle]];
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
-    if ([name isEqualToString:@"Messages"] && [[LXSession thisSession] user]) {
+    if (([name isEqualToString:@"Messages"] || [name isEqualToString:@"Seahorse"]) && [[LXSession thisSession] user]) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [[[LXSession thisSession] user] updateTimeZone];
         });
+        [[LXObjectManager defaultManager] runQueries];
+        [self refreshObjects];
     }
 }
 
@@ -69,9 +85,9 @@
     if (![moc save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
     }
-    if ([[LXSession thisSession] user]) {
-        [[LXServer shared] getAllBucketsWithSuccess:nil failure:nil];
-    }
+    //if ([[LXSession thisSession] user]) {
+    //    [[LXServer shared] getAllBucketsWithSuccess:nil failure:nil];
+    //}
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationWillResignActive" object:nil];
     
@@ -173,11 +189,11 @@
     if ([[LXSession thisSession] user]) {
         [[[LXSession thisSession] user] updateTimeZone];
     }
-   [[LXServer shared] getAllBucketsWithSuccess:^(id responseObject){
-                        completionHandler(UIBackgroundFetchResultNewData);
-                    }failure:^(NSError *error){
-                        completionHandler(UIBackgroundFetchResultNoData);
-                    }];
+   //[[LXServer shared] getAllBucketsWithSuccess:^(id responseObject){
+   //                     completionHandler(UIBackgroundFetchResultNewData);
+   //                 }failure:^(NSError *error){
+   //                     completionHandler(UIBackgroundFetchResultNoData);
+   //                 }];
 }
 
 
