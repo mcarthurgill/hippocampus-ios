@@ -70,7 +70,6 @@
 		288A74611B7531DD00F6A618 /* search.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A745E1B7531DD00F6A618 /* search.png */; };
 		288A74621B7531DD00F6A618 /* search@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A745F1B7531DD00F6A618 /* search@2x.png */; };
 		288A74631B7531DD00F6A618 /* search@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74601B7531DD00F6A618 /* search@3x.png */; };
-		288A74661B75345900F6A618 /* SHThoughtsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A74651B75345900F6A618 /* SHThoughtsViewController.m */; };
 		288A74691B75346800F6A618 /* SHBucketsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A74681B75346800F6A618 /* SHBucketsViewController.m */; };
 		288A746C1B77E6F600F6A618 /* LXObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A746B1B77E6F600F6A618 /* LXObjectManager.m */; };
 		288A746F1B782FB400F6A618 /* SHSlackThoughtsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */; };
@@ -230,8 +229,6 @@
 		288A745E1B7531DD00F6A618 /* search.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = search.png; sourceTree = "<group>"; };
 		288A745F1B7531DD00F6A618 /* search@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@2x.png"; sourceTree = "<group>"; };
 		288A74601B7531DD00F6A618 /* search@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search@3x.png"; sourceTree = "<group>"; };
-		288A74641B75345900F6A618 /* SHThoughtsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHThoughtsViewController.h; sourceTree = "<group>"; };
-		288A74651B75345900F6A618 /* SHThoughtsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHThoughtsViewController.m; sourceTree = "<group>"; };
 		288A74671B75346800F6A618 /* SHBucketsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHBucketsViewController.h; sourceTree = "<group>"; };
 		288A74681B75346800F6A618 /* SHBucketsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHBucketsViewController.m; sourceTree = "<group>"; };
 		288A746A1B77E6F600F6A618 /* LXObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXObjectManager.h; sourceTree = "<group>"; };
@@ -722,8 +719,6 @@
 			children = (
 				288F12321B7526AD0001E0B0 /* SHMainViewController.h */,
 				288F12331B7526AD0001E0B0 /* SHMainViewController.m */,
-				288A74641B75345900F6A618 /* SHThoughtsViewController.h */,
-				288A74651B75345900F6A618 /* SHThoughtsViewController.m */,
 				288A74671B75346800F6A618 /* SHBucketsViewController.h */,
 				288A74681B75346800F6A618 /* SHBucketsViewController.m */,
 				288A746D1B782FB400F6A618 /* SHSlackThoughtsViewController.h */,
@@ -1031,7 +1026,6 @@
 				288433C21A8BD45E0059FCE1 /* HCContainerViewController.m in Sources */,
 				76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */,
 				288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */,
-				288A74661B75345900F6A618 /* SHThoughtsViewController.m in Sources */,
 				76F5964E1ACCB17300F32E47 /* HCChangeBucketTypeViewController.m in Sources */,
 				76B57C2C1AB0D65A00A67DE0 /* HCLocationNotesViewController.m in Sources */,
 				288F122A1B751B040001E0B0 /* LXItem.m in Sources */,
