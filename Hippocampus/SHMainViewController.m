@@ -7,7 +7,6 @@
 //
 
 #import "SHMainViewController.h"
-#import "SHThoughtsViewController.h"
 #import "SHBucketsViewController.h"
 #import "SHSlackThoughtsViewController.h"
 
@@ -91,6 +90,9 @@
     [self.containerView addSubview:vc.view];
     if (fromName && [self.viewControllersCached objectForKey:fromName]) {
         [[self.viewControllersCached objectForKey:fromName] removeFromParentViewController];
+        if ([[self.viewControllersCached objectForKey:fromName] respondsToSelector:@selector(textView)] && [[self.viewControllersCached objectForKey:fromName] textView]) {
+            [[[self.viewControllersCached objectForKey:fromName] textView] resignFirstResponder];
+        }
     }
 }
 

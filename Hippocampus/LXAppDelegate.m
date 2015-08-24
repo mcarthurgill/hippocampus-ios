@@ -80,14 +80,7 @@
     
     active = NO;
     
-    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
-    NSError* error;
-    if (![moc save:&error]) {
-        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
-    }
-    //if ([[LXSession thisSession] user]) {
-    //    [[LXServer shared] getAllBucketsWithSuccess:nil failure:nil];
-    //}
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationWillResignActive" object:nil];
     

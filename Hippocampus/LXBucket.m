@@ -12,18 +12,40 @@
 
 @implementation NSMutableDictionary (LXBucket)
 
++ (void) bucketKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"/buckets/keys" withMethod:@"GET" withParamaters:nil authType:@"user"
+                           success:^(id responseObject){
+                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                                   if ([responseObject respondsToSelector:@selector(count)]) {
+                                       [[[LXObjectManager defaultManager] library] setObject:responseObject forKey:@"bucketLocalKeys"];
+                                       [[NSUserDefaults standardUserDefaults] setObject:responseObject forKey:@"bucketLocalKeys"];
+                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedBucketLocalKeys" object:nil userInfo:nil];
+                                   }
+                               });
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           } failure:^(NSError* error){
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
 - (void) refreshFromServerWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/detail.json", [self ID]] withMethod:@"GET" withParamaters:nil
                            success:^(id responseObject) {
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    BOOL shouldRefresh = NO;
-                                   //for (NSMutableDictionary* item in [responseObject objectForKey:@"items"]) {
-                                   //    shouldRefresh = [item updateLocalVersionIfNeeded] || shouldRefresh;
-                                   //}
                                    NSMutableDictionary* bucket = [[responseObject objectForKey:@"bucket"] mutableCopy];
-                                   [bucket setObject:[responseObject objectForKey:@"item_keys"] forKey:@"item_keys"];
-                                   shouldRefresh = [bucket updateLocalVersionIfNeeded] || shouldRefresh;
+                                   if ([responseObject objectForKey:@"item_keys"] && NULL_TO_NIL([responseObject objectForKey:@"item_keys"])) {
+                                       [bucket setObject:[responseObject objectForKey:@"item_keys"] forKey:@"item_keys"];
+                                   }
+                                   shouldRefresh = [bucket assignLocalVersionIfNeeded] || shouldRefresh;
                                    if (shouldRefresh) {
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
                                    }
@@ -72,7 +94,7 @@
 
 - (void) addItem:(NSMutableDictionary*)item atIndex:(NSInteger)index
 {
-    [[self items] insertObject:item atIndex:index];
+    //[[self items] insertObject:item atIndex:index];
     [[self itemKeys] insertObject:[item localKey] atIndex:index];
     
     [self removeObjectForKey:@"updated_at"];

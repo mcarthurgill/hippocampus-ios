@@ -22,7 +22,12 @@
 
 + (UIFont*) titleFont
 {
-    return [UIFont fontWithName:@"Roboto-Regular" size:18.0f];
+    return [self titleFontWithSize:18.0f];
+}
+
++ (UIFont*) titleFontWithSize:(NSInteger)size
+{
+    return [UIFont fontWithName:@"Roboto-Regular" size:size];
 }
 
 + (UIFont*) itemContentFont

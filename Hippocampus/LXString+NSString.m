@@ -51,6 +51,33 @@
     return rect.size.height;
 }
 
+- (NSString*) objectTypeFromLocalKey
+{
+    if ([self rangeOfString:@"-"].location == NSNotFound)
+        return nil;
+    
+    return [self substringToIndex:[self rangeOfString:@"-"].location];
+}
+
+- (NSString*) deviceTimestampFromLocalKey
+{
+    if ([self rangeOfString:@"-"].location == NSNotFound)
+        return nil;
+    NSString* secondHalf = [self substringFromIndex:([self rangeOfString:@"-"].location+1)];
+    if ([secondHalf rangeOfString:@"-"].location == NSNotFound)
+        return nil;
+    return [secondHalf substringToIndex:[secondHalf rangeOfString:@"-"].location];
+}
+
+- (NSString*) userIDFromLocalKey
+{
+    if ([self rangeOfString:@"-"].location == NSNotFound)
+        return nil;
+    NSString* secondHalf = [self substringFromIndex:([self rangeOfString:@"-"].location+1)];
+    if ([secondHalf rangeOfString:@"-"].location == NSNotFound)
+        return nil;
+    return [secondHalf substringFromIndex:([secondHalf rangeOfString:@"-"].location+1)];
+}
 
 @end
 

@@ -154,9 +154,9 @@
 
 - (void) saveLocal:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    if ([self updatedMoreRecentThan:[LXObjectManager objectWithLocalKey:[self localKey]]]) {
-        [self saveLocalWithKey:[self localKey] success:successCallback failure:failureCallback];
-    }
+    
+    [self saveLocalWithKey:[self localKey] success:successCallback failure:failureCallback];
+    
 }
 
 - (void) saveLocalWithKey:(NSString*)key
@@ -166,11 +166,12 @@
 
 - (void) saveLocalWithKey:(NSString*)key success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[NSUserDefaults standardUserDefaults] setObject:[self cleanDictionary] forKey:key];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [[[LXObjectManager defaultManager] library] setObject:[self cleanDictionary] forKey:key];
-    if (successCallback) {
-        successCallback(@{});
+    if ([self updatedMoreRecentThan:[LXObjectManager objectWithLocalKey:[self localKey]]]) {
+        [self assignLocalWithKey:key];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        if (successCallback) {
+            successCallback(@{});
+        }
     }
 }
 
@@ -267,23 +268,27 @@
 }
 
 
-- (BOOL) updateLocalVersionIfNeeded
+- (BOOL) assignLocalVersionIfNeeded
 {
     NSMutableDictionary* updateWith = [self mutableCopy];
     NSMutableDictionary* oldCopy = [LXObjectManager objectWithLocalKey:[updateWith localKey]];
     if (!oldCopy) {
-        [[NSUserDefaults standardUserDefaults] setObject:[updateWith cleanDictionary] forKey:[updateWith localKey]];
-        [[[LXObjectManager defaultManager] library] setObject:[updateWith cleanDictionary] forKey:[updateWith localKey]];
+        [[updateWith cleanDictionary] assignLocalWithKey:[updateWith localKey]];
         return YES;
     } else if (![updateWith createdAt] || ( [updateWith updatedAt] > [oldCopy updatedAt] ) ) {
         for (NSString* key in [updateWith allKeys]) {
             [oldCopy setObject:[updateWith objectForKey:key] forKey:key];
         }
-        [[NSUserDefaults standardUserDefaults] setObject:[oldCopy cleanDictionary] forKey:[oldCopy localKey]];
-        [[[LXObjectManager defaultManager] library] setObject:[oldCopy cleanDictionary] forKey:[oldCopy localKey]];
+        [[oldCopy cleanDictionary] assignLocalWithKey:[oldCopy localKey]];
         return YES;
     }
     return NO;
+}
+
+- (void) assignLocalWithKey:(NSString*)key
+{
+    [[[LXObjectManager defaultManager] library] setObject:[self cleanDictionary] forKey:key];
+    [[NSUserDefaults standardUserDefaults] setObject:[self cleanDictionary] forKey:key];
 }
 
 

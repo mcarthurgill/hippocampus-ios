@@ -34,8 +34,6 @@
     
     NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:self.itemLocalKey];
     
-    //NSLog(@"local_key: %@\nitem: %@", self.itemLocalKey, item);
-    
     [self setupSwipeButtons];
     
     [self.message setFont:[UIFont itemContentFont]];

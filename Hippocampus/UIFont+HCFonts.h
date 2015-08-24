@@ -14,6 +14,7 @@
 + (UIFont*) explanationDisplay;
 
 + (UIFont*) titleFont;
++ (UIFont*) titleFontWithSize:(NSInteger)size;
 + (UIFont*) itemContentFont;
 + (UIFont*) inputFont;
 

@@ -10,6 +10,8 @@
 
 @interface NSMutableDictionary (LXBucket)
 
++ (void) bucketKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+
 - (void) refreshFromServerWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 + (NSString*) allThoughtsLocalKey;

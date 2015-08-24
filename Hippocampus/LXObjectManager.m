@@ -121,7 +121,7 @@ static LXObjectManager* defaultManager = nil;
                                    BOOL shouldRefresh = NO;
                                    
                                    for (NSDictionary* object in responseObject) {
-                                       shouldRefresh = [[object mutableCopy] updateLocalVersionIfNeeded] || shouldRefresh;
+                                       shouldRefresh = [[object mutableCopy] assignLocalVersionIfNeeded] || shouldRefresh;
                                        [self assignRefreshDate:[object updatedAt] forObjectTypes:pluralObjectType];
                                    }
                                    if (shouldRefresh) {
@@ -134,6 +134,31 @@ static LXObjectManager* defaultManager = nil;
                                }
                            }
                            failure:^(NSError* error){
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+- (void) refreshObjectWithKey:(NSString*)localKey success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    //UNTESTED
+    //parse the local key
+    NSMutableDictionary* tempObject = [@{@"object_type":[localKey objectTypeFromLocalKey], @"device_timestamp":[localKey deviceTimestampFromLocalKey], @"user_id":[localKey userIDFromLocalKey], @"local_key":localKey} mutableCopy];
+    //setup query
+    [[LXServer shared] requestPath:@"/key" withMethod:@"GET" withParamaters:tempObject authType:@"user"
+                           success:^(id responseObject) {
+                               //update on disk
+                               if ([[responseObject mutableCopy] assignLocalVersionIfNeeded]) {
+                                   //notify system of change
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError* error) {
                                if (failureCallback) {
                                    failureCallback(error);
                                }
@@ -157,7 +182,13 @@ static LXObjectManager* defaultManager = nil;
 + (id) objectWithLocalKey:(NSString*)key
 {
     if (key && key.length > 0) {
-        return [[[LXObjectManager defaultManager] library] objectForKey:key] ? [[[[LXObjectManager defaultManager] library] objectForKey:key] mutableCopy] : [[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy];
+        if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
+            return [[[LXObjectManager defaultManager] library] objectForKey:key];
+        } else if ([[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy]) {
+            return [[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy];
+        } else {
+            [[LXObjectManager defaultManager] refreshObjectWithKey:key success:nil failure:nil];
+        }
     }
     return nil;
 }

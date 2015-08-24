@@ -7,6 +7,10 @@
 //
 
 #import "SHBucketsViewController.h"
+#import "SHBucketTableViewCell.h"
+#import "SHSlackThoughtsViewController.h"
+
+static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 
 @interface SHBucketsViewController ()
 
@@ -15,39 +19,84 @@
 @implementation SHBucketsViewController
 
 @synthesize tableView;
-@synthesize buckets;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     
-    self.buckets = [[NSMutableArray alloc] init];
+    [self setupSettings];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatedBucketLocalKeys:) name:@"updatedBucketLocalKeys" object:nil];
+    
+    [self beginningActions];
+}
+
+- (void) setupSettings
+{
+    [self.tableView setRowHeight:UITableViewAutomaticDimension];
+    [self.tableView setEstimatedRowHeight:100.0f];
+    
+    [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
     
     [self.tableView setContentInset:UIEdgeInsetsMake(64.0f, 0, 0, 0)];
+    [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self reloadScreen];
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [[LXObjectManager defaultManager] refreshObjectTypes:@"buckets" withAboveUpdatedAt:nil
-                                                 success:^(id responseObject){
-                                                     self.buckets = [[NSMutableArray alloc] initWithArray:responseObject];
-                                                     [self.tableView reloadData];
-                                                 }
-                                                 failure:^(NSError* error){
-                                                 }
-     ];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void) beginningActions
+{
+    [NSMutableDictionary bucketKeysWithSuccess:nil failure:nil];
+}
+
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 
+
+
+# pragma mark notifications
+
+- (void) updatedBucketLocalKeys:(NSNotification*)notification
+{
+    [self reloadScreen];
+}
+
+
+
+
+# pragma mark helpers
+
+- (NSArray*) bucketKeys
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"bucketLocalKeys"] ? [[NSUserDefaults standardUserDefaults] objectForKey:@"bucketLocalKeys"] : @[];
+}
+
+- (NSMutableDictionary*) bucketAtIndexPath:(NSIndexPath*)indexPath
+{
+    return [LXObjectManager objectWithLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
+}
+
+
+
 # pragma mark table view delegate and data source
+
+- (void) reloadScreen
+{
+    [self.tableView reloadData];
+}
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -56,17 +105,30 @@
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.buckets count];
+    return [[self bucketKeys] count];
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tV cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell* cell = [self.tableView dequeueReusableCellWithIdentifier:@"bucketCell"];
-    
-    UILabel* label = (UILabel*)[cell.contentView viewWithTag:1];
-    [label setText:[[self.buckets objectAtIndex:indexPath.row] firstName]];
-    
+    return [self tableView:tV bucketCellForRowAtIndexPath:indexPath];
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tV bucketCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHBucketTableViewCell* cell = (SHBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:bucketCellIdentifier];
+    [cell configureWithBucketLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
     return cell;
+}
+
+
+
+# pragma mark actions
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
+    [(SHSlackThoughtsViewController*)vc setLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

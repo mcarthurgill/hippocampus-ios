@@ -8,6 +8,7 @@
 
 #import "SHSlackThoughtsViewController.h"
 #import "SHItemTableViewCell.h"
+#import "SHLoadingTableViewCell.h"
 
 #define THOUGHT_LEFT_SIDE_MARGIN 29.0f
 #define THOUGHT_RIGHT_SIDE_MARGIN 27.0f
@@ -17,6 +18,7 @@
 #define PAGE_COUNT 64
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
+static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 @interface SHSlackThoughtsViewController ()
 
@@ -31,15 +33,28 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
     [super viewDidLoad];
     
     [self.tableView registerNib:[UINib nibWithNibName:itemCellIdentifier bundle:nil] forCellReuseIdentifier:itemCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:loadingCellIdentifier bundle:nil] forCellReuseIdentifier:loadingCellIdentifier];
     
     [self setupSettings];
     [self beginningActions];
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self reloadScreen];
+}
+
 - (void) viewDidAppear:(BOOL)animated
 {
-    [self reloadScreen];
+    [super viewDidAppear:animated];
     [self scrollToBottomAnimated];
+}
+
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.textView resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -159,10 +174,24 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 
 - (UITableViewCell*) tableView:(UITableView *)tV cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if ([LXObjectManager objectWithLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]]) {
+        return [self tableView:tV itemCellForRowAtIndexPath:indexPath];
+    } else {
+        return [self tableView:tV loadingCellForRowAtIndexPath:indexPath];
+    }
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tV itemCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     SHItemTableViewCell* cell = (SHItemTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:itemCellIdentifier];
-    
     [cell configureWithItemLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
-    
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tV loadingCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHLoadingTableViewCell* cell = (SHLoadingTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:loadingCellIdentifier];
+    //[cell configureWithItemLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
     return cell;
 }
 

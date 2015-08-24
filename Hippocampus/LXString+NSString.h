@@ -24,4 +24,10 @@
 
 - (CGFloat) heightForTextWithWidth:(CGFloat)width font:(UIFont*)font;
 
+- (NSString*) objectTypeFromLocalKey;
+
+- (NSString*) deviceTimestampFromLocalKey;
+
+- (NSString*) userIDFromLocalKey;
+
 @end

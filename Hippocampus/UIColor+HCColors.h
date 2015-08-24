@@ -19,5 +19,8 @@
 + (UIColor*) SHRed;
 + (UIColor*) SHGreen;
 + (UIColor*) SHBlue;
++ (UIColor*) SHLightGray;
+
++ (UIColor*) SHFontPurple;
 
 @end
