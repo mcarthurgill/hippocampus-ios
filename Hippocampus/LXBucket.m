@@ -46,9 +46,9 @@
                                        [bucket setObject:[responseObject objectForKey:@"item_keys"] forKey:@"item_keys"];
                                    }
                                    shouldRefresh = [bucket assignLocalVersionIfNeeded] || shouldRefresh;
-                                   if (shouldRefresh) {
+                                   //if (shouldRefresh) {
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
-                                   }
+                                   //}
                                    [[NSUserDefaults standardUserDefaults] synchronize];
                                });
                                if (successCallback) {
@@ -85,6 +85,13 @@
     } else {
         return [@[] mutableCopy];
     }
+}
+
+- (NSString*) cachedItemMessage
+{
+    if ([self objectForKey:@"cached_item_message"] && NULL_TO_NIL([self objectForKey:@"cached_item_message"]))
+        return [self objectForKey:@"cached_item_message"];
+    return nil;
 }
 
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index

@@ -187,7 +187,7 @@ static LXObjectManager* defaultManager = nil;
         } else if ([[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy]) {
             return [[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy];
         } else {
-            [[LXObjectManager defaultManager] refreshObjectWithKey:key success:nil failure:nil];
+            //theoretically, go refresh object in question.
         }
     }
     return nil;

@@ -60,4 +60,14 @@
     return [UIColor colorWithRed:0.5137f green:0.3725f blue:0.5294f alpha:1.0f];
 }
 
++ (UIColor*) SHFontDarkGray
+{
+    return [UIColor colorWithRed:0.3373f green:0.3373f blue:0.3373f alpha:1.0f];
+}
+
++ (UIColor*) SHFontLightGray
+{
+    return [UIColor colorWithRed:0.4706f green:0.4824f blue:0.4902f alpha:1.0f];
+}
+
 @end

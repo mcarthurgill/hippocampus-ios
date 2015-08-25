@@ -10,20 +10,21 @@
 
 @interface NSMutableDictionary (LXBucket)
 
++ (NSString*) allThoughtsLocalKey;
+
 + (void) bucketKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 - (void) refreshFromServerWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
-+ (NSString*) allThoughtsLocalKey;
-
-- (NSMutableArray*) items;
-
-- (NSMutableArray*) itemKeys;
-
-- (NSMutableDictionary*) itemAtIndex:(NSInteger)index;
-
 - (void) addItem:(NSMutableDictionary*)item atIndex:(NSInteger)index;
 
 - (void) removeItemFromBucket:(NSMutableDictionary*)item;
+
+
+- (NSMutableArray*) items;
+- (NSMutableArray*) itemKeys;
+- (NSString*) cachedItemMessage;
+
+- (NSMutableDictionary*) itemAtIndex:(NSInteger)index;
 
 @end

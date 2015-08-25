@@ -14,6 +14,7 @@
 @synthesize bucketLocalKey;
 @synthesize card;
 @synthesize bucketName;
+@synthesize bucketItemMessage;
 
 - (void)awakeFromNib
 {
@@ -27,6 +28,9 @@
     [card.layer setBorderWidth:1.0f];
     
     [bucketName setFont:[UIFont titleFontWithSize:16.0f]];
+    
+    [bucketItemMessage setFont:[UIFont titleFontWithSize:14.0f]];
+    [bucketItemMessage setTextColor:[UIColor SHFontLightGray]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -51,6 +55,9 @@
     }
     [bucketName setAttributedText:titleString];
     
+    [bucketItemMessage setText:[bucket cachedItemMessage]];
+    
+    //NSLog(@"cellheight: %f, label heights: %f %f", self.frame.size.height, bucketName.frame.size.height, bucketItemMessage.frame.size.height);
     
 }
 

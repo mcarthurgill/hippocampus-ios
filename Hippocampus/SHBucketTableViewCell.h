@@ -15,5 +15,6 @@
 
 @property (strong, nonatomic) IBOutlet UIView *card;
 @property (strong, nonatomic) IBOutlet UILabel *bucketName;
+@property (strong, nonatomic) IBOutlet UILabel *bucketItemMessage;
 
 @end

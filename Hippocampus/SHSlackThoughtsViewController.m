@@ -68,7 +68,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bucketRefreshed:) name:@"bucketRefreshed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removedItemFromBucket:) name:@"removedItemFromBucket" object:nil];
     
-    [self.tableView setContentInset:UIEdgeInsetsMake(-64, 0, 0, 0)];
+    if ([localKey isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
+        //[self.tableView setContentInset:UIEdgeInsetsMake(-64, 0, 0, 0)];
+    }
     
     page = 0;
     
@@ -123,14 +125,18 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) scrollToBottom:(BOOL)animated
 {
     if ([[[self bucket] itemKeys] count] > 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        if ([self.tableView numberOfSections] > 0 && [self.tableView numberOfRowsInSection:0] > 0) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        }
     }
 }
 
 - (void) scrollToTop:(BOOL)animated
 {
     if ([[[self bucket] itemKeys] count] > 0) {
-        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(MAX(1, [self.tableView numberOfRowsInSection:0])-1) inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        if ([self.tableView numberOfSections] > 0 && [self.tableView numberOfRowsInSection:0] > 0) {
+            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:(MAX(1, [self.tableView numberOfRowsInSection:0])-1) inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:animated];
+        }
     }
 }
 
@@ -177,6 +183,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if ([LXObjectManager objectWithLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]]) {
         return [self tableView:tV itemCellForRowAtIndexPath:indexPath];
     } else {
+        [[LXObjectManager defaultManager] refreshObjectWithKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]
+                                                       success:^(id responseObject){
+                                                           [self.tableView reloadData];
+                                                       } failure:nil
+         ];
         return [self tableView:tV loadingCellForRowAtIndexPath:indexPath];
     }
 }

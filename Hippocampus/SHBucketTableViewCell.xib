@@ -18,8 +18,14 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mR-qO-5vm">
                         <rect key="frame" x="2" y="9" width="316" height="90"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWa-vl-g9a">
-                                <rect key="frame" x="12" y="12" width="292" height="33"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tWa-vl-g9a">
+                                <rect key="frame" x="12" y="12" width="292" height="26"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4oB-pF-rmG">
+                                <rect key="frame" x="12" y="52" width="292" height="28"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -27,10 +33,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="tWa-vl-g9a" firstAttribute="top" secondItem="1mR-qO-5vm" secondAttribute="top" constant="12" id="01A-8H-gHZ"/>
+                            <constraint firstItem="tWa-vl-g9a" firstAttribute="top" secondItem="1mR-qO-5vm" secondAttribute="top" constant="10" id="01A-8H-gHZ"/>
                             <constraint firstAttribute="trailing" secondItem="tWa-vl-g9a" secondAttribute="trailing" constant="12" id="KyZ-XI-mqa"/>
-                            <constraint firstAttribute="bottom" secondItem="tWa-vl-g9a" secondAttribute="bottom" constant="45" id="ZaM-fS-Cwz"/>
+                            <constraint firstAttribute="trailing" secondItem="4oB-pF-rmG" secondAttribute="trailing" constant="12" id="QzV-yl-IUg"/>
+                            <constraint firstAttribute="bottom" secondItem="4oB-pF-rmG" secondAttribute="bottom" constant="14" id="SFR-o5-quV"/>
+                            <constraint firstItem="4oB-pF-rmG" firstAttribute="top" secondItem="tWa-vl-g9a" secondAttribute="bottom" constant="6" id="VnX-ag-JDR"/>
                             <constraint firstItem="tWa-vl-g9a" firstAttribute="leading" secondItem="1mR-qO-5vm" secondAttribute="leading" constant="12" id="j9Q-P1-fvR"/>
+                            <constraint firstItem="4oB-pF-rmG" firstAttribute="leading" secondItem="1mR-qO-5vm" secondAttribute="leading" constant="12" id="zSw-CL-W7k"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -42,6 +51,7 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="bucketItemMessage" destination="4oB-pF-rmG" id="dlE-O0-sCg"/>
                 <outlet property="bucketName" destination="tWa-vl-g9a" id="ECd-ay-fJJ"/>
                 <outlet property="card" destination="1mR-qO-5vm" id="mKb-wr-sbf"/>
             </connections>

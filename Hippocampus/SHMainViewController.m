@@ -24,7 +24,9 @@
 {
     [super viewDidLoad];
     [self setupLogic];
-    [self switchContainerToView:@"thoughtsViewController" fromView:nil];
+    
+    [self loadViewController:@"thoughtsViewController"];
+    [self loadViewController:@"bucketsViewController"];
 }
 
 - (void) setupLogic
@@ -32,9 +34,22 @@
     self.viewControllersCached = [[NSMutableDictionary alloc] init];
 }
 
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self loadIfNoChildController];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void) loadIfNoChildController
+{
+    if ([[self.containerView subviews] count] == 0) {
+        [self switchContainerToView:@"thoughtsViewController" fromView:nil];
+    }
 }
 
 
@@ -70,19 +85,9 @@
 
 - (void) switchContainerToView:(NSString*)toName fromView:(NSString*)fromName
 {
-    UIViewController* vc;
+    [self loadViewController:toName];
     
-    if (![self.viewControllersCached objectForKey:toName]) {
-        if ([toName isEqualToString:@"thoughtsViewController"]) {
-            vc = [[SHSlackThoughtsViewController alloc] init];
-            [(SHSlackThoughtsViewController*)vc setLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
-        } else {
-            vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:toName];
-        }
-        [self.viewControllersCached setObject:vc forKey:toName];
-    } else {
-        vc = [self.viewControllersCached objectForKey:toName];
-    }
+    UIViewController* vc = [self.viewControllersCached objectForKey:toName];
     
     [self addChildViewController:vc];
     [vc didMoveToParentViewController:self];
@@ -93,6 +98,26 @@
         if ([[self.viewControllersCached objectForKey:fromName] respondsToSelector:@selector(textView)] && [[self.viewControllersCached objectForKey:fromName] textView]) {
             [[[self.viewControllersCached objectForKey:fromName] textView] resignFirstResponder];
         }
+    }
+    
+    if ([toName isEqualToString:@"thoughtsViewController"]) {
+        [self setTitle:@"Thoughts"];
+    } else if ([toName isEqualToString:@"bucketsViewController"]) {
+        [self setTitle:@"Buckets"];
+    }
+}
+
+- (void) loadViewController:(NSString*)viewControllerName
+{
+    UIViewController* vc;
+    if (![self.viewControllersCached objectForKey:viewControllerName]) {
+        if ([viewControllerName isEqualToString:@"thoughtsViewController"]) {
+            vc = [[SHSlackThoughtsViewController alloc] init];
+            [(SHSlackThoughtsViewController*)vc setLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
+        } else {
+            vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:viewControllerName];
+        }
+        [self.viewControllersCached setObject:vc forKey:viewControllerName];
     }
 }
 

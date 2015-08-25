@@ -21,6 +21,18 @@
     // Initialization code
     inverted = NO;
     [self setupGestureRecognizers];
+    
+    [self setupSwipeButtons];
+    
+    [self.message setFont:[UIFont itemContentFont]];
+    [self.message setTextColor:[UIColor SHFontDarkGray]];
+    
+    [self setBackgroundColor:[UIColor slightBackgroundColor]];
+    
+    if (!inverted) {
+        self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+        inverted = YES;
+    }
 }
 
 - (void) setSelected:(BOOL)selected animated:(BOOL)animated
@@ -34,9 +46,6 @@
     
     NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:self.itemLocalKey];
     
-    [self setupSwipeButtons];
-    
-    [self.message setFont:[UIFont itemContentFont]];
     [self.message setText:[item message]];
     
     self.nudgeImageViewTrailingSpace.constant = 6.0f;
@@ -56,13 +65,6 @@
         self.nudgeImageViewTrailingSpace.constant = 14.0f;
     } else {
         [outstandingDot setHidden:YES];
-    }
-    
-    [self setBackgroundColor:[UIColor slightBackgroundColor]];
-    
-    if (!inverted) {
-        self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
-        inverted = YES;
     }
 }
 
@@ -96,6 +98,22 @@
         self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
         [self addGestureRecognizer:longPress];
     }
+}
+
+
+
+
+# pragma mark helpers
+//CURRENTLY UNUSED
+- (UITableView *)relatedTable
+{
+    if ([self.superview isKindOfClass:[UITableView class]])
+        return (UITableView *)self.superview;
+    else if ([self.superview.superview isKindOfClass:[UITableView class]])
+        return (UITableView *)self.superview.superview;
+    else if ([self.superview.superview.superview isKindOfClass:[UITableView class]])
+        return (UITableView *)self.superview.superview.superview;
+    return nil;
 }
 
 

@@ -51,6 +51,8 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    
+    [self reloadScreen];
 }
 
 - (void) beginningActions
@@ -120,6 +122,11 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
     return cell;
 }
 
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSMutableDictionary* bucket = [self bucketAtIndexPath:indexPath];
+    return MIN(33.0f,([bucket cachedItemMessage] ? [[bucket cachedItemMessage] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:14.0f]] : 0)) + ([bucket firstName] ? [[bucket firstName] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:16.0f]] : 0) + 39.0f;
+}
 
 
 # pragma mark actions

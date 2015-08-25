@@ -281,6 +281,13 @@
         }
         [[oldCopy cleanDictionary] assignLocalWithKey:[oldCopy localKey]];
         return YES;
+    } else {
+        for (NSString* key in [updateWith allKeys]) {
+            if (![oldCopy objectForKey:key]) {
+                [oldCopy setObject:[updateWith objectForKey:key] forKey:key];
+            }
+        }
+        [[oldCopy cleanDictionary] assignLocalWithKey:[oldCopy localKey]];
     }
     return NO;
 }

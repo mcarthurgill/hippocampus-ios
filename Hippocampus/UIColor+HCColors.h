@@ -22,5 +22,7 @@
 + (UIColor*) SHLightGray;
 
 + (UIColor*) SHFontPurple;
++ (UIColor*) SHFontDarkGray;
++ (UIColor*) SHFontLightGray;
 
 @end
