@@ -14,4 +14,7 @@
 
 - (void) destroyItem;
 
+- (BOOL) hasMedia;
+- (NSMutableArray*) media;
+
 @end

@@ -31,4 +31,17 @@
     }
 }
 
+- (BOOL) hasMedia
+{
+    return [[self media] count] > 0;
+}
+
+- (NSMutableArray*) media
+{
+    if ([self objectForKey:@"media_cache"] && NULL_TO_NIL([self objectForKey:@"media_cache"]) && [[self objectForKey:@"media_cache"] respondsToSelector:@selector(count)]) {
+        return [self objectForKey:@"media_cache"];
+    }
+    return [@[] mutableCopy];
+}
+
 @end

@@ -17,15 +17,13 @@
     //Default appearance
     [self.window setTintColor:[UIColor mainColor]];
     [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:[[UIFont titleFont] fontName] size:13.0f]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:14.0f]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTintColor:[UIColor mainColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:16.0f], NSForegroundColorAttributeName : [UIColor SHFontDarkGray]}];
     
     // Override point for customization after application launch.
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
-    
-    //initialize the core data variables and put in the session
-    [self managedObjectContext];
-    [self persistentStoreCoordinator];
-    [self managedObjectModel];
     
     [[LXSession thisSession] setVariables];
     
@@ -65,11 +63,10 @@
     UIStoryboard* storyboard = [UIStoryboard storyboardWithName:name bundle:[NSBundle mainBundle]];
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
-    if (([name isEqualToString:@"Messages"] || [name isEqualToString:@"Seahorse"]) && [[LXSession thisSession] user]) {
+    if (([name isEqualToString:@"Seahorse"]) && [[LXSession thisSession] user]) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [[[LXSession thisSession] user] updateTimeZone];
         });
-        [[LXObjectManager defaultManager] runQueries];
         [self refreshObjects];
     }
 }
@@ -101,8 +98,11 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"appAwake" object:nil];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [[LXSession thisSession] attemptUnsavedNoteSaving];
+        if ([[LXSession thisSession] user]) {
+            [[LXObjectManager defaultManager] runQueries];
+        }
     });
+    
     [self incrementAppLaunchCount];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -118,61 +118,6 @@
 {
     
 }
-
-# pragma mark managed object context
-
-
-// 1
-- (NSManagedObjectContext *) managedObjectContext {
-    if ([[LXSession thisSession] managedObjectContext] != nil) {
-        return [[LXSession thisSession] managedObjectContext];
-    }
-    
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        [LXSession thisSession].managedObjectContext = [[NSManagedObjectContext alloc] init];
-        [[LXSession thisSession].managedObjectContext setPersistentStoreCoordinator: coordinator];
-    }
-    
-    return [LXSession thisSession].managedObjectContext;
-}
-
-//2
-- (NSManagedObjectModel *)managedObjectModel {
-    if ([[LXSession thisSession] managedObjectModel] != nil) {
-        return [[LXSession thisSession] managedObjectModel];
-    }
-    [LXSession thisSession].managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
-    
-    return [LXSession thisSession].managedObjectModel;
-}
-
-//3
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
-    if ([LXSession thisSession].persistentStoreCoordinator != nil) {
-        return [LXSession thisSession].persistentStoreCoordinator;
-    }
-    NSURL *storeUrl = [NSURL fileURLWithPath: [[self applicationDocumentsDirectory]
-                                               stringByAppendingPathComponent: @"Model.sqlite"]];
-    NSError *error = nil;
-    NSDictionary *options = @{
-                              NSMigratePersistentStoresAutomaticallyOption : @YES,
-                              NSInferMappingModelAutomaticallyOption : @YES
-                              };
-    [LXSession thisSession].persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
-                                                          initWithManagedObjectModel:[self managedObjectModel]];
-    if(![[LXSession thisSession].persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                                                         configuration:nil URL:storeUrl options:options error:&error]) {
-        /*Error for store creation should be handled in here*/
-    }
-    
-    return [[LXSession thisSession] persistentStoreCoordinator];
-}
-
-- (NSString *)applicationDocumentsDirectory {
-    return [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-}
-
 
 
 # pragma mark - Background Fetch
@@ -191,20 +136,20 @@
 
 
 
+
+
 # pragma mark - Notifications
 
 - (void) getPushNotificationPermission
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setBool:YES forKey:@"doneAskingForPushNotificationPermission"];
-    [userDefaults synchronize];
+    //[userDefaults synchronize];
     
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) {
         UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeBadge|UIUserNotificationTypeAlert|UIUserNotificationTypeSound categories:nil];
         [[UIApplication sharedApplication] registerUserNotificationSettings:settings];
         [[UIApplication sharedApplication] registerForRemoteNotifications];
-    } else {
-        [[UIApplication sharedApplication] registerForRemoteNotificationTypes: (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
     }
 }
 
@@ -264,28 +209,12 @@
     if ([userDefaults objectForKey:@"appLaunches"]) {
         NSInteger appLaunches = [userDefaults integerForKey:@"appLaunches"];
         [userDefaults setInteger:appLaunches+1 forKey:@"appLaunches"];
-        if (appLaunches%8 == 2 && ![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) { //if (![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) {
-            NSLog(@"No email!");
-            UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-            HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
-            [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
-            [vc setImageForMainImageView:[UIImage imageNamed:@"email-screen.jpg"]];
-            [vc setMainLabelText:@"You can quickly email thoughts to your Hippocampus if you verify your email address. No spam, we promise."];
-            [vc setPermissionType:@"email"];
-            [vc setDelegate:self];
-            [vc setButtonText:@"Verify Email"];
-            [self.window.rootViewController presentViewController:vc animated:NO completion:nil];
+        if (appLaunches%8 == 2 && ![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) {
+            //EMAIL
+            [self permissionsDelegate:@"email"];
         } else if ([userDefaults integerForKey:@"appLaunches"] > 7) {
             if (![LXSession areNotificationsEnabled] && (![userDefaults objectForKey:@"doneAskingForPushNotificationPermission"] && appLaunches%4 == 3)) {
-                UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Messages" bundle:[NSBundle mainBundle]];
-                HCPermissionViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"permissionViewController"];
-                [vc setImageForScreenshotImageView:[[LXSetup theSetup] takeScreenshot]];
-                [vc setImageForMainImageView:[UIImage imageNamed:@"permission-screen.jpg"]];
-                [vc setMainLabelText:@"Turn on push notifications to get nudges (reminders) about your thoughts. No spam, we promise."];
-                [vc setPermissionType:@"notifications"];
-                [vc setDelegate:self];
-                [vc setButtonText:@"Turn On Notifications"];
-                [self.window.rootViewController presentViewController:vc animated:NO completion:nil];
+                //PUSH NOTIFICATIONS
             } else if ([LXSession areNotificationsEnabled]) {
                 [self getPushNotificationPermission];
             }
@@ -293,19 +222,17 @@
     } else {
         [userDefaults setInteger:1 forKey:@"appLaunches"];
     }
-    [userDefaults synchronize];
+    //[userDefaults synchronize];
 }
 
 - (void) permissionsDelegate:(NSString*)type
 {
-    NSLog(@"permissions delegate!");
     if ([type isEqualToString:@"email"]) {
         MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
         mc.mailComposeDelegate = self;
         [mc setSubject:[NSString stringWithFormat:@"My Token: (%@==%@", [NSString userAuthToken], [[[LXSession thisSession] user] ID]]];
         [mc setMessageBody:@"Hit 'Send' in the top right corner to verify this email address! (and don't delete/change the subject of this email)\n\nVerify me! Cheers," isHTML:NO];
         [mc setToRecipients:@[@"thought@hppcmps.com"]];
-        // Present mail view controller on screen
         [self.window.rootViewController presentViewController:mc animated:YES completion:nil];
     }
 }
@@ -329,7 +256,6 @@
         default:
             break;
     }
-    // Close the Mail Interface
     [controller dismissViewControllerAnimated:YES completion:NULL];
 }
 

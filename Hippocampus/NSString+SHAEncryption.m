@@ -16,7 +16,7 @@
     NSString *letters = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     NSMutableString *randomString = [NSMutableString stringWithCapacity: len];
     for (int i=0; i<len; i++) {
-        [randomString appendFormat: @"%C", [letters characterAtIndex: arc4random_uniform([letters length])]];
+        [randomString appendFormat: @"%C", [letters characterAtIndex: arc4random_uniform((int)[letters length])]];
     }
     return randomString;
 }
@@ -25,7 +25,7 @@
 {
    unsigned char digest[CC_SHA1_DIGEST_LENGTH];
    NSData *stringBytes = [self dataUsingEncoding: NSUTF8StringEncoding]; /* or some other encoding */
-   if (CC_SHA1([stringBytes bytes], [stringBytes length], digest)) {
+   if (CC_SHA1([stringBytes bytes], (int)[stringBytes length], digest)) {
       /* SHA-1 hash has been calculated and stored in 'digest'. */
       NSMutableString* sha512 = [[NSMutableString alloc] init];
       for (int i = 0 ; i < CC_SHA1_DIGEST_LENGTH ; ++i)

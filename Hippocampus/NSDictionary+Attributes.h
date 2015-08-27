@@ -11,6 +11,19 @@
 
 @interface NSDictionary (Attributes)
 
+
+//NEW
+
+- (NSString*) mediaURL;
+- (NSString*) mediaThumbnailURLWithScreenWidth;
+- (NSString*) mediaThumbnailURLWithWidth:(NSInteger)width;
+- (CGFloat) width;
+- (CGFloat) height;
+- (CGFloat) mediaSizeRatio;
+- (CGFloat) widthForHeight:(CGFloat)height;
+
+//OLD
+
 - (NSString*) ID;
 
 - (NSString*) itemID;
@@ -20,8 +33,6 @@
 - (NSString*) userID;
 
 - (NSString*) groupID;
-
-- (NSString*) getGroupID;
 
 - (NSString*) groupName;
 
@@ -106,8 +117,6 @@
 
 - (BOOL) isOutstanding;
 
-- (BOOL) hasMediaURLs;
-
 - (BOOL) hasMessage;
 
 - (BOOL) hasReminder;
@@ -159,7 +168,5 @@
 - (int)indexOfMatchingVideoUrl:(NSString*)imageURL;
 
 // actions
-
-- (void) deleteItemWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 @end

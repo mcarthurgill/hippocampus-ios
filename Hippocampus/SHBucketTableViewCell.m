@@ -16,10 +16,22 @@
 @synthesize bucketName;
 @synthesize bucketItemMessage;
 
+
+
+
 - (void)awakeFromNib
 {
-    // Initialization code
-    
+    [self setupAppearanceSettings];
+}
+
+
+
+
+
+# pragma mark setup
+
+- (void) setupAppearanceSettings
+{
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
     
     [card.layer setCornerRadius:4.0f];
@@ -37,6 +49,22 @@
 {
     [super setSelected:selected animated:animated];
 }
+
+- (void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    if (highlighted) {
+        [self.card setBackgroundColor:[UIColor SHLightGray]];
+    } else {
+        [self.card setBackgroundColor:[UIColor whiteColor]];
+    }
+}
+
+
+
+
+
+
+# pragma mark configure
 
 - (void) configureWithBucketLocalKey:(NSString*)key
 {
@@ -57,7 +85,7 @@
     
     [bucketItemMessage setText:[bucket cachedItemMessage]];
     
-    //NSLog(@"cellheight: %f, label heights: %f %f", self.frame.size.height, bucketName.frame.size.height, bucketItemMessage.frame.size.height);
+    [self setNeedsLayout];
     
 }
 

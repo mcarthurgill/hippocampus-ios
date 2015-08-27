@@ -29,6 +29,8 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatedBucketLocalKeys:) name:@"updatedBucketLocalKeys" object:nil];
     
     [self beginningActions];
+    
+    [self reloadScreen];
 }
 
 - (void) setupSettings
@@ -45,14 +47,12 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self reloadScreen];
+    //[self reloadScreen];
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    [self reloadScreen];
 }
 
 - (void) beginningActions
@@ -119,6 +119,7 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 {
     SHBucketTableViewCell* cell = (SHBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:bucketCellIdentifier];
     [cell configureWithBucketLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
+    [cell layoutIfNeeded];
     return cell;
 }
 

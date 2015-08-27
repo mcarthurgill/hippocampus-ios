@@ -108,7 +108,7 @@ static LXObjectManager* defaultManager = nil;
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"failed-queries"];
     }
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    //[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void) refreshObjectTypes:(NSString*)pluralObjectType withAboveUpdatedAt:(NSString*)updatedAtString success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
@@ -127,7 +127,7 @@ static LXObjectManager* defaultManager = nil;
                                    if (shouldRefresh) {
                                        //[[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
                                    }
-                                   [[NSUserDefaults standardUserDefaults] synchronize];
+                                   //[[NSUserDefaults standardUserDefaults] synchronize];
                                });
                                if (successCallback) {
                                    successCallback(responseObject);

@@ -1663,7 +1663,7 @@ NSInteger const SLKAlertViewClearTextTag = 1534347677; // absolute hash of 'SLKT
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:cachedKey];
     }
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    //[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)slk_isCachingEnabled
@@ -1703,7 +1703,7 @@ NSInteger const SLKAlertViewClearTextTag = 1534347677; // absolute hash of 'SLKT
         return;
     }
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    //[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 

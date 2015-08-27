@@ -29,18 +29,6 @@
 
 - (void) setVariables;
 
-- (NSMutableArray*) unsavedNotes;
-- (NSMutableDictionary*) unsavedNotesDictionary;
-- (NSMutableArray*) unsavedNotesForBucket:(NSString*)bucketID;
-
-- (NSMutableArray*) groups;
-
-- (void) addUnsavedNote:(NSMutableDictionary*)note toBucket:(NSString*)bucketID;
-- (void) removeUnsavedNote:(NSMutableDictionary*)note fromBucket:(NSString*)bucketID;
-
-- (void) attemptNoteSave:(NSDictionary*)unsavedNote success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
-- (void) attemptUnsavedNoteSaving;
-
 - (NSString*) documentsPathForFileName:(NSString*) name;
 - (NSString*) writeImageToDocumentsFolder:(UIImage*)image;
 

@@ -24,9 +24,6 @@
 {
     [super viewDidLoad];
     [self setupLogic];
-    
-    [self loadViewController:@"thoughtsViewController"];
-    [self loadViewController:@"bucketsViewController"];
 }
 
 - (void) setupLogic
@@ -48,7 +45,8 @@
 - (void) loadIfNoChildController
 {
     if ([[self.containerView subviews] count] == 0) {
-        [self switchContainerToView:@"thoughtsViewController" fromView:nil];
+        [self switchContainerToView:@"bucketsViewController" fromView:nil];
+        [self switchContainerToView:@"thoughtsViewController" fromView:@"bucketsViewController"];
     }
 }
 

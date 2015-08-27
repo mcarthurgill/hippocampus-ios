@@ -168,7 +168,7 @@
 {
     if ([self updatedMoreRecentThan:[LXObjectManager objectWithLocalKey:[self localKey]]]) {
         [self assignLocalWithKey:key];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        //[[NSUserDefaults standardUserDefaults] synchronize];
         if (successCallback) {
             successCallback(@{});
         }
@@ -234,7 +234,7 @@
 - (void) destroyLocalWithKey:(NSString*)key success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    //[[NSUserDefaults standardUserDefaults] synchronize];
     [[[LXObjectManager defaultManager] library] removeObjectForKey:[self localKey]];
     if (successCallback) {
         successCallback(@{});

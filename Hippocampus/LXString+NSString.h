@@ -15,6 +15,7 @@
 + (NSString*) randomCongratulations;
 
 - (NSString*) croppedImageURLToScreenWidth;
+- (NSString*) croppedImageURLToWidth:(NSInteger)width;
 
 - (NSString*) fileExtension;
 

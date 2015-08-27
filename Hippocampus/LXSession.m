@@ -20,10 +20,6 @@ static LXSession* thisSession = nil;
 
 @synthesize cachedUser;
 
-@synthesize managedObjectModel;
-@synthesize managedObjectContext;
-@synthesize persistentStoreCoordinator;
-
 @synthesize backgroundTask;
 
 @synthesize locationManager;
@@ -80,160 +76,6 @@ static LXSession* thisSession = nil;
 # pragma mark unsaved notes dictionary
 
 
-- (NSMutableArray*) unsavedNotes
-{
-    NSMutableArray* temp = [[NSMutableArray alloc] init];
-    NSArray* keys = [[self unsavedNotesDictionary] allKeys];
-    for (NSString* k in keys) {
-        [temp addObjectsFromArray:[[self unsavedNotesDictionary] objectForKey:k]];
-    }
-    return temp;
-}
-
-- (NSMutableDictionary*) unsavedNotesDictionary
-{
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"unsavedNotes"]) {
-        return [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"unsavedNotes"]];
-    }
-    return [[NSMutableDictionary alloc] init];
-}
-
-- (NSMutableArray*) unsavedNotesForBucket:(NSString*)bucketID
-{
-    if ([[self unsavedNotesDictionary] objectForKey:bucketID]) {
-        return [[NSMutableArray alloc] initWithArray:[[self unsavedNotesDictionary] objectForKey:bucketID]];
-    }
-    return nil;
-}
-
-- (NSMutableArray*) groups
-{
-    NSMutableDictionary* temp = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"]];
-    if (temp && [temp objectForKey:@"groups"]) {
-        return [[temp objectForKey:@"groups"] mutableCopy];
-    }
-    return [@[] mutableCopy];
-}
-
-- (void) addUnsavedNote:(NSMutableDictionary*)note toBucket:(NSString*)bucketID
-{
-    NSMutableDictionary* temp = [self unsavedNotesDictionary];
-    NSMutableArray* tempArray = [self unsavedNotesForBucket:bucketID];
-    if (!tempArray) {
-        tempArray = [[NSMutableArray alloc] init];
-    }
-    [tempArray addObject:note];
-    [temp setObject:tempArray forKey:bucketID];
-    [[NSUserDefaults standardUserDefaults] setObject:temp forKey:@"unsavedNotes"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (void) removeUnsavedNote:(NSMutableDictionary*)note fromBucket:(NSString*)bucketID
-{
-    NSMutableDictionary* temp = [self unsavedNotesDictionary];
-    NSMutableArray* tempArray = [self unsavedNotesForBucket:bucketID];
-    NSMutableArray *enumeratingArray = [NSMutableArray arrayWithArray:tempArray];
-    if (tempArray) {
-        for (NSDictionary* dict in enumeratingArray) {
-            if ([[dict objectForKey:@"device_timestamp"] isEqualToString:[note objectForKey:@"device_timestamp"]]) {
-                [tempArray removeObjectAtIndex:[enumeratingArray indexOfObject:dict]];
-            }
-        }
-    }
-    if (tempArray && [tempArray count] > 0) {
-        [temp setObject:tempArray forKey:bucketID];
-    } else {
-        [temp removeObjectForKey:bucketID];
-    }
-    [[NSUserDefaults standardUserDefaults] setObject:temp forKey:@"unsavedNotes"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (void) updateNoteToSaved:(NSDictionary*)newNote inBucket:(NSString*)bucketID
-{
-    NSMutableArray* tempArray = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:bucketID]];
-    NSMutableArray* copyArray = [NSMutableArray arrayWithArray:tempArray];
-    if (tempArray) {
-        for (NSDictionary* dict in tempArray) {
-            if ([[dict objectForKey:@"device_timestamp"] isEqualToString:[newNote objectForKey:@"device_timestamp"]]) {
-                [copyArray replaceObjectAtIndex:[tempArray indexOfObject:dict] withObject:[newNote cleanDictionary]];
-            }
-        }
-    }
-    [[NSUserDefaults standardUserDefaults] setObject:copyArray forKey:bucketID];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (void) attemptNoteSave:(NSDictionary*)note success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    NSMutableDictionary* unsavedNote = [[NSMutableDictionary alloc] initWithDictionary:note];
-    NSMutableArray* mediaURLS = [[NSMutableArray alloc] initWithArray:[unsavedNote objectForKey:@"media_urls"]];
-    [self createAndShareActionWithMediaUrls:mediaURLS andUnsavedNote:unsavedNote
-                                    success:^(id responseObject) {
-                                        if (successCallback) {
-                                            successCallback(responseObject);
-                                        }
-                                    }
-                                    failure:^(NSError* error) {
-                                        if (failureCallback) {
-                                            failureCallback(error);
-                                        }
-                                    }
-     ];
-}
-
-- (void) createAndShareActionWithMediaUrls:(NSMutableArray *)mediaURLS andUnsavedNote:(NSMutableDictionary *)unsavedNote  success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    [unsavedNote removeObjectForKey:@"media_urls"];
-    NSString *mediaType = [unsavedNote objectForKey:@"media_type"];
-    [unsavedNote removeObjectForKey:@"media_type"];
-    
-    if (mediaURLS.count == 0 || [NSData dataWithContentsOfFile:[mediaURLS firstObject]]) {
-        [[LXServer shared] requestPath:@"/items.json" withMethod:@"POST" withParamaters:@{@"item":unsavedNote}
-             constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-                 if (mediaURLS && [mediaURLS count] > 0) {
-                     if ([mediaType isEqualToString:@"image"]) {
-                         [formData appendPartWithFileData:[NSData dataWithContentsOfFile:[mediaURLS firstObject]] name:@"file" fileName:@"image.jpg" mimeType:@"image/jpeg"];
-                     } else if ([mediaType isEqualToString:@"video"]) {
-                         NSData *video = [NSData dataWithContentsOfFile:[mediaURLS firstObject]];
-                         [formData appendPartWithFileData:video name:@"file" fileName:@"video.mov" mimeType:@"video/quicktime"];
-                     }
-                 }
-             }
-                               success:^(id responseObject) {
-                                   [self removeUnsavedNote:responseObject fromBucket:[NSString stringWithFormat:@"%@",[unsavedNote objectForKey:@"bucket_id"]]];
-                                   if (successCallback) {
-                                       successCallback(responseObject);
-                                   }
-                               }
-                               failure:^(NSError* error) {
-                                   if (failureCallback) {
-                                       failureCallback(error);
-                                   }
-                               }
-         ];
-    } else {
-        [self removeUnsavedNote:unsavedNote fromBucket:[NSString stringWithFormat:@"%@",[unsavedNote objectForKey:@"bucket_id"]]];
-    }
-}
-
-
-- (void) attemptUnsavedNoteSaving
-{
-    NSMutableArray* notes = [self unsavedNotes];
-    for (NSDictionary* note in notes) {
-        [self attemptNoteSave:note
-                      success:^(id responseObject) {
-                          [self removeUnsavedNote:responseObject fromBucket:[note objectForKey:@"bucket_id"]];
-                          [self updateNoteToSaved:[NSDictionary dictionaryWithDictionary:responseObject] inBucket:[NSString stringWithFormat:@"%@",[note objectForKey:@"bucket_id"]]];
-                      }
-                      failure:^(NSError* error) {
-                          NSLog(@"couldn't save note!");
-                      }
-         ];
-    }
-}
-
 - (NSString*) documentsPathForFileName:(NSString*) name
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -284,7 +126,7 @@ static LXSession* thisSession = nil;
         NSLog(@"Location Services Enabled");
         if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusDenied) {
             NSLog(@"locationDenied!");
-        } else if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorized) {
+        } else if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorizedAlways) {
             NSLog(@"location authorized!");
         } else if ([CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorizedAlways || [CLLocationManager authorizationStatus] ==kCLAuthorizationStatusAuthorizedWhenInUse) {
             NSLog(@"new location authorized!");
@@ -336,7 +178,10 @@ static LXSession* thisSession = nil;
 }
 
 
+
+
 # pragma mark - Push Notifications
+
 + (BOOL) areNotificationsEnabled
 {
     if ([[UIApplication sharedApplication] respondsToSelector:@selector(currentUserNotificationSettings)]){
@@ -346,13 +191,7 @@ static LXSession* thisSession = nil;
         }
         return YES;
     }
-    
-    UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
-    if (types & UIRemoteNotificationTypeAlert){
-        return YES;
-    } else{
-        return NO;
-    }
+    return NO;
 }
 
 

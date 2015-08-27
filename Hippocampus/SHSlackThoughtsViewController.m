@@ -37,12 +37,14 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [self setupSettings];
     [self beginningActions];
+    
+    [self reloadScreen];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self reloadScreen];
+    //[self reloadScreen];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -54,7 +56,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self.textView resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,10 +68,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bucketRefreshed:) name:@"bucketRefreshed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removedItemFromBucket:) name:@"removedItemFromBucket" object:nil];
-    
-    if ([localKey isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
-        //[self.tableView setContentInset:UIEdgeInsetsMake(-64, 0, 0, 0)];
-    }
     
     page = 0;
     
@@ -85,6 +82,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
 }
 
 - (void) beginningActions
@@ -165,6 +163,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) reloadScreen
 {
     [self.tableView reloadData];
+    //[[[[self.parentViewController navigationController] navigationBar] topItem] setTitle:[[self bucket] firstName]];
+    [self setTitle:[[self bucket] firstName]];
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -196,6 +196,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     SHItemTableViewCell* cell = (SHItemTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:itemCellIdentifier];
     [cell configureWithItemLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
+    [cell layoutIfNeeded];
     return cell;
 }
 

@@ -16,6 +16,60 @@
 
 # pragma mark attribute helpers
 
+
+//NEW
+
+- (NSString*) mediaURL
+{
+    return [self objectForKey:@"media_url"];
+}
+
+- (NSString*) mediaThumbnailURLWithScreenWidth
+{
+    return [self mediaThumbnailURLWithWidth:[[UIScreen mainScreen] bounds].size.width];
+}
+
+- (NSString*) mediaThumbnailURLWithWidth:(NSInteger)width
+{
+    if (!width)
+        return [[self mediaThumbnailURL] croppedImageURLToScreenWidth];
+    return [[self mediaThumbnailURL] croppedImageURLToWidth:width];
+}
+
+- (NSString*) mediaThumbnailURL
+{
+    return [self objectForKey:@"thumbnail_url"] && NULL_TO_NIL([self objectForKey:@"thumbnail_url"]) ? [self objectForKey:@"thumbnail_url"] : [self mediaURL];
+}
+
+- (CGFloat) width
+{
+    //NSLog(@"width: %f", [self objectForKey:@"width"] && NULL_TO_NIL([self objectForKey:@"width"]) ? [[self objectForKey:@"width"] floatValue] : 0.0f);
+    return [self objectForKey:@"width"] && NULL_TO_NIL([self objectForKey:@"width"]) ? [[self objectForKey:@"width"] floatValue] : 0.0f;
+}
+
+- (CGFloat) height
+{
+    //NSLog(@"height: %f", [self objectForKey:@"height"] && NULL_TO_NIL([self objectForKey:@"height"]) ? [[self objectForKey:@"height"] floatValue] : 0.0f);
+    return [self objectForKey:@"height"] && NULL_TO_NIL([self objectForKey:@"height"]) ? [[self objectForKey:@"height"] floatValue] : 0.0f;
+}
+
+- (CGFloat) mediaSizeRatio
+{
+    NSLog(@"sizeRatio: %f", [self width]/[self height]);
+    if ([self height] > 0.0)
+        return [self width]/[self height];
+    return 0.0f;
+}
+
+- (CGFloat) widthForHeight:(CGFloat)height
+{
+    NSLog(@"widthForHeight: %f", [self mediaSizeRatio]*height);
+    return [self mediaSizeRatio]*height;
+}
+
+
+//OLD
+
 - (NSString*) ID
 {
     return [self objectForKey:@"id"];
@@ -39,32 +93,6 @@
 - (NSString*) groupID
 {
     return NULL_TO_NIL([self objectForKey:@"group_id"]);
-}
-
-- (NSString*) getGroupID
-{
-    if (NULL_TO_NIL([self objectForKey:@"group"]) && [[self objectForKey:@"group"] ID]) {
-        return [[self objectForKey:@"group"] ID];
-    }
-    if ([self bucketUserPairs] && [[self bucketUserPairs] respondsToSelector:@selector(count)]) {
-        for (NSDictionary* bup in [self bucketUserPairs]) {
-            if ([[bup phoneNumber] isEqualToString:[[[LXSession thisSession] user] phone]]) {
-                return [bup groupID];
-            }
-        }
-    }
-    if ([[LXSession thisSession] groups]) {
-        for (NSDictionary* group in [[LXSession thisSession] groups]) {
-            if ([group objectForKey:@"sorted_buckets"]) {
-                for (NSDictionary* bucket in [group objectForKey:@"sorted_buckets"]) {
-                    if ([[bucket ID] isEqual:[self ID]]) {
-                        return [group ID];
-                    }
-                }
-            }
-        }
-    }
-    return nil;
 }
 
 - (NSString*) groupName
@@ -300,11 +328,6 @@
 - (BOOL) isOutstanding
 {
     return (![self status] && ![self hasBuckets]) || [[self status] isEqualToString:@"outstanding"];
-}
-
-- (BOOL) hasMediaURLs
-{
-    return [self mediaURLs] && [[self mediaURLs] count] > 0;
 }
 
 - (BOOL) hasMessage
@@ -580,28 +603,5 @@
 }
 
 
-# pragma mark actions
-
-- (void) deleteItemWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/items/%@.json", [self ID]] withMethod:@"DELETE" withParamaters:nil
-                           success:^(id responseObject) {
-                               [[LXServer shared] getAllItemsWithPage:0 success:nil failure:nil];
-                               if ([self hasBuckets]) {
-                                   for (NSDictionary* bucket in [self buckets]) {
-                                       [[LXServer shared] getBucketShowWithPage:0 bucketID:[bucket ID] success:nil failure:nil];
-                                   }
-                               }
-                               if (successCallback) {
-                                   successCallback(responseObject);
-                               }
-                           }
-                           failure:^(NSError* error) {
-                               if (failureCallback) {
-                                   failureCallback(error);
-                               }
-                           }
-     ];
-}
 
 @end

@@ -17,10 +17,15 @@
 
 @property (strong, nonatomic) NSString* itemLocalKey;
 
+@property (strong, nonatomic) NSMutableArray* mediaViews;
+@property (strong, nonatomic) NSMutableArray* mediaUsed;
+@property (strong, nonatomic) NSMutableArray* addedConstraints;
+
 @property (strong, nonatomic) IBOutlet UILabel *message;
 @property (strong, nonatomic) IBOutlet UILabel *outstandingDot;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *outstandingDotTopToImage;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *outstandingDotTrailingSpace;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *messageTrailingSpace;
 @property (strong, nonatomic) IBOutlet UIImageView *nudgeImageView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *nudgeImageViewTrailingSpace;
 

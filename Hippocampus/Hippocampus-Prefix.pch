@@ -29,7 +29,6 @@
     #import "LXAddressBook.h"
     #import "UILabel+Bold.h"
     #import "NSNumber+Helpers.h"
-    #import "LXSetup.h"
     #import "ASAPIClient.h"
     #import "MGSwipeTableCell.h"
     #import "MGSwipeButton.h"

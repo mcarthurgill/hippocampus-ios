@@ -20,7 +20,7 @@
                                    if ([responseObject respondsToSelector:@selector(count)]) {
                                        [[[LXObjectManager defaultManager] library] setObject:responseObject forKey:@"bucketLocalKeys"];
                                        [[NSUserDefaults standardUserDefaults] setObject:responseObject forKey:@"bucketLocalKeys"];
-                                       [[NSUserDefaults standardUserDefaults] synchronize];
+                                       //[[NSUserDefaults standardUserDefaults] synchronize];
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedBucketLocalKeys" object:nil userInfo:nil];
                                    }
                                });
@@ -49,7 +49,7 @@
                                    //if (shouldRefresh) {
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
                                    //}
-                                   [[NSUserDefaults standardUserDefaults] synchronize];
+                                   //[[NSUserDefaults standardUserDefaults] synchronize];
                                });
                                if (successCallback) {
                                    successCallback(responseObject);
