@@ -44,4 +44,16 @@
     return [@[] mutableCopy];
 }
 
+
+- (BOOL) shouldShowAvatar
+{
+    return ![self belongsToCurrentUser]; // should also: || isCollaborativeThread
+}
+
+- (NSString*) avatarURLString
+{
+    return [NSString stringWithFormat:@"%@/avatar/%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIRoot"], [self userID]];
+}
+
+
 @end

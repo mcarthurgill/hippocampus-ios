@@ -17,4 +17,7 @@
 - (BOOL) hasMedia;
 - (NSMutableArray*) media;
 
+- (BOOL) shouldShowAvatar;
+- (NSString*) avatarURLString;
+
 @end

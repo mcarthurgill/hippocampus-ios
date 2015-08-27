@@ -9,6 +9,7 @@
 #import "SHMainViewController.h"
 #import "SHBucketsViewController.h"
 #import "SHSlackThoughtsViewController.h"
+#import "SHSearchViewController.h"
 
 @interface SHMainViewController ()
 
@@ -24,11 +25,16 @@
 {
     [super viewDidLoad];
     [self setupLogic];
+    [self registerForNotifications];
 }
 
 - (void) setupLogic
 {
     self.viewControllersCached = [[NSMutableDictionary alloc] init];
+}
+
+- (void) registerForNotifications
+{
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -72,8 +78,14 @@
 
 - (IBAction)rightBarButtonAction:(id)sender
 {
-    UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Not yet implemented!" message:nil delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-    [av show];
+    SHSearchViewController* vc = (SHSearchViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHSearchViewController"];
+    UIView* backgroundFrame = [self.view snapshotViewAfterScreenUpdates:NO];
+    
+    [self presentViewController:vc animated:NO
+                     completion:^(void){
+                         [vc.backgroundView addSubview:backgroundFrame];
+                     }
+     ];
 }
 
 
@@ -118,5 +130,6 @@
         [self.viewControllersCached setObject:vc forKey:viewControllerName];
     }
 }
+
 
 @end

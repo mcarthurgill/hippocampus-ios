@@ -185,7 +185,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     } else {
         [[LXObjectManager defaultManager] refreshObjectWithKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]
                                                        success:^(id responseObject){
-                                                           [self.tableView reloadData];
+                                                           //[self.tableView reloadData];
                                                        } failure:nil
          ];
         return [self tableView:tV loadingCellForRowAtIndexPath:indexPath];
@@ -195,7 +195,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (UITableViewCell*) tableView:(UITableView *)tV itemCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHItemTableViewCell* cell = (SHItemTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:itemCellIdentifier];
-    [cell configureWithItemLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
+    [cell configureWithItemLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row] bucketLocalKey:self.localKey];
     [cell layoutIfNeeded];
     return cell;
 }
@@ -207,8 +207,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     return cell;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat) tableView:(UITableView *)tV estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    //return [self tableView:tV cellForRowAtIndexPath:indexPath].frame.size.height;
     NSMutableDictionary* item = [[self bucket] itemAtIndex:indexPath.row];
     return [[item message] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(THOUGHT_LEFT_SIDE_MARGIN+THOUGHT_RIGHT_SIDE_MARGIN)) font:[UIFont itemContentFont]] + THOUGHT_TOP_SIDE_MARGIN + THOUGHT_BOTTOM_SIDE_MARGIN;
 }

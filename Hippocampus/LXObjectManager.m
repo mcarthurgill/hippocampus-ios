@@ -152,7 +152,7 @@ static LXObjectManager* defaultManager = nil;
                                //update on disk
                                if ([[responseObject mutableCopy] assignLocalVersionIfNeeded]) {
                                    //notify system of change
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
+                                   //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
                                }
                                if (successCallback) {
                                    successCallback(responseObject);

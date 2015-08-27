@@ -12,11 +12,15 @@
 #define IMAGE_FADE_IN_TIME 0.4f
 #define PICTURE_HEIGHT 100
 #define PICTURE_MARGIN_TOP 8.0f
+#define AVATAR_DIMENSION 32.0f
 
 
 @implementation SHItemTableViewCell
 
+@synthesize shouldInvert;
 @synthesize itemLocalKey;
+@synthesize bucketLocalKey;
+@synthesize item;
 @synthesize message;
 @synthesize nudgeImageView, nudgeImageViewTrailingSpace;
 @synthesize messageTrailingSpace;
@@ -24,22 +28,20 @@
 @synthesize longPress;
 @synthesize mediaViews;
 @synthesize mediaUsed;
-
+@synthesize avatarView;
+@synthesize avatarHeightConstraint, avatarWidthConstraint;
 
 
 - (void)awakeFromNib
 {
     // Initialization code
     inverted = NO;
+    self.shouldInvert = YES;
     
     [self setupAppearanceSettings];
     [self setupGestureRecognizers];
     [self setupSwipeButtons];
     
-    if (!inverted) {
-        self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
-        inverted = YES;
-    }
 }
 
 
@@ -52,6 +54,10 @@
     [self.message setTextColor:[UIColor SHFontDarkGray]];
     
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
+    
+    [self.avatarView.layer setCornerRadius:(AVATAR_DIMENSION/2.0f)];
+    [self.avatarView setClipsToBounds:YES];
+    [self.avatarView setBackgroundColor:[UIColor SHLightGray]];
 }
 
 - (void) setSelected:(BOOL)selected animated:(BOOL)animated
@@ -88,15 +94,35 @@
 
 
 
+- (NSMutableDictionary*) bucket
+{
+    return self.bucketLocalKey ? [LXObjectManager objectWithLocalKey:self.bucketLocalKey] : nil;
+}
+
 
 
 # pragma mark configure
 
 - (void) configureWithItemLocalKey:(NSString*)key
 {
-    [self setItemLocalKey:key];
+    [self configureWithItemLocalKey:key bucketLocalKey:nil];
+}
+
+- (void) configureWithItemLocalKey:(NSString*)key bucketLocalKey:(NSString*)bucketKey
+{
+    [self configureWithItem:[LXObjectManager objectWithLocalKey:key] bucketLocalKey:bucketKey];
+}
+
+- (void) configureWithItem:(NSMutableDictionary*)i bucketLocalKey:(NSString*)bucketKey
+{
+    [self setItem:i];
+    [self setItemLocalKey:[self.item localKey]];
+    [self setBucketLocalKey:bucketKey];
     
-    NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:self.itemLocalKey];
+    if (!inverted && self.shouldInvert) {
+        self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+        inverted = YES;
+    }
     
     [self.message setText:[item message]];
     [self addMessageTrailingSpaceConstraint];
@@ -118,6 +144,36 @@
         self.nudgeImageViewTrailingSpace.constant = 14.0f;
     } else {
         [outstandingDot setHidden:YES];
+    }
+    
+    if (![item belongsToCurrentUser] || ([self bucket] && [[self bucket] isCollaborativeThread])) {
+        self.avatarHeightConstraint.constant = AVATAR_DIMENSION;
+        [self.avatarView setHidden:NO];
+        
+        if ([SGImageCache haveImageForURL:[item avatarURLString]]) {
+            self.avatarView.image = [SGImageCache imageForURL:[item avatarURLString]];
+            [self.avatarView setAlpha:1.0f];
+            [self.avatarView viewWithTag:1].alpha = 0.0;
+            [[self.avatarView viewWithTag:1] removeFromSuperview];
+        } else if (![self.avatarView.image isEqual:[SGImageCache imageForURL:[item avatarURLString]]]) {
+            self.avatarView.image = nil;
+            [self.avatarView setAlpha:1.0f];
+            [SGImageCache getImageForURL:[item avatarURLString]].then(^(UIImage* image) {
+                if (image) {
+                    float curAlpha = [self.avatarView alpha];
+                    [self.avatarView setAlpha:0.0f];
+                    self.avatarView.image = image;
+                    [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
+                        [self.avatarView setAlpha:curAlpha];
+                        [self.avatarView viewWithTag:1].alpha = 0.0;
+                        [[self.avatarView viewWithTag:1] removeFromSuperview];
+                    }];
+                }
+            });
+        }
+    } else {
+        self.avatarHeightConstraint.constant = 0.0f;
+        [self.avatarView setHidden:YES];
     }
     
     [self handleMediaViews];
@@ -280,8 +336,6 @@
 
 - (void) layoutMedia
 {
-    NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:self.itemLocalKey];
-    
     if ([self.mediaViews count] == 1) {
         UIImageView* iv = [self.mediaViews firstObject];
         NSMutableDictionary* medium = [self.mediaUsed firstObject];

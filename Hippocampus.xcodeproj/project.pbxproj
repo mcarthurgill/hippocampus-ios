@@ -35,6 +35,7 @@
 		2826C6101ADDA5D1008DC533 /* txt_scrnsht.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60F1ADDA5D1008DC533 /* txt_scrnsht.png */; };
 		2826C6131ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2826C6121ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m */; };
 		2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 2826C6151ADDA6AF008DC533 /* NSString+SHAEncryption.m */; };
+		282FA8411B8F9C2E004ADA00 /* SHSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 282FA8401B8F9C2E004ADA00 /* SHSearchViewController.m */; };
 		283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 283700881A6F199600C16E87 /* LXTokenViewController.m */; };
 		2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008A1A6F34F000C16E87 /* 06-magnify.png */; };
 		2837008D1A6F34F000C16E87 /* 06-magnify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2837008B1A6F34F000C16E87 /* 06-magnify@2x.png */; };
@@ -149,6 +150,8 @@
 		2826C6121ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBVerifyPhoneNumberViewController.m; sourceTree = "<group>"; };
 		2826C6141ADDA6AF008DC533 /* NSString+SHAEncryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SHAEncryption.h"; sourceTree = "<group>"; };
 		2826C6151ADDA6AF008DC533 /* NSString+SHAEncryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SHAEncryption.m"; sourceTree = "<group>"; };
+		282FA83F1B8F9C2E004ADA00 /* SHSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSearchViewController.h; sourceTree = "<group>"; };
+		282FA8401B8F9C2E004ADA00 /* SHSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSearchViewController.m; sourceTree = "<group>"; };
 		283700871A6F199600C16E87 /* LXTokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXTokenViewController.h; sourceTree = "<group>"; };
 		283700881A6F199600C16E87 /* LXTokenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXTokenViewController.m; sourceTree = "<group>"; };
 		2837008A1A6F34F000C16E87 /* 06-magnify.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "06-magnify.png"; sourceTree = "<group>"; };
@@ -362,6 +365,7 @@
 				281CA926196C2C0B00E6BE96 /* Login */,
 				76CA904B1AE1572800C6E400 /* Permissions */,
 				288F122E1B75221D0001E0B0 /* Main */,
+				282FA83E1B8F9B6D004ADA00 /* Search */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -497,6 +501,15 @@
 				2826C60F1ADDA5D1008DC533 /* txt_scrnsht.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		282FA83E1B8F9B6D004ADA00 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				282FA83F1B8F9C2E004ADA00 /* SHSearchViewController.h */,
+				282FA8401B8F9C2E004ADA00 /* SHSearchViewController.m */,
+			);
+			name = Search;
 			sourceTree = "<group>";
 		};
 		288A745C1B75313500F6A618 /* Person */ = {
@@ -844,6 +857,7 @@
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
 				28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */,
+				282FA8411B8F9C2E004ADA00 /* SHSearchViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

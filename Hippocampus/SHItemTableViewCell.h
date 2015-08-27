@@ -13,9 +13,15 @@
     BOOL inverted;
 }
 
+@property (nonatomic) BOOL shouldInvert;
+
+- (void) configureWithItem:(NSMutableDictionary*)item bucketLocalKey:(NSString*)bucketKey;
+- (void) configureWithItemLocalKey:(NSString*)key bucketLocalKey:(NSString*)bucketKey;
 - (void) configureWithItemLocalKey:(NSString*)key;
 
 @property (strong, nonatomic) NSString* itemLocalKey;
+@property (strong, nonatomic) NSString* bucketLocalKey;
+@property (strong, nonatomic) NSMutableDictionary* item;
 
 @property (strong, nonatomic) NSMutableArray* mediaViews;
 @property (strong, nonatomic) NSMutableArray* mediaUsed;
@@ -28,6 +34,9 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *messageTrailingSpace;
 @property (strong, nonatomic) IBOutlet UIImageView *nudgeImageView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *nudgeImageViewTrailingSpace;
+@property (strong, nonatomic) IBOutlet UIImageView *avatarView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *avatarHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *avatarWidthConstraint;
 
 @property (strong, nonatomic) UILongPressGestureRecognizer* longPress;
 
