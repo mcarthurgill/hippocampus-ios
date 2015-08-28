@@ -9,8 +9,10 @@
 #import "SHBucketsViewController.h"
 #import "SHBucketTableViewCell.h"
 #import "SHSlackThoughtsViewController.h"
+#import "SHLoadingTableViewCell.h"
 
 static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
+static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 @interface SHBucketsViewController ()
 
@@ -39,6 +41,7 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
     [self.tableView setEstimatedRowHeight:100.0f];
     
     [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:loadingCellIdentifier bundle:nil] forCellReuseIdentifier:loadingCellIdentifier];
     
     [self.tableView setContentInset:UIEdgeInsetsMake(64.0f, 0, 0, 0)];
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
@@ -83,7 +86,7 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 
 - (NSArray*) bucketKeys
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"bucketLocalKeys"] ? [[NSUserDefaults standardUserDefaults] objectForKey:@"bucketLocalKeys"] : @[];
+    return [LXObjectManager objectWithLocalKey:@"bucketLocalKeys"];
 }
 
 - (NSMutableDictionary*) bucketAtIndexPath:(NSIndexPath*)indexPath
@@ -112,7 +115,16 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 
 - (UITableViewCell*) tableView:(UITableView *)tV cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [self tableView:tV bucketCellForRowAtIndexPath:indexPath];
+    if ([LXObjectManager objectWithLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]]) {
+        return [self tableView:tV bucketCellForRowAtIndexPath:indexPath];
+    } else {
+        [[LXObjectManager defaultManager] refreshObjectWithKey:[[self bucketKeys] objectAtIndex:indexPath.row]
+                                                       success:^(id responseObject){
+                                                           //[self.tableView reloadData];
+                                                       } failure:nil
+         ];
+        return [self tableView:tV loadingCellForRowAtIndexPath:indexPath];
+    }
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tV bucketCellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -123,10 +135,21 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
     return cell;
 }
 
+- (UITableViewCell*) tableView:(UITableView *)tV loadingCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHLoadingTableViewCell* cell = (SHLoadingTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:loadingCellIdentifier];
+    [cell configure];
+    return cell;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableDictionary* bucket = [self bucketAtIndexPath:indexPath];
-    return MIN(33.0f,([bucket cachedItemMessage] ? [[bucket cachedItemMessage] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:14.0f]] : 0)) + ([bucket firstName] ? [[bucket firstName] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:16.0f]] : 0) + 39.0f;
+    if ([LXObjectManager objectWithLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]]) {
+        NSMutableDictionary* bucket = [self bucketAtIndexPath:indexPath];
+        return MIN(33.0f,([bucket cachedItemMessage] ? [[bucket cachedItemMessage] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:14.0f]] : 0)) + ([bucket firstName] ? [[bucket firstName] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:16.0f]] : 0) + 39.0f;
+    } else {
+        return 44.0f;
+    }
 }
 
 

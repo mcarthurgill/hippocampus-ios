@@ -28,4 +28,9 @@
     // Configure the view for the selected state
 }
 
+- (void) configure
+{
+    NSLog(@"height: %f", self.frame.size.height);
+}
+
 @end

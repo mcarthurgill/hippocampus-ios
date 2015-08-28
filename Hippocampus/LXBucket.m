@@ -18,9 +18,7 @@
                            success:^(id responseObject){
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    if ([responseObject respondsToSelector:@selector(count)]) {
-                                       [[[LXObjectManager defaultManager] library] setObject:responseObject forKey:@"bucketLocalKeys"];
-                                       [[NSUserDefaults standardUserDefaults] setObject:responseObject forKey:@"bucketLocalKeys"];
-                                       //[[NSUserDefaults standardUserDefaults] synchronize];
+                                       [LXObjectManager assignLocal:responseObject WithLocalKey:@"bucketLocalKeys"];
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedBucketLocalKeys" object:nil userInfo:nil];
                                    }
                                });
@@ -49,7 +47,6 @@
                                    //if (shouldRefresh) {
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
                                    //}
-                                   //[[NSUserDefaults standardUserDefaults] synchronize];
                                });
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -68,6 +65,7 @@
 {
     return [NSString stringWithFormat:@"all-thoughts--%@", [[[LXSession thisSession] user] ID]];
 }
+
 
 - (NSMutableArray*) items
 {

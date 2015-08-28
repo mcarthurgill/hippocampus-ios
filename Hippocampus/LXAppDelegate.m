@@ -81,10 +81,14 @@
     
     active = NO;
     
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
+    }];
     
+    [LXObjectManager saveToDisk];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationWillResignActive" object:nil];
     
+    [[UIApplication sharedApplication] endBackgroundTask:bgt];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application

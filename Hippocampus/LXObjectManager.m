@@ -108,14 +108,12 @@ static LXObjectManager* defaultManager = nil;
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"failed-queries"];
     }
-    //[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void) refreshObjectTypes:(NSString*)pluralObjectType withAboveUpdatedAt:(NSString*)updatedAtString success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/%@/changes", pluralObjectType] withMethod:@"GET" withParamaters:@{@"updated_at_timestamp":(updatedAtString ? updatedAtString : ([[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]] ? [NSString stringWithFormat:@"%f",[[NSDate timeWithString:[[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]]] timeIntervalSince1970]] : @"0"))}
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/%@/changes", pluralObjectType] withMethod:@"GET" withParamaters:@{@"updated_at_timestamp":(updatedAtString ? updatedAtString : ([LXObjectManager objectWithLocalKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]] ? [NSString stringWithFormat:@"%f",[[NSDate timeWithString:[LXObjectManager objectWithLocalKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]]] timeIntervalSince1970]] : @"0"))}
                            success:^(id responseObject){
-                               //NSLog(@"responseObject: %@", responseObject);
                                
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    BOOL shouldRefresh = NO;
@@ -127,7 +125,6 @@ static LXObjectManager* defaultManager = nil;
                                    if (shouldRefresh) {
                                        //[[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
                                    }
-                                   //[[NSUserDefaults standardUserDefaults] synchronize];
                                });
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -152,7 +149,7 @@ static LXObjectManager* defaultManager = nil;
                                //update on disk
                                if ([[responseObject mutableCopy] assignLocalVersionIfNeeded]) {
                                    //notify system of change
-                                   //[[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
                                }
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -168,10 +165,10 @@ static LXObjectManager* defaultManager = nil;
 
 - (void) assignRefreshDate:(NSString*)updatedAt forObjectTypes:(NSString*)pluralObjectType
 {
-    NSString* currentDate = [[NSUserDefaults standardUserDefaults] objectForKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]];
+    NSString* currentDate = [LXObjectManager objectWithLocalKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]];
     //NSLog(@"%@|%@", currentDate, updatedAt);
     if (!currentDate || currentDate < updatedAt) {
-        [[NSUserDefaults standardUserDefaults] setObject:updatedAt forKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]];
+        [LXObjectManager assignLocal:updatedAt WithLocalKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]];
     }
 }
 
@@ -184,13 +181,35 @@ static LXObjectManager* defaultManager = nil;
     if (key && key.length > 0) {
         if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
             return [[[LXObjectManager defaultManager] library] objectForKey:key];
-        } else if ([[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy]) {
-            return [[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy];
+        } else if ([[NSUserDefaults standardUserDefaults] objectForKey:key]) {
+            [[[LXObjectManager defaultManager] library] setObject:[[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy] forKey:key];
+            return [[[LXObjectManager defaultManager] library] objectForKey:key];
         } else {
+            //[[LXObjectManager defaultManager] refreshObjectWithKey:key success:nil failure:nil];
             //theoretically, go refresh object in question.
         }
     }
     return nil;
+}
+
++ (void) assignLocal:(id)object WithLocalKey:(NSString*)key
+{
+    id mutableCopy = [object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSMutableDictionary class]] ? [object cleanDictionary] : [object mutableCopy];
+    [[[LXObjectManager defaultManager] library] setObject:mutableCopy forKey:key];
+}
+
++ (void) saveToDisk
+{
+    UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
+    }];
+    
+    for (NSString* key in [[[LXObjectManager defaultManager] library] allKeys]) {
+        if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
+            [[NSUserDefaults standardUserDefaults] setObject:[[[LXObjectManager defaultManager] library] objectForKey:key] forKey:key];
+        }
+    }
+    
+    [[UIApplication sharedApplication] endBackgroundTask:bgt];
 }
 
 

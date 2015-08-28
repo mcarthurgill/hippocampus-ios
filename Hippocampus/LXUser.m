@@ -14,7 +14,7 @@
 
 - (void) makeLoggedInUser
 {
-    [self saveLocal];
+    [[NSUserDefaults standardUserDefaults] setObject:self forKey:[self localKey]];
     [[NSUserDefaults standardUserDefaults] setObject:[self localKey] forKey:@"localUserKey"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

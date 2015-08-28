@@ -23,5 +23,7 @@
 // getting
 
 + (id) objectWithLocalKey:(NSString*)key;
++ (void) assignLocal:(id)object WithLocalKey:(NSString*)key;
++ (void) saveToDisk;
 
 @end
