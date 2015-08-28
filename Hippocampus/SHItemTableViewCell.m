@@ -22,7 +22,6 @@
 @synthesize bucketLocalKey;
 @synthesize item;
 @synthesize message;
-@synthesize messageTextView;
 @synthesize nudgeImageView, nudgeImageViewTrailingSpace;
 @synthesize messageTrailingSpace;
 @synthesize outstandingDot, outstandingDotTopToImage, outstandingDotTrailingSpace;
@@ -128,7 +127,6 @@
     }
     
     [self.message setText:[item message]];
-    [self.messageTextView setText:[item message]];
     [self addMessageTrailingSpaceConstraint];
     
     self.nudgeImageViewTrailingSpace.constant = 6.0f;

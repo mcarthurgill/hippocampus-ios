@@ -28,7 +28,6 @@
 @property (strong, nonatomic) NSMutableArray* addedConstraints;
 
 @property (strong, nonatomic) IBOutlet UILabel *message;
-@property (strong, nonatomic) IBOutlet UITextView *messageTextView;
 @property (strong, nonatomic) IBOutlet UILabel *outstandingDot;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *outstandingDotTopToImage;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *outstandingDotTrailingSpace;
