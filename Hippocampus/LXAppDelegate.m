@@ -14,12 +14,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    //flush images from SGImageCache
+    [SGImageCache flushImagesOlderThan:([[[NSDate alloc] init] timeIntervalSince1970]-24*60*60)];
+    
     //Default appearance
     [self.window setTintColor:[UIColor mainColor]];
     [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont fontWithName:[[UIFont titleFont] fontName] size:13.0f]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:14.0f]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTintColor:[UIColor mainColor]];
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:16.0f], NSForegroundColorAttributeName : [UIColor SHFontDarkGray]}];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:@{NSFontAttributeName:[UIFont titleFontWithSize:14.0f]}];
     
     // Override point for customization after application launch.
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];

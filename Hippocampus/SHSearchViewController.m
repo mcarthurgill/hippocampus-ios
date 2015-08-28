@@ -8,6 +8,7 @@
 
 #import "SHSearchViewController.h"
 #import "SHItemTableViewCell.h"
+#import "SHSearch.h"
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 
@@ -63,15 +64,12 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 
 - (void) searchBar:(UISearchBar *)bar textDidChange:(NSString *)searchText
 {
-    ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"FVGQB7HR19" apiKey:@"ddecc3b35feb56ab0a9d2570ac964a82"];
-    ASRemoteIndex *index = [apiClient getIndex:@"Item"];
-    ASQuery* query = [ASQuery queryWithFullTextQuery:[bar text]];
-    query.numericFilters = [NSString stringWithFormat:@"user_ids_array=%@", [[[LXSession thisSession] user] ID]];
-    [index search:query
-          success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
-              [self.cachedSearchResults setObject:[[NSMutableArray alloc] initWithArray:[answer objectForKey:@"hits"]] forKey:[[query fullTextQuery] lowercaseString]];
-              [self reloadScreen];
-          } failure:nil
+    [[SHSearch defaultManager] remoteSearchWithTerm:[bar text]
+                                            success:^(id responseObject){
+                                                [self reloadScreen];
+                                            }
+                                            failure:^(NSError* error){
+                                            }
      ];
 }
 
@@ -107,21 +105,10 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
     [self.tableView reloadData];
 }
 
-- (NSMutableArray*) currentArray
-{
-    NSString* term = [self.searchBar text] && [[self.searchBar text] length] > 0 ? [[self.searchBar text] lowercaseString] : @"";
-    while ([term length] > 0) {
-        if ([self.cachedSearchResults objectForKey:term])
-            return [self.cachedSearchResults objectForKey:term];
-        term = [term substringToIndex:(term.length-1)];
-    }
-    return nil;
-}
-
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
 {
     self.sections = [[NSMutableArray alloc] init];
-    self.searchResults = [self currentArray];
+    self.searchResults = [[SHSearch defaultManager] getCachedObjects:@"items" withTerm:[self.searchBar text]];
     
     if (self.searchResults && [self.searchResults count] > 0 && [self.searchBar text] && [[self.searchBar text] length] > 0) {
         [self.sections addObject:@"results"];
@@ -179,6 +166,9 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self resignSearchFirstResponder];
+    if ([self.sections count] == 1 && [[self.sections firstObject] isEqualToString:@"blank"]) {
+        [self dismissView];
+    }
 }
 
 

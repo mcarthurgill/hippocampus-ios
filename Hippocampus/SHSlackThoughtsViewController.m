@@ -50,7 +50,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self scrollToBottomAnimated];
+    //[self scrollToBottomAnimated];
 }
 
 - (void) viewWillDisappear:(BOOL)animated

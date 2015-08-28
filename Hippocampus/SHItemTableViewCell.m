@@ -22,6 +22,7 @@
 @synthesize bucketLocalKey;
 @synthesize item;
 @synthesize message;
+@synthesize messageTextView;
 @synthesize nudgeImageView, nudgeImageViewTrailingSpace;
 @synthesize messageTrailingSpace;
 @synthesize outstandingDot, outstandingDotTopToImage, outstandingDotTrailingSpace;
@@ -119,12 +120,15 @@
     [self setItemLocalKey:[self.item localKey]];
     [self setBucketLocalKey:bucketKey];
     
+    NSLog(@"%@:%@|", [self.item ID], [self.item message]);
+    
     if (!inverted && self.shouldInvert) {
         self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
         inverted = YES;
     }
     
     [self.message setText:[item message]];
+    [self.messageTextView setText:[item message]];
     [self addMessageTrailingSpaceConstraint];
     
     self.nudgeImageViewTrailingSpace.constant = 6.0f;

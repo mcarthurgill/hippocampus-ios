@@ -172,7 +172,7 @@
 
 - (NSString*) message
 {
-    return [self objectForKey:@"message"] && NULL_TO_NIL([self objectForKey:@"message"]) ? [self objectForKey:@"message"] : nil;
+    return [self objectForKey:@"message"] && NULL_TO_NIL([self objectForKey:@"message"]) ? [[[self objectForKey:@"message"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\uFFFC"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] : nil;
 }
 
 - (NSString*) truncatedMessage

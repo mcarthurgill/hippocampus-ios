@@ -22,11 +22,18 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HwY-Ox-JbQ">
-                        <rect key="frame" x="22" y="18" width="347" height="21"/>
+                        <rect key="frame" x="22" y="18" width="347" height="33"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cml-U5-VsX">
+                        <rect key="frame" x="22" y="18" width="347" height="33"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES"/>
+                    </textView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zxn-m7-UQY">
                         <rect key="frame" x="8" y="22" width="8" height="8"/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -50,9 +57,13 @@
                 <constraints>
                     <constraint firstItem="Zxn-m7-UQY" firstAttribute="top" secondItem="d0h-i5-l5V" secondAttribute="top" constant="5" id="HOF-F9-DLF"/>
                     <constraint firstAttribute="trailingMargin" secondItem="HwY-Ox-JbQ" secondAttribute="trailing" constant="12" id="Jl4-j0-Yfx"/>
+                    <constraint firstItem="HwY-Ox-JbQ" firstAttribute="top" secondItem="Cml-U5-VsX" secondAttribute="top" id="N1A-Hs-XFV"/>
                     <constraint firstItem="d0h-i5-l5V" firstAttribute="top" secondItem="HwY-Ox-JbQ" secondAttribute="top" constant="-1" id="PhI-kH-hsP"/>
                     <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="HwY-Ox-JbQ" secondAttribute="bottom" constant="10" id="Qk0-k3-5fH"/>
+                    <constraint firstItem="HwY-Ox-JbQ" firstAttribute="leading" secondItem="Cml-U5-VsX" secondAttribute="leading" id="Vig-Px-RIp"/>
                     <constraint firstItem="HwY-Ox-JbQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="14" id="WG3-OL-slp"/>
+                    <constraint firstItem="HwY-Ox-JbQ" firstAttribute="trailing" secondItem="Cml-U5-VsX" secondAttribute="trailing" id="b0z-h0-6K1"/>
+                    <constraint firstItem="HwY-Ox-JbQ" firstAttribute="bottom" secondItem="Cml-U5-VsX" secondAttribute="bottom" id="nYl-2a-UoF"/>
                     <constraint firstItem="HwY-Ox-JbQ" firstAttribute="leading" secondItem="Zxn-m7-UQY" secondAttribute="trailing" constant="6" id="one-K0-K0Q"/>
                     <constraint firstItem="HwY-Ox-JbQ" firstAttribute="leading" secondItem="d0h-i5-l5V" secondAttribute="trailing" constant="6" id="r3b-Sn-USN"/>
                     <constraint firstItem="HwY-Ox-JbQ" firstAttribute="top" secondItem="tKm-nQ-HF7" secondAttribute="bottom" constant="10" id="u09-Tq-5N1"/>
@@ -66,6 +77,7 @@
                 <outlet property="avatarView" destination="tKm-nQ-HF7" id="oun-RO-M6C"/>
                 <outlet property="avatarWidthConstraint" destination="e1G-3B-dny" id="fpa-dM-4fO"/>
                 <outlet property="message" destination="HwY-Ox-JbQ" id="BeU-SB-a5b"/>
+                <outlet property="messageTextView" destination="Cml-U5-VsX" id="ZK7-1l-pVy"/>
                 <outlet property="messageTrailingSpace" destination="Jl4-j0-Yfx" id="rNY-0k-bLz"/>
                 <outlet property="nudgeImageView" destination="d0h-i5-l5V" id="u6F-Td-sOF"/>
                 <outlet property="nudgeImageViewTrailingSpace" destination="r3b-Sn-USN" id="ekG-Xn-hdm"/>
