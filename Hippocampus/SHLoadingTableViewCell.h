@@ -13,6 +13,8 @@
     BOOL inverted;
 }
 
-- (void) configure;
+@property (strong, nonatomic) NSMutableDictionary* responseObject;
+
+- (void) configureWithResponseObject:(NSMutableDictionary*)rO;
 
 @end

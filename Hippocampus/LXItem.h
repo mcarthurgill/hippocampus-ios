@@ -20,4 +20,8 @@
 - (BOOL) shouldShowAvatar;
 - (NSString*) avatarURLString;
 
+- (NSMutableArray*) bucketsArray;
+
+- (void) updateBucketsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+
 @end

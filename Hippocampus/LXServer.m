@@ -105,7 +105,7 @@
 
 + (BOOL) errorBecauseOfBadConnection:(NSInteger)code
 {
-    for (NSNumber* testAgainst in @[@-999,@-1000,@-1001,@-1002,@-1003,@-1004,@-1005,@-1006,@-1007,@-1008,@-1009,@-1011,@-1018,@-1019,@-1020,@-1100,@-1102]) {
+    for (NSNumber* testAgainst in @[@-999,@-1000,@-1001,@-1002,@-1003,@-1004,@-1005,@-1006,@-1007,@-1008,@-1009,@-1018,@-1019,@-1020,@-1100,@-1102]) {
         if ([testAgainst integerValue] == code) {
             return YES;
         }

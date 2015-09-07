@@ -35,6 +35,8 @@
 
 - (void) registerForNotifications
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushBucketViewController:) name:@"pushBucketViewController" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentViewController:) name:@"presentViewController" object:nil];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -81,7 +83,9 @@
     SHSearchViewController* vc = (SHSearchViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHSearchViewController"];
     UIView* backgroundFrame = [self.view snapshotViewAfterScreenUpdates:NO];
     
-    [self presentViewController:vc animated:NO
+    UINavigationController* nc = [[UINavigationController alloc] initWithRootViewController:vc];
+    
+    [self presentViewController:nc animated:NO
                      completion:^(void){
                          [vc.backgroundView addSubview:backgroundFrame];
                      }
@@ -114,6 +118,7 @@
         [self setTitle:@"Thoughts"];
     } else if ([toName isEqualToString:@"bucketsViewController"]) {
         [self setTitle:@"Buckets"];
+        [[(SHBucketsViewController*)vc tableView] reloadData];
     }
 }
 
@@ -128,6 +133,20 @@
             vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:viewControllerName];
         }
         [self.viewControllersCached setObject:vc forKey:viewControllerName];
+    }
+}
+
+- (void) pushBucketViewController:(NSNotification*)notification
+{
+    UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
+    [(SHSlackThoughtsViewController*)vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void) presentViewController:(NSNotification*)notification
+{
+    if (![self presentedViewController]) {
+        [self.navigationController presentViewController:[[notification userInfo] objectForKey:@"viewController"] animated:YES completion:^(void){}];
     }
 }
 

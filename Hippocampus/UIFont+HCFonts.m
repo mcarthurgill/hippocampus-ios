@@ -40,4 +40,9 @@
     return [UIFont fontWithName:@"Roboto-Regular" size:16.0f];
 }
 
++ (UIFont*) secondaryFontWithSize:(NSInteger)size
+{
+    return [UIFont fontWithName:@"Abel-Regular" size:size];
+}
+
 @end

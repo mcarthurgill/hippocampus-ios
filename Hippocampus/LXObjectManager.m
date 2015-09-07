@@ -79,6 +79,7 @@ static LXObjectManager* defaultManager = nil;
                                    [self runQueries];
                                }
                                failure:^(NSError* error){
+                                   NSLog(@"CODE=%ld", (long)error.code);
                                    if (![LXServer errorBecauseOfBadConnection:error.code]) {
                                        [self removeQuery:query];
                                        [self saveQueries];
@@ -105,6 +106,7 @@ static LXObjectManager* defaultManager = nil;
 {
     if ([self.queries count] > 0) {
         [[NSUserDefaults standardUserDefaults] setObject:self.queries forKey:@"failed-queries"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"failed-queries"];
     }
@@ -205,9 +207,11 @@ static LXObjectManager* defaultManager = nil;
     
     for (NSString* key in [[[LXObjectManager defaultManager] library] allKeys]) {
         if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
-            [[NSUserDefaults standardUserDefaults] setObject:[[[LXObjectManager defaultManager] library] objectForKey:key] forKey:key];
+            [[NSUserDefaults standardUserDefaults] setObject:([[[[LXObjectManager defaultManager] library] objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[[[LXObjectManager defaultManager] library] objectForKey:key] cleanDictionary] : [[[LXObjectManager defaultManager] library] objectForKey:key]) forKey:key];
+            NSLog(@"object: %@", [[[LXObjectManager defaultManager] library] objectForKey:key]);
         }
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
     
     [[UIApplication sharedApplication] endBackgroundTask:bgt];
 }

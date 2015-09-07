@@ -124,57 +124,6 @@
 
 # pragma mark saving and syncing
 
-- (void) sync
-{
-    [self saveBoth:nil failure:nil];
-}
-
-- (void) saveBoth:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback
-{
-    //save remote
-    [self saveRemote:^(id responseObject) {
-                    //save local
-                    [self saveLocal:successCallback failure:failureCallback];
-                    if (successCallback) {
-                        successCallback(responseObject);
-                    }
-                }
-                failure:^(NSError* error) {
-                    if (failureCallback) {
-                        failureCallback(error);
-                    }
-                }
-     ];
-}
-
-- (void) saveLocal
-{
-    [self saveLocal:nil failure:nil];
-}
-
-- (void) saveLocal:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    
-    [self saveLocalWithKey:[self localKey] success:successCallback failure:failureCallback];
-    
-}
-
-- (void) saveLocalWithKey:(NSString*)key
-{
-    [self saveLocalWithKey:key success:nil failure:nil];
-}
-
-- (void) saveLocalWithKey:(NSString*)key success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    if ([self updatedMoreRecentThan:[LXObjectManager objectWithLocalKey:[self localKey]]]) {
-        [self assignLocalWithKey:key];
-        //[[NSUserDefaults standardUserDefaults] synchronize];
-        if (successCallback) {
-            successCallback(@{});
-        }
-    }
-}
-
 - (void) saveRemote
 {
     [self saveRemote:nil failure:nil];
@@ -185,6 +134,8 @@
     //SEND TO SERVER
     [[LXServer shared] requestPath:[self requestPath] withMethod:[self requestMethod] withParamaters:[self parameterReady] authType:[self authTypeForRequest]
                            success:^(id responseObject) {
+                               //SAVE LOCALLY
+                               [[responseObject mutableCopy] assignLocalVersionIfNeeded];
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
@@ -275,26 +226,40 @@
     if (!oldCopy) {
         [updateWith assignLocalWithKey:[updateWith localKey]];
         return YES;
-    } else if (![updateWith createdAt] || ( [updateWith updatedAt] > [oldCopy updatedAt] ) ) {
+    } else {
         for (NSString* key in [updateWith allKeys]) {
             [oldCopy setObject:[updateWith objectForKey:key] forKey:key];
         }
         [oldCopy assignLocalWithKey:[oldCopy localKey]];
         return YES;
-    } else {
-        for (NSString* key in [updateWith allKeys]) {
-            if (![oldCopy objectForKey:key]) {
-                [oldCopy setObject:[updateWith objectForKey:key] forKey:key];
-            }
-        }
-        [oldCopy assignLocalWithKey:[oldCopy localKey]];
     }
-    return NO;
+//    NSMutableDictionary* updateWith = [self mutableCopy];
+//    NSMutableDictionary* oldCopy = [LXObjectManager objectWithLocalKey:[updateWith localKey]];
+//    if (!oldCopy) {
+//        [updateWith assignLocalWithKey:[updateWith localKey]];
+//        return YES;
+//    } else if (![updateWith createdAt] || ![updateWith updatedAt] || ( [updateWith updatedAt] > [oldCopy updatedAt] ) ) {
+//        for (NSString* key in [updateWith allKeys]) {
+//            [oldCopy setObject:[updateWith objectForKey:key] forKey:key];
+//        }
+//        [oldCopy assignLocalWithKey:[oldCopy localKey]];
+//        return YES;
+//    } else {
+//        for (NSString* key in [updateWith allKeys]) {
+//            if (![oldCopy objectForKey:key]) {
+//                [oldCopy setObject:[updateWith objectForKey:key] forKey:key];
+//            }
+//        }
+//        [oldCopy assignLocalWithKey:[oldCopy localKey]];
+//    }
+//    return NO;
 }
 
 - (void) assignLocalWithKey:(NSString*)key
 {
-    [LXObjectManager assignLocal:self WithLocalKey:key];
+    if ([self updatedMoreRecentThan:[LXObjectManager objectWithLocalKey:[self localKey]]]) {
+        [LXObjectManager assignLocal:self WithLocalKey:key];
+    }
 }
 
 

@@ -55,6 +55,11 @@
     return [UIColor colorWithRed:0.902f green:0.913f blue:0.922f alpha:1.0f];
 }
 
++ (UIColor*) SHLighterGray
+{
+    return [UIColor colorWithRed:0.93333f green:0.93333f blue:0.93333f alpha:1.0f];
+}
+
 + (UIColor*) SHFontPurple
 {
     return [UIColor colorWithRed:0.5137f green:0.3725f blue:0.5294f alpha:1.0f];
@@ -68,6 +73,24 @@
 + (UIColor*) SHFontLightGray
 {
     return [UIColor colorWithRed:0.4706f green:0.4824f blue:0.4902f alpha:1.0f];
+}
+
+
+
+
++ (UIColor*) SHColorGreen
+{
+    return [UIColor colorWithRed:0.514f green:0.773f blue:0.514f alpha:1.0f];
+}
+
++ (UIColor*) SHColorBlue
+{
+    return [UIColor colorWithRed:0.235f green:0.592f blue:0.867f alpha:1.0f];
+}
+
++ (UIColor*) SHColorOrange
+{
+    return [UIColor colorWithRed:0.9569f green:0.5922f blue:0.3333 alpha:1.0f];
 }
 
 @end

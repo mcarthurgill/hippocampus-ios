@@ -59,11 +59,29 @@ static SHSearch* defaultManager = nil;
 
 - (NSMutableArray*) getCachedObjects:(NSString*)type withTerm:(NSString*)term
 {
+    NSString* foundTerm = [self getCachedResultsTermWithType:type withTerm:term];
+    if (foundTerm && [type isEqualToString:@"items"]) {
+        return [self.cachedItems objectForKey:foundTerm];
+    } else if (foundTerm && [type isEqualToString:@"bucketKeys"]) {
+        return [self.cachedBuckets objectForKey:foundTerm];
+    }
+    return nil;
+}
+
+- (NSString*) getCachedResultsTermWithType:(NSString*)type withTerm:(NSString*)term
+{
+    term = term && [term length] > 0 ? [term lowercaseString] : @"";
     if ([type isEqualToString:@"items"]) {
-        term = term && [term length] > 0 ? [term lowercaseString] : @"";
         while ([term length] > 0) {
             if ([self.cachedItems objectForKey:term])
-                return [self.cachedItems objectForKey:term];
+                return term;
+            term = [term substringToIndex:(term.length-1)];
+        }
+        return nil;
+    } else if ([type isEqualToString:@"bucketKeys"]) {
+        while ([term length] > 0) {
+            if ([self.cachedBuckets objectForKey:term])
+                return term;
             term = [term substringToIndex:(term.length-1)];
         }
         return nil;
@@ -90,6 +108,19 @@ static SHSearch* defaultManager = nil;
                            }
                        }
      ];
+    [self localBucketSearchWithTerm:term
+                            success:^(id responseObject){
+                                //NSLog(@"response: %@", responseObject);
+                                if (successCallback) {
+                                    successCallback(responseObject);
+                                }
+                            }
+                            failure:^(NSError* error){
+                                if (failureCallback) {
+                                    failureCallback(error);
+                                }
+                            }
+     ];
 }
 
 - (void) remoteSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
@@ -115,7 +146,31 @@ static SHSearch* defaultManager = nil;
 
 - (void) localBucketSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
+    term = [term lowercaseString];
     
+    NSArray* searchWithBucketKeysArray = [self pullFromBucketKeysArray:term];
+    NSMutableArray* newBucketKeys = [[NSMutableArray alloc] init];
+    for (NSString* localKey in searchWithBucketKeysArray) {
+        NSMutableDictionary* bucket = [LXObjectManager objectWithLocalKey:localKey];
+        if (bucket && [bucket firstName] && [[[bucket firstName] lowercaseString] rangeOfString:term].location != NSNotFound) {
+            [newBucketKeys addObject:[bucket localKey]];
+        }
+    }
+    [self.cachedBuckets setObject:newBucketKeys forKey:term];
+    if (successCallback) {
+        successCallback(newBucketKeys);
+    }
+}
+
+- (NSArray*) pullFromBucketKeysArray:(NSString*)key
+{
+    while (key && [key length] > 1) {
+        key = [key substringToIndex:([key length]-1)];
+        if ([self.cachedBuckets objectForKey:key]) {
+            return [self.cachedBuckets objectForKey:key];
+        }
+    }
+    return [LXObjectManager objectWithLocalKey:@"bucketLocalKeys"];
 }
 
 

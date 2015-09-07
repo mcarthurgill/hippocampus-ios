@@ -94,6 +94,12 @@
 		28CD3FC01AEA887200B3ABB6 /* new-collection-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FBF1AEA887200B3ABB6 /* new-collection-screen.jpg */; };
 		28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FC11AEA89F400B3ABB6 /* nudge-screen.jpg */; };
 		28CD3FC41AEADC1A00B3ABB6 /* permission-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FC31AEADC1A00B3ABB6 /* permission-screen.jpg */; };
+		28ED41C71B9C96FA000292AE /* Abel-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41C61B9C96FA000292AE /* Abel-Regular.ttf */; };
+		28ED41CB1B9CB943000292AE /* SHAssignBucketsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41CA1B9CB943000292AE /* SHAssignBucketsViewController.m */; };
+		28ED41D21B9CD641000292AE /* SHAssignBucketTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41D01B9CD641000292AE /* SHAssignBucketTableViewCell.m */; };
+		28ED41D31B9CD641000292AE /* SHAssignBucketTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41D11B9CD641000292AE /* SHAssignBucketTableViewCell.xib */; };
+		28ED41D71B9CE854000292AE /* empty_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41D51B9CE854000292AE /* empty_check.png */; };
+		28ED41D81B9CE854000292AE /* filled_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41D61B9CE854000292AE /* filled_check.png */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -234,6 +240,14 @@
 		28CD3FBF1AEA887200B3ABB6 /* new-collection-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "new-collection-screen.jpg"; sourceTree = "<group>"; };
 		28CD3FC11AEA89F400B3ABB6 /* nudge-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "nudge-screen.jpg"; sourceTree = "<group>"; };
 		28CD3FC31AEADC1A00B3ABB6 /* permission-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "permission-screen.jpg"; sourceTree = "<group>"; };
+		28ED41C61B9C96FA000292AE /* Abel-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Abel-Regular.ttf"; sourceTree = "<group>"; };
+		28ED41C91B9CB943000292AE /* SHAssignBucketsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAssignBucketsViewController.h; sourceTree = "<group>"; };
+		28ED41CA1B9CB943000292AE /* SHAssignBucketsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAssignBucketsViewController.m; sourceTree = "<group>"; };
+		28ED41CF1B9CD641000292AE /* SHAssignBucketTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAssignBucketTableViewCell.h; sourceTree = "<group>"; };
+		28ED41D01B9CD641000292AE /* SHAssignBucketTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAssignBucketTableViewCell.m; sourceTree = "<group>"; };
+		28ED41D11B9CD641000292AE /* SHAssignBucketTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHAssignBucketTableViewCell.xib; sourceTree = "<group>"; };
+		28ED41D51B9CE854000292AE /* empty_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_check.png; sourceTree = "<group>"; };
+		28ED41D61B9CE854000292AE /* filled_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filled_check.png; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -369,6 +383,7 @@
 				76CA904B1AE1572800C6E400 /* Permissions */,
 				288F122E1B75221D0001E0B0 /* Main */,
 				282FA83E1B8F9B6D004ADA00 /* Search */,
+				28ED41C81B9CB921000292AE /* Assign */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -549,6 +564,9 @@
 				28ACA39E1B8B7CF900D7B215 /* SHBucketTableViewCell.h */,
 				28ACA39F1B8B7CF900D7B215 /* SHBucketTableViewCell.m */,
 				28ACA3A01B8B7CF900D7B215 /* SHBucketTableViewCell.xib */,
+				28ED41CF1B9CD641000292AE /* SHAssignBucketTableViewCell.h */,
+				28ED41D01B9CD641000292AE /* SHAssignBucketTableViewCell.m */,
+				28ED41D11B9CD641000292AE /* SHAssignBucketTableViewCell.xib */,
 			);
 			name = "Table View Cells";
 			sourceTree = "<group>";
@@ -594,6 +612,7 @@
 		288F12381B752A400001E0B0 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				28ED41C61B9C96FA000292AE /* Abel-Regular.ttf */,
 				288F12391B752A6A0001E0B0 /* Roboto-Regular.ttf */,
 			);
 			name = Fonts;
@@ -602,6 +621,7 @@
 		288F123D1B752EC90001E0B0 /* Seahorse */ = {
 			isa = PBXGroup;
 			children = (
+				28ED41D41B9CE833000292AE /* Check */,
 				288A74801B8A2FD600F6A618 /* Plus */,
 				288A747D1B7985DE00F6A618 /* Trash */,
 				288A74761B79814500F6A618 /* Nudge */,
@@ -624,6 +644,24 @@
 				28CD3FB71AE9C2E200B3ABB6 /* compose-screen.jpg */,
 			);
 			name = Screens;
+			sourceTree = "<group>";
+		};
+		28ED41C81B9CB921000292AE /* Assign */ = {
+			isa = PBXGroup;
+			children = (
+				28ED41C91B9CB943000292AE /* SHAssignBucketsViewController.h */,
+				28ED41CA1B9CB943000292AE /* SHAssignBucketsViewController.m */,
+			);
+			name = Assign;
+			sourceTree = "<group>";
+		};
+		28ED41D41B9CE833000292AE /* Check */ = {
+			isa = PBXGroup;
+			children = (
+				28ED41D51B9CE854000292AE /* empty_check.png */,
+				28ED41D61B9CE854000292AE /* filled_check.png */,
+			);
+			name = Check;
 			sourceTree = "<group>";
 		};
 		76CA904B1AE1572800C6E400 /* Permissions */ = {
@@ -732,6 +770,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				28CD3FBE1AEA0F8700B3ABB6 /* item-screen.jpg in Resources */,
+				28ED41C71B9C96FA000292AE /* Abel-Regular.ttf in Resources */,
 				281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */,
 				281CA923196C29F800E6BE96 /* 179-notepad@2x.png in Resources */,
 				28431DDD1A8D692E00B12548 /* 11-clock@2x.png in Resources */,
@@ -742,10 +781,13 @@
 				288A74621B7531DD00F6A618 /* search@2x.png in Resources */,
 				287423D31B059F7200A3242C /* email-screen.jpg in Resources */,
 				288A74821B8A2FEB00F6A618 /* plus_icon_white_swipe.png in Resources */,
+				28ED41D31B9CD641000292AE /* SHAssignBucketTableViewCell.xib in Resources */,
 				28CD3FB81AE9C2E200B3ABB6 /* compose-screen.jpg in Resources */,
+				28ED41D71B9CE854000292AE /* empty_check.png in Resources */,
 				288A745A1B75305100F6A618 /* person@2x.png in Resources */,
 				288A745B1B75305100F6A618 /* person@3x.png in Resources */,
 				281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */,
+				28ED41D81B9CE854000292AE /* filled_check.png in Resources */,
 				28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
 				2837E8001ABD09400089FA33 /* More-100.png in Resources */,
@@ -837,6 +879,7 @@
 				288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */,
 				288F122A1B751B040001E0B0 /* LXItem.m in Sources */,
 				288F12241B73DFC90001E0B0 /* LXUser.m in Sources */,
+				28ED41D21B9CD641000292AE /* SHAssignBucketTableViewCell.m in Sources */,
 				288A746C1B77E6F600F6A618 /* LXObjectManager.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */,
@@ -845,6 +888,7 @@
 				2837E8061AC11D2A0089FA33 /* HCInitialViewController.m in Sources */,
 				288F12371B7527AF0001E0B0 /* UIColor+HCColors.m in Sources */,
 				2837E8031AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m in Sources */,
+				28ED41CB1B9CB943000292AE /* SHAssignBucketsViewController.m in Sources */,
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
 				2837E80C1AC11D550089FA33 /* HCMessageViewController.m in Sources */,
 				28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */,

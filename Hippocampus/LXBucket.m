@@ -39,14 +39,13 @@
                            success:^(id responseObject) {
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    BOOL shouldRefresh = NO;
+                                   NSMutableArray* oldItemKeys = [[LXObjectManager objectWithLocalKey:[responseObject localKey]] itemKeys] ? [[LXObjectManager objectWithLocalKey:[responseObject localKey]] itemKeys] : [@[] mutableCopy];
                                    NSMutableDictionary* bucket = [[responseObject objectForKey:@"bucket"] mutableCopy];
                                    if ([responseObject objectForKey:@"item_keys"] && NULL_TO_NIL([responseObject objectForKey:@"item_keys"])) {
                                        [bucket setObject:[responseObject objectForKey:@"item_keys"] forKey:@"item_keys"];
                                    }
                                    shouldRefresh = [bucket assignLocalVersionIfNeeded] || shouldRefresh;
-                                   //if (shouldRefresh) {
-                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
-                                   //}
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket, @"oldItemKeys":oldItemKeys}];
                                });
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -97,15 +96,27 @@
     return [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] ? [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] : [@{} mutableCopy];
 }
 
+- (UIColor*) bucketColor
+{
+    if ([[self ID] integerValue]%3 == 0) {
+        return [UIColor SHColorGreen];
+    } else if ([[self ID] integerValue]%3 == 1) {
+        return [UIColor SHColorBlue];
+    } else if ([[self ID] integerValue]%3 == 2) {
+        return [UIColor SHColorOrange];
+    }
+    return [UIColor SHFontPurple];
+}
+
 - (void) addItem:(NSMutableDictionary*)item atIndex:(NSInteger)index
 {
     //[[self items] insertObject:item atIndex:index];
     [[self itemKeys] insertObject:[item localKey] atIndex:index];
     
     [self removeObjectForKey:@"updated_at"];
-    [self saveLocal];
+    [self assignLocalVersionIfNeeded];
     
-    [item saveLocal];
+    [item assignLocalVersionIfNeeded];
 }
 
 - (void) removeItemFromBucket:(NSMutableDictionary*)item
@@ -117,11 +128,16 @@
             [items removeObjectAtIndex:i];
             [self setObject:items forKey:@"items"];
             [self removeObjectForKey:@"updated_at"];
-            [self saveLocal];
+            [self assignLocalVersionIfNeeded];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"removedItemFromBucket" object:nil userInfo:@{@"item":item,@"bucket":self}];
             return;
         }
     }
+}
+
+- (BOOL) isAllThoughtsBucket
+{
+    return [self localKey] && [[self localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]];
 }
 
 

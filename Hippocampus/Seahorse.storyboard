@@ -173,6 +173,79 @@
             </objects>
             <point key="canvasLocation" x="1458" y="226"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="s9S-7y-h7g">
+            <objects>
+                <navigationController storyboardIdentifier="navigationSHAssignBucketsViewController" id="iNY-NH-SQw" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="6Pf-Xl-eAP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="fIX-IA-Yux" kind="relationship" relationship="rootViewController" id="4dc-1x-lPU"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2gd-WG-iqz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1458" y="910"/>
+        </scene>
+        <!--Assign Buckets View Controller-->
+        <scene sceneID="odc-dD-OMv">
+            <objects>
+                <viewController storyboardIdentifier="SHAssignBucketsViewController" id="fIX-IA-Yux" customClass="SHAssignBucketsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iM5-9u-cG4"/>
+                        <viewControllerLayoutGuide type="bottom" id="aiD-xi-VcM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pPa-vF-7Zm">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" placeholder="Filter buckets..." translatesAutoresizingMaskIntoConstraints="NO" id="VBv-EO-qlC">
+                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <color key="barTintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="fIX-IA-Yux" id="v6h-a3-tSD"/>
+                                </connections>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="gcI-GQ-rle">
+                                <rect key="frame" x="0.0" y="108" width="600" height="492"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="fIX-IA-Yux" id="1I1-n8-8ew"/>
+                                    <outlet property="delegate" destination="fIX-IA-Yux" id="B3O-dp-snF"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.93725490196078431" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="VBv-EO-qlC" firstAttribute="leading" secondItem="pPa-vF-7Zm" secondAttribute="leadingMargin" constant="-16" id="33U-eZ-SCk"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="VBv-EO-qlC" secondAttribute="trailing" constant="-16" id="8tB-hz-2K8"/>
+                            <constraint firstItem="gcI-GQ-rle" firstAttribute="leading" secondItem="VBv-EO-qlC" secondAttribute="leading" id="BYV-Xj-EBU"/>
+                            <constraint firstItem="aiD-xi-VcM" firstAttribute="top" secondItem="gcI-GQ-rle" secondAttribute="bottom" id="F1M-ez-jcY"/>
+                            <constraint firstItem="VBv-EO-qlC" firstAttribute="top" secondItem="iM5-9u-cG4" secondAttribute="bottom" id="M96-IO-aye"/>
+                            <constraint firstItem="gcI-GQ-rle" firstAttribute="trailing" secondItem="VBv-EO-qlC" secondAttribute="trailing" id="Pet-Bs-yiQ"/>
+                            <constraint firstItem="gcI-GQ-rle" firstAttribute="top" secondItem="VBv-EO-qlC" secondAttribute="top" constant="44" id="iBZ-DL-2gp"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="BM3-Up-sEj">
+                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="I5x-x3-VHM"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="V2N-jg-wDQ">
+                            <connections>
+                                <action selector="rightButtonAction:" destination="fIX-IA-Yux" id="xqa-13-b4r"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="VBv-EO-qlC" id="tjw-X5-84f"/>
+                        <outlet property="tableView" destination="gcI-GQ-rle" id="w8E-Dg-mTE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mld-Xo-ehf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2207" y="910"/>
+        </scene>
         <!--Buckets View Controller-->
         <scene sceneID="TaF-U9-BH8">
             <objects>
@@ -225,7 +298,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YaV-jN-UJn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1087" y="982"/>
+            <point key="canvasLocation" x="740" y="910"/>
         </scene>
     </scenes>
     <resources>

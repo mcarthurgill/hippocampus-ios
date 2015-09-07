@@ -16,6 +16,7 @@
 @property (strong, nonatomic) NSMutableDictionary* cachedBuckets;
 
 - (NSMutableArray*) getCachedObjects:(NSString*)type withTerm:(NSString*)term;
+- (NSString*) getCachedResultsTermWithType:(NSString*)type withTerm:(NSString*)term;
 
 - (void) searchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) remoteSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;

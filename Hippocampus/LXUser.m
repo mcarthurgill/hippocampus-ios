@@ -23,7 +23,7 @@
 {
     NSLog(@"timeZone: %@", [[NSTimeZone localTimeZone] name]);
     [self setObject:[[NSTimeZone localTimeZone] name] forKey:@"time_zone"];
-    [self sync];
+    [self saveRemote];
 }
 
 

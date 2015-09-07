@@ -27,6 +27,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 @implementation SHSlackThoughtsViewController
 
 @synthesize localKey;
+@synthesize shouldReload;
 
 - (void)viewDidLoad
 {
@@ -36,21 +37,19 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self.tableView registerNib:[UINib nibWithNibName:loadingCellIdentifier bundle:nil] forCellReuseIdentifier:loadingCellIdentifier];
     
     [self setupSettings];
-    [self beginningActions];
     
-    [self reloadScreen];
+    [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //[self reloadScreen];
+    [self beginningActions];
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    //[self scrollToBottomAnimated];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -66,8 +65,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) setupSettings
 {
+    self.shouldReload = NO;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bucketRefreshed:) name:@"bucketRefreshed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removedItemFromBucket:) name:@"removedItemFromBucket" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshVCWithLocalKey:) name:@"refreshVCWithLocalKey" object:nil];
     
     page = 0;
     
@@ -87,7 +89,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) beginningActions
 {
-    [[self bucket] refreshFromServerWithSuccess:nil failure:nil];
+    [[self bucket] refreshFromServerWithSuccess:^(id responseObject){
+        [self tryToReload];
+    } failure:^(NSError* error){}];
 }
 
 
@@ -109,6 +113,13 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) removedItemFromBucket:(NSNotification*)notification
 {
     [self reloadScreen];
+}
+
+- (void) refreshVCWithLocalKey:(NSNotification*)notification
+{
+    if ([[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.localKey]) {
+        [self tryToReload];
+    }
 }
 
 
@@ -148,22 +159,55 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     return NO;
 }
 
+- (void) scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    [self checkForReload];
+}
+
+- (void) scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    [self checkForReload];
+}
+
+- (void) tryToReload
+{
+    if (![self.tableView isDragging] && ![self.tableView isDecelerating]) {
+        [self reloadScreen];
+        self.shouldReload = NO;
+    } else {
+        self.shouldReload = YES;
+    }
+}
+
+- (void) checkForReload
+{
+    if (self.shouldReload) {
+        [self reloadScreen];
+        self.shouldReload = NO;
+    }
+}
 
 
 # pragma mark table view data source and delegate
 
 - (void) bucketRefreshed:(NSNotification*)notification
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW,0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self reloadScreen];
-        [self scrollToBottom:YES];
-    });
+    if ([[notification userInfo] objectForKey:@"bucket"] && [[[[notification userInfo] objectForKey:@"bucket"] localKey] isEqualToString:self.localKey]) {
+        //BUCKET MATCHES!
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW,0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self tryToReload];
+            if ([[[self bucket] itemKeys] isEqualToArray:[[notification userInfo] objectForKey:@"oldItemKeys"]]) {
+                //NO CHANGES!
+            } else {
+                //[self scrollToBottom:YES];
+            }
+        });
+    }
 }
 
 - (void) reloadScreen
 {
     [self.tableView reloadData];
-    //[[[[self.parentViewController navigationController] navigationBar] topItem] setTitle:[[self bucket] firstName]];
     [self setTitle:[[self bucket] firstName]];
 }
 
@@ -203,7 +247,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (UITableViewCell*) tableView:(UITableView *)tV loadingCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHLoadingTableViewCell* cell = (SHLoadingTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:loadingCellIdentifier];
-    [cell configure];
+    [cell configureWithResponseObject:[@{@"local_key":[[[self bucket] itemKeys] objectAtIndex:indexPath.row], @"vc":self} mutableCopy]];
     return cell;
 }
 
@@ -222,6 +266,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if (indexPath.row+1 == [self.tableView numberOfRowsInSection:0] && [self.tableView numberOfRowsInSection:0] < [[[self bucket] itemKeys] count]) {
         page = page+1;
         [self reloadScreen];
+        [self.tableView flashScrollIndicators];
     }
 }
 
@@ -236,8 +281,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self reloadScreen];
     [self scrollToBottom:YES];
     
-    [item saveBoth:^(id responseObject) {
-        [[NSMutableDictionary dictionaryWithDictionary:responseObject] saveLocal];
+    [item saveRemote:^(id responseObject) {
         [self reloadScreen];
     }
            failure:^(NSError* error){

@@ -7,7 +7,8 @@
 //
 
 #import "SHItemTableViewCell.h"
-
+#import "SHAssignBucketsViewController.h"
+#import "SHSlackThoughtsViewController.h"
 
 #define IMAGE_FADE_IN_TIME 0.4f
 #define PICTURE_HEIGHT 100
@@ -28,6 +29,8 @@
 @synthesize longPress;
 @synthesize mediaViews;
 @synthesize mediaUsed;
+@synthesize bucketButtons;
+@synthesize bucketButtonConstraints;
 @synthesize avatarView;
 @synthesize avatarHeightConstraint, avatarWidthConstraint;
 
@@ -42,8 +45,18 @@
     [self setupGestureRecognizers];
     [self setupSwipeButtons];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedObject:) name:@"refreshedObject" object:nil];
 }
 
+- (void) refreshedObject:(NSNotification*)notification
+{
+    if ([[notification userInfo] objectForKey:@"local_key"] && self.itemLocalKey && self.bucketLocalKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.itemLocalKey]) {
+        //this is a hit, a currently displaying talbeivewcell. reload it.
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshVCWithLocalKey" object:nil userInfo:@{@"local_key":self.bucketLocalKey}];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshBlankThoughtsVC" object:nil userInfo:nil];
+    }
+}
 
 
 # pragma mark setup
@@ -119,7 +132,8 @@
     [self setItemLocalKey:[self.item localKey]];
     [self setBucketLocalKey:bucketKey];
     
-    NSLog(@"%@:%@|", [self.item ID], [self.item message]);
+    //NSLog(@"item: %@", [self.item ID]);
+    //NSLog(@"item: %@", self.item);
     
     if (!inverted && self.shouldInvert) {
         self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
@@ -179,6 +193,8 @@
     }
     
     [self handleMediaViews];
+    
+    [self handleBucketButtons];
     
     [self setNeedsLayout];
 }
@@ -252,8 +268,10 @@
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Set a nudge!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
         [av show];
     } else if (direction == MGSwipeDirectionRightToLeft) {
-        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Assign!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
-        [av show];
+        UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignBucketsViewController"];
+        SHAssignBucketsViewController* vc = [[nc viewControllers] firstObject];
+        [vc setLocalKey:self.itemLocalKey];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc}];
     }
     return YES;
 }
@@ -264,8 +282,10 @@
 - (IBAction)longPressAction:(UILongPressGestureRecognizer*)sender
 {
     if (sender.state == UIGestureRecognizerStateBegan){
-        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Long press action!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
-        [av show];
+        UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignBucketsViewController"];
+        SHAssignBucketsViewController* vc = [[nc viewControllers] firstObject];
+        [vc setLocalKey:self.itemLocalKey];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc}];
     }
 }
 
@@ -287,6 +307,105 @@
         self.messageTrailingSpace = [NSLayoutConstraint constraintWithItem:self.message attribute:NSLayoutAttributeTrailing relatedBy:NSLayoutRelationEqual toItem:[self contentView] attribute:NSLayoutAttributeTrailingMargin multiplier:1 constant:-12];
         [self.contentView addConstraint:self.messageTrailingSpace];
     }
+}
+
+- (void) handleBucketButtons
+{
+    [self deleteBucketButtons];
+    if ((![self bucket] || [[self bucket] isAllThoughtsBucket]) && [self.item bucketsArray]) {
+        [self createBucketButtons];
+    }
+}
+
+- (void) createBucketButtons
+{
+    self.bucketButtons = [[NSMutableArray alloc] init];
+    self.bucketButtonConstraints = [[NSMutableArray alloc] init];
+    
+    NSInteger count = 0;
+    for (NSMutableDictionary* bucketStub in [self.item bucketsArray]) {
+        
+        //NSLog(@"bucketsArray: %@", bucketStub);
+        
+        if ([[bucketStub objectForKey:@"authorized_user_ids"] containsObject:[[[LXSession thisSession] user] ID]]) {
+            UIButton* button = [self buttonForBucket:bucketStub];
+            [button setTag:count];
+            
+            [self.contentView addSubview:button];
+            [self.bucketButtons addObject:button];
+        }
+        
+        ++count;
+        
+    }
+    
+    [self layoutButtons];
+}
+
+- (UIButton*) buttonForBucket:(NSMutableDictionary*)bucket
+{
+    UIButton* button = [[UIButton alloc] init];
+    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [button setTitle:[NSString stringWithFormat:@"   %@   ", [bucket firstName]] forState:UIControlStateNormal];
+    
+    [button setBackgroundColor:[bucket bucketColor]];
+    [[button titleLabel] setFont:[UIFont secondaryFontWithSize:12.0f]];
+    [button.layer setCornerRadius:10];
+    [button setClipsToBounds:YES];
+    [button setShowsTouchWhenHighlighted:YES];
+    
+    [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:20.0] toView:button];
+    [button invalidateIntrinsicContentSize];
+    
+    [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return button;
+}
+
+- (void) buttonTapped:(UIButton*)sender
+{
+    if ([sender tag] < [[[self item] bucketsArray] count]) {
+        NSMutableDictionary* bucket = [[[self item] bucketsArray] objectAtIndex:[sender tag]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:([self bucket] ? @"pushBucketViewController" : @"searchPushBucketViewController") object:nil userInfo:@{@"bucket":bucket}];
+    }
+}
+
+- (void) layoutButtons
+{
+    NSInteger index = 0;
+    for (UIButton* button in self.bucketButtons) {
+        //left align
+        if (index == 0) {
+            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
+        } else {
+            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:[self.bucketButtons objectAtIndex:(index-1)] attribute:NSLayoutAttributeTrailing multiplier:1 constant:6] toView:self.contentView];
+        }
+        
+        //top align
+        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self.message attribute:NSLayoutAttributeBottom multiplier:1 constant:10] toView:self.contentView];
+        if (self.mediaViews && [self.mediaViews count] > 0) {
+            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:[self.mediaViews lastObject] attribute:NSLayoutAttributeBottom multiplier:1 constant:10] toView:self.contentView];
+        }
+        
+        //bottom
+        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:button attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:10] toView:self.contentView];
+        
+        ++index;
+    }
+}
+
+- (void) deleteBucketButtons
+{
+    for (UIView* bucketButton in self.bucketButtons) {
+        [bucketButton removeFromSuperview];
+    }
+    self.bucketButtons = nil;
+    
+    for (NSLayoutConstraint* constraint in self.bucketButtonConstraints) {
+        [self.contentView removeConstraint:constraint];
+    }
+    self.bucketButtonConstraints = nil;
 }
 
 - (void) handleMediaViews
@@ -477,6 +596,12 @@
 {
     [view addConstraint:constraint];
     [self.addedConstraints addObject:constraint];
+}
+
+- (void) addButtonConstraint:(NSLayoutConstraint *)constraint toView:(UIView*)view
+{
+    [view addConstraint:constraint];
+    [self.bucketButtonConstraints addObject:constraint];
 }
 
 - (void) addActivityIndicatorToView:(UIView*)view

@@ -17,6 +17,6 @@
 @property (strong, nonatomic) NSMutableArray* sections;
 
 @property (strong, nonatomic) NSMutableArray* searchResults;
-@property (strong, nonatomic) NSMutableDictionary* cachedSearchResults;
+@property (strong, nonatomic) NSMutableArray* bucketResultKeys;
 
 @end

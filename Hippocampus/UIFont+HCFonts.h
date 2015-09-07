@@ -18,4 +18,6 @@
 + (UIFont*) itemContentFont;
 + (UIFont*) inputFont;
 
++ (UIFont*) secondaryFontWithSize:(NSInteger)size;
+
 @end

@@ -55,7 +55,7 @@
 
 - (CGFloat) mediaSizeRatio
 {
-    NSLog(@"sizeRatio: %f", [self width]/[self height]);
+    //NSLog(@"sizeRatio: %f", [self width]/[self height]);
     if ([self height] > 0.0)
         return [self width]/[self height];
     return 0.0f;
@@ -63,7 +63,7 @@
 
 - (CGFloat) widthForHeight:(CGFloat)height
 {
-    NSLog(@"widthForHeight: %f", [self mediaSizeRatio]*height);
+    //NSLog(@"widthForHeight: %f", [self mediaSizeRatio]*height);
     return [self mediaSizeRatio]*height;
 }
 

@@ -20,9 +20,14 @@
 + (UIColor*) SHGreen;
 + (UIColor*) SHBlue;
 + (UIColor*) SHLightGray;
++ (UIColor*) SHLighterGray;
 
 + (UIColor*) SHFontPurple;
 + (UIColor*) SHFontDarkGray;
 + (UIColor*) SHFontLightGray;
+
++ (UIColor*) SHColorGreen;
++ (UIColor*) SHColorBlue;
++ (UIColor*) SHColorOrange;
 
 @end

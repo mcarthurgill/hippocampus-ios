@@ -43,6 +43,8 @@
     
     [bucketItemMessage setFont:[UIFont titleFontWithSize:14.0f]];
     [bucketItemMessage setTextColor:[UIColor SHFontLightGray]];
+    
+    self.separatorInset = UIEdgeInsetsMake(0.f, self.bounds.size.width, 0.f, 0.0f);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -75,11 +77,11 @@
     NSMutableAttributedString* titleString;
     if ([bucket itemsCount]) {
         titleString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ (%@)", [bucket firstName], [bucket itemsCount]]];
-        [titleString addAttribute:NSForegroundColorAttributeName value:[UIColor SHFontPurple] range:NSMakeRange(0,[bucket firstName].length)];
+        [titleString addAttribute:NSForegroundColorAttributeName value:[bucket bucketColor] range:NSMakeRange(0,[bucket firstName].length)];
         [titleString addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange([bucket firstName].length,[titleString length]-[bucket firstName].length)];
     } else {
         titleString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", [bucket firstName]]];
-        [titleString addAttribute:NSForegroundColorAttributeName value:[UIColor SHFontPurple] range:NSMakeRange(0,[bucket firstName].length)];
+        [titleString addAttribute:NSForegroundColorAttributeName value:[bucket bucketColor] range:NSMakeRange(0,[bucket firstName].length)];
     }
     [bucketName setAttributedText:titleString];
     

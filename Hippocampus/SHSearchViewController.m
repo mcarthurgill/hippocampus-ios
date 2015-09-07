@@ -8,9 +8,12 @@
 
 #import "SHSearchViewController.h"
 #import "SHItemTableViewCell.h"
+#import "SHBucketTableViewCell.h"
 #import "SHSearch.h"
+#import "SHSlackThoughtsViewController.h"
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
+static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 
 @interface SHSearchViewController ()
 
@@ -23,12 +26,16 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 @synthesize backgroundView;
 @synthesize sections;
 @synthesize searchResults;
-@synthesize cachedSearchResults;
+@synthesize bucketResultKeys;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setupSettings];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushBucketViewController:) name:@"searchPushBucketViewController" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentViewController:) name:@"presentViewController" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlankThoughtsVC:) name:@"refreshBlankThoughtsVC" object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -37,20 +44,32 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
     // Dispose of any resources that can be recreated.
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+}
+
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self.searchBar becomeFirstResponder];
 }
 
+- (void) viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
 - (void) setupSettings
 {
     [self.tableView registerNib:[UINib nibWithNibName:itemCellIdentifier bundle:nil] forCellReuseIdentifier:itemCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
     
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
     [self.tableView setEstimatedRowHeight:100.0f];
-    
-    self.cachedSearchResults = [[NSMutableDictionary alloc] init];
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
 }
 
 
@@ -64,7 +83,7 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 
 - (void) searchBar:(UISearchBar *)bar textDidChange:(NSString *)searchText
 {
-    [[SHSearch defaultManager] remoteSearchWithTerm:[bar text]
+    [[SHSearch defaultManager] searchWithTerm:[bar text]
                                             success:^(id responseObject){
                                                 [self reloadScreen];
                                             }
@@ -109,7 +128,11 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 {
     self.sections = [[NSMutableArray alloc] init];
     self.searchResults = [[SHSearch defaultManager] getCachedObjects:@"items" withTerm:[self.searchBar text]];
+    self.bucketResultKeys = [[SHSearch defaultManager] getCachedObjects:@"bucketKeys" withTerm:[self.searchBar text]];
     
+    if (self.bucketResultKeys && [self.bucketResultKeys count] > 0 && [self.searchBar text] && [[self.searchBar text] length] > 0) {
+        [self.sections addObject:@"buckets"];
+    }
     if (self.searchResults && [self.searchResults count] > 0 && [self.searchBar text] && [[self.searchBar text] length] > 0) {
         [self.sections addObject:@"results"];
     }
@@ -126,6 +149,8 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"results"]) {
         return [self.searchResults count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
+        return [self.bucketResultKeys count];
     }
     return 0;
 }
@@ -136,6 +161,8 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
         return [self blankCellForIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"results"]) {
         return [self tableView:tV itemCellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+        return [self tableView:tV bucketCellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -149,9 +176,18 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 - (UITableViewCell*) tableView:(UITableView *)tV itemCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHItemTableViewCell* cell = (SHItemTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:itemCellIdentifier];
-    //[[self.searchResults objectAtIndex:indexPath.row] assignLocalVersionIfNeeded];
+    [[[self.searchResults objectAtIndex:indexPath.row] mutableCopy] assignLocalVersionIfNeeded];
     [cell setShouldInvert:NO];
-    [cell configureWithItem:[self.searchResults objectAtIndex:indexPath.row] bucketLocalKey:nil];
+    //[cell configureWithItem:[self.searchResults objectAtIndex:indexPath.row] bucketLocalKey:nil];
+    [cell configureWithItemLocalKey:[[self.searchResults objectAtIndex:indexPath.row] localKey] bucketLocalKey:nil];
+    [cell layoutIfNeeded];
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tV bucketCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHBucketTableViewCell* cell = (SHBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:bucketCellIdentifier];
+    [cell configureWithBucketLocalKey:[self.bucketResultKeys objectAtIndex:indexPath.row]];
     [cell layoutIfNeeded];
     return cell;
 }
@@ -160,6 +196,10 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"blank"]) {
         [self dismissView];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+        UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
+        [(SHSlackThoughtsViewController*)vc setLocalKey:[self.bucketResultKeys objectAtIndex:indexPath.row]];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -173,6 +213,44 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 
 
 
+# pragma mark section headers
+
+- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"results"] || [[self.sections objectAtIndex:section] isEqualToString:@"buckets"])
+        return 36.0f;
+    return 0;
+}
+
+- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"results"])
+        return [NSString stringWithFormat:@"\"%@\" in Thoughts  (%lu)", [[SHSearch defaultManager] getCachedResultsTermWithType:@"items" withTerm:[self.searchBar text]], (unsigned long)[self.searchResults count]];
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"])
+        return [NSString stringWithFormat:@"Buckets (%lu)", (unsigned long)[self.bucketResultKeys count]];
+    return nil;
+}
+
+- (UIView*) tableView:(UITableView *)tV viewForHeaderInSection:(NSInteger)section
+{
+    if (![[self.sections objectAtIndex:section] isEqualToString:@"results"] && ![[self.sections objectAtIndex:section] isEqualToString:@"buckets"])
+        return nil;
+        
+    UIView* header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, [self tableView:tV heightForHeaderInSection:section])];
+    [header setBackgroundColor:[UIColor SHLighterGray]];
+    
+    UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, header.frame.size.width, header.frame.size.height)];
+    [title setText:[[self tableView:tV titleForHeaderInSection:section] uppercaseString]];
+    [title setFont:[UIFont titleFontWithSize:12.0f]];
+    [title setTextColor:[UIColor lightGrayColor]];
+    
+    [header addSubview:title];
+    
+    return header;
+}
+
+
+
 # pragma mark actions
 
 - (void) dismissView
@@ -180,6 +258,25 @@ static NSString *itemCellIdentifier = @"SHItemTableViewCell";
     [self dismissViewControllerAnimated:NO completion:^(void){
         
     }];
+}
+
+- (void) pushBucketViewController:(NSNotification*)notification
+{
+    UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
+    [(SHSlackThoughtsViewController*)vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void) presentViewController:(NSNotification*)notification
+{
+    if (![self presentedViewController]) {
+        [self.navigationController presentViewController:[[notification userInfo] objectForKey:@"viewController"] animated:YES completion:^(void){}];
+    }
+}
+
+- (void) refreshBlankThoughtsVC:(NSNotification*)notification
+{
+    [self reloadScreen];
 }
 
 @end

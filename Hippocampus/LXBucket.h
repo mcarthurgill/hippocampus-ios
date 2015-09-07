@@ -27,4 +27,8 @@
 
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index;
 
+- (UIColor*) bucketColor;
+
+- (BOOL) isAllThoughtsBucket;
+
 @end

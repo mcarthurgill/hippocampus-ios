@@ -33,6 +33,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self beginningActions];
     
     [self reloadScreen];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self reloadScreen];
+    });
 }
 
 - (void) setupSettings
@@ -138,7 +141,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (UITableViewCell*) tableView:(UITableView *)tV loadingCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHLoadingTableViewCell* cell = (SHLoadingTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:loadingCellIdentifier];
-    [cell configure];
+    [cell configureWithResponseObject:[@{@"local_key":[[self bucketKeys] objectAtIndex:indexPath.row]} mutableCopy]];
     return cell;
 }
 

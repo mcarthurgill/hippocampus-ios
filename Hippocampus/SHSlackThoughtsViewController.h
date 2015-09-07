@@ -15,6 +15,8 @@
 }
 
 @property (strong, nonatomic) NSString* localKey;
+@property (nonatomic) BOOL shouldReload;
 
+- (void) tryToReload;
 
 @end

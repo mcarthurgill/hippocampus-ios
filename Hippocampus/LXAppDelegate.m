@@ -81,14 +81,12 @@
     
     active = NO;
     
-    UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
-    }];
-    
-    [LXObjectManager saveToDisk];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"applicationWillResignActive" object:nil];
-    
-    [[UIApplication sharedApplication] endBackgroundTask:bgt];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
+        }];
+        [LXObjectManager saveToDisk];
+        [[UIApplication sharedApplication] endBackgroundTask:bgt];
+    });
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
