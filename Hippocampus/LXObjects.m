@@ -233,26 +233,6 @@
         [oldCopy assignLocalWithKey:[oldCopy localKey]];
         return YES;
     }
-//    NSMutableDictionary* updateWith = [self mutableCopy];
-//    NSMutableDictionary* oldCopy = [LXObjectManager objectWithLocalKey:[updateWith localKey]];
-//    if (!oldCopy) {
-//        [updateWith assignLocalWithKey:[updateWith localKey]];
-//        return YES;
-//    } else if (![updateWith createdAt] || ![updateWith updatedAt] || ( [updateWith updatedAt] > [oldCopy updatedAt] ) ) {
-//        for (NSString* key in [updateWith allKeys]) {
-//            [oldCopy setObject:[updateWith objectForKey:key] forKey:key];
-//        }
-//        [oldCopy assignLocalWithKey:[oldCopy localKey]];
-//        return YES;
-//    } else {
-//        for (NSString* key in [updateWith allKeys]) {
-//            if (![oldCopy objectForKey:key]) {
-//                [oldCopy setObject:[updateWith objectForKey:key] forKey:key];
-//            }
-//        }
-//        [oldCopy assignLocalWithKey:[oldCopy localKey]];
-//    }
-//    return NO;
 }
 
 - (void) assignLocalWithKey:(NSString*)key
