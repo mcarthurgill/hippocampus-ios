@@ -67,6 +67,14 @@
     return [self mediaSizeRatio]*height;
 }
 
+- (CGFloat) heightForWidth:(CGFloat)width
+{
+    //NSLog(@"widthForHeight: %f", [self mediaSizeRatio]*height);
+    if ([self mediaSizeRatio]*width>0.0)
+        return 1.0f/[self mediaSizeRatio]*width;
+    return 0.0f;
+}
+
 
 //OLD
 
@@ -357,7 +365,7 @@
 
 - (BOOL) hasBuckets
 {
-    return [self buckets] && [[self buckets] count] > 0;
+    return [self objectForKey:@"buckets_array"] && [[self objectForKey:@"buckets_array"] count] > 0;
 }
 
 - (BOOL) hasLinks

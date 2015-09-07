@@ -53,7 +53,7 @@
     if ([[notification userInfo] objectForKey:@"local_key"] && self.itemLocalKey && self.bucketLocalKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.itemLocalKey]) {
         //this is a hit, a currently displaying talbeivewcell. reload it.
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshVCWithLocalKey" object:nil userInfo:@{@"local_key":self.bucketLocalKey}];
-    } else {
+    } else if ([[notification userInfo] objectForKey:@"local_key"] && self.itemLocalKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.itemLocalKey]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshBlankThoughtsVC" object:nil userInfo:nil];
     }
 }
@@ -140,19 +140,19 @@
         inverted = YES;
     }
     
-    [self.message setText:[item message]];
+    [self.message setText:[self.item message]];
     [self addMessageTrailingSpaceConstraint];
     
     self.nudgeImageViewTrailingSpace.constant = 6.0f;
     self.outstandingDotTrailingSpace.constant = 5.0f;
-    if ([item hasReminder]) {
+    if ([self.item hasReminder]) {
         self.outstandingDotTrailingSpace.constant = 5.0f;
         [self.nudgeImageView setHidden:NO];
     } else {
         [self.nudgeImageView setHidden:YES];
     }
     
-    if ([item isOutstanding]) {
+    if ([self.item isOutstanding]) {
         [outstandingDot setBackgroundColor:[UIColor SHBlue]];
         [outstandingDot.layer setCornerRadius:4];
         [outstandingDot setClipsToBounds:YES];
@@ -162,19 +162,19 @@
         [outstandingDot setHidden:YES];
     }
     
-    if (![item belongsToCurrentUser] || ([self bucket] && [[self bucket] isCollaborativeThread])) {
+    if (![self.item belongsToCurrentUser] || ([self bucket] && [[self bucket] isCollaborativeThread])) {
         self.avatarHeightConstraint.constant = AVATAR_DIMENSION;
         [self.avatarView setHidden:NO];
         
-        if ([SGImageCache haveImageForURL:[item avatarURLString]]) {
-            self.avatarView.image = [SGImageCache imageForURL:[item avatarURLString]];
+        if ([SGImageCache haveImageForURL:[self.item avatarURLString]]) {
+            self.avatarView.image = [SGImageCache imageForURL:[self.item avatarURLString]];
             [self.avatarView setAlpha:1.0f];
             [self.avatarView viewWithTag:1].alpha = 0.0;
             [[self.avatarView viewWithTag:1] removeFromSuperview];
-        } else if (![self.avatarView.image isEqual:[SGImageCache imageForURL:[item avatarURLString]]]) {
+        } else if (![self.avatarView.image isEqual:[SGImageCache imageForURL:[self.item avatarURLString]]]) {
             self.avatarView.image = nil;
             [self.avatarView setAlpha:1.0f];
-            [SGImageCache getImageForURL:[item avatarURLString]].then(^(UIImage* image) {
+            [SGImageCache getImageForURL:[self.item avatarURLString]].then(^(UIImage* image) {
                 if (image) {
                     float curAlpha = [self.avatarView alpha];
                     [self.avatarView setAlpha:0.0f];
@@ -389,7 +389,7 @@
         }
         
         //bottom
-        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:button attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:10] toView:self.contentView];
+        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:button attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:18] toView:self.contentView];
         
         ++index;
     }
@@ -461,7 +461,7 @@
         UIImageView* iv = [self.mediaViews firstObject];
         NSMutableDictionary* medium = [self.mediaUsed firstObject];
         
-        if ([item hasMessage]) {
+        if ([self.item hasMessage]) {
             //fill right 1/3 with the image.
             //right align the message label with the image label
             
@@ -471,7 +471,7 @@
             //ratio tied to height
             [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:iv attribute:NSLayoutAttributeWidth multiplier:(1.0/[medium mediaSizeRatio]) constant:0] toView:self.contentView];
             //heights
-            NSArray* constrains = [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-10-[imageView]-(>=10)-|"] options:0 metrics:nil views:@{@"imageView":iv}];
+            NSArray* constrains = [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-18-[imageView]-(>=18)-|"] options:0 metrics:nil views:@{@"imageView":iv}];
             [self.contentView addConstraints:constrains];
             [self.addedConstraints addObjectsFromArray:constrains];
             //right
@@ -492,7 +492,7 @@
             //left
             [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
             //bottom
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:iv attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:10] toView:self.contentView];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:iv attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:18] toView:self.contentView];
         }
     } else if ([self.mediaViews count] > 1) {
         
@@ -516,11 +516,11 @@
                         //leftmost image
                         
                         //top
-                        [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:(count > 0 ? [self.mediaViews objectAtIndex:(count-1)] : self.message) attribute:(count == 0 && ![item hasMessage] ? NSLayoutAttributeTop : NSLayoutAttributeBottom) multiplier:1 constant:6] toView:self.contentView];
+                        [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:(count > 0 ? [self.mediaViews objectAtIndex:(count-1)] : self.message) attribute:(count == 0 && ![self.item hasMessage] ? NSLayoutAttributeTop : NSLayoutAttributeBottom) multiplier:1 constant:6] toView:self.contentView];
                         //left
                         [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
                         //bottom
-                        [self addConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:iv attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:10] toView:self.contentView];
+                        [self addConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:iv attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:18] toView:self.contentView];
                     } else if (i == 1) {
                         // center image
                         
@@ -564,11 +564,11 @@
                         //leftmost image
                         
                         //top
-                        [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:(count > 0 ? [self.mediaViews objectAtIndex:(count-1)] : self.message) attribute:(count == 0 && ![item hasMessage] ? NSLayoutAttributeTop : NSLayoutAttributeBottom) multiplier:1 constant:6] toView:self.contentView];
+                        [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:(count > 0 ? [self.mediaViews objectAtIndex:(count-1)] : self.message) attribute:(count == 0 && ![self.item hasMessage] ? NSLayoutAttributeTop : NSLayoutAttributeBottom) multiplier:1 constant:6] toView:self.contentView];
                         //left
                         [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
                         //bottom
-                        [self addConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:iv attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:10] toView:self.contentView];
+                        [self addConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:iv attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:18] toView:self.contentView];
                         
                     } else {
                         //right image

@@ -109,13 +109,12 @@
     [self setObject:([newBucketsArray count] > 0 ? @"assigned" : @"outstanding") forKey:@"status"];
     [self removeObjectForKey:@"updated_at"];
     [self assignLocalVersionIfNeeded];
-    NSLog(@"new object: %@", self);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:self];
+    NSLog(@"item: %@", [LXObjectManager objectWithLocalKey:[self localKey]]);
     //SEND TO SERVER
     [[LXServer shared] requestPath:@"/items/update_buckets" withMethod:@"PUT" withParamaters:@{@"local_key":[self localKey],@"local_keys":newLocalKeys} authType:@"user"
                            success:^(id responseObject) {
                                //SAVE LOCALLY
-                               NSLog(@"response: %@", responseObject);
                                [[responseObject mutableCopy] assignLocalVersionIfNeeded];
                                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
                                if (successCallback) {
@@ -131,5 +130,100 @@
      ];
 }
 
+
+- (CGFloat) estimatedCellHeight
+{
+    CGFloat THOUGHT_LEFT_SIDE_MARGIN = 29.0f;
+    CGFloat THOUGHT_RIGHT_SIDE_MARGIN = 27.0f;
+    CGFloat THOUGHT_TOP_SIDE_MARGIN = 18.0f;
+    CGFloat THOUGHT_BOTTOM_SIDE_MARGIN = 18.0f;
+    CGFloat SCREEN_WIDTH = [[UIScreen mainScreen] bounds].size.width;
+    CGFloat CONTENT_WIDTH = SCREEN_WIDTH-(THOUGHT_LEFT_SIDE_MARGIN+THOUGHT_RIGHT_SIDE_MARGIN);
+    
+    CGFloat messageHeight = 0.0f;
+    if ([self hasMessage]) {
+        messageHeight = [[self message] heightForTextWithWidth:CONTENT_WIDTH font:[UIFont itemContentFont]];
+    }
+    
+    CGFloat imageHeight = 0;
+    if ([self hasMedia]) {
+        if (![self media] || [[self media] count] == 0) {
+            imageHeight = 0;
+        } else if ([[self media] count] == 1 && ![self hasMessage]) {
+            //full width
+            imageHeight = [[[self media] firstObject] heightForWidth:CONTENT_WIDTH];
+        } else if ([[self media] count] == 1) {
+            //2/5 of screen
+            imageHeight = [[[self media] firstObject] heightForWidth:((CONTENT_WIDTH-10.0f)*2.0f/5.0f)];
+            messageHeight = [[self message] heightForTextWithWidth:((CONTENT_WIDTH-10.0f)*3.0f/5.0f) font:[UIFont itemContentFont]];
+            if (imageHeight >= messageHeight) {
+                messageHeight = 0;
+            } else {
+                imageHeight = 0;
+            }
+        } else if ([[self media] count]%2==0) {
+            //two per row
+            imageHeight = 0;
+            CGFloat currentAggregateWidth = 0;
+            CGFloat currentAdjustedHeight = 0;
+            NSInteger index = 0;
+            for (NSDictionary* medium in [self media]) {
+                if (index%2 == 0) {
+                    //first image
+                    currentAdjustedHeight = [medium height];
+                    currentAggregateWidth = [medium width];
+                } else if (index%2==1) {
+                    //second image
+                    currentAggregateWidth = currentAggregateWidth + [medium widthForHeight:currentAdjustedHeight];
+                    currentAggregateWidth = currentAggregateWidth + 6.0f*(currentAggregateWidth/CONTENT_WIDTH);
+                    imageHeight = imageHeight + currentAdjustedHeight*(CONTENT_WIDTH/currentAggregateWidth);
+                }
+                ++index;
+            }
+            imageHeight = imageHeight + 6.0f*([[self media] count]/2);
+        } else {
+            //THIS METHOD NOT FINISHED! NOT ADDING ON THE LAST GUY
+            //two per row + three on last row
+            imageHeight = 0;
+            CGFloat currentAggregateWidth = 0;
+            CGFloat currentAdjustedHeight = 0;
+            NSInteger index = 0;
+            for (NSDictionary* medium in [self media]) {
+                if (index < [[self media] count]-3) {
+                    if (index%2 == 0) {
+                        //first image
+                        currentAdjustedHeight = [medium height];
+                        currentAggregateWidth = [medium width];
+                    } else if (index%2==1) {
+                        //second image
+                        currentAggregateWidth = currentAggregateWidth + [medium widthForHeight:currentAdjustedHeight];
+                        currentAggregateWidth = currentAggregateWidth + 6.0f*(currentAggregateWidth/CONTENT_WIDTH);
+                        imageHeight = imageHeight + currentAdjustedHeight*(CONTENT_WIDTH/currentAggregateWidth);
+                    }
+                } else {
+                    if (index%3 == 0) {
+                        //first image
+                        currentAdjustedHeight = [medium height];
+                        currentAggregateWidth = [medium width];
+                    } else if (index%3==1) {
+                        //second image
+                        currentAggregateWidth = currentAggregateWidth + [medium widthForHeight:currentAdjustedHeight];
+                        //imageHeight = imageHeight + 10.0f + currentAdjustedHeight*(CONTENT_WIDTH/currentAggregateWidth);
+                    } else if (index%3==2) {
+                        //third image
+                        currentAggregateWidth = currentAggregateWidth + [medium widthForHeight:currentAdjustedHeight];
+                        currentAggregateWidth = currentAggregateWidth + 12.0f*(currentAggregateWidth/CONTENT_WIDTH);
+                        imageHeight = imageHeight + currentAdjustedHeight*(CONTENT_WIDTH/currentAggregateWidth);
+                    }
+                }
+                
+                ++index;
+            }
+            imageHeight = imageHeight + 6.0f*([[self media] count]/2);
+        }
+    }
+    
+    return ceilf(messageHeight + imageHeight + THOUGHT_TOP_SIDE_MARGIN + THOUGHT_BOTTOM_SIDE_MARGIN);
+}
 
 @end

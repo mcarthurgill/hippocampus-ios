@@ -152,7 +152,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     self.sections = [[NSMutableArray alloc] init];
     
-    if ((![self.searchBar text] || [[self.searchBar text] length] == 0) && [self.bucketSelectedKeys count] > 0) {
+    if ([self.bucketSelectedKeys count] > 0) {
         [self.sections addObject:@"selected"];
     }
     if ([self bucketKeys] && [[self bucketKeys] count] > 0) {
@@ -175,7 +175,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (UITableViewCell*) tableView:(UITableView *)tV cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"selected"]) {
-        if ([LXObjectManager objectWithLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]]) {
+        if ([LXObjectManager objectWithLocalKey:[self.bucketSelectedKeys objectAtIndex:indexPath.row]]) {
             return [self tableView:tV bucketCellForRowAtIndexPath:indexPath];
         } else {
             [[LXObjectManager defaultManager] refreshObjectWithKey:[self.bucketSelectedKeys objectAtIndex:indexPath.row]
@@ -211,7 +211,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (UITableViewCell*) tableView:(UITableView *)tV loadingCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHLoadingTableViewCell* cell = (SHLoadingTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:loadingCellIdentifier];
-    [cell configureWithResponseObject:[@{@"local_key":[[self bucketKeys] objectAtIndex:indexPath.row]} mutableCopy]];
+    [cell configureWithResponseObject:[@{@"local_key":([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"selected"] ? [self.bucketSelectedKeys objectAtIndex:indexPath.row] : [[self bucketKeys] objectAtIndex:indexPath.row])} mutableCopy]];
     return cell;
 }
 
@@ -242,6 +242,10 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self.searchBar resignFirstResponder];
 }
 
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"height: %f", cell.bounds.size.height);
+}
 
 
 # pragma mark user actions

@@ -68,7 +68,7 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
     [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
     
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
-    [self.tableView setEstimatedRowHeight:100.0f];
+    //[self.tableView setEstimatedRowHeight:100.0f];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
 }
 
@@ -176,9 +176,7 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 - (UITableViewCell*) tableView:(UITableView *)tV itemCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHItemTableViewCell* cell = (SHItemTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:itemCellIdentifier];
-    [[[self.searchResults objectAtIndex:indexPath.row] mutableCopy] assignLocalVersionIfNeeded];
     [cell setShouldInvert:NO];
-    //[cell configureWithItem:[self.searchResults objectAtIndex:indexPath.row] bucketLocalKey:nil];
     [cell configureWithItemLocalKey:[[self.searchResults objectAtIndex:indexPath.row] localKey] bucketLocalKey:nil];
     [cell layoutIfNeeded];
     return cell;
@@ -209,6 +207,23 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
     if ([self.sections count] == 1 && [[self.sections firstObject] isEqualToString:@"blank"]) {
         [self dismissView];
     }
+}
+
+- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"blank"]) {
+        return 570.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+        return 91.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"results"]) {
+        NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:[[self.searchResults objectAtIndex:indexPath.row] localKey]];
+        if (item) {
+            return [item estimatedCellHeight] + (![item belongsToCurrentUser] ? 32.0f : 0.0f ) + ([item hasBuckets] ? 30.0f : 0.0f );
+        } else {
+            return 44.0f;
+        }
+    }
+    return 100.0f;
 }
 
 

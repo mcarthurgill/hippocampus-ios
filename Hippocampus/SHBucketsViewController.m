@@ -41,7 +41,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) setupSettings
 {
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
-    [self.tableView setEstimatedRowHeight:100.0f];
+    [self.tableView setEstimatedRowHeight:91.0f];
     
     [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:loadingCellIdentifier bundle:nil] forCellReuseIdentifier:loadingCellIdentifier];
@@ -154,6 +154,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         return 44.0f;
     }
 }
+
 
 
 # pragma mark actions

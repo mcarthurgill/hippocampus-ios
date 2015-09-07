@@ -10,11 +10,6 @@
 #import "SHItemTableViewCell.h"
 #import "SHLoadingTableViewCell.h"
 
-#define THOUGHT_LEFT_SIDE_MARGIN 29.0f
-#define THOUGHT_RIGHT_SIDE_MARGIN 27.0f
-#define THOUGHT_TOP_SIDE_MARGIN 18.0f
-#define THOUGHT_BOTTOM_SIDE_MARGIN 18.0f
-
 #define PAGE_COUNT 64
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
@@ -253,9 +248,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (CGFloat) tableView:(UITableView *)tV estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([LXObjectManager objectWithLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]]) {
-        NSMutableDictionary* item = [[self bucket] itemAtIndex:indexPath.row];
-        return [[item message] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(THOUGHT_LEFT_SIDE_MARGIN+THOUGHT_RIGHT_SIDE_MARGIN)) font:[UIFont itemContentFont]] + THOUGHT_TOP_SIDE_MARGIN + THOUGHT_BOTTOM_SIDE_MARGIN;
+    NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
+    if (item) {
+        return [item estimatedCellHeight] + ((![item belongsToCurrentUser] || ([self bucket] && [[self bucket] isCollaborativeThread])) ? 32.0f : 0.0f ) + (([item hasBuckets] && (![self bucket] || [[self bucket] isAllThoughtsBucket])) ? 30.0f : 0.0f );
     } else {
         return 44.0f;
     }
@@ -268,7 +263,16 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         [self reloadScreen];
         [self.tableView flashScrollIndicators];
     }
+    //NSLog(@"actual %li height: %f", (long)indexPath.row, cell.frame.size.height);
 }
+
+- (void) tableView:(UITableView *)tV didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //NSLog(@"estimated %li height: %f", (long)indexPath.row, [self tableView:tV estimatedHeightForRowAtIndexPath:indexPath]);
+    [tV deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+
 
 
 # pragma mark toolbar delegate

@@ -21,6 +21,7 @@
 - (CGFloat) height;
 - (CGFloat) mediaSizeRatio;
 - (CGFloat) widthForHeight:(CGFloat)height;
+- (CGFloat) heightForWidth:(CGFloat)width;
 
 //OLD
 

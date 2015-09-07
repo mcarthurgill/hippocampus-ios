@@ -56,7 +56,7 @@
 {
     if ([self length] == 0)
         return 0.0f;
-    CGRect rect = [self boundingRectWithSize:CGSizeMake(width, 100000) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil];
+    CGRect rect = [self boundingRectWithSize:CGSizeMake(width, 100000) options:(NSStringDrawingUsesLineFragmentOrigin|NSStringDrawingUsesFontLeading) attributes:@{NSFontAttributeName:font} context:nil];
     return rect.size.height;
 }
 
