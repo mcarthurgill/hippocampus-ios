@@ -205,10 +205,13 @@ static LXObjectManager* defaultManager = nil;
     UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
     }];
     
-    for (NSString* key in [[[LXObjectManager defaultManager] library] allKeys]) {
+    NSArray* copyOfKeys = [[[[LXObjectManager defaultManager] library] allKeys] copy];
+    NSMutableDictionary* copyOfDictionary = [[[LXObjectManager defaultManager] library] copy];
+    
+    for (NSString* key in copyOfKeys) {
         if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
-            [[NSUserDefaults standardUserDefaults] setObject:([[[[LXObjectManager defaultManager] library] objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[[[LXObjectManager defaultManager] library] objectForKey:key] cleanDictionary] : [[[LXObjectManager defaultManager] library] objectForKey:key]) forKey:key];
-            NSLog(@"object: %@", [[[LXObjectManager defaultManager] library] objectForKey:key]);
+            [[NSUserDefaults standardUserDefaults] setObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) forKey:key];
+            NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
         }
     }
     [[NSUserDefaults standardUserDefaults] synchronize];

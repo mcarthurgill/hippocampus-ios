@@ -26,6 +26,7 @@
 // saving and syncing
 
 - (void) saveRemote;
+- (void) delaySaveRemote;
 - (void) saveRemote:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 - (void) destroyBoth;

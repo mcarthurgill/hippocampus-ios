@@ -167,6 +167,7 @@ static SHSearch* defaultManager = nil;
 
 - (NSArray*) pullFromBucketKeysArray:(NSString*)key
 {
+    return [LXObjectManager objectWithLocalKey:@"bucketLocalKeys"];
     while (key && [key length] > 1) {
         key = [key substringToIndex:([key length]-1)];
         if ([self.cachedBuckets objectForKey:key]) {

@@ -15,9 +15,15 @@
 @property (nonatomic) BOOL alreadyAskedPermission;
 
 + (LXAddressBook*) thisBook;
+
+- (BOOL) hasContacts;
 - (BOOL) permissionDetermined;
 - (BOOL) permissionGranted;
+
 - (void) requestAccess:(void (^) (BOOL success))completion;
 - (void) obtainContactList:(void (^) (BOOL success))completion;
+
 - (BOOL) sortedByFirstName;
+
+
 @end

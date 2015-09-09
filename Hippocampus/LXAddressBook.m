@@ -46,6 +46,12 @@ static LXAddressBook* thisBook = nil;
 
 
 # pragma mark - Permissions
+
+- (BOOL) hasContacts
+{
+    return self.allContacts && [self.allContacts count] > 0;
+}
+
 - (BOOL) permissionDetermined
 {
     return ABAddressBookGetAuthorizationStatus() != kABAuthorizationStatusNotDetermined;

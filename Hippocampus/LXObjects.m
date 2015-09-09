@@ -20,6 +20,7 @@
 {
     NSMutableDictionary* temp = [[NSMutableDictionary alloc] initWithDictionary:@{@"object_type":oT, @"device_timestamp":[NSString stringWithFormat:@"%f", [[NSDate date] timeIntervalSince1970]]}];
     [temp setObject:[temp localKey] forKey:@"local_key"];
+    [temp setObject:[[[LXSession thisSession] user] ID] forKey:@"user_id"];
     return temp;
 }
 
@@ -129,6 +130,11 @@
     [self saveRemote:nil failure:nil];
 }
 
+- (void) delaySaveRemote
+{
+    [[LXObjectManager defaultManager] addQuery:[self requestPath] withMethod:[self requestMethod] withObject:[self parameterReady] withAuthType:[self authTypeForRequest]];
+}
+
 - (void) saveRemote:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     //SEND TO SERVER
@@ -141,7 +147,7 @@
                                }
                            }
                            failure:^(NSError* error) {
-                               [[LXObjectManager defaultManager] addQuery:[self requestPath] withMethod:[self requestMethod] withObject:[self parameterReady] withAuthType:[self authTypeForRequest]];
+                               
                                if (failureCallback) {
                                    failureCallback(error);
                                }

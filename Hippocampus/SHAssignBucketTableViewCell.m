@@ -23,6 +23,12 @@
 - (void) setupAppearanceSettings
 {
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
+    
+    [self.title setFont:[UIFont titleFontWithSize:15.0f]];
+    [self.title setTextColor:[UIColor SHFontDarkGray]];
+    
+    [self.preview setFont:[UIFont secondaryFontWithSize:12.0f]];
+    [self.preview setTextColor:[UIColor lightGrayColor]];
 }
 
 
@@ -35,6 +41,15 @@
     [self selectCell:selected];
 }
 
+- (void) setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    [super setHighlighted:highlighted animated:animated];
+    if (highlighted) {
+        [self selectCell:YES];
+    } else if (![self isSelected]) {
+        [self selectCell:NO];
+    }
+}
 
 
 # pragma mark configure
@@ -43,8 +58,18 @@
 {
     [self setLocalKey:key];
     
-    [self.title setText:[[self bucket] firstName]];
+    [self.title setText:[NSString stringWithFormat:@"%@ (%i)", [[self bucket] firstName], ([[[self bucket] itemsCount] integerValue] > 0 ? [[[self bucket] itemsCount] intValue] : 0)]];
     [self.preview setText:[[self bucket] cachedItemMessage]];
+    
+    [self setNeedsLayout];
+}
+
+- (void) configureWithContact:(NSMutableDictionary*)contact
+{
+    [self.title setText:[contact objectForKey:@"name"]];
+    [self.preview setText:@"Create Bucket for Contact"];
+    
+    [self setNeedsLayout];
 }
 
 - (void) selectCell:(BOOL)selected
@@ -54,7 +79,6 @@
     } else {
         [self.checkImage setImage:[UIImage imageNamed:@"empty_check.png"]];
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"assignBucketsCellSelected" object:nil userInfo:nil];
 }
 
 

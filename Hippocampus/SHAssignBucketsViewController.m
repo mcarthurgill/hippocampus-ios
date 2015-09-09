@@ -29,6 +29,13 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 @synthesize bucketResultKeys;
 @synthesize bucketSelectedKeys;
 
+@synthesize topViewLabel;
+@synthesize topView;
+
+@synthesize topInputView;
+@synthesize bucketTextField;
+@synthesize inputActionButton;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -41,13 +48,31 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [self reloadScreen];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(assignBucketsCellSelected:) name:@"assignBucketsCellSelected" object:nil];
+    [self.topInputView setHidden:YES];
+    [self.bucketTextField setFont:[UIFont titleFontWithSize:15.0f]];
+    [self.bucketTextField setTextColor:[UIColor SHFontDarkGray]];
+    
+    [[self.inputActionButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatedBucketLocalKeys:) name:@"updatedBucketLocalKeys" object:nil];
+    
+    if ([self shouldOpenOnSearchKeyboard]) {
+        [self.searchBar performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.01];
+    }
+    
+    [[LXAddressBook thisBook] requestAccess:^(BOOL success){
+        [self reloadScreen];
+    }];
 }
 
-- (void) assignBucketsCellSelected:(NSNotification*)notification
+- (BOOL) shouldOpenOnSearchKeyboard
 {
-    [self setTitle];
-    [self performSelectorOnMainThread:@selector(setTitle) withObject:nil waitUntilDone:NO];
+    return YES;
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (void) setTitle
@@ -58,11 +83,20 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) setupSettings
 {
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
-    [self.tableView setEstimatedRowHeight:44.0f];
+    [self.tableView setEstimatedRowHeight:70.0f];
     
     [self.tableView registerNib:[UINib nibWithNibName:assignCellIdentifier bundle:nil] forCellReuseIdentifier:assignCellIdentifier];
     
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
+    
+    [self.topViewLabel setFont:[UIFont titleFontWithSize:15.0f]];
+    [self.topViewLabel setTextColor:[UIColor SHFontDarkGray]];
+    [self.topViewLabel setText:@"New Bucket"];
+    
+    [self.topView setBackgroundColor:[UIColor slightBackgroundColor]];
+    
+    self.searchBar.layer.borderWidth = 1.0f;
+    self.searchBar.layer.borderColor = [UIColor slightBackgroundColor].CGColor;
 }
 
 - (void)didReceiveMemoryWarning
@@ -158,6 +192,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if ([self bucketKeys] && [[self bucketKeys] count] > 0) {
         [self.sections addObject:@"other"];
     }
+    if ([[LXAddressBook thisBook] hasContacts]) {
+        [self.sections addObject:@"contacts"];
+    }
     
     return [self.sections count];
 }
@@ -168,6 +205,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         return [self.bucketSelectedKeys count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"other"]) {
         return [[self bucketKeys] count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contacts"]) {
+        return [[[LXAddressBook thisBook] allContacts] count];
     }
     return 0;
 }
@@ -196,6 +235,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
              ];
             return [self tableView:tV loadingCellForRowAtIndexPath:indexPath];
         }
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"contacts"]) {
+        return [self tableView:tV contactCellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -204,6 +245,14 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     SHAssignBucketTableViewCell* cell = (SHAssignBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:assignCellIdentifier];
     [cell configureWithBucketLocalKey:([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"selected"] ? [self.bucketSelectedKeys objectAtIndex:indexPath.row] : [[self bucketKeys] objectAtIndex:indexPath.row])];
+    [cell layoutIfNeeded];
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tV contactCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHAssignBucketTableViewCell* cell = (SHAssignBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:assignCellIdentifier];
+    [cell configureWithContact:[[[LXAddressBook thisBook] allContacts] objectAtIndex:indexPath.row]];
     [cell layoutIfNeeded];
     return cell;
 }
@@ -217,29 +266,32 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self addKeyToSelected:([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"selected"] ? [self.bucketSelectedKeys objectAtIndex:indexPath.row] : [[self bucketKeys] objectAtIndex:indexPath.row])];
+    [self endEditing];
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"contacts"]) {
+        NSMutableDictionary* newBucket = [NSMutableDictionary create:@"bucket"];
+        [newBucket setObject:[[[[LXAddressBook thisBook] allContacts] objectAtIndex:indexPath.row] objectForKey:@"name"] forKey:@"first_name"];
+        [newBucket setObject:[@{@"object_type":@"contact_card", @"contact_details":[[[LXAddressBook thisBook] allContacts] objectAtIndex:indexPath.row]} mutableCopy] forKey:@"contact_card"];
+        [newBucket assignLocalVersionIfNeeded];
+        [self addKeyToSelected:[newBucket localKey]];
+        [self reloadScreen];
+    } else {
+        [self addKeyToSelected:([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"selected"] ? [self.bucketSelectedKeys objectAtIndex:indexPath.row] : [[self bucketKeys] objectAtIndex:indexPath.row])];
+    }
     [self reloadScreen];
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self removeKeyFromSelected:([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"selected"] ? [self.bucketSelectedKeys objectAtIndex:indexPath.row] : [[self bucketKeys] objectAtIndex:indexPath.row])];
     [self reloadScreen];
-}
-
-- (NSString*) tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if ([[self.sections objectAtIndex:section] isEqualToString:@"selected"]) {
-        return @"Assigned to Buckets";
-    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"other"]) {
-        return @"Select Buckets";
-    }
-    return nil;
+    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.searchBar resignFirstResponder];
+    [self endEditing];
 }
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -248,15 +300,72 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 }
 
 
+
+
+# pragma mark section headers
+
+- (NSString*) tableView:(UITableView *)tV titleForHeaderInSection:(NSInteger)section
+{
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"selected"]) {
+        return @"Assigned to Buckets";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"other"]) {
+        return @"Buckets";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contacts"]) {
+        return @"Contacts";
+    }
+    return nil;
+}
+
+- (CGFloat) tableView:(UITableView *)tV heightForHeaderInSection:(NSInteger)section
+{
+    if ([self tableView:tV titleForHeaderInSection:section])
+        return 36.0f;
+    return 0;
+}
+
+- (UIView*) tableView:(UITableView *)tV viewForHeaderInSection:(NSInteger)section
+{
+    if (![self tableView:tV titleForHeaderInSection:section])
+        return nil;
+    
+    UIView* header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, [self tableView:tV heightForHeaderInSection:section])];
+    [header setBackgroundColor:[UIColor SHLighterGray]];
+    
+    UILabel* title = [[UILabel alloc] initWithFrame:CGRectMake(16, 0, header.frame.size.width, header.frame.size.height)];
+    [title setText:[[self tableView:tV titleForHeaderInSection:section] uppercaseString]];
+    [title setFont:[UIFont titleFontWithSize:12.0f]];
+    [title setTextColor:[UIColor lightGrayColor]];
+    
+    [header addSubview:title];
+    
+    return header;
+}
+
+
+
+
+
+
 # pragma mark user actions
+
+- (IBAction)leftButtonAction:(id)sender
+{
+    [self dismissViewControllerAnimated:NO completion:^(void){}];
+}
 
 - (IBAction)rightButtonAction:(id)sender
 {
-    //save
     [[self item] updateBucketsWithLocalKeys:self.bucketSelectedKeys success:^(id responseObject){} failure:^(NSError* error){}];
     //dismiss
     [self dismissViewControllerAnimated:NO completion:^(void){}];
 }
+
+- (IBAction)topViewButtonAction:(id)sender
+{
+    [self beginEditing];
+}
+
+
 
 
 
@@ -265,10 +374,10 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) searchBar:(UISearchBar *)bar textDidChange:(NSString *)searchText
 {
     [[SHSearch defaultManager] localBucketSearchWithTerm:[bar text]
-                                      success:^(id responseObject){
+                                      success:^(id responseObject) {
                                           [self reloadScreen];
                                       }
-                                      failure:^(NSError* error){
+                                      failure:^(NSError* error) {
                                       }
      ];
 }
@@ -278,5 +387,77 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self.searchBar resignFirstResponder];
 }
 
+- (void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    [self endEditing];
+}
+
+
+
+
+
+# pragma mark new bucket
+
+- (void) beginEditing
+{
+    [self.topView setHidden:YES];
+    [self.searchBar resignFirstResponder];
+    [self.topInputView setHidden:NO];
+    [self.bucketTextField becomeFirstResponder];
+    [self.tableView setAlpha:0.3f];
+    [self.searchBar setAlpha:0.3f];
+    [self.navigationItem.rightBarButtonItem setEnabled:NO];
+}
+
+- (void) endEditing
+{
+    [self.topView setHidden:NO];
+    [self.bucketTextField resignFirstResponder];
+    [self.topInputView setHidden:YES];
+    [self.tableView setAlpha:1.0f];
+    [self.searchBar setAlpha:1.0f];
+    [self.navigationItem.rightBarButtonItem setEnabled:YES];
+}
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
+{
+    [self captureBucketAndEnd];
+    return YES;
+}
+
+- (IBAction)inputAction:(id)sender
+{
+    [self captureBucketAndEnd];
+}
+
+- (void) captureBucketAndEnd
+{
+    if ([self.bucketTextField text] && [[self.bucketTextField text] length] > 0) {
+        [self addBucketWithText:[self.bucketTextField text]];
+    }
+    [self.bucketTextField setText:@""];
+    [self endEditing];
+}
+
+- (void) addBucketWithText:(NSString*)text
+{
+    NSLog(@"NEW BUCKET! %@", text);
+    //CREATE BUCKET
+    NSMutableDictionary* newBucket = [NSMutableDictionary create:@"bucket"];
+    [newBucket setObject:text forKey:@"first_name"];
+    [newBucket assignLocalVersionIfNeeded];
+    [self addKeyToSelected:[newBucket localKey]];
+    [self reloadScreen];
+}
+
+
+
+
+# pragma mark notifications
+
+- (void) updatedBucketLocalKeys:(NSNotification*)notification
+{
+    [self reloadScreen];
+}
 
 @end

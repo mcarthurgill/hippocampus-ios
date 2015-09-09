@@ -68,9 +68,9 @@
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     if (([name isEqualToString:@"Seahorse"]) && [[LXSession thisSession] user]) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 10*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
             [[[LXSession thisSession] user] updateTimeZone];
-        });
+        //});
         [self refreshObjects];
     }
 }
@@ -103,19 +103,19 @@
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"appAwake" object:nil];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         if ([[LXSession thisSession] user]) {
             [[LXObjectManager defaultManager] runQueries];
         }
-    });
+    //});
     
     [self incrementAppLaunchCount];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         if ([[LXSession thisSession] locationPermissionDetermined]) {
             [[LXSession thisSession] startLocationUpdates];
         }
-    });
+    //});
     
     active = YES;
 }
@@ -161,14 +161,14 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 8*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 8*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [[LXServer shared] updateDeviceToken:deviceToken success:^(id responseObject) {
             NSLog(@"My token is: %@", deviceToken);
         } failure:^(NSError *error){
             NSLog(@"Didn't successfully submit device token: %@", deviceToken);
         }
          ];
-    });
+    //});
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error

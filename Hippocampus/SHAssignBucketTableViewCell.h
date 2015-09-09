@@ -18,5 +18,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *preview;
 
 - (void) configureWithBucketLocalKey:(NSString*)key;
+- (void) configureWithContact:(NSMutableDictionary*)contact;
 
 @end

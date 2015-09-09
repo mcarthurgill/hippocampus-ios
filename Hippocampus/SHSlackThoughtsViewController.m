@@ -33,13 +33,15 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [self setupSettings];
     
+    [self beginningActions];
+    
     [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
 }
 
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self beginningActions];
+    //[self beginningActions];
 }
 
 - (void) viewDidAppear:(BOOL)animated

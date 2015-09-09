@@ -14,7 +14,6 @@
 {
     NSMutableDictionary* i = [NSMutableDictionary create:@"item"];
     [i setObject:message forKey:@"message"];
-    [i setObject:[[[LXSession thisSession] user] ID] forKey:@"user_id"];
     return i;
 }
 
@@ -74,6 +73,7 @@
     }
     //CREATE NEW BUCKETS ARRAY
     NSMutableArray* newBucketsArray = [[NSMutableArray alloc] init];
+    NSMutableArray* unsavedNewBucketsArray = [[NSMutableArray alloc] init];
     for (NSString* key in newLocalKeys) {
         NSMutableDictionary* tempBucket = [LXObjectManager objectWithLocalKey:key];
         if (tempBucket) {
@@ -86,6 +86,11 @@
                 [tempBucket removeObjectForKey:@"updated_at"];
                 [tempBucket assignLocalVersionIfNeeded];
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":tempBucket}];
+            } else {
+                [tempBucket setObject:[@[[self localKey]] mutableCopy] forKey:@"item_keys"];
+            }
+            if (![tempBucket ID]) {
+                [unsavedNewBucketsArray addObject:tempBucket];
             }
         }
         if ([removedFromBucketKeys containsObject:key]) {
@@ -111,6 +116,50 @@
     [self assignLocalVersionIfNeeded];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:self];
     NSLog(@"item: %@", [LXObjectManager objectWithLocalKey:[self localKey]]);
+    //SAVE UNSAVED BUCKETS FIRST
+    if ([unsavedNewBucketsArray count] == 0) {
+        //save now
+        [self sendUpdateBucketsWithLocalKeys:newLocalKeys
+                                     success:^(id responseObject){
+                                         if (successCallback) {
+                                             successCallback(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSError* error){
+                                         if (failureCallback) {
+                                             failureCallback(error);
+                                         }
+                                     }
+         ];
+    } else {
+        __block NSInteger currentNumberSaved = 0;
+        for (NSMutableDictionary* bucket in unsavedNewBucketsArray) {
+            [bucket saveRemote:^(id responseObject){
+                ++currentNumberSaved;
+                if (currentNumberSaved == [unsavedNewBucketsArray count]) {
+                    [NSMutableDictionary bucketKeysWithSuccess:nil failure:nil];
+                    //save now
+                    [self sendUpdateBucketsWithLocalKeys:newLocalKeys
+                                                 success:^(id responseObject){
+                                                     if (successCallback) {
+                                                         successCallback(responseObject);
+                                                     }
+                                                 }
+                                                 failure:^(NSError* error){
+                                                     if (failureCallback) {
+                                                         failureCallback(error);
+                                                     }
+                                                 }
+                     ];
+                }
+            } failure:^(NSError* error){}];
+        }
+    }
+    
+}
+
+- (void) sendUpdateBucketsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
     //SEND TO SERVER
     [[LXServer shared] requestPath:@"/items/update_buckets" withMethod:@"PUT" withParamaters:@{@"local_key":[self localKey],@"local_keys":newLocalKeys} authType:@"user"
                            success:^(id responseObject) {
