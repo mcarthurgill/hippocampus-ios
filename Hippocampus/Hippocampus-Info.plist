@@ -34,6 +34,7 @@
 	<array>
 		<string>Roboto-Regular.ttf</string>
 		<string>Abel-Regular.ttf</string>
+		<string>Roboto-Light.ttf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

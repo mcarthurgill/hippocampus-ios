@@ -36,9 +36,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="4az-0B-VXG">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="35l-XP-vQU">
+                                <rect key="frame" x="0.0" y="540" width="600" height="60"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="aph-Pv-f9D"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="4az-0B-VXG">
+                                <rect key="frame" x="0.0" y="20" width="600" height="520"/>
                                 <connections>
                                     <outlet property="dataSource" destination="IAg-Vz-YsX" id="9GG-Vn-6e1"/>
                                     <outlet property="delegate" destination="IAg-Vz-YsX" id="sxj-g6-axn"/>
@@ -47,11 +53,34 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="4az-0B-VXG" firstAttribute="top" secondItem="boh-LV-VIl" secondAttribute="bottom" id="5jz-Ls-MPG"/>
+                            <constraint firstItem="gPH-E7-yi4" firstAttribute="top" secondItem="35l-XP-vQU" secondAttribute="bottom" id="9GE-L2-bCu"/>
                             <constraint firstItem="4az-0B-VXG" firstAttribute="leading" secondItem="znw-qH-cC9" secondAttribute="leadingMargin" constant="-16" id="9bT-Rj-KSI"/>
+                            <constraint firstItem="4az-0B-VXG" firstAttribute="top" secondItem="boh-LV-VIl" secondAttribute="bottom" id="GXV-93-K7Z"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="35l-XP-vQU" secondAttribute="trailing" constant="-16" id="Ikb-rt-z9B"/>
+                            <constraint firstAttribute="centerY" secondItem="4az-0B-VXG" secondAttribute="centerY" id="JcC-dm-CiE"/>
+                            <constraint firstItem="35l-XP-vQU" firstAttribute="top" secondItem="4az-0B-VXG" secondAttribute="bottom" id="L55-hl-CI4"/>
+                            <constraint firstItem="4az-0B-VXG" firstAttribute="top" secondItem="boh-LV-VIl" secondAttribute="bottom" id="LbR-SG-CWY"/>
+                            <constraint firstAttribute="width" secondItem="4az-0B-VXG" secondAttribute="width" id="TGa-Y8-uLO"/>
+                            <constraint firstAttribute="height" secondItem="4az-0B-VXG" secondAttribute="height" id="Wg7-rb-HDu"/>
+                            <constraint firstAttribute="centerX" secondItem="4az-0B-VXG" secondAttribute="centerX" id="bZg-HZ-Rlr"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4az-0B-VXG" secondAttribute="trailing" constant="-16" id="hFu-DG-bj3"/>
                             <constraint firstItem="gPH-E7-yi4" firstAttribute="top" secondItem="4az-0B-VXG" secondAttribute="bottom" id="pzy-hK-sRp"/>
                             <constraint firstItem="4az-0B-VXG" firstAttribute="top" secondItem="boh-LV-VIl" secondAttribute="bottom" constant="-20" id="qjz-CJ-U3D"/>
+                            <constraint firstItem="35l-XP-vQU" firstAttribute="leading" secondItem="znw-qH-cC9" secondAttribute="leadingMargin" constant="-16" id="w2k-q4-Hvj"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="5jz-Ls-MPG"/>
+                                <exclude reference="9bT-Rj-KSI"/>
+                                <exclude reference="JcC-dm-CiE"/>
+                                <exclude reference="LbR-SG-CWY"/>
+                                <exclude reference="Wg7-rb-HDu"/>
+                                <exclude reference="hFu-DG-bj3"/>
+                                <exclude reference="qjz-CJ-U3D"/>
+                                <exclude reference="pzy-hK-sRp"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="4az-0B-VXG" id="92V-bm-KAW"/>
@@ -420,7 +449,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="64" maxX="0.0" maxY="0.0"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Filter" id="8yi-OE-VdG">
+                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Filter Buckets" id="8yi-OE-VdG">
                                     <rect key="frame" x="0.0" y="20" width="600" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="barTintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>

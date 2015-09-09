@@ -54,6 +54,15 @@
     return [NSString stringWithFormat:@"%@/avatar/%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIRoot"], [self userID]];
 }
 
+- (BOOL) hasAuthorName
+{
+    return [self objectForKey:@"user"] && [[self objectForKey:@"user"] objectForKey:@"name"] && NULL_TO_NIL([[self objectForKey:@"user"] objectForKey:@"name"]) && [[[self objectForKey:@"user"] objectForKey:@"name"] length] > 0;
+}
+
+- (NSString*) authorName
+{
+    return [[self objectForKey:@"user"] objectForKey:@"name"];
+}
 
 
 - (NSMutableArray*) bucketsArray

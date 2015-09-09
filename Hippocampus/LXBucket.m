@@ -78,7 +78,6 @@ static NSInteger maxRecentCount = 5;
             [names setObject:[bucket firstName] forKey:[bucket firstName]];
         }
     }
-    NSLog(@"%@", names);
     return names;
 }
 

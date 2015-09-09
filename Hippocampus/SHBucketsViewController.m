@@ -47,6 +47,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
     [self.tableView setEstimatedRowHeight:91.0f];
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
     
     [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:loadingCellIdentifier bundle:nil] forCellReuseIdentifier:loadingCellIdentifier];
@@ -213,6 +214,18 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     if ([self.searchBar isFirstResponder]) {
         [self.searchBar resignFirstResponder];
+    }
+    
+    float scrollViewHeight = scrollView.frame.size.height;
+    float scrollContentSizeHeight = scrollView.contentSize.height;
+    float scrollOffset = scrollView.contentOffset.y;
+    //NSLog(@"scrollOffset = %f", scrollOffset);
+    if ((NSInteger)scrollOffset == (NSInteger)-64) {
+        // then we are at the top
+        [self.searchBar becomeFirstResponder];
+    }
+    else if (scrollOffset + scrollViewHeight == scrollContentSizeHeight) {
+        // then we are at the end
     }
 }
 

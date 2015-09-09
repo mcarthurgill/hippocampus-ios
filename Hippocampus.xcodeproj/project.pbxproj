@@ -104,6 +104,11 @@
 		28ED41E01BA00156000292AE /* HCReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41DF1BA00156000292AE /* HCReminderViewController.m */; };
 		28ED41E31BA089AC000292AE /* SHItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41E21BA089AC000292AE /* SHItemViewController.m */; };
 		28ED41E51BA093E4000292AE /* nudge_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41E41BA093E4000292AE /* nudge_icon.png */; };
+		28ED41E71BA097EA000292AE /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41E61BA097EA000292AE /* Roboto-Light.ttf */; };
+		28ED41ED1BA09882000292AE /* SHItemMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41EB1BA09882000292AE /* SHItemMessageTableViewCell.m */; };
+		28ED41EE1BA09882000292AE /* SHItemMessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41EC1BA09882000292AE /* SHItemMessageTableViewCell.xib */; };
+		28ED41F21BA0A3EF000292AE /* SHItemAuthorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41F01BA0A3EF000292AE /* SHItemAuthorTableViewCell.m */; };
+		28ED41F31BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41F11BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -258,6 +263,13 @@
 		28ED41E11BA089AC000292AE /* SHItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHItemViewController.h; sourceTree = "<group>"; };
 		28ED41E21BA089AC000292AE /* SHItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHItemViewController.m; sourceTree = "<group>"; };
 		28ED41E41BA093E4000292AE /* nudge_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nudge_icon.png; sourceTree = "<group>"; };
+		28ED41E61BA097EA000292AE /* Roboto-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Light.ttf"; sourceTree = "<group>"; };
+		28ED41EA1BA09882000292AE /* SHItemMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHItemMessageTableViewCell.h; sourceTree = "<group>"; };
+		28ED41EB1BA09882000292AE /* SHItemMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHItemMessageTableViewCell.m; sourceTree = "<group>"; };
+		28ED41EC1BA09882000292AE /* SHItemMessageTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHItemMessageTableViewCell.xib; sourceTree = "<group>"; };
+		28ED41EF1BA0A3EF000292AE /* SHItemAuthorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHItemAuthorTableViewCell.h; sourceTree = "<group>"; };
+		28ED41F01BA0A3EF000292AE /* SHItemAuthorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHItemAuthorTableViewCell.m; sourceTree = "<group>"; };
+		28ED41F11BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHItemAuthorTableViewCell.xib; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -388,6 +400,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				28ED41E81BA0985E000292AE /* Item */,
 				288A74701B7859D400F6A618 /* Table View Cells */,
 				281CA926196C2C0B00E6BE96 /* Login */,
 				76CA904B1AE1572800C6E400 /* Permissions */,
@@ -616,8 +629,6 @@
 				288A74681B75346800F6A618 /* SHBucketsViewController.m */,
 				288A746D1B782FB400F6A618 /* SHSlackThoughtsViewController.h */,
 				288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */,
-				28ED41E11BA089AC000292AE /* SHItemViewController.h */,
-				28ED41E21BA089AC000292AE /* SHItemViewController.m */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -625,6 +636,7 @@
 		288F12381B752A400001E0B0 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				28ED41E61BA097EA000292AE /* Roboto-Light.ttf */,
 				28ED41C61B9C96FA000292AE /* Abel-Regular.ttf */,
 				288F12391B752A6A0001E0B0 /* Roboto-Regular.ttf */,
 			);
@@ -686,6 +698,29 @@
 				28ED41DF1BA00156000292AE /* HCReminderViewController.m */,
 			);
 			name = Nudge;
+			sourceTree = "<group>";
+		};
+		28ED41E81BA0985E000292AE /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				28ED41E91BA0986A000292AE /* Cells */,
+				28ED41E11BA089AC000292AE /* SHItemViewController.h */,
+				28ED41E21BA089AC000292AE /* SHItemViewController.m */,
+			);
+			name = Item;
+			sourceTree = "<group>";
+		};
+		28ED41E91BA0986A000292AE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				28ED41EA1BA09882000292AE /* SHItemMessageTableViewCell.h */,
+				28ED41EB1BA09882000292AE /* SHItemMessageTableViewCell.m */,
+				28ED41EC1BA09882000292AE /* SHItemMessageTableViewCell.xib */,
+				28ED41EF1BA0A3EF000292AE /* SHItemAuthorTableViewCell.h */,
+				28ED41F01BA0A3EF000292AE /* SHItemAuthorTableViewCell.m */,
+				28ED41F11BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		76CA904B1AE1572800C6E400 /* Permissions */ = {
@@ -815,9 +850,11 @@
 				28ED41D81B9CE854000292AE /* filled_check.png in Resources */,
 				28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
+				28ED41E71BA097EA000292AE /* Roboto-Light.ttf in Resources */,
 				2837E8001ABD09400089FA33 /* More-100.png in Resources */,
 				288A747B1B7985DA00F6A618 /* nudge_icon_white_swipe.png in Resources */,
 				28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */,
+				28ED41EE1BA09882000292AE /* SHItemMessageTableViewCell.xib in Resources */,
 				283700901A6F366E00C16E87 /* 122-stats.png in Resources */,
 				28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */,
 				28CD3FBC1AEA0D9900B3ABB6 /* all-screen.jpg in Resources */,
@@ -841,6 +878,7 @@
 				288A74611B7531DD00F6A618 /* search.png in Resources */,
 				2826C6101ADDA5D1008DC533 /* txt_scrnsht.png in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,
+				28ED41F31BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib in Resources */,
 				288A74751B7859F600F6A618 /* SHItemTableViewCell.xib in Resources */,
 				2837E7FE1ABD082C0089FA33 /* Photo-100-blue.png in Resources */,
 				288A747C1B7985DA00F6A618 /* trash_icon_white_swipe.png in Resources */,
@@ -931,7 +969,9 @@
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
 				288A746F1B782FB400F6A618 /* SHSlackThoughtsViewController.m in Sources */,
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
+				28ED41F21BA0A3EF000292AE /* SHItemAuthorTableViewCell.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
+				28ED41ED1BA09882000292AE /* SHItemMessageTableViewCell.m in Sources */,
 				28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */,
 				28ED41E01BA00156000292AE /* HCReminderViewController.m in Sources */,
 				282FA8411B8F9C2E004ADA00 /* SHSearchViewController.m in Sources */,
