@@ -9,11 +9,13 @@
 #import "SHSlackThoughtsViewController.h"
 #import "SHItemTableViewCell.h"
 #import "SHLoadingTableViewCell.h"
+#import "SHItemViewController.h"
 
 #define PAGE_COUNT 64
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
+static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 @interface SHSlackThoughtsViewController ()
 
@@ -272,6 +274,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     //NSLog(@"estimated %li height: %f", (long)indexPath.row, [self tableView:tV estimatedHeightForRowAtIndexPath:indexPath]);
     [tV deselectRowAtIndexPath:indexPath animated:YES];
+    UIViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:itemViewControllerIdentifier];
+    [(SHItemViewController*)vc setLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

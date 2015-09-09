@@ -69,7 +69,6 @@
 		288A746F1B782FB400F6A618 /* SHSlackThoughtsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */; };
 		288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A74721B7859F600F6A618 /* SHItemTableViewCell.m */; };
 		288A74751B7859F600F6A618 /* SHItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 288A74731B7859F600F6A618 /* SHItemTableViewCell.xib */; };
-		288A74781B79815900F6A618 /* nudge_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74771B79815900F6A618 /* nudge_icon.png */; };
 		288A747B1B7985DA00F6A618 /* nudge_icon_white_swipe.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74791B7985DA00F6A618 /* nudge_icon_white_swipe.png */; };
 		288A747C1B7985DA00F6A618 /* trash_icon_white_swipe.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A747A1B7985DA00F6A618 /* trash_icon_white_swipe.png */; };
 		288A74821B8A2FEB00F6A618 /* plus_icon_white_swipe.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74811B8A2FEB00F6A618 /* plus_icon_white_swipe.png */; };
@@ -103,6 +102,8 @@
 		28ED41DA1B9E1CDE000292AE /* add_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41D91B9E1CDE000292AE /* add_new.png */; };
 		28ED41DC1B9FFA13000292AE /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41DB1B9FFA13000292AE /* avatar.png */; };
 		28ED41E01BA00156000292AE /* HCReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41DF1BA00156000292AE /* HCReminderViewController.m */; };
+		28ED41E31BA089AC000292AE /* SHItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41E21BA089AC000292AE /* SHItemViewController.m */; };
+		28ED41E51BA093E4000292AE /* nudge_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41E41BA093E4000292AE /* nudge_icon.png */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -208,7 +209,6 @@
 		288A74711B7859F600F6A618 /* SHItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHItemTableViewCell.h; sourceTree = "<group>"; };
 		288A74721B7859F600F6A618 /* SHItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHItemTableViewCell.m; sourceTree = "<group>"; };
 		288A74731B7859F600F6A618 /* SHItemTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHItemTableViewCell.xib; sourceTree = "<group>"; };
-		288A74771B79815900F6A618 /* nudge_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nudge_icon.png; sourceTree = "<group>"; };
 		288A74791B7985DA00F6A618 /* nudge_icon_white_swipe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nudge_icon_white_swipe.png; sourceTree = "<group>"; };
 		288A747A1B7985DA00F6A618 /* trash_icon_white_swipe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash_icon_white_swipe.png; sourceTree = "<group>"; };
 		288A74811B8A2FEB00F6A618 /* plus_icon_white_swipe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_icon_white_swipe.png; sourceTree = "<group>"; };
@@ -255,6 +255,9 @@
 		28ED41DB1B9FFA13000292AE /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
 		28ED41DE1BA00156000292AE /* HCReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCReminderViewController.h; sourceTree = "<group>"; };
 		28ED41DF1BA00156000292AE /* HCReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCReminderViewController.m; sourceTree = "<group>"; };
+		28ED41E11BA089AC000292AE /* SHItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHItemViewController.h; sourceTree = "<group>"; };
+		28ED41E21BA089AC000292AE /* SHItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHItemViewController.m; sourceTree = "<group>"; };
+		28ED41E41BA093E4000292AE /* nudge_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nudge_icon.png; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -582,8 +585,8 @@
 		288A74761B79814500F6A618 /* Nudge */ = {
 			isa = PBXGroup;
 			children = (
+				28ED41E41BA093E4000292AE /* nudge_icon.png */,
 				288A74791B7985DA00F6A618 /* nudge_icon_white_swipe.png */,
-				288A74771B79815900F6A618 /* nudge_icon.png */,
 			);
 			name = Nudge;
 			sourceTree = "<group>";
@@ -613,6 +616,8 @@
 				288A74681B75346800F6A618 /* SHBucketsViewController.m */,
 				288A746D1B782FB400F6A618 /* SHSlackThoughtsViewController.h */,
 				288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */,
+				28ED41E11BA089AC000292AE /* SHItemViewController.h */,
+				28ED41E21BA089AC000292AE /* SHItemViewController.m */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -811,7 +816,6 @@
 				28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
 				2837E8001ABD09400089FA33 /* More-100.png in Resources */,
-				288A74781B79815900F6A618 /* nudge_icon.png in Resources */,
 				288A747B1B7985DA00F6A618 /* nudge_icon_white_swipe.png in Resources */,
 				28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */,
 				283700901A6F366E00C16E87 /* 122-stats.png in Resources */,
@@ -825,6 +829,7 @@
 				288F123A1B752C240001E0B0 /* Roboto-Regular.ttf in Resources */,
 				28431DE01A8D69BA00B12548 /* 78-stopwatch.png in Resources */,
 				288A74591B75305100F6A618 /* person.png in Resources */,
+				28ED41E51BA093E4000292AE /* nudge_icon.png in Resources */,
 				28ACA39D1B8B73E800D7B215 /* SHLoadingTableViewCell.xib in Resources */,
 				2837E7FC1ABD06460089FA33 /* Photo-100.png in Resources */,
 				28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */,
@@ -905,6 +910,7 @@
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */,
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
+				28ED41E31BA089AC000292AE /* SHItemViewController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,
 				2837E8061AC11D2A0089FA33 /* HCInitialViewController.m in Sources */,
 				288F12371B7527AF0001E0B0 /* UIColor+HCColors.m in Sources */,

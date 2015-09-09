@@ -11,9 +11,11 @@
 #import "SHBucketTableViewCell.h"
 #import "SHSearch.h"
 #import "SHSlackThoughtsViewController.h"
+#import "SHItemViewController.h"
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
+static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 @interface SHSearchViewController ()
 
@@ -198,7 +200,12 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
         UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
         [(SHSlackThoughtsViewController*)vc setLocalKey:[self.bucketResultKeys objectAtIndex:indexPath.row]];
         [self.navigationController pushViewController:vc animated:YES];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"results"]) {
+        UIViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:itemViewControllerIdentifier];
+        [(SHItemViewController*)vc setLocalKey:[[self.searchResults objectAtIndex:indexPath.row] localKey]];
+        [self.navigationController pushViewController:vc animated:YES];
     }
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
