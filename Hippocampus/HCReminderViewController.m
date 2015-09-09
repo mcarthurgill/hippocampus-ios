@@ -17,13 +17,13 @@
 
 @implementation HCReminderViewController
 
-@synthesize delegate;
-@synthesize item;
+@synthesize localKey;
 @synthesize cancelButton;
 @synthesize saveButton;
 @synthesize currentlySelectedDate;
 @synthesize dayPicker;
-@synthesize typePicker;
+@synthesize typeSegmentedControl;
+@synthesize subtitleLabel;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -38,26 +38,42 @@
 {
     [super viewDidLoad];
     
-    self.typeOptions = @[@"daily", @"weekly", @"monthly", @"yearly", @"once"];
+    [self setupSettings];
     
-    if ([self.item hasReminder]) {
-        [self setCurrentlySelectedDate:[NSDate timeWithString:[self.item reminderDate]]];
-    } else {
-        [self setCurrentlySelectedDate:[NSDate date]];
-    }
-    
-    if ([self.item hasItemType]) {
-        [self.typePicker selectRow:[self indexOfType:[self.item itemType]] inComponent:0 animated:NO];
-    } else {
-        [self.typePicker selectRow:[self indexOfType:@"once"] inComponent:0 animated:NO];
-    }
-    
+    [self setupNudge];
     [self refreshDayPicker];
 }
 
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+}
+
+- (void) setupSettings
+{
+    [self.dayPicker setBackgroundColor:[UIColor whiteColor]];
+    
+    [self.typeSegmentedControl setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:11.0f]} forState:UIControlStateNormal];
+    
+    [self.subtitleLabel setFont:[UIFont secondaryFontWithSize:12.0f]];
+    [self.subtitleLabel setTextColor:[UIColor SHFontDarkGray]];
+}
+
+- (void) setupNudge
+{
+    self.typeOptions = @[@"once", @"yearly", @"monthly", @"weekly", @"daily"];
+    
+    if ([[self item] hasReminder]) {
+        [self setCurrentlySelectedDate:[NSDate timeWithString:[[self item] reminderDate]]];
+    } else {
+        [self setCurrentlySelectedDate:[NSDate date]];
+    }
+    
+    if ([[self item] hasItemType]) {
+        [self.typeSegmentedControl setSelectedSegmentIndex:([self indexOfType:[[self item] itemType]])];
+    } else {
+        [self.typeSegmentedControl setSelectedSegmentIndex:0];
+    }
 }
 
 
@@ -113,23 +129,7 @@
 }
 
 
-#pragma mark actions
 
-- (IBAction)saveAction:(id)sender
-{
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-    [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
-    NSString* newDate = [dateFormat stringFromDate:self.currentlySelectedDate];
-    //NSLog(@"Nudge Date: %@", newDate);
-    [self.item setObject:newDate forKey:@"reminder_date"];
-    
-    
-}
-
-- (IBAction)cancelAction:(id)sender
-{
-    [self dismissViewControllerAnimated:NO completion:nil];
-}
 
 
 
@@ -137,20 +137,16 @@
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
-    if ([pickerView isTypePicker]) {
+    if ([self onceMode]) {
+        return 3;
+    } else if ([self yearlyMode]) {
+        return 3;
+    } else if ([self monthlyMode]) {
+        return 3;
+    } else if ([self weeklyMode]) {
+        return 2;
+    } else if ([self dailyMode]) {
         return 1;
-    } else {
-        if ([self onceMode]) {
-            return 3;
-        } else if ([self yearlyMode]) {
-            return 3;
-        } else if ([self monthlyMode]) {
-            return 3;
-        } else if ([self weeklyMode]) {
-            return 2;
-        } else if ([self dailyMode]) {
-            return 1;
-        }
     }
     return 0;
 }
@@ -158,89 +154,94 @@
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
-    if ([pickerView isTypePicker]) {
-        return [self.typeOptions count];
-    } else {
-        if ([self onceMode]) {
-            if (component == 0) {
-                return 12;
-            } else if (component == 1) {
-                return [self.currentlySelectedDate daysInSelectedMonth];
-            } else if (component == 2) {
-                return 800;
-            }
-        } else if ([self yearlyMode]) {
-            if (component == 0) {
-                return 1;
-            } else if (component == 1) {
-                return 12;
-            } else if (component == 2) {
-                return [self.currentlySelectedDate daysInSelectedMonth];
-            }
-        } else if ([self monthlyMode]) {
-            if (component == 0) {
-                return 1;
-            } else if (component == 1) {
-                return [self.currentlySelectedDate daysInSelectedMonth];
-            } else if (component == 2) {
-                return 1;
-            }
-        } else if ([self weeklyMode]) {
-            if (component == 0) {
-                return 1;
-            } else if (component == 1) {
-                return 7;
-            }
-        } else if ([self dailyMode]) {
+    if ([self onceMode]) {
+        if (component == 0) {
+            return 12;
+        } else if (component == 1) {
+            return [self.currentlySelectedDate daysInSelectedMonth];
+        } else if (component == 2) {
+            return 800;
+        }
+    } else if ([self yearlyMode]) {
+        if (component == 0) {
+            return 1;
+        } else if (component == 1) {
+            return 12;
+        } else if (component == 2) {
+            return [self.currentlySelectedDate daysInSelectedMonth];
+        }
+    } else if ([self monthlyMode]) {
+        if (component == 0) {
+            return 1;
+        } else if (component == 1) {
+            return [self.currentlySelectedDate daysInSelectedMonth];
+        } else if (component == 2) {
             return 1;
         }
+    } else if ([self weeklyMode]) {
+        if (component == 0) {
+            return 1;
+        } else if (component == 1) {
+            return 7;
+        }
+    } else if ([self dailyMode]) {
+        return 1;
     }
     return 0;
 }
 
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
 {
-    if ([pickerView isTypePicker]) {
-        return [self.typeOptions objectAtIndex:row];
-    } else {
-        if ([self onceMode]) {
-            if (component == 0) {
-                return [[NSArray months] objectAtIndex:row];
-            } else if (component == 1) {
-                int year = (int)[NSDate currentYearInteger]+(int)[pickerView selectedRowInComponent:2];
-                int month = (int)[pickerView selectedRowInComponent:0]+1;
-                int day = (int)row+1;
-                return [NSString stringWithFormat:@"%i (%@)", (int)row+1, [[NSArray daysOfWeekShort] objectAtIndex:[[NSDate timeWithString:[NSString stringWithFormat:@"%i-%@%i-%@%i", year, (month < 10 ? @"0" : @""), month, (day < 10 ? @"0" : @""), day]] dayOfWeekIndex]]];
-            } else if (component == 2) {
-                return [NSString stringWithFormat:@"%i", (int)[NSDate currentYearInteger]+(int)row];
-            }
-        } else if ([self yearlyMode]) {
-            if (component == 0) {
-                return @"every";
-            } else if (component == 1) {
-                return [[NSArray months] objectAtIndex:row];
-            } else if (component == 2) {
-                return [NSString stringWithFormat:@"%i", (int)row+1];
-            }
-        } else if ([self monthlyMode]) {
-            if (component == 0) {
-                return @"the";
-            } else if (component == 1) {
-                return [NSString stringWithFormat:@"%i", (int)row+1];
-            } else if (component == 2) {
-                return @"of each month";
-            }
-        } else if ([self weeklyMode]) {
-            if (component == 0) {
-                return @"every";
-            } else if (component == 1) {
-                return [[NSArray daysOfWeek] objectAtIndex:row];
-            }
-        } else if ([self dailyMode]) {
-            return @"every day";
+    if ([self onceMode]) {
+        if (component == 0) {
+            return [[NSArray months] objectAtIndex:row];
+        } else if (component == 1) {
+            int year = (int)[NSDate currentYearInteger]+(int)[pickerView selectedRowInComponent:2];
+            int month = (int)[pickerView selectedRowInComponent:0]+1;
+            int day = (int)row+1;
+            return [NSString stringWithFormat:@"%i (%@)", (int)row+1, [[NSArray daysOfWeekShort] objectAtIndex:[[NSDate timeWithString:[NSString stringWithFormat:@"%i-%@%i-%@%i", year, (month < 10 ? @"0" : @""), month, (day < 10 ? @"0" : @""), day]] dayOfWeekIndex]]];
+        } else if (component == 2) {
+            return [NSString stringWithFormat:@"%i", (int)[NSDate currentYearInteger]+(int)row];
         }
+    } else if ([self yearlyMode]) {
+        if (component == 0) {
+            return @"every";
+        } else if (component == 1) {
+            return [[NSArray months] objectAtIndex:row];
+        } else if (component == 2) {
+            return [NSString stringWithFormat:@"%i", (int)row+1];
+        }
+    } else if ([self monthlyMode]) {
+        if (component == 0) {
+            return @"the";
+        } else if (component == 1) {
+            return [NSString stringWithFormat:@"%i", (int)row+1];
+        } else if (component == 2) {
+            return @"of each month";
+        }
+    } else if ([self weeklyMode]) {
+        if (component == 0) {
+            return @"every";
+        } else if (component == 1) {
+            return [[NSArray daysOfWeek] objectAtIndex:row];
+        }
+    } else if ([self dailyMode]) {
+        return @"every day";
     }
     return 0;
+}
+
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel* label = (UILabel*)view;
+    if (!label) {
+        label = [[UILabel alloc] init];
+        [label setFont:[UIFont titleFontWithSize:15.0f]];
+        [label setNumberOfLines:1];
+        [label setTextAlignment:NSTextAlignmentCenter];
+    }
+    [label setText:[self pickerView:pickerView titleForRow:row forComponent:component]];
+    return label;
 }
 
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
@@ -250,54 +251,50 @@
     float numberWidth = 40.0f;
     float yearWidth = 80.0f;
     
-    if ([pickerView isTypePicker]) {
-        return screenWidth;
-    } else {
-        if ([self onceMode]) {
-            if (component == 0) {
-                return (screenWidth-yearWidth)/2.0f;
-            } else if (component == 1) {
-                return (screenWidth-yearWidth)/2.0f;
-            } else if (component == 2) {
-                return yearWidth;
-            }
-        } else if ([self yearlyMode]) {
-            if (component == 0) {
-                return (screenWidth-numberWidth)/4.0f;
-            } else if (component == 1) {
-                return (screenWidth-numberWidth)*2.0f/3.0f;
-            } else if (component == 2) {
-                return numberWidth;
-            }
-        } else if ([self monthlyMode]) {
-            if (component == 0) {
-                return (screenWidth-numberWidth)/5.0f;
-            } else if (component == 1) {
-                return numberWidth;
-            } else if (component == 2) {
-                return (screenWidth-numberWidth);
-            }
-        } else if ([self weeklyMode]) {
-            if (component == 0) {
-                return screenWidth/4.0f;
-            } else if (component == 1) {
-                return screenWidth*3.0f/4.0f;
-            }
-        } else if ([self dailyMode]) {
-            return screenWidth;
+    if ([self onceMode]) {
+        if (component == 0) {
+            return (screenWidth-yearWidth)/2.0f;
+        } else if (component == 1) {
+            return (screenWidth-yearWidth)/2.0f;
+        } else if (component == 2) {
+            return yearWidth;
         }
+    } else if ([self yearlyMode]) {
+        if (component == 0) {
+            return (screenWidth-numberWidth)/4.0f;
+        } else if (component == 1) {
+            return (screenWidth-numberWidth)*2.0f/3.0f;
+        } else if (component == 2) {
+            return numberWidth;
+        }
+    } else if ([self monthlyMode]) {
+        if (component == 0) {
+            return (screenWidth-numberWidth)/5.0f;
+        } else if (component == 1) {
+            return numberWidth;
+        } else if (component == 2) {
+            return (screenWidth-numberWidth);
+        }
+    } else if ([self weeklyMode]) {
+        if (component == 0) {
+            return screenWidth/4.0f;
+        } else if (component == 1) {
+            return screenWidth*3.0f/4.0f;
+        }
+    } else if ([self dailyMode]) {
+        return screenWidth;
     }
     return 0;
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    if ([pickerView isTypePicker]) {
-        //NSLog(@"TYPE ROW SELECTED!");
-        [self refreshDayPicker];
-    } else {
-        [self refreshAfterSelect];
-    }
+    [self refreshAfterSelect];
+}
+
+- (IBAction) typeAction:(id)sender
+{
+    [self refreshDayPicker];
 }
 
 - (NSDate*) createDateFromDayPicker
@@ -334,6 +331,11 @@
 
 # pragma mark helper methods
 
+- (NSMutableDictionary*) item
+{
+    return [LXObjectManager objectWithLocalKey:self.localKey];
+}
+
 - (BOOL) onceMode
 {
     return [[self typeSelected] isEqualToString:@"once"];
@@ -361,26 +363,43 @@
 
 - (NSString*) typeSelected
 {
-    if ([self.typePicker selectedRowInComponent:0] < [self.typeOptions count]) {
-        return [self.typeOptions objectAtIndex:[self.typePicker selectedRowInComponent:0]];
+    if ([self.typeSegmentedControl selectedSegmentIndex] < [self.typeOptions count]) {
+        return [self.typeOptions objectAtIndex:[self.typeSegmentedControl selectedSegmentIndex]];
     }
     return @"once";
 }
 
 
 
-# pragma mark hud delegate
 
-- (void) showHUDWithMessage:(NSString*) message
+#pragma mark actions
+
+- (IBAction)saveAction:(id)sender
 {
-    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = message;
+    NSMutableDictionary* item = [self item];
+    if (item) {
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
+        NSString* newDate = [dateFormat stringFromDate:self.currentlySelectedDate];
+        //NSLog(@"Nudge Date: %@", newDate);
+        [item setObject:newDate forKey:@"reminder_date"];
+        [item setObject:[self typeSelected] forKey:@"item_type"];
+        [item removeObjectForKey:@"updated_at"];
+        [item assignLocalVersionIfNeeded];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:item];
+        [item saveRemote];
+    }
+    [self dismissViewControllerAnimated:NO completion:^(void){}];
 }
 
-- (void) hideHUD
+- (IBAction)cancelAction:(id)sender
 {
-    [hud hide:YES];
+    [self dismissViewControllerAnimated:NO completion:nil];
 }
 
+- (IBAction)backgroundTapAction:(id)sender
+{
+    [self cancelAction:sender];
+}
 
 @end

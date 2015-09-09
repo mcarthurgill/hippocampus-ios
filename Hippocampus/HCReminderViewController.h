@@ -9,12 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface HCReminderViewController : UIViewController
-{
-    MBProgressHUD* hud;
-}
 
-@property (strong, nonatomic) id delegate;
-@property (strong, nonatomic) NSMutableDictionary* item;
+@property (strong, nonatomic) NSString* localKey;
+
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 
@@ -24,9 +21,14 @@
 
 
 @property (strong, nonatomic) NSArray* typeOptions;
-@property (strong, nonatomic) IBOutlet UIPickerView *typePicker;
+@property (strong, nonatomic) IBOutlet UISegmentedControl *typeSegmentedControl;
+
+@property (strong, nonatomic) IBOutlet UILabel *subtitleLabel;
+
+- (IBAction)typeAction:(id)sender;
 
 - (IBAction)saveAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
+- (IBAction)backgroundTapAction:(id)sender;
 
 @end

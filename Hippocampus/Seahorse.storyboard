@@ -421,6 +421,140 @@
             </objects>
             <point key="canvasLocation" x="740" y="910"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zm6-WS-xVP">
+            <objects>
+                <navigationController storyboardIdentifier="navigationHCReminderViewController" id="KkM-hA-p9b" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="iv3-Pt-KYe">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="ooD-Sg-nwa" kind="relationship" relationship="rootViewController" id="r7d-c4-dGr"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YMa-nB-yqt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1458" y="1643"/>
+        </scene>
+        <!--Set Nudge-->
+        <scene sceneID="Zeq-Em-YnD">
+            <objects>
+                <viewController storyboardIdentifier="HCReminderViewController" id="ooD-Sg-nwa" customClass="HCReminderViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UYI-OS-eHV"/>
+                        <viewControllerLayoutGuide type="bottom" id="bSR-T6-DLA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="itf-Ip-nmU">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Ve-jw-7aC">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backgroundTapAction:" destination="ooD-Sg-nwa" eventType="touchDown" id="s4u-yC-j44"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YbK-mn-uU7">
+                                <rect key="frame" x="0.0" y="64" width="600" height="40"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="SNQ-uj-ghb">
+                                        <rect key="frame" x="8" y="10" width="584" height="29"/>
+                                        <segments>
+                                            <segment title="Once"/>
+                                            <segment title="Yearly"/>
+                                            <segment title="Monthly"/>
+                                            <segment title="Weekly"/>
+                                            <segment title="Daily"/>
+                                        </segments>
+                                        <connections>
+                                            <action selector="typeAction:" destination="ooD-Sg-nwa" eventType="valueChanged" id="MSd-Vy-CW6"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="SNQ-uj-ghb" secondAttribute="trailing" constant="8" id="Bpy-wT-fDu"/>
+                                    <constraint firstAttribute="height" constant="40" id="pb6-uq-n1h"/>
+                                    <constraint firstItem="SNQ-uj-ghb" firstAttribute="leading" secondItem="YbK-mn-uU7" secondAttribute="leading" constant="8" id="qlL-n5-zeN"/>
+                                    <constraint firstAttribute="centerY" secondItem="SNQ-uj-ghb" secondAttribute="centerY" constant="-4" id="sZk-5g-mOZ"/>
+                                </constraints>
+                            </view>
+                            <pickerView contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="wOB-YZ-bMX">
+                                <rect key="frame" x="0.0" y="104" width="600" height="162"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="ooD-Sg-nwa" id="mSC-lW-wWH"/>
+                                    <outlet property="delegate" destination="ooD-Sg-nwa" id="NM0-YM-bgZ"/>
+                                </connections>
+                            </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nudges are sent each morning via SMS." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.40000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="Goc-lr-W7A">
+                                <rect key="frame" x="0.0" y="266" width="600" height="32"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="qEy-xo-ekF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="0Ve-jw-7aC" firstAttribute="width" secondItem="itf-Ip-nmU" secondAttribute="width" id="6g8-U3-Pvm"/>
+                            <constraint firstAttribute="centerY" secondItem="0Ve-jw-7aC" secondAttribute="centerY" id="7Pc-6i-54O"/>
+                            <constraint firstItem="Goc-lr-W7A" firstAttribute="trailing" secondItem="itf-Ip-nmU" secondAttribute="trailingMargin" id="CBE-ZG-Ecz"/>
+                            <constraint firstAttribute="centerX" secondItem="wOB-YZ-bMX" secondAttribute="centerX" id="KjM-r9-AQF"/>
+                            <constraint firstItem="wOB-YZ-bMX" firstAttribute="width" secondItem="itf-Ip-nmU" secondAttribute="width" id="M4a-n4-buu"/>
+                            <constraint firstItem="wOB-YZ-bMX" firstAttribute="top" secondItem="UYI-OS-eHV" secondAttribute="bottom" constant="44" id="PCK-8X-NAC"/>
+                            <constraint firstItem="0Ve-jw-7aC" firstAttribute="top" secondItem="YbK-mn-uU7" secondAttribute="top" constant="-64" id="UZV-rC-3aw"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Goc-lr-W7A" secondAttribute="trailing" constant="-16" id="bCJ-7a-bIA"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="YbK-mn-uU7" secondAttribute="trailing" constant="-16" id="dsH-wy-jL3"/>
+                            <constraint firstItem="wOB-YZ-bMX" firstAttribute="top" secondItem="YbK-mn-uU7" secondAttribute="bottom" id="ge6-DH-03h"/>
+                            <constraint firstItem="Goc-lr-W7A" firstAttribute="leading" secondItem="itf-Ip-nmU" secondAttribute="leadingMargin" id="iH1-xK-FB9"/>
+                            <constraint firstAttribute="centerX" secondItem="0Ve-jw-7aC" secondAttribute="centerX" id="qHm-Pg-d3k"/>
+                            <constraint firstItem="0Ve-jw-7aC" firstAttribute="height" secondItem="itf-Ip-nmU" secondAttribute="height" id="qO4-U8-bpB"/>
+                            <constraint firstItem="Goc-lr-W7A" firstAttribute="top" secondItem="wOB-YZ-bMX" secondAttribute="bottom" id="v3N-JP-HGg"/>
+                            <constraint firstItem="bSR-T6-DLA" firstAttribute="top" secondItem="Goc-lr-W7A" secondAttribute="bottom" id="vh1-wI-vOi"/>
+                            <constraint firstItem="Goc-lr-W7A" firstAttribute="leading" secondItem="itf-Ip-nmU" secondAttribute="leadingMargin" constant="-16" id="xVk-Bp-tkz"/>
+                            <constraint firstItem="YbK-mn-uU7" firstAttribute="leading" secondItem="itf-Ip-nmU" secondAttribute="leadingMargin" constant="-16" id="zFh-dS-6tX"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="PCK-8X-NAC"/>
+                                <exclude reference="CBE-ZG-Ecz"/>
+                                <exclude reference="iH1-xK-FB9"/>
+                                <exclude reference="vh1-wI-vOi"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" title="Set Nudge" id="Zcl-UJ-YGa">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ELu-GM-KLy">
+                            <connections>
+                                <action selector="cancelAction:" destination="ooD-Sg-nwa" id="9dQ-zZ-q7Z"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="QOL-ZI-ryY">
+                            <connections>
+                                <action selector="saveAction:" destination="ooD-Sg-nwa" id="XVd-ah-rVI"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="cancelButton" destination="ELu-GM-KLy" id="ZWl-ST-GcR"/>
+                        <outlet property="dayPicker" destination="wOB-YZ-bMX" id="owX-gI-ypb"/>
+                        <outlet property="saveButton" destination="QOL-ZI-ryY" id="T0e-Zc-juJ"/>
+                        <outlet property="subtitleLabel" destination="Goc-lr-W7A" id="Wm2-6q-Pmj"/>
+                        <outlet property="typeSegmentedControl" destination="SNQ-uj-ghb" id="15c-My-taL"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hFy-zi-Fvt" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2207" y="1643"/>
+        </scene>
     </scenes>
     <resources>
         <image name="add_new.png" width="75" height="75"/>

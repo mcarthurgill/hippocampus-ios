@@ -9,6 +9,7 @@
 #import "SHItemTableViewCell.h"
 #import "SHAssignBucketsViewController.h"
 #import "SHSlackThoughtsViewController.h"
+#import "HCReminderViewController.h"
 
 #define IMAGE_FADE_IN_TIME 0.4f
 #define PICTURE_HEIGHT 100
@@ -265,13 +266,20 @@
 - (BOOL) swipeTableCell:(MGSwipeTableCell *)cell tappedButtonAtIndex:(NSInteger)index direction:(MGSwipeDirection)direction fromExpansion:(BOOL)fromExpansion
 {
     if (direction == MGSwipeDirectionLeftToRight) {
-        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Set a nudge!" message:[NSString stringWithFormat:@"%@", [LXObjectManager objectWithLocalKey:self.itemLocalKey]] delegate:self cancelButtonTitle:@"Cool." otherButtonTitles:nil];
-        [av show];
+        UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationHCReminderViewController"];
+        HCReminderViewController* vc = [[nc viewControllers] firstObject];
+        [vc setLocalKey:self.itemLocalKey];
+        UIView* backgroundFrame = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:NO];
+        [backgroundFrame setAlpha:0.5f];
+        [vc.view setBackgroundColor:[UIColor blackColor]];
+        [vc.view addSubview:backgroundFrame];
+        [vc.view sendSubviewToBack:backgroundFrame];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc,@"animated":@NO}];
     } else if (direction == MGSwipeDirectionRightToLeft) {
         UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignBucketsViewController"];
         SHAssignBucketsViewController* vc = [[nc viewControllers] firstObject];
         [vc setLocalKey:self.itemLocalKey];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc,@"animated":@YES}];
     }
     return YES;
 }

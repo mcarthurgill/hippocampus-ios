@@ -146,7 +146,7 @@
 - (void) presentViewController:(NSNotification*)notification
 {
     if (![self presentedViewController]) {
-        [self.navigationController presentViewController:[[notification userInfo] objectForKey:@"viewController"] animated:YES completion:^(void){}];
+        [self.navigationController presentViewController:[[notification userInfo] objectForKey:@"viewController"] animated:([[notification userInfo] objectForKey:@"animated"] ? [[[notification userInfo] objectForKey:@"animated"] boolValue] : YES) completion:^(void){}];
     }
 }
 
