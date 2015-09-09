@@ -109,7 +109,7 @@
         }
     //});
     
-    [self incrementAppLaunchCount];
+    //[self incrementAppLaunchCount];
     
     //dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 2*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         if ([[LXSession thisSession] locationPermissionDetermined]) {
@@ -206,30 +206,30 @@
 
 # pragma mark other actions
 
-- (void) incrementAppLaunchCount
-{
-    if (![[LXSession thisSession] user]) {
-        return;
-    }
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults objectForKey:@"appLaunches"]) {
-        NSInteger appLaunches = [userDefaults integerForKey:@"appLaunches"];
-        [userDefaults setInteger:appLaunches+1 forKey:@"appLaunches"];
-        if (appLaunches%8 == 2 && ![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) {
-            //EMAIL
-            [self permissionsDelegate:@"email"];
-        } else if ([userDefaults integerForKey:@"appLaunches"] > 7) {
-            if (![LXSession areNotificationsEnabled] && (![userDefaults objectForKey:@"doneAskingForPushNotificationPermission"] && appLaunches%4 == 3)) {
-                //PUSH NOTIFICATIONS
-            } else if ([LXSession areNotificationsEnabled]) {
-                [self getPushNotificationPermission];
-            }
-        }
-    } else {
-        [userDefaults setInteger:1 forKey:@"appLaunches"];
-    }
-    //[userDefaults synchronize];
-}
+//- (void) incrementAppLaunchCount
+//{
+//    if (![[LXSession thisSession] user]) {
+//        return;
+//    }
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    if ([userDefaults objectForKey:@"appLaunches"]) {
+//        NSInteger appLaunches = [userDefaults integerForKey:@"appLaunches"];
+//        [userDefaults setInteger:appLaunches+1 forKey:@"appLaunches"];
+//        if (appLaunches%8 == 2 && ![[[LXSession thisSession] user] email] && [MFMailComposeViewController canSendMail]) {
+//            //EMAIL
+//            [self permissionsDelegate:@"email"];
+//        } else if ([userDefaults integerForKey:@"appLaunches"] > 7) {
+//            if (![LXSession areNotificationsEnabled] && (![userDefaults objectForKey:@"doneAskingForPushNotificationPermission"] && appLaunches%4 == 3)) {
+//                //PUSH NOTIFICATIONS
+//            } else if ([LXSession areNotificationsEnabled]) {
+//                [self getPushNotificationPermission];
+//            }
+//        }
+//    } else {
+//        [userDefaults setInteger:1 forKey:@"appLaunches"];
+//    }
+//    //[userDefaults synchronize];
+//}
 
 - (void) permissionsDelegate:(NSString*)type
 {

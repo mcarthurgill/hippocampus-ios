@@ -44,4 +44,37 @@
     return temporaryInnerArray;
 }
 
+- (NSArray*) ignoringObjects:(NSArray*)objects
+{
+    if (!objects || [objects count] == 0) {
+        return self;
+    }
+    NSMutableArray* copy = [self mutableCopy];
+    [copy removeObjectsInArray:objects];
+    return copy;
+}
+
+- (NSArray*) removeContacts:(NSArray*)objects
+{
+    if (!objects || [objects count] == 0) {
+        return self;
+    }
+    NSMutableArray* copy = [self mutableCopy];
+    NSMutableArray* recordIDS = [[NSMutableArray alloc] init];
+    for (NSDictionary* temp in objects) {
+        [recordIDS addObject:[temp objectForKey:@"record_id"]];
+    }
+    NSInteger removalCount = 0;
+    for (NSDictionary* contact in self) {
+        if ([recordIDS containsObject:[contact objectForKey:@"record_id"]]) {
+            [copy removeObject:contact];
+            ++removalCount;
+            if (removalCount == [recordIDS count]) {
+                return copy;
+            }
+        }
+    }
+    return copy;
+}
+
 @end

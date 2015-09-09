@@ -14,6 +14,7 @@ static SHSearch* defaultManager = nil;
 
 @synthesize cachedBuckets;
 @synthesize cachedItems;
+@synthesize cachedContacts;
 
 
 //constructor
@@ -50,6 +51,7 @@ static SHSearch* defaultManager = nil;
 {
     self.cachedItems = [[NSMutableDictionary alloc] init];
     self.cachedBuckets = [[NSMutableDictionary alloc] init];
+    self.cachedContacts = [[NSMutableDictionary alloc] init];
 }
 
 
@@ -59,11 +61,16 @@ static SHSearch* defaultManager = nil;
 
 - (NSMutableArray*) getCachedObjects:(NSString*)type withTerm:(NSString*)term
 {
+    if (!term || [term length] == 0) {
+        [self setVariables];
+    }
     NSString* foundTerm = [self getCachedResultsTermWithType:type withTerm:term];
     if (foundTerm && [type isEqualToString:@"items"]) {
         return [self.cachedItems objectForKey:foundTerm];
     } else if (foundTerm && [type isEqualToString:@"bucketKeys"]) {
         return [self.cachedBuckets objectForKey:foundTerm];
+    } else if (foundTerm && [type isEqualToString:@"contacts"]) {
+        return [self.cachedContacts objectForKey:foundTerm];
     }
     return nil;
 }
@@ -81,6 +88,13 @@ static SHSearch* defaultManager = nil;
     } else if ([type isEqualToString:@"bucketKeys"]) {
         while ([term length] > 0) {
             if ([self.cachedBuckets objectForKey:term])
+                return term;
+            term = [term substringToIndex:(term.length-1)];
+        }
+        return nil;
+    } else if ([type isEqualToString:@"contacts"]) {
+        while ([term length] > 0) {
+            if ([self.cachedContacts objectForKey:term])
                 return term;
             term = [term substringToIndex:(term.length-1)];
         }
@@ -167,7 +181,6 @@ static SHSearch* defaultManager = nil;
 
 - (NSArray*) pullFromBucketKeysArray:(NSString*)key
 {
-    return [LXObjectManager objectWithLocalKey:@"bucketLocalKeys"];
     while (key && [key length] > 1) {
         key = [key substringToIndex:([key length]-1)];
         if ([self.cachedBuckets objectForKey:key]) {
@@ -175,6 +188,36 @@ static SHSearch* defaultManager = nil;
         }
     }
     return [LXObjectManager objectWithLocalKey:@"bucketLocalKeys"];
+}
+
+- (void) contactsSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    term = [term lowercaseString];
+    
+    NSArray* searchWithContactsArray = [self pullFromContactsArray:term];
+    NSMutableArray* newContacts = [[NSMutableArray alloc] init];
+    if (term && [term length] > 0) {
+        for (NSMutableDictionary* contact in searchWithContactsArray) {
+            if (contact && [contact name] && [[[contact name] lowercaseString] rangeOfString:term].location != NSNotFound) {
+                [newContacts addObject:contact];
+            }
+        }
+    }
+    [self.cachedContacts setObject:newContacts forKey:term];
+    if (successCallback) {
+        successCallback(newContacts);
+    }
+}
+
+- (NSArray*) pullFromContactsArray:(NSString*)key
+{
+    while (key && [key length] > 1) {
+        key = [key substringToIndex:([key length]-1)];
+        if ([self.cachedContacts objectForKey:key]) {
+            return [self.cachedContacts objectForKey:key];
+        }
+    }
+    return [[LXAddressBook thisBook] allContacts];
 }
 
 

@@ -101,6 +101,7 @@
 		28ED41D71B9CE854000292AE /* empty_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41D51B9CE854000292AE /* empty_check.png */; };
 		28ED41D81B9CE854000292AE /* filled_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41D61B9CE854000292AE /* filled_check.png */; };
 		28ED41DA1B9E1CDE000292AE /* add_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41D91B9E1CDE000292AE /* add_new.png */; };
+		28ED41DC1B9FFA13000292AE /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41DB1B9FFA13000292AE /* avatar.png */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -250,6 +251,7 @@
 		28ED41D51B9CE854000292AE /* empty_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty_check.png; sourceTree = "<group>"; };
 		28ED41D61B9CE854000292AE /* filled_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filled_check.png; sourceTree = "<group>"; };
 		28ED41D91B9E1CDE000292AE /* add_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new.png; sourceTree = "<group>"; };
+		28ED41DB1B9FFA13000292AE /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -660,6 +662,7 @@
 		28ED41D41B9CE833000292AE /* Check */ = {
 			isa = PBXGroup;
 			children = (
+				28ED41DB1B9FFA13000292AE /* avatar.png */,
 				28ED41D91B9E1CDE000292AE /* add_new.png */,
 				28ED41D51B9CE854000292AE /* empty_check.png */,
 				28ED41D61B9CE854000292AE /* filled_check.png */,
@@ -802,6 +805,7 @@
 				28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */,
 				28CD3FBC1AEA0D9900B3ABB6 /* all-screen.jpg in Resources */,
 				2837008D1A6F34F000C16E87 /* 06-magnify@2x.png in Resources */,
+				28ED41DC1B9FFA13000292AE /* avatar.png in Resources */,
 				288A74631B7531DD00F6A618 /* search@3x.png in Resources */,
 				288F122C1B7520DB0001E0B0 /* Seahorse.storyboard in Resources */,
 				2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */,

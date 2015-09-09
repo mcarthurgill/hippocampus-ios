@@ -11,6 +11,7 @@
 @interface SHAssignBucketTableViewCell : UITableViewCell
 
 @property (strong, nonatomic) NSString* localKey;
+@property (strong, nonatomic) NSDictionary* contact;
 
 @property (strong, nonatomic) IBOutlet UIImageView *checkImage;
 
@@ -18,6 +19,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *preview;
 
 - (void) configureWithBucketLocalKey:(NSString*)key;
-- (void) configureWithContact:(NSMutableDictionary*)contact;
+- (void) configureWithContact:(NSMutableDictionary*)cntct;
 
 @end

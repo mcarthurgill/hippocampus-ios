@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSMutableArray* sections;
 @property (strong, nonatomic) NSMutableArray* bucketResultKeys;
 @property (strong, nonatomic) NSMutableArray* bucketSelectedKeys;
+@property (strong, nonatomic) NSMutableArray* contactsSelected;
 
 @property (strong, nonatomic) IBOutlet UILabel *topViewLabel;
 @property (strong, nonatomic) IBOutlet UIView *topView;

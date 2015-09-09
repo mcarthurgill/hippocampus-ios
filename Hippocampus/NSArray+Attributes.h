@@ -12,4 +12,8 @@
 
 - (NSMutableArray*) cleanArray;
 
+- (NSArray*) ignoringObjects:(NSArray*)objects;
+
+- (NSArray*) removeContacts:(NSArray*)objects;
+
 @end

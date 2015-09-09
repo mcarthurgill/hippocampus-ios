@@ -11,6 +11,7 @@
 @implementation SHAssignBucketTableViewCell
 
 @synthesize localKey;
+@synthesize contact;
 @synthesize checkImage;
 @synthesize title;
 @synthesize preview;
@@ -29,6 +30,9 @@
     
     [self.preview setFont:[UIFont secondaryFontWithSize:12.0f]];
     [self.preview setTextColor:[UIColor lightGrayColor]];
+    
+    [self.checkImage.layer setCornerRadius:12.5f];
+    [self.checkImage setClipsToBounds:YES];
 }
 
 
@@ -57,16 +61,20 @@
 - (void) configureWithBucketLocalKey:(NSString*)key
 {
     [self setLocalKey:key];
+    [self setContact:nil];
     
-    [self.title setText:[NSString stringWithFormat:@"%@ (%i)", [[self bucket] firstName], ([[[self bucket] itemsCount] integerValue] > 0 ? [[[self bucket] itemsCount] intValue] : 0)]];
-    [self.preview setText:[[self bucket] cachedItemMessage]];
+    [self.title setText:[NSString stringWithFormat:@"%@%@", [[self bucket] firstName], ([[[self bucket] itemsCount] integerValue] > 0 ? [NSString stringWithFormat:@" (%i)", [[[self bucket] itemsCount] intValue]] : @"")]];
+    [self.preview setText:([[self bucket] ID] ? [[self bucket] cachedItemMessage] : @"New Bucket")];
     
     [self setNeedsLayout];
 }
 
-- (void) configureWithContact:(NSMutableDictionary*)contact
+- (void) configureWithContact:(NSMutableDictionary*)cntct
 {
-    [self.title setText:[contact objectForKey:@"name"]];
+    [self setContact:cntct];
+    [self setLocalKey:nil];
+    
+    [self.title setText:[self.contact objectForKey:@"name"]];
     [self.preview setText:@"Create Bucket for Contact"];
     
     [self setNeedsLayout];
@@ -74,10 +82,20 @@
 
 - (void) selectCell:(BOOL)selected
 {
-    if (selected) {
-        [self.checkImage setImage:[UIImage imageNamed:@"filled_check.png"]];
+    if ([self contact]) {
+        if (selected) {
+            [self.checkImage setImage:[UIImage imageNamed:@"filled_check.png"]];
+        } else if ([contact objectForKey:@"image"]) {
+            [self.checkImage setImage:[contact objectForKey:@"image"]];
+        } else {
+            [self.checkImage setImage:[UIImage imageNamed:@"avatar.png"]];
+        }
     } else {
-        [self.checkImage setImage:[UIImage imageNamed:@"empty_check.png"]];
+        if (selected) {
+            [self.checkImage setImage:[UIImage imageNamed:@"filled_check.png"]];
+        } else {
+            [self.checkImage setImage:[UIImage imageNamed:@"empty_check.png"]];
+        }
     }
 }
 

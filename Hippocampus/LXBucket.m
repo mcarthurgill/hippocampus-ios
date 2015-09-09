@@ -65,6 +65,19 @@
     return [NSString stringWithFormat:@"all-thoughts--%@", [[[LXSession thisSession] user] ID]];
 }
 
++ (NSMutableDictionary*) allBucketNames
+{
+    NSArray* keys = [LXObjectManager objectWithLocalKey:@"bucketLocalKeys"];
+    NSMutableDictionary* names = [[NSMutableDictionary alloc] init];
+    for (NSString* key in keys) {
+        NSMutableDictionary* bucket = [LXObjectManager objectWithLocalKey:key];
+        if (bucket) {
+            [names setObject:[bucket firstName] forKey:[bucket firstName]];
+        }
+    }
+    NSLog(@"%@", names);
+    return names;
+}
 
 - (NSMutableArray*) items
 {

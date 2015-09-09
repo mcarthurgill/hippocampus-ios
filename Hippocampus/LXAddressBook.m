@@ -81,7 +81,7 @@ static LXAddressBook* thisBook = nil;
         CFErrorRef *error = NULL;
         ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, error);
         NSArray* orderedContacts = (__bridge_transfer NSArray*) ABAddressBookCopyArrayOfAllPeople(addressBook);
-        NSMutableDictionary *bucketNames = [[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] bucketNames];
+        NSMutableDictionary *bucketNames = [NSMutableDictionary allBucketNames];
 
         if (orderedContacts.count > 0) {
             for (int i = 0; i < [orderedContacts count]; i++) {
@@ -233,7 +233,8 @@ static LXAddressBook* thisBook = nil;
         sortedArray = lastNameSortedArray;
     }
     self.contactsForAssignment = [sortedArray mutableCopy];
-    
+    self.allContacts = [sortedArray mutableCopy];
+    return;
     
     if (sortOrder == kABPersonSortByFirstName) {
         sortString = @"name";

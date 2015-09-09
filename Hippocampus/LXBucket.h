@@ -21,6 +21,9 @@
 - (void) removeItemFromBucket:(NSMutableDictionary*)item;
 
 
++ (NSMutableDictionary*) allBucketNames;
+
+
 - (NSMutableArray*) items;
 - (NSMutableArray*) itemKeys;
 - (NSString*) cachedItemMessage;
