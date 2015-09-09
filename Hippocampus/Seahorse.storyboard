@@ -347,7 +347,7 @@
                                 <action selector="leftButtonAction:" destination="fIX-IA-Yux" id="zvw-GK-DZC"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="V2N-jg-wDQ">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="V2N-jg-wDQ">
                             <connections>
                                 <action selector="rightButtonAction:" destination="fIX-IA-Yux" id="xqa-13-b4r"/>
                             </connections>

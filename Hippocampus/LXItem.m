@@ -65,10 +65,10 @@
 - (void) updateBucketsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     //OLD BUCKET KEYS
-    NSMutableArray* removedFromBucketKeys = [[NSMutableArray alloc] init];
+    NSMutableArray* oldBucketKeys = [[NSMutableArray alloc] init];
     if ([self bucketsArray]) {
         for (NSMutableDictionary* oldStub in [self bucketsArray]) {
-            [removedFromBucketKeys addObject:[oldStub localKey]];
+            [oldBucketKeys addObject:[oldStub localKey]];
         }
     }
     //CREATE NEW BUCKETS ARRAY
@@ -93,12 +93,15 @@
                 [unsavedNewBucketsArray addObject:tempBucket];
             }
         }
-        if ([removedFromBucketKeys containsObject:key]) {
-            [removedFromBucketKeys removeObject:key];
+        if ([oldBucketKeys containsObject:key]) {
+            [oldBucketKeys removeObject:key];
+        } else {
+            //add to recent buckets
+            [NSMutableDictionary addRecentBucketLocalKey:key];
         }
     }
     //REMOVE FROM THESE BUCKETS
-    for (NSString* key in removedFromBucketKeys) {
+    for (NSString* key in oldBucketKeys) {
         NSMutableDictionary* tempBucket = [LXObjectManager objectWithLocalKey:key];
         if (tempBucket && [tempBucket itemKeys]) {
             NSMutableArray* tempItemKeys = [[tempBucket itemKeys] mutableCopy];

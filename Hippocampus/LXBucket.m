@@ -10,6 +10,9 @@
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
+static NSString *recentBucketsKey = @"recentBuckeyKeys";
+static NSInteger maxRecentCount = 5;
+
 @implementation NSMutableDictionary (LXBucket)
 
 + (void) bucketKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
@@ -77,6 +80,29 @@
     }
     NSLog(@"%@", names);
     return names;
+}
+
++ (NSMutableArray*) recentBucketLocalKeys
+{
+    return [LXObjectManager objectWithLocalKey:recentBucketsKey] ? [[LXObjectManager objectWithLocalKey:recentBucketsKey] mutableCopy] : [@[] mutableCopy];
+}
+
++ (void) addRecentBucketLocalKey:(NSString*)key
+{
+    NSMutableArray* keys = [self recentBucketLocalKeys];
+    [keys removeObject:key];
+    [keys insertObject:key atIndex:0];
+    if ([keys count] > maxRecentCount) {
+        [keys removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(maxRecentCount, ([keys count] - maxRecentCount))]];
+    }
+    [LXObjectManager assignLocal:keys WithLocalKey:recentBucketsKey];
+}
+
++ (void) removeRecentBucketLocalKey:(NSString*)key
+{
+    NSMutableArray* keys = [self recentBucketLocalKeys];
+    [keys removeObject:key];
+    [LXObjectManager assignLocal:keys WithLocalKey:recentBucketsKey];
 }
 
 - (NSMutableArray*) items

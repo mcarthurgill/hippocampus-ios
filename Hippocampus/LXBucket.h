@@ -23,6 +23,9 @@
 
 + (NSMutableDictionary*) allBucketNames;
 
++ (NSMutableArray*) recentBucketLocalKeys;
++ (void) addRecentBucketLocalKey:(NSString*)key;
++ (void) removeRecentBucketLocalKey:(NSString*)key;
 
 - (NSMutableArray*) items;
 - (NSMutableArray*) itemKeys;
