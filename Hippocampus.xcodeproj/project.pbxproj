@@ -973,6 +973,7 @@
 /* Begin XCBuildConfiguration section */
 		281CA8FB1951EC7E00E6BE96 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1011,6 +1012,7 @@
 		};
 		281CA8FC1951EC7E00E6BE96 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 48B234900A21648A78B84A3E /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1081,6 +1083,7 @@
 		};
 		281CA9011951EC7E00E6BE96 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1103,6 +1106,7 @@
 		};
 		281CA9021951EC7E00E6BE96 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 48B234900A21648A78B84A3E /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
 				FRAMEWORK_SEARCH_PATHS = (

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9AA380CD2D26B732A05020EE853E910C"
-               BuildableName = "libPods.a"
-               BlueprintName = "Pods"
+               BlueprintIdentifier = "1F7E4965261F59B99555266A1182716C"
+               BuildableName = "libSGHTTPRequest.a"
+               BlueprintName = "SGHTTPRequest"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -42,9 +42,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9AA380CD2D26B732A05020EE853E910C"
-            BuildableName = "libPods.a"
-            BlueprintName = "Pods"
+            BlueprintIdentifier = "1F7E4965261F59B99555266A1182716C"
+            BuildableName = "libSGHTTPRequest.a"
+            BlueprintName = "SGHTTPRequest"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -60,9 +60,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9AA380CD2D26B732A05020EE853E910C"
-            BuildableName = "libPods.a"
-            BlueprintName = "Pods"
+            BlueprintIdentifier = "1F7E4965261F59B99555266A1182716C"
+            BuildableName = "libSGHTTPRequest.a"
+            BlueprintName = "SGHTTPRequest"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
