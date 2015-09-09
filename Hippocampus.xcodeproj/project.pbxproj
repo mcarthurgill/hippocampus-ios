@@ -109,6 +109,8 @@
 		28ED41EE1BA09882000292AE /* SHItemMessageTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41EC1BA09882000292AE /* SHItemMessageTableViewCell.xib */; };
 		28ED41F21BA0A3EF000292AE /* SHItemAuthorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41F01BA0A3EF000292AE /* SHItemAuthorTableViewCell.m */; };
 		28ED41F31BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41F11BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib */; };
+		28ED41F71BA0BBA8000292AE /* SHMediaBoxTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41F51BA0BBA8000292AE /* SHMediaBoxTableViewCell.m */; };
+		28ED41F81BA0BBA8000292AE /* SHMediaBoxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41F61BA0BBA8000292AE /* SHMediaBoxTableViewCell.xib */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -270,6 +272,9 @@
 		28ED41EF1BA0A3EF000292AE /* SHItemAuthorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHItemAuthorTableViewCell.h; sourceTree = "<group>"; };
 		28ED41F01BA0A3EF000292AE /* SHItemAuthorTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHItemAuthorTableViewCell.m; sourceTree = "<group>"; };
 		28ED41F11BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHItemAuthorTableViewCell.xib; sourceTree = "<group>"; };
+		28ED41F41BA0BBA8000292AE /* SHMediaBoxTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMediaBoxTableViewCell.h; sourceTree = "<group>"; };
+		28ED41F51BA0BBA8000292AE /* SHMediaBoxTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMediaBoxTableViewCell.m; sourceTree = "<group>"; };
+		28ED41F61BA0BBA8000292AE /* SHMediaBoxTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHMediaBoxTableViewCell.xib; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -719,6 +724,9 @@
 				28ED41EF1BA0A3EF000292AE /* SHItemAuthorTableViewCell.h */,
 				28ED41F01BA0A3EF000292AE /* SHItemAuthorTableViewCell.m */,
 				28ED41F11BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib */,
+				28ED41F41BA0BBA8000292AE /* SHMediaBoxTableViewCell.h */,
+				28ED41F51BA0BBA8000292AE /* SHMediaBoxTableViewCell.m */,
+				28ED41F61BA0BBA8000292AE /* SHMediaBoxTableViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -859,6 +867,7 @@
 				28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */,
 				28CD3FBC1AEA0D9900B3ABB6 /* all-screen.jpg in Resources */,
 				2837008D1A6F34F000C16E87 /* 06-magnify@2x.png in Resources */,
+				28ED41F81BA0BBA8000292AE /* SHMediaBoxTableViewCell.xib in Resources */,
 				28ED41DC1B9FFA13000292AE /* avatar.png in Resources */,
 				288A74631B7531DD00F6A618 /* search@3x.png in Resources */,
 				288F122C1B7520DB0001E0B0 /* Seahorse.storyboard in Resources */,
@@ -976,6 +985,7 @@
 				28ED41E01BA00156000292AE /* HCReminderViewController.m in Sources */,
 				282FA8411B8F9C2E004ADA00 /* SHSearchViewController.m in Sources */,
 				282FA8441B909BD5004ADA00 /* SHSearch.m in Sources */,
+				28ED41F71BA0BBA8000292AE /* SHMediaBoxTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

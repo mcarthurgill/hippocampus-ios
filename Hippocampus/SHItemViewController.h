@@ -13,6 +13,7 @@
 @property (strong, nonatomic) NSString* localKey;
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *bottomToolbar;
 
 @property (strong, nonatomic) NSMutableArray* sections;
 

@@ -83,6 +83,7 @@
                         </variation>
                     </view>
                     <connections>
+                        <outlet property="bottomToolbar" destination="35l-XP-vQU" id="yX5-nm-oN1"/>
                         <outlet property="tableView" destination="4az-0B-VXG" id="92V-bm-KAW"/>
                     </connections>
                 </viewController>

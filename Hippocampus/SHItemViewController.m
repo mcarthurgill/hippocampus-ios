@@ -9,9 +9,11 @@
 #import "SHItemViewController.h"
 #import "SHItemMessageTableViewCell.h"
 #import "SHItemAuthorTableViewCell.h"
+#import "SHMediaBoxTableViewCell.h"
 
 static NSString *messageCellIdentifier = @"SHItemMessageTableViewCell";
 static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
+static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
 
 @interface SHItemViewController ()
 
@@ -21,12 +23,14 @@ static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
 
 @synthesize localKey;
 @synthesize tableView;
+@synthesize bottomToolbar;
 @synthesize sections;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setupSettings];
+    [self setupBottomView];
     
     [self reloadScreen];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
@@ -46,8 +50,18 @@ static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
     [self.tableView setEstimatedRowHeight:91.0f];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
     
-    [self.tableView registerNib:[UINib nibWithNibName:messageCellIdentifier bundle:nil] forCellReuseIdentifier:messageCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:authorCellIdentifier bundle:nil] forCellReuseIdentifier:authorCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:messageCellIdentifier bundle:nil] forCellReuseIdentifier:messageCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:mediaBoxCellIdentifier bundle:nil] forCellReuseIdentifier:mediaBoxCellIdentifier];
+}
+
+- (void) setupBottomView
+{
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.bottomToolbar.bounds.size.width, 0.5)];
+    topView.opaque = YES;
+    topView.backgroundColor = [UIColor SHFontLightGray];
+    topView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin;
+    [self.bottomToolbar addSubview:topView];
 }
 
 - (void) setTitle
@@ -109,6 +123,9 @@ static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
     if ([[self item] hasMessage]) {
         [self.sections addObject:@"message"];
     }
+    if ([[self item] hasMedia]) {
+        [self.sections addObject:@"media"];
+    }
     
     return [self.sections count];
 }
@@ -119,6 +136,8 @@ static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"message"]) {
         return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
+        return [[[self item] media] count];
     }
     return 0;
 }
@@ -129,6 +148,8 @@ static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
         return [self tableView:tV authorCellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         return [self tableView:tV messsageCellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
+        return [self tableView:tV mediaBoxCellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -146,6 +167,13 @@ static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
     SHItemMessageTableViewCell* cell = (SHItemMessageTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:messageCellIdentifier];
     [cell configureWithLocalKey:self.localKey];
     [cell layoutIfNeeded];
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tableView mediaBoxCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHMediaBoxTableViewCell* cell = (SHMediaBoxTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:mediaBoxCellIdentifier];
+    [cell configureWithLocalKey:self.localKey medium:[[[self item] media] objectAtIndex:indexPath.row]];
     return cell;
 }
 
