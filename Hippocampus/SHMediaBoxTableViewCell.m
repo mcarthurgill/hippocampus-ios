@@ -23,6 +23,12 @@
     [self.imageView setBackgroundColor:[UIColor SHLightGray]];
     
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
+    
+    self.imageView.layer.cornerRadius = 4.0f;
+    [self.imageView setClipsToBounds:YES];
+    
+    [self.imageView.layer setBorderWidth:1.0f];
+    [self.imageView.layer setBorderColor:[UIColor SHLightGray].CGColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -72,12 +78,12 @@
         });
     }
     
-    self.imageViewWidthConstraint.constant = self.bounds.size.width;
+    //self.imageViewWidthConstraint.constant = self.bounds.size.width;
     
     [self setNeedsLayout];
     [self layoutIfNeeded];
     
-    self.imageViewWidthConstraint.constant = self.bounds.size.width;
+    //self.imageViewWidthConstraint.constant = self.bounds.size.width;
     self.imageViewHeightConstraint.constant = [medium heightForWidth:self.imageView.bounds.size.width];
     
     [self setNeedsLayout];

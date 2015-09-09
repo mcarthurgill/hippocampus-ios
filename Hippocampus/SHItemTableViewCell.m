@@ -208,6 +208,10 @@
     [iv setClipsToBounds:YES];
     [iv setTranslatesAutoresizingMaskIntoConstraints:NO];
     [iv setBackgroundColor:[UIColor SHLightGray]];
+    
+    iv.layer.cornerRadius = 3.0f;
+    [iv.layer setBorderWidth:1.0f];
+    [iv.layer setBorderColor:[UIColor SHLightGray].CGColor];
     //[self addActivityIndicatorToView:iv];
     
     return iv;

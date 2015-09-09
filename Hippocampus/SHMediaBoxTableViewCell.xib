@@ -15,9 +15,8 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="9bP-HI-5M7">
-                        <rect key="frame" x="0.0" y="18" width="320" height="43"/>
+                        <rect key="frame" x="18" y="18" width="284" height="43"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="320" id="Jvl-Sp-uHA"/>
                             <constraint firstAttribute="height" constant="43" id="mZL-iS-z1D"/>
                         </constraints>
                     </imageView>
@@ -30,6 +29,8 @@
                     <constraint firstItem="Dmq-lt-317" firstAttribute="centerX" secondItem="9bP-HI-5M7" secondAttribute="centerX" id="9hg-Xm-ryL"/>
                     <constraint firstItem="Dmq-lt-317" firstAttribute="centerY" secondItem="9bP-HI-5M7" secondAttribute="centerY" constant="0.5" id="FZt-U9-2KK"/>
                     <constraint firstAttribute="bottomMargin" secondItem="9bP-HI-5M7" secondAttribute="bottom" constant="-8" id="Ijf-Ld-BBf"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="9bP-HI-5M7" secondAttribute="trailing" constant="10" id="SNq-bk-mET"/>
+                    <constraint firstItem="9bP-HI-5M7" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="10" id="YVh-6o-i6v"/>
                     <constraint firstAttribute="centerX" secondItem="9bP-HI-5M7" secondAttribute="centerX" id="rUU-uL-02G"/>
                 </constraints>
             </tableViewCellContentView>
@@ -37,7 +38,6 @@
                 <outlet property="activityIndicator" destination="Dmq-lt-317" id="sSI-zx-TtU"/>
                 <outlet property="imageView" destination="9bP-HI-5M7" id="mXU-6V-J6m"/>
                 <outlet property="imageViewHeightConstraint" destination="mZL-iS-z1D" id="PuG-yu-GqG"/>
-                <outlet property="imageViewWidthConstraint" destination="Jvl-Sp-uHA" id="fwx-BN-4hD"/>
             </connections>
             <point key="canvasLocation" x="563" y="286"/>
         </tableViewCell>
