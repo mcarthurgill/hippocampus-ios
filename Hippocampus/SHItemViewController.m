@@ -10,10 +10,12 @@
 #import "SHItemMessageTableViewCell.h"
 #import "SHItemAuthorTableViewCell.h"
 #import "SHMediaBoxTableViewCell.h"
+#import "SHAttachmentBoxTableViewCell.h"
 
 static NSString *messageCellIdentifier = @"SHItemMessageTableViewCell";
 static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
 static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
+static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 
 @interface SHItemViewController ()
 
@@ -53,6 +55,7 @@ static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
     [self.tableView registerNib:[UINib nibWithNibName:authorCellIdentifier bundle:nil] forCellReuseIdentifier:authorCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:messageCellIdentifier bundle:nil] forCellReuseIdentifier:messageCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:mediaBoxCellIdentifier bundle:nil] forCellReuseIdentifier:mediaBoxCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:attachmentCellIdentifier bundle:nil] forCellReuseIdentifier:attachmentCellIdentifier];
 }
 
 - (void) setupBottomView
@@ -126,6 +129,9 @@ static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
     if ([[self item] hasMedia]) {
         [self.sections addObject:@"media"];
     }
+    if ([[self item] hasBuckets]) {
+        [self.sections addObject:@"buckets"];
+    }
     
     return [self.sections count];
 }
@@ -138,6 +144,8 @@ static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         return [[[self item] media] count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
+        return [[[self item] bucketsArray] count];
     }
     return 0;
 }
@@ -150,6 +158,8 @@ static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
         return [self tableView:tV messsageCellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return [self tableView:tV mediaBoxCellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+        return [self tableView:tV attachmentCellForRowAtIndexPath:indexPath attachment:[[[self item] bucketsArray] objectAtIndex:indexPath.row]];
     }
     return nil;
 }
@@ -174,6 +184,13 @@ static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
 {
     SHMediaBoxTableViewCell* cell = (SHMediaBoxTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:mediaBoxCellIdentifier];
     [cell configureWithLocalKey:self.localKey medium:[[[self item] media] objectAtIndex:indexPath.row]];
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tableView attachmentCellForRowAtIndexPath:(NSIndexPath *)indexPath attachment:(NSDictionary*)attachment
+{
+    SHAttachmentBoxTableViewCell* cell = (SHAttachmentBoxTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:attachmentCellIdentifier];
+    [cell configureWithLocalKey:self.localKey attachment:attachment];
     return cell;
 }
 

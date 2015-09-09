@@ -111,6 +111,8 @@
 		28ED41F31BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41F11BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib */; };
 		28ED41F71BA0BBA8000292AE /* SHMediaBoxTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41F51BA0BBA8000292AE /* SHMediaBoxTableViewCell.m */; };
 		28ED41F81BA0BBA8000292AE /* SHMediaBoxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41F61BA0BBA8000292AE /* SHMediaBoxTableViewCell.xib */; };
+		28ED41FC1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41FA1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.m */; };
+		28ED41FD1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41FB1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -275,6 +277,9 @@
 		28ED41F41BA0BBA8000292AE /* SHMediaBoxTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMediaBoxTableViewCell.h; sourceTree = "<group>"; };
 		28ED41F51BA0BBA8000292AE /* SHMediaBoxTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMediaBoxTableViewCell.m; sourceTree = "<group>"; };
 		28ED41F61BA0BBA8000292AE /* SHMediaBoxTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHMediaBoxTableViewCell.xib; sourceTree = "<group>"; };
+		28ED41F91BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAttachmentBoxTableViewCell.h; sourceTree = "<group>"; };
+		28ED41FA1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAttachmentBoxTableViewCell.m; sourceTree = "<group>"; };
+		28ED41FB1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHAttachmentBoxTableViewCell.xib; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -727,6 +732,9 @@
 				28ED41F41BA0BBA8000292AE /* SHMediaBoxTableViewCell.h */,
 				28ED41F51BA0BBA8000292AE /* SHMediaBoxTableViewCell.m */,
 				28ED41F61BA0BBA8000292AE /* SHMediaBoxTableViewCell.xib */,
+				28ED41F91BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.h */,
+				28ED41FA1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.m */,
+				28ED41FB1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -846,6 +854,7 @@
 				283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */,
 				281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */,
 				288A74621B7531DD00F6A618 /* search@2x.png in Resources */,
+				28ED41FD1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib in Resources */,
 				287423D31B059F7200A3242C /* email-screen.jpg in Resources */,
 				288A74821B8A2FEB00F6A618 /* plus_icon_white_swipe.png in Resources */,
 				28ED41DA1B9E1CDE000292AE /* add_new.png in Resources */,
@@ -950,6 +959,7 @@
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
 				76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */,
 				288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */,
+				28ED41FC1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.m in Sources */,
 				288F122A1B751B040001E0B0 /* LXItem.m in Sources */,
 				288F12241B73DFC90001E0B0 /* LXUser.m in Sources */,
 				28ED41D21B9CD641000292AE /* SHAssignBucketTableViewCell.m in Sources */,
