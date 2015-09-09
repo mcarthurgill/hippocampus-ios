@@ -383,6 +383,15 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="64" maxX="0.0" maxY="0.0"/>
+                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Filter" id="8yi-OE-VdG">
+                                    <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="barTintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
+                                    <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="rzK-nB-bFQ" id="RMd-ZK-M8Y"/>
+                                    </connections>
+                                </searchBar>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="bucketCell" id="2Fj-GS-ffz">
                                         <autoresizingMask key="autoresizingMask"/>
@@ -407,13 +416,24 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstAttribute="height" secondItem="vW3-lJ-kPh" secondAttribute="height" id="0L1-03-IB5"/>
+                            <constraint firstItem="zjs-d2-hie" firstAttribute="top" secondItem="vW3-lJ-kPh" secondAttribute="bottom" id="H0Q-2O-Zy6"/>
                             <constraint firstAttribute="centerX" secondItem="vW3-lJ-kPh" secondAttribute="centerX" id="Sl0-Fc-jRF"/>
                             <constraint firstAttribute="height" secondItem="vW3-lJ-kPh" secondAttribute="height" id="au3-UU-tgW"/>
                             <constraint firstAttribute="centerY" secondItem="vW3-lJ-kPh" secondAttribute="centerY" id="lSf-yW-JMb"/>
+                            <constraint firstAttribute="centerY" secondItem="vW3-lJ-kPh" secondAttribute="centerY" id="rzB-Ll-uxQ"/>
                             <constraint firstAttribute="width" secondItem="vW3-lJ-kPh" secondAttribute="width" id="xTY-Kh-gdR"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="au3-UU-tgW"/>
+                                <exclude reference="lSf-yW-JMb"/>
+                                <exclude reference="H0Q-2O-Zy6"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
+                        <outlet property="searchBar" destination="8yi-OE-VdG" id="8c8-e2-1CQ"/>
                         <outlet property="tableView" destination="vW3-lJ-kPh" id="rXf-cc-dKJ"/>
                     </connections>
                 </viewController>
