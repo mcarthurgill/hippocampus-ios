@@ -102,6 +102,7 @@
 		28ED41D81B9CE854000292AE /* filled_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41D61B9CE854000292AE /* filled_check.png */; };
 		28ED41DA1B9E1CDE000292AE /* add_new.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41D91B9E1CDE000292AE /* add_new.png */; };
 		28ED41DC1B9FFA13000292AE /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41DB1B9FFA13000292AE /* avatar.png */; };
+		28ED41E01BA00156000292AE /* HCReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41DF1BA00156000292AE /* HCReminderViewController.m */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -252,6 +253,8 @@
 		28ED41D61B9CE854000292AE /* filled_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = filled_check.png; sourceTree = "<group>"; };
 		28ED41D91B9E1CDE000292AE /* add_new.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = add_new.png; sourceTree = "<group>"; };
 		28ED41DB1B9FFA13000292AE /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
+		28ED41DE1BA00156000292AE /* HCReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCReminderViewController.h; sourceTree = "<group>"; };
+		28ED41DF1BA00156000292AE /* HCReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCReminderViewController.m; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -388,6 +391,7 @@
 				288F122E1B75221D0001E0B0 /* Main */,
 				282FA83E1B8F9B6D004ADA00 /* Search */,
 				28ED41C81B9CB921000292AE /* Assign */,
+				28ED41DD1BA0013E000292AE /* Nudge */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -670,6 +674,15 @@
 			name = Check;
 			sourceTree = "<group>";
 		};
+		28ED41DD1BA0013E000292AE /* Nudge */ = {
+			isa = PBXGroup;
+			children = (
+				28ED41DE1BA00156000292AE /* HCReminderViewController.h */,
+				28ED41DF1BA00156000292AE /* HCReminderViewController.m */,
+			);
+			name = Nudge;
+			sourceTree = "<group>";
+		};
 		76CA904B1AE1572800C6E400 /* Permissions */ = {
 			isa = PBXGroup;
 			children = (
@@ -914,6 +927,7 @@
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
 				28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */,
+				28ED41E01BA00156000292AE /* HCReminderViewController.m in Sources */,
 				282FA8411B8F9C2E004ADA00 /* SHSearchViewController.m in Sources */,
 				282FA8441B909BD5004ADA00 /* SHSearch.m in Sources */,
 			);
