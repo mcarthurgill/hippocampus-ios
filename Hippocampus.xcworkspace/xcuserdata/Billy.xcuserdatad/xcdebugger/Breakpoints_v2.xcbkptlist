@@ -1902,54 +1902,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Hippocampus/LXAppDelegate.m"
-            timestampString = "463463895.666054"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "165"
-            endingLineNumber = "165"
-            landmarkName = "-application:didRegisterForRemoteNotificationsWithDeviceToken:"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[LXAppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]"
-                  moduleName = "Hippocampus"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Billy/Dropbox/LXV/Hippocampus/Hippocampus/Hippocampus/LXAppDelegate.m"
-                  timestampString = "463582852.613777"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "165"
-                  endingLineNumber = "165"
-                  offsetFromSymbolStart = "100">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__78-[LXAppDelegate application:didRegisterForRemoteNotificationsWithDeviceToken:]_block_invoke"
-                  moduleName = "Hippocampus"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/Billy/Dropbox/LXV/Hippocampus/Hippocampus/Hippocampus/LXAppDelegate.m"
-                  timestampString = "463582852.61394"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "165"
-                  endingLineNumber = "165"
-                  offsetFromSymbolStart = "40">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
