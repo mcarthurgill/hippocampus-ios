@@ -8,6 +8,7 @@
 
 #import "SHItemViewController.h"
 #import "SHSlackThoughtsViewController.h"
+#import "SHAssignBucketsViewController.h"
 
 #import "SHItemMessageTableViewCell.h"
 #import "SHItemAuthorTableViewCell.h"
@@ -219,6 +220,21 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 - (void) longPressWithObject:(NSMutableDictionary*)object type:(NSString*)action
 {
     NSLog(@"successful %@ call", action);
+    if ([action isEqualToString:@"bucket"]) {
+        [self presentAssignScreen];
+    }
+}
+
+
+
+# pragma mark presentations
+
+- (void) presentAssignScreen
+{
+    UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignBucketsViewController"];
+    SHAssignBucketsViewController* vc = [[nc viewControllers] firstObject];
+    [vc setLocalKey:self.localKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc}];
 }
 
 
