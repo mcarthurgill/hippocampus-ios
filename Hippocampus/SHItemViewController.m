@@ -36,9 +36,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     [self setupSettings];
     [self setupBottomView];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self reloadScreen];
-    });
+    [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedObject:) name:@"refreshedObject" object:nil];
     [self refreshObject];
@@ -200,6 +198,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 {
     SHAttachmentBoxTableViewCell* cell = (SHAttachmentBoxTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:attachmentCellIdentifier];
     [cell configureWithLocalKey:self.localKey attachment:attachment type:type];
+    [cell setDelegate:self];
     return cell;
 }
 
@@ -215,6 +214,11 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [(SHSlackThoughtsViewController*)vc setLocalKey:[[[[self item] bucketsArray] objectAtIndex:indexPath.row] localKey]];
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+- (void) longPressWithObject:(NSMutableDictionary*)object type:(NSString*)action
+{
+    NSLog(@"successful %@ call", action);
 }
 
 

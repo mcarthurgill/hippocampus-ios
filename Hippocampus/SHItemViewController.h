@@ -17,4 +17,6 @@
 
 @property (strong, nonatomic) NSMutableArray* sections;
 
+- (void) longPressWithObject:(NSMutableDictionary*)object type:(NSString*)action;
+
 @end

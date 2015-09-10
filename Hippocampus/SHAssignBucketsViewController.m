@@ -63,10 +63,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         [self.searchBar performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.01];
     }
     
-    [[LXAddressBook thisBook] requestAccess:^(BOOL success){
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self reloadScreen];
-        });
+    [[LXAddressBook thisBook] requestAccess:^(BOOL success) {
+        [self performSelector:@selector(reloadScreen) withObject:nil afterDelay:0.01];
     }];
 }
 

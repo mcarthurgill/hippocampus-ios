@@ -40,20 +40,26 @@ static NSInteger maxRecentCount = 5;
 {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/detail.json", [self ID]] withMethod:@"GET" withParamaters:nil
                            success:^(id responseObject) {
+                               
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    BOOL shouldRefresh = NO;
+                                   
                                    NSMutableDictionary* bucket = [[responseObject objectForKey:@"bucket"] mutableCopy];
                                    if ([[responseObject objectForKey:@"object_type"] isEqualToString:@"all-thoughts"]) {
                                        [bucket setObject:[NSMutableDictionary allThoughtsLocalKey] forKey:@"local_key"];
                                    }
+                                   
                                    NSMutableArray* oldItemKeys = [[NSMutableArray alloc] initWithArray:([[LXObjectManager objectWithLocalKey:[bucket localKey]] itemKeys] ? [[LXObjectManager objectWithLocalKey:[bucket localKey]] itemKeys] : @[])];
+                                   
                                    if ([responseObject objectForKey:@"item_keys"] && NULL_TO_NIL([responseObject objectForKey:@"item_keys"])) {
                                        [bucket setObject:[responseObject objectForKey:@"item_keys"] forKey:@"item_keys"];
                                    }
+                                   
                                    shouldRefresh = [bucket assignLocalVersionIfNeeded] || shouldRefresh;
                                    
                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket, @"oldItemKeys":oldItemKeys}];
                                });
+                               
                                if (successCallback) {
                                    successCallback(responseObject);
                                }

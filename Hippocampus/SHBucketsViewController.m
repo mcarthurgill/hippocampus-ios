@@ -34,13 +34,15 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [self beginningActions];
     
+    [self performSelectorOnMainThread:@selector(reloadAndScroll) withObject:nil waitUntilDone:NO];
+}
+
+- (void) reloadAndScroll
+{
     [self reloadScreen];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self reloadScreen];
-        if ([self.tableView numberOfRowsInSection:0] > 0) {
-            [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
-        }
-    });
+    if ([self.tableView numberOfRowsInSection:0] > 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
 }
 
 - (void) setupSettings

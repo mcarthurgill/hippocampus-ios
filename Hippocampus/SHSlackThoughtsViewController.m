@@ -124,7 +124,6 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 }
 
 
-
 # pragma mark scrolling helpers
 
 - (void) scrollToBottomAnimated
@@ -196,15 +195,18 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 {
     if ([[notification userInfo] objectForKey:@"bucket"] && [[[[notification userInfo] objectForKey:@"bucket"] localKey] isEqualToString:self.localKey]) {
         //BUCKET MATCHES!
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW,0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            //NSLog(@"%lu, %lu", (unsigned long)[[[self bucket] itemKeys] count], (unsigned long)[[[notification userInfo] objectForKey:@"oldItemKeys"] count]);
-            if ([[[self bucket] itemKeys] count] == [[[notification userInfo] objectForKey:@"oldItemKeys"] count]) {
-                //NO CHANGES!
-            } else {
-                //[self scrollToBottom:YES];
-                [self tryToReload];
-            }
-        });
+        [self performSelectorOnMainThread:@selector(reloadIfDifferentCountOfKeys:) withObject:[[notification userInfo] objectForKey:@"oldItemKeys"] waitUntilDone:NO];
+    }
+}
+
+- (void) reloadIfDifferentCountOfKeys:(NSArray*)oldKeys
+{
+    NSLog(@"%lu, %lu", (unsigned long)[[[self bucket] itemKeys] count], (unsigned long)[oldKeys count]);
+    if ([[[self bucket] itemKeys] count] == [oldKeys count]) {
+        //NO CHANGES!
+    } else {
+        //[self scrollToBottom:YES];
+        [self tryToReload];
     }
 }
 

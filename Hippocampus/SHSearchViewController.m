@@ -135,7 +135,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     if (self.bucketResultKeys && [self.bucketResultKeys count] > 0 && [self.searchBar text] && [[self.searchBar text] length] > 0) {
         [self.sections addObject:@"buckets"];
     }
-    if (self.searchResults && [self.searchResults count] > 0 && [self.searchBar text] && [[self.searchBar text] length] > 0) {
+    if (self.searchResults && [self.searchBar text] && [[self.searchBar text] length] > 0) {
         [self.sections addObject:@"results"];
     }
     if ([self.sections count] == 0 || !self.searchResults || [self.searchResults count] < 3) {
@@ -211,7 +211,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self resignSearchFirstResponder];
-    if ([self.sections count] == 1 && [[self.sections firstObject] isEqualToString:@"blank"]) {
+    if (([self.sections count] == 1 && [[self.sections firstObject] isEqualToString:@"blank"]) || ([self.sections count] == 2 && [[self.sections firstObject] isEqualToString:@"results"] && [self.searchResults count] == 0)) {
         [self dismissView];
     }
 }

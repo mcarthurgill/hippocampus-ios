@@ -10,7 +10,7 @@
 #import "HCPermissionViewController.h"
 @import MessageUI;
 
-@interface LXAppDelegate : UIResponder <UIApplicationDelegate, HCPermissionsDelegate, MFMailComposeViewControllerDelegate>
+@interface LXAppDelegate : UIResponder <UIApplicationDelegate, MFMailComposeViewControllerDelegate>
 {
     BOOL active;
 }

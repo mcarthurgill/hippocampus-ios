@@ -68,7 +68,8 @@
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     if (([name isEqualToString:@"Seahorse"]) && [[LXSession thisSession] user]) {
-        [[[LXSession thisSession] user] performSelector:@selector(updateTimeZone) withObject:nil afterDelay:10];
+        //[[[LXSession thisSession] user] performSelector:@selector(updateTimeZone) withObject:nil afterDelay:10];
+        [[[LXSession thisSession] user] updateTimeZone];
         [self refreshObjects];
     }
 }
@@ -103,13 +104,14 @@
     
     if ([[LXSession thisSession] user]) {
         [[LXObjectManager defaultManager] runQueries];
-        [[LXObjectManager defaultManager] performSelector:@selector(runQueries) withObject:nil afterDelay:1];
+        //[[LXObjectManager defaultManager] performSelector:@selector(runQueries) withObject:nil afterDelay:1];
     }
     
     [self handleAppLaunch];
     
     if ([[LXSession thisSession] locationPermissionDetermined]) {
-        [[LXSession thisSession] performSelector:@selector(startLocationUpdates) withObject:nil afterDelay:2];
+        [[LXSession thisSession] startLocationUpdates];
+        //[[LXSession thisSession] performSelector:@selector(startLocationUpdates) withObject:nil afterDelay:2];
     }
     
     active = YES;
@@ -150,7 +152,7 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-    [self performSelector:@selector(registerDeviceToken:) withObject:deviceToken afterDelay:2];
+    [self registerDeviceToken:deviceToken];
 }
 
 - (void) registerDeviceToken:(NSData*)deviceToken

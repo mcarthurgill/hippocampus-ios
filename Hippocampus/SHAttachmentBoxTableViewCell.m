@@ -7,14 +7,19 @@
 //
 
 #import "SHAttachmentBoxTableViewCell.h"
+#import "SHItemViewController.h"
 
 #define IMAGE_FADE_IN_TIME 0.4f
 
 @implementation SHAttachmentBoxTableViewCell
 
+@synthesize delegate;
+
 @synthesize localKey;
 @synthesize attachment;
 @synthesize attachmentType;
+
+@synthesize longPress;
 
 @synthesize card;
 @synthesize leftImageView;
@@ -48,8 +53,17 @@
     
     [self.rightLabel setFont:[UIFont secondaryFontWithSize:12.0f]];
     [self.rightLabel setTextColor:[UIColor SHFontLightGray]];
+    
+    [self setupGestureRecognizers];
 }
 
+- (void) setupGestureRecognizers
+{
+    if (!self.longPress) {
+        self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
+        [self addGestureRecognizer:longPress];
+    }
+}
 
 - (void) setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
@@ -134,6 +148,18 @@
 - (BOOL) isBucketType
 {
     return [self.attachmentType isEqualToString:@"bucket"];
+}
+
+
+
+
+# pragma mark actions
+
+- (IBAction)longPressAction:(UILongPressGestureRecognizer*)sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan){
+        [(SHItemViewController*)delegate longPressWithObject:self.attachment type:self.attachmentType];
+    }
 }
 
 @end

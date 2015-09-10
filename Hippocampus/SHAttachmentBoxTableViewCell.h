@@ -10,9 +10,13 @@
 
 @interface SHAttachmentBoxTableViewCell : UITableViewCell
 
+@property (strong, nonatomic) id delegate;
+
 @property (strong, nonatomic) NSString* localKey;
 @property (strong, nonatomic) NSMutableDictionary* attachment;
 @property (strong, nonatomic) NSString* attachmentType;
+
+@property (strong, nonatomic) UILongPressGestureRecognizer* longPress;
 
 @property (strong, nonatomic) IBOutlet UIView *card;
 @property (strong, nonatomic) IBOutlet UIImageView *leftImageView;

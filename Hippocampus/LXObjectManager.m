@@ -124,10 +124,8 @@ static LXObjectManager* defaultManager = nil;
                                        shouldRefresh = [[object mutableCopy] assignLocalVersionIfNeeded] || shouldRefresh;
                                        [self assignRefreshDate:[object updatedAt] forObjectTypes:pluralObjectType];
                                    }
-                                   if (shouldRefresh) {
-                                       //[[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
-                                   }
                                });
+                               
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
