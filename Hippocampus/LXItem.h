@@ -12,6 +12,8 @@
 
 + (NSMutableDictionary*) createItemWithMessage:(NSString*)message;
 
++ (NSInteger) unassignedThoughtCount;
+
 - (void) destroyItem;
 
 - (BOOL) hasMedia;

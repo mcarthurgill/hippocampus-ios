@@ -68,8 +68,8 @@
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     if (([name isEqualToString:@"Seahorse"]) && [[LXSession thisSession] user]) {
-        //[[[LXSession thisSession] user] performSelector:@selector(updateTimeZone) withObject:nil afterDelay:10];
-        [[[LXSession thisSession] user] updateTimeZone];
+        [[[LXSession thisSession] user] performSelector:@selector(updateTimeZone) withObject:nil afterDelay:10];
+        //[[[LXSession thisSession] user] updateTimeZone];
         [self refreshObjects];
     }
 }
@@ -110,8 +110,8 @@
     [self handleAppLaunch];
     
     if ([[LXSession thisSession] locationPermissionDetermined]) {
-        [[LXSession thisSession] startLocationUpdates];
-        //[[LXSession thisSession] performSelector:@selector(startLocationUpdates) withObject:nil afterDelay:2];
+        //[[LXSession thisSession] startLocationUpdates];
+        [[LXSession thisSession] performSelector:@selector(startLocationUpdates) withObject:nil afterDelay:2];
     }
     
     active = YES;
@@ -152,7 +152,8 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-    [self registerDeviceToken:deviceToken];
+    [self performSelector:@selector(registerDeviceToken:) withObject:deviceToken afterDelay:3];
+    //[self registerDeviceToken:deviceToken];
 }
 
 - (void) registerDeviceToken:(NSData*)deviceToken
@@ -184,11 +185,7 @@
 - (void) setBadgeIcon
 {
     if ([LXSession areNotificationsEnabled]) {
-        if ([[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] isAllNotesBucket]) {
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[[[[[[NSUserDefaults standardUserDefaults] objectForKey:@"buckets"] objectForKey:@"Recent"] firstObject] objectForKey:@"items_count"] integerValue]];
-        } else {
-            [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-        }
+        [[UIApplication sharedApplication] setApplicationIconBadgeNumber:[NSMutableDictionary unassignedThoughtCount]];
     }
 }
 

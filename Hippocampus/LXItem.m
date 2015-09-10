@@ -18,6 +18,24 @@
     return i;
 }
 
++ (NSInteger) unassignedThoughtCount
+{
+    NSMutableDictionary* allThoughtBucket = [LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
+    NSInteger count = 0;
+    NSInteger index = 0;
+    for (NSString* key in [allThoughtBucket itemKeys]) {
+        NSMutableDictionary* object = [LXObjectManager objectWithLocalKey:key];
+        if (object && [object isOutstanding]) {
+            ++count;
+        }
+        ++index;
+        if (index > 256) {
+            return count;
+        }
+    }
+    return count;
+}
+
 - (void) destroyItem
 {
     if ([self belongsToCurrentUser]) {
