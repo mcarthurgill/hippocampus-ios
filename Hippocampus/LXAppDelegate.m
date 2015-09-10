@@ -129,6 +129,21 @@
 {
     if ([[LXSession thisSession] user]) {
         [[[LXSession thisSession] user] updateTimeZone];
+        [[LXObjectManager defaultManager] refreshObjectTypes:@"items" withAboveUpdatedAt:nil
+                                                     success:^(id responseObject){
+                                                         [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] refreshFromServerWithSuccess:^(id responseObject){
+                                                             [self setBadgeIcon];
+                                                             completionHandler(UIBackgroundFetchResultNewData);
+                                                         } failure:^(NSError* error){
+                                                             completionHandler(UIBackgroundFetchResultNewData);
+                                                         }];
+                                                     }
+                                                     failure:^(NSError* error) {
+                                                         completionHandler(UIBackgroundFetchResultNewData);
+                                                     }
+         ];
+    } else {
+        completionHandler(UIBackgroundFetchResultNewData);
     }
 }
 
@@ -177,6 +192,8 @@
     if (active) {
         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
         return;
+    } else {
+        [self setBadgeIcon];
     }
     //[userInfo objectForKey:@"bucket_id"] && [[userInfo objectForKey:@"bucket_id"] respondsToSelector:@selector(intValue)]
 }

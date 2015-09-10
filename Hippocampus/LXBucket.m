@@ -174,6 +174,11 @@ static NSInteger maxRecentCount = 5;
 
 - (void) removeItemFromBucket:(NSMutableDictionary*)item
 {
+    if ([item localKey] && [self itemKeys]) {
+        NSMutableArray* itemKeys = [[self itemKeys] mutableCopy];
+        [itemKeys removeObject:[item localKey]];
+        [self setObject:itemKeys forKey:@"item_keys"];
+    }
     NSMutableArray* items = [[self items] mutableCopy];
     for (NSInteger i = 0; i < [items count]; ++i) {
         NSMutableDictionary* compareToItem = [items objectAtIndex:i];

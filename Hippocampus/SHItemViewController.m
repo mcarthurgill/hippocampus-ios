@@ -9,6 +9,7 @@
 #import "SHItemViewController.h"
 #import "SHSlackThoughtsViewController.h"
 #import "SHAssignBucketsViewController.h"
+#import "HCReminderViewController.h"
 
 #import "SHItemMessageTableViewCell.h"
 #import "SHItemAuthorTableViewCell.h"
@@ -30,12 +31,15 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 @synthesize tableView;
 @synthesize bottomToolbar;
 @synthesize sections;
+@synthesize toolbarOptions;
+@synthesize trailingSpace;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setupSettings];
     [self setupBottomView];
+    [self setupToolbar];
     
     [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
     
@@ -237,5 +241,127 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc}];
 }
 
+- (void) presentNudgeScreen
+{
+    UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationHCReminderViewController"];
+    HCReminderViewController* vc = [[nc viewControllers] firstObject];
+    [vc setLocalKey:self.localKey];
+    UIView* backgroundFrame = [[UIScreen mainScreen] snapshotViewAfterScreenUpdates:NO];
+    [backgroundFrame setAlpha:0.5f];
+    [vc.view setBackgroundColor:[UIColor blackColor]];
+    [vc.view addSubview:backgroundFrame];
+    [vc.view sendSubviewToBack:backgroundFrame];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc,@"animated":@NO}];
+}
+
+- (void) performDeletion
+{
+    if ([[LXObjectManager objectWithLocalKey:self.localKey] belongsToCurrentUser]) {
+        [[LXObjectManager objectWithLocalKey:self.localKey] destroyItem];
+        [self.navigationController popViewControllerAnimated:YES];
+    } else {
+        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Not yours!" message:@"Since you didn't create this thought, you can't delete it." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [av show];
+    }
+}
+
+# pragma mark toolbar
+
+- (void) setupToolbar
+{
+    self.toolbarOptions = [[NSMutableArray alloc] init];
+    
+    [self.toolbarOptions addObject:@"nudge"];
+    [self.toolbarOptions addObject:@"bucket"];
+    [self.toolbarOptions addObject:@"media"];
+    //[self.toolbarOptions addObject:@"map"];
+    [self.toolbarOptions addObject:@"duplicate"];
+    [self.toolbarOptions addObject:@"delete"];
+    
+    NSInteger index = 0;
+    for (NSString* option in self.toolbarOptions) {
+        UIButton* button = [self buttonForOption:option];
+        
+        [button setShowsTouchWhenHighlighted:YES];
+        [button.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        [button setContentMode:UIViewContentModeScaleAspectFit];
+        [button setTintColor:[UIColor SHGreen]];
+        [button setTitle:nil forState:UIControlStateNormal];
+        
+        [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        
+        if ([option isEqualToString:@"nudge"]) {
+            [button setImage:[UIImage imageNamed:@"toolbar_bell.png"] forState:UIControlStateNormal];
+        } else if ([option isEqualToString:@"bucket"]) {
+            [button setImage:[UIImage imageNamed:@"toolbar_bucket.png"] forState:UIControlStateNormal];
+        } else if ([option isEqualToString:@"media"]) {
+            [button setImage:[UIImage imageNamed:@"toolbar_media.png"] forState:UIControlStateNormal];
+        } else if ([option isEqualToString:@"map"]) {
+            [button setImage:[UIImage imageNamed:@"toolbar_location.png"] forState:UIControlStateNormal];
+        } else if ([option isEqualToString:@"duplicate"]) {
+            [button setImage:[UIImage imageNamed:@"toolbar_duplicate.png"] forState:UIControlStateNormal];
+        } else if ([option isEqualToString:@"delete"]) {
+            [button setImage:[UIImage imageNamed:@"toolbar_trash.png"] forState:UIControlStateNormal];
+            [button setTintColor:[UIColor SHGreen]];
+        }
+        ++index;
+    }
+    
+    [self.bottomToolbar removeConstraint:self.trailingSpace];
+    //[self.bottomToolbar addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[lastButton]-5-|" options:0 metrics:nil views:@{@"lastButton":[self lastButton]}]];
+}
+
+- (UIButton*) lastButton
+{
+    return (UIButton*)[self.bottomToolbar viewWithTag:([self.toolbarOptions count]-1)];
+}
+
+- (UIButton*) buttonForOption:(NSString*)option
+{
+    return (UIButton*)[self.bottomToolbar viewWithTag:([self indexOfOption:option])];
+}
+
+- (NSInteger) indexOfOption:(NSString*)option
+{
+    return [self.toolbarOptions indexOfObject:option];
+}
+
+- (NSString*) optionAtIndex:(NSInteger)index
+{
+    return [self.toolbarOptions objectAtIndex:index];
+}
+
+- (void) buttonAction:(UIButton*)sender
+{
+    if ([[self optionAtIndex:sender.tag] isEqualToString:@"nudge"]) {
+        [self presentNudgeScreen];
+    } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"bucket"]) {
+        [self presentAssignScreen];
+    } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"delete"]) {
+        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Are you sure you want to delete this thought?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+        [av setTag:(sender.tag+100)];
+        [av show];
+    } else {
+        UIAlertView* av = [[UIAlertView alloc] initWithTitle:[self optionAtIndex:[sender tag]] message:@"Nice action." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        [av show];
+    }
+}
+
+
+
+
+# pragma mark alert view delegate
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag-100 >= [self.toolbarOptions count]) {
+        return;
+    }
+    if ([[self optionAtIndex:(alertView.tag-100)] isEqualToString:@"delete"]) {
+        if (buttonIndex != [alertView cancelButtonIndex]) {
+            [self performDeletion];
+        }
+    }
+}
 
 @end

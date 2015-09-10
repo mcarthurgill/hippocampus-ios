@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SHItemViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SHItemViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) NSString* localKey;
 
@@ -16,6 +16,8 @@
 @property (strong, nonatomic) IBOutlet UIView *bottomToolbar;
 
 @property (strong, nonatomic) NSMutableArray* sections;
+@property (strong, nonatomic) NSMutableArray* toolbarOptions;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *trailingSpace;
 
 - (void) longPressWithObject:(NSMutableDictionary*)object type:(NSString*)action;
 

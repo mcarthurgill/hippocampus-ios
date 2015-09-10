@@ -114,7 +114,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (NSMutableDictionary*) bucketAtIndexPath:(NSIndexPath*)indexPath
 {
-    return [LXObjectManager objectWithLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
+        return [LXObjectManager objectWithLocalKey:[[self recent] objectAtIndex:indexPath.row]];
+    } else {
+        return [LXObjectManager objectWithLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
+    }
 }
 
 
@@ -198,6 +202,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section >= [self.sections count]) {
+        return 44.0f;
+    }
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
         if ([LXObjectManager objectWithLocalKey:[[self recent] objectAtIndex:indexPath.row]]) {
             NSMutableDictionary* bucket = [self bucketAtIndexPath:indexPath];

@@ -115,6 +115,12 @@
 		28ED41FD1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41FB1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib */; };
 		28ED41FF1BA0F637000292AE /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41FE1BA0F637000292AE /* Roboto-Medium.ttf */; };
 		28ED42041BA102F4000292AE /* bucket_detail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED42031BA102F4000292AE /* bucket_detail_icon.png */; };
+		28ED420F1BA210AE000292AE /* toolbar_bucket.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED420A1BA210AE000292AE /* toolbar_bucket.png */; };
+		28ED42101BA210AE000292AE /* toolbar_duplicate.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED420B1BA210AE000292AE /* toolbar_duplicate.png */; };
+		28ED42111BA210AE000292AE /* toolbar_location.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED420C1BA210AE000292AE /* toolbar_location.png */; };
+		28ED42121BA210AE000292AE /* toolbar_media.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED420D1BA210AE000292AE /* toolbar_media.png */; };
+		28ED42131BA210AE000292AE /* toolbar_trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED420E1BA210AE000292AE /* toolbar_trash.png */; };
+		28ED42191BA21984000292AE /* toolbar_bell.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED42181BA21984000292AE /* toolbar_bell.png */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -284,6 +290,12 @@
 		28ED41FB1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHAttachmentBoxTableViewCell.xib; sourceTree = "<group>"; };
 		28ED41FE1BA0F637000292AE /* Roboto-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Medium.ttf"; sourceTree = "<group>"; };
 		28ED42031BA102F4000292AE /* bucket_detail_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bucket_detail_icon.png; sourceTree = "<group>"; };
+		28ED420A1BA210AE000292AE /* toolbar_bucket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bucket.png; sourceTree = "<group>"; };
+		28ED420B1BA210AE000292AE /* toolbar_duplicate.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_duplicate.png; sourceTree = "<group>"; };
+		28ED420C1BA210AE000292AE /* toolbar_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_location.png; sourceTree = "<group>"; };
+		28ED420D1BA210AE000292AE /* toolbar_media.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_media.png; sourceTree = "<group>"; };
+		28ED420E1BA210AE000292AE /* toolbar_trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_trash.png; sourceTree = "<group>"; };
+		28ED42181BA21984000292AE /* toolbar_bell.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bell.png; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -661,6 +673,7 @@
 		288F123D1B752EC90001E0B0 /* Seahorse */ = {
 			isa = PBXGroup;
 			children = (
+				28ED42051BA20A71000292AE /* Toolbar Icons */,
 				28ED42001BA10241000292AE /* Item Detail Icons */,
 				28ED41D41B9CE833000292AE /* Check */,
 				288A74801B8A2FD600F6A618 /* Plus */,
@@ -751,6 +764,19 @@
 				28ED42031BA102F4000292AE /* bucket_detail_icon.png */,
 			);
 			name = "Item Detail Icons";
+			sourceTree = "<group>";
+		};
+		28ED42051BA20A71000292AE /* Toolbar Icons */ = {
+			isa = PBXGroup;
+			children = (
+				28ED42181BA21984000292AE /* toolbar_bell.png */,
+				28ED420A1BA210AE000292AE /* toolbar_bucket.png */,
+				28ED420B1BA210AE000292AE /* toolbar_duplicate.png */,
+				28ED420C1BA210AE000292AE /* toolbar_location.png */,
+				28ED420D1BA210AE000292AE /* toolbar_media.png */,
+				28ED420E1BA210AE000292AE /* toolbar_trash.png */,
+			);
+			name = "Toolbar Icons";
 			sourceTree = "<group>";
 		};
 		76CA904B1AE1572800C6E400 /* Permissions */ = {
@@ -859,16 +885,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				28CD3FBE1AEA0F8700B3ABB6 /* item-screen.jpg in Resources */,
+				28ED42121BA210AE000292AE /* toolbar_media.png in Resources */,
 				28ED41C71B9C96FA000292AE /* Abel-Regular.ttf in Resources */,
 				281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */,
 				281CA923196C29F800E6BE96 /* 179-notepad@2x.png in Resources */,
 				28431DDD1A8D692E00B12548 /* 11-clock@2x.png in Resources */,
+				28ED420F1BA210AE000292AE /* toolbar_bucket.png in Resources */,
 				2826C60D1ADC9474008DC533 /* Group-100.png in Resources */,
 				2826C60B1AD848DB008DC533 /* tutorial.png in Resources */,
 				283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */,
 				281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */,
 				288A74621B7531DD00F6A618 /* search@2x.png in Resources */,
 				28ED41FD1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib in Resources */,
+				28ED42111BA210AE000292AE /* toolbar_location.png in Resources */,
 				287423D31B059F7200A3242C /* email-screen.jpg in Resources */,
 				288A74821B8A2FEB00F6A618 /* plus_icon_white_swipe.png in Resources */,
 				28ED41DA1B9E1CDE000292AE /* add_new.png in Resources */,
@@ -902,13 +931,16 @@
 				28ACA39D1B8B73E800D7B215 /* SHLoadingTableViewCell.xib in Resources */,
 				2837E7FC1ABD06460089FA33 /* Photo-100.png in Resources */,
 				28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */,
+				28ED42101BA210AE000292AE /* toolbar_duplicate.png in Resources */,
 				28CD3FC01AEA887200B3ABB6 /* new-collection-screen.jpg in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				28ACA3A21B8B7CF900D7B215 /* SHBucketTableViewCell.xib in Resources */,
 				28ED41FF1BA0F637000292AE /* Roboto-Medium.ttf in Resources */,
+				28ED42191BA21984000292AE /* toolbar_bell.png in Resources */,
 				28CD3FC41AEADC1A00B3ABB6 /* permission-screen.jpg in Resources */,
 				28CD3FBA1AE9C80800B3ABB6 /* assign-screen.jpg in Resources */,
 				288A74611B7531DD00F6A618 /* search.png in Resources */,
+				28ED42131BA210AE000292AE /* toolbar_trash.png in Resources */,
 				28ED42041BA102F4000292AE /* bucket_detail_icon.png in Resources */,
 				2826C6101ADDA5D1008DC533 /* txt_scrnsht.png in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,

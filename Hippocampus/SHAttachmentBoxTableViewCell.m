@@ -123,7 +123,7 @@
     
     NSMutableDictionary* bucket = [LXObjectManager objectWithLocalKey:[self.attachment localKey]] ? [LXObjectManager objectWithLocalKey:[self.attachment localKey]] : self.attachment;
     
-    NSLog(@"bucket: %@", bucket);
+    //NSLog(@"bucket: %@", bucket);
     
     [self.centerLabel setHidden:NO];
     [self.centerLabel setText:[NSString stringWithFormat:@"   %@   ",[bucket firstName]]];

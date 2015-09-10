@@ -35,7 +35,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     
     [self setupSettings];
     
-    //[self beginningActions];
+    [self beginningActions];
     
     [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
 }
@@ -43,7 +43,8 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self beginningActions];
+    //[self beginningActions];
+    [self reloadScreen];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -88,8 +89,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void) beginningActions
 {
-    [[self bucket] refreshFromServerWithSuccess:^(id responseObject){
-    } failure:^(NSError* error){}];
+    [[self bucket] refreshFromServerWithSuccess:^(id responseObject){} failure:^(NSError* error){}];
 }
 
 
