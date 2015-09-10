@@ -145,13 +145,18 @@ static NSInteger maxRecentCount = 5;
     return [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] ? [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] : [@{} mutableCopy];
 }
 
+- (NSString*) relationLevel
+{
+    return [self objectForKey:@"relation_level"] && NULL_TO_NIL([self objectForKey:@"relation_level"]) ? [self objectForKey:@"relation_level"] : @"recent";
+}
+
 - (UIColor*) bucketColor
 {
-    if ([[self ID] integerValue]%3 == 0) {
-        return [UIColor SHColorGreen];
-    } else if ([[self ID] integerValue]%3 == 1) {
+    if ([[self relationLevel] isEqualToString:@"recent"]) {
         return [UIColor SHColorBlue];
-    } else if ([[self ID] integerValue]%3 == 2) {
+    } else if ([[self relationLevel] isEqualToString:@"future"]) {
+        return [UIColor SHColorGreen];
+    } else if ([[self relationLevel] isEqualToString:@"past"]) {
         return [UIColor SHColorOrange];
     }
     return [UIColor SHFontPurple];
@@ -174,11 +179,15 @@ static NSInteger maxRecentCount = 5;
 
 - (void) removeItemFromBucket:(NSMutableDictionary*)item
 {
-    if ([item localKey] && [self itemKeys]) {
-        NSMutableArray* itemKeys = [[self itemKeys] mutableCopy];
+    NSMutableDictionary* bucket = [LXObjectManager objectWithLocalKey:[self localKey]];
+    if ([item localKey] && [bucket itemKeys]) {
+        NSMutableArray* itemKeys = [[bucket itemKeys] mutableCopy];
         [itemKeys removeObject:[item localKey]];
-        [self setObject:itemKeys forKey:@"item_keys"];
+        [bucket setObject:itemKeys forKey:@"item_keys"];
+        [bucket assignLocalVersionIfNeeded];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"removedItemFromBucket" object:nil userInfo:@{@"item":item,@"bucket":bucket}];
     }
+    return;
     NSMutableArray* items = [[self items] mutableCopy];
     for (NSInteger i = 0; i < [items count]; ++i) {
         NSMutableDictionary* compareToItem = [items objectAtIndex:i];

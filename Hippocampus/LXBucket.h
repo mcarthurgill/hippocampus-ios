@@ -33,6 +33,7 @@
 
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index;
 
+- (NSString*) relationLevel;
 - (UIColor*) bucketColor;
 
 - (BOOL) isAllThoughtsBucket;

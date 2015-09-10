@@ -114,6 +114,8 @@
         [[LXSession thisSession] performSelector:@selector(startLocationUpdates) withObject:nil afterDelay:2];
     }
     
+    [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] refreshFromServerWithSuccess:^(id responseObject){} failure:^(NSError* error){}];
+    
     active = YES;
 }
 
@@ -131,18 +133,23 @@
         [[[LXSession thisSession] user] updateTimeZone];
         [[LXObjectManager defaultManager] refreshObjectTypes:@"items" withAboveUpdatedAt:nil
                                                      success:^(id responseObject){
-                                                         [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] refreshFromServerWithSuccess:^(id responseObject){
-                                                             [self setBadgeIcon];
-                                                             [LXObjectManager saveToDisk];
-                                                             completionHandler(UIBackgroundFetchResultNewData);
-                                                         } failure:^(NSError* error){
-                                                             completionHandler(UIBackgroundFetchResultNewData);
-                                                         }];
                                                      }
                                                      failure:^(NSError* error) {
-                                                         completionHandler(UIBackgroundFetchResultNewData);
                                                      }
          ];
+        [[LXObjectManager defaultManager] refreshObjectTypes:@"buckets" withAboveUpdatedAt:nil
+                                                     success:^(id responseObject){
+                                                     }
+                                                     failure:^(NSError* error) {
+                                                     }
+         ];
+        [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] refreshFromServerWithSuccess:^(id responseObject){
+            [self setBadgeIcon];
+            [LXObjectManager saveToDisk];
+            completionHandler(UIBackgroundFetchResultNewData);
+        } failure:^(NSError* error){
+            completionHandler(UIBackgroundFetchResultNewData);
+        }];
     } else {
         completionHandler(UIBackgroundFetchResultNewData);
     }

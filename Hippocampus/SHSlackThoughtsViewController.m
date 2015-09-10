@@ -55,6 +55,9 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    if ([self.textView isFirstResponder]) {
+        [self.textView resignFirstResponder];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -296,6 +299,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     if ([self bucket] && [[self bucket] localKey] && ![[[self bucket] localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
         [item setObject:[[self bucket] localKey] forKey:@"bucket_local_key"];
         [item setObject:@"assigned" forKey:@"status"];
+        [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] addItem:item atIndex:0];
     }
     [[self bucket] addItem:item atIndex:0];
     

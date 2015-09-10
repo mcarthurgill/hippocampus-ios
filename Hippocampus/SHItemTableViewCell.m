@@ -356,6 +356,8 @@
 
 - (UIButton*) buttonForBucket:(NSMutableDictionary*)bucket
 {
+    bucket = [LXObjectManager objectWithLocalKey:[bucket localKey]];
+    
     UIButton* button = [[UIButton alloc] init];
     [button setTranslatesAutoresizingMaskIntoConstraints:NO];
     

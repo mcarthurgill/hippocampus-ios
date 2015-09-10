@@ -42,8 +42,8 @@
         //remove from all items
         [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] removeItemFromBucket:self];
         //remove from each bucket
-        for (NSMutableDictionary* bucket in [self buckets]) {
-            [bucket removeItemFromBucket:self];
+        for (NSMutableDictionary* bucket in [self bucketsArray]) {
+            [[bucket mutableCopy] removeItemFromBucket:self];
         }
         [self destroyBoth];
     }

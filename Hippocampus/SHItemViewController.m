@@ -141,6 +141,9 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     if ([[self item] hasMedia]) {
         [self.sections addObject:@"media"];
     }
+    if ([[self item] hasReminder]) {
+        //[self.sections addObject:@"nudge"];
+    }
     if ([[self item] hasBuckets]) {
         [self.sections addObject:@"buckets"];
     }
