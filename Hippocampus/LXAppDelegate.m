@@ -133,6 +133,7 @@
                                                      success:^(id responseObject){
                                                          [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] refreshFromServerWithSuccess:^(id responseObject){
                                                              [self setBadgeIcon];
+                                                             [LXObjectManager saveToDisk];
                                                              completionHandler(UIBackgroundFetchResultNewData);
                                                          } failure:^(NSError* error){
                                                              completionHandler(UIBackgroundFetchResultNewData);

@@ -291,7 +291,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         
         if ([option isEqualToString:@"nudge"]) {
-            [button setImage:[UIImage imageNamed:@"toolbar_bell.png"] forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"toolbar_bella.png"] forState:UIControlStateNormal];
         } else if ([option isEqualToString:@"bucket"]) {
             [button setImage:[UIImage imageNamed:@"toolbar_bucket.png"] forState:UIControlStateNormal];
         } else if ([option isEqualToString:@"media"]) {
@@ -302,7 +302,6 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
             [button setImage:[UIImage imageNamed:@"toolbar_duplicate.png"] forState:UIControlStateNormal];
         } else if ([option isEqualToString:@"delete"]) {
             [button setImage:[UIImage imageNamed:@"toolbar_trash.png"] forState:UIControlStateNormal];
-            [button setTintColor:[UIColor SHGreen]];
         }
         ++index;
     }
