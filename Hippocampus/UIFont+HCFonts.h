@@ -16,6 +16,8 @@
 + (UIFont*) titleFont;
 + (UIFont*) titleFontWithSize:(NSInteger)size;
 + (UIFont*) titleLightFontWithSize:(NSInteger)size;
++ (UIFont*) titleMediumFontWithSize:(NSInteger)size;
+
 + (UIFont*) itemContentFont;
 + (UIFont*) inputFont;
 

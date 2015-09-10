@@ -11,12 +11,21 @@
 @interface SHAttachmentBoxTableViewCell : UITableViewCell
 
 @property (strong, nonatomic) NSString* localKey;
-@property (strong, nonatomic) NSDictionary* attachment;
+@property (strong, nonatomic) NSMutableDictionary* attachment;
+@property (strong, nonatomic) NSString* attachmentType;
 
 @property (strong, nonatomic) IBOutlet UIView *card;
 @property (strong, nonatomic) IBOutlet UIImageView *leftImageView;
 @property (strong, nonatomic) IBOutlet UIView *separatorView;
 
-- (void) configureWithLocalKey:(NSString*)key attachment:(NSDictionary*)attchmnt;
+@property (strong, nonatomic) IBOutlet UILabel *topLabel;
+@property (strong, nonatomic) IBOutlet UILabel *centerLabel;
+@property (strong, nonatomic) IBOutlet UILabel *bottomLabel;
+@property (strong, nonatomic) IBOutlet UILabel *rightLabel;
+
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenLabels;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leftAlignmentForBottomLabel;
+
+- (void) configureWithLocalKey:(NSString*)key attachment:(NSMutableDictionary*)attchmnt type:(NSString*)type;
 
 @end

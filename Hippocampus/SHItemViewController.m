@@ -159,7 +159,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return [self tableView:tV mediaBoxCellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
-        return [self tableView:tV attachmentCellForRowAtIndexPath:indexPath attachment:[[[self item] bucketsArray] objectAtIndex:indexPath.row]];
+        return [self tableView:tV attachmentCellForRowAtIndexPath:indexPath attachment:[[[self item] bucketsArray] objectAtIndex:indexPath.row] type:@"bucket"];
     }
     return nil;
 }
@@ -187,10 +187,10 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     return cell;
 }
 
-- (UITableViewCell*) tableView:(UITableView *)tableView attachmentCellForRowAtIndexPath:(NSIndexPath *)indexPath attachment:(NSDictionary*)attachment
+- (UITableViewCell*) tableView:(UITableView *)tableView attachmentCellForRowAtIndexPath:(NSIndexPath *)indexPath attachment:(NSMutableDictionary*)attachment type:(NSString*)type
 {
     SHAttachmentBoxTableViewCell* cell = (SHAttachmentBoxTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:attachmentCellIdentifier];
-    [cell configureWithLocalKey:self.localKey attachment:attachment];
+    [cell configureWithLocalKey:self.localKey attachment:attachment type:type];
     return cell;
 }
 
