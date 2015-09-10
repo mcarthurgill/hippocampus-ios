@@ -32,7 +32,7 @@
                                     <constraint firstAttribute="height" constant="42" id="Sjb-au-QfZ"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S3w-8q-7wc">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S3w-8q-7wc">
                                 <rect key="frame" x="71" y="33" width="42" height="28"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="28" id="C6C-VQ-wc5"/>
@@ -80,6 +80,7 @@
                 <outlet property="bottomLabel" destination="HYG-m1-XV3" id="4Me-ok-OGD"/>
                 <outlet property="card" destination="1uj-oB-MIL" id="9LR-T5-Tdm"/>
                 <outlet property="centerLabel" destination="S3w-8q-7wc" id="Ura-wi-uX0"/>
+                <outlet property="centerLabelHeight" destination="C6C-VQ-wc5" id="pnB-xB-GLY"/>
                 <outlet property="leftAlignmentForBottomLabel" destination="Kde-Dv-RL1" id="sH4-VS-yKz"/>
                 <outlet property="leftImageView" destination="m9F-Li-9Zo" id="jxO-nP-E3E"/>
                 <outlet property="rightLabel" destination="HYG-m1-XV3" id="akw-w2-xvC"/>

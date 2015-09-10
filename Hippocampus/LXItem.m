@@ -14,6 +14,7 @@
 {
     NSMutableDictionary* i = [NSMutableDictionary create:@"item"];
     [i setObject:message forKey:@"message"];
+    [i setObject:@"outstanding" forKey:@"status"];
     return i;
 }
 
@@ -88,13 +89,14 @@
         if (tempBucket) {
             [newBucketsArray addObject:tempBucket];
             //ADD TO BUCKET ON DISK
-            if ([tempBucket itemKeys] && ![[tempBucket itemKeys] containsObject:[self localKey]]) {
-                NSMutableArray* tempItemKeys = [[tempBucket itemKeys] mutableCopy];
-                [tempItemKeys addObject:[self localKey]];
-                [tempBucket setObject:tempItemKeys forKey:@"item_keys"];
-                [tempBucket removeObjectForKey:@"updated_at"];
-                [tempBucket assignLocalVersionIfNeeded];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":tempBucket}];
+            if ([tempBucket itemKeys]) {
+                //THE LINES BELOW WERE CAUSING A BUG OF REMOVING THE OTHER ITEM KEYS FROM THE BUCKET
+//                NSMutableArray* tempItemKeys = [[tempBucket itemKeys] mutableCopy];
+//                [tempItemKeys addObject:[self localKey]];
+//                [tempBucket setObject:tempItemKeys forKey:@"item_keys"];
+//                [tempBucket removeObjectForKey:@"updated_at"];
+//                [tempBucket assignLocalVersionIfNeeded];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":tempBucket}];
             } else {
                 [tempBucket setObject:[@[[self localKey]] mutableCopy] forKey:@"item_keys"];
             }

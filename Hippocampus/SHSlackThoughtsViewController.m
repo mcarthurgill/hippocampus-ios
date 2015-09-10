@@ -35,7 +35,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     
     [self setupSettings];
     
-    [self beginningActions];
+    //[self beginningActions];
     
     [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
 }
@@ -43,7 +43,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //[self beginningActions];
+    [self beginningActions];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -89,9 +89,11 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) beginningActions
 {
     [[self bucket] refreshFromServerWithSuccess:^(id responseObject){
-        [self tryToReload];
     } failure:^(NSError* error){}];
 }
+
+
+
 
 
 # pragma mark herlps
@@ -187,6 +189,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 }
 
 
+
 # pragma mark table view data source and delegate
 
 - (void) bucketRefreshed:(NSNotification*)notification
@@ -194,11 +197,12 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     if ([[notification userInfo] objectForKey:@"bucket"] && [[[[notification userInfo] objectForKey:@"bucket"] localKey] isEqualToString:self.localKey]) {
         //BUCKET MATCHES!
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW,0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self tryToReload];
-            if ([[[self bucket] itemKeys] isEqualToArray:[[notification userInfo] objectForKey:@"oldItemKeys"]]) {
+            //NSLog(@"%lu, %lu", (unsigned long)[[[self bucket] itemKeys] count], (unsigned long)[[[notification userInfo] objectForKey:@"oldItemKeys"] count]);
+            if ([[[self bucket] itemKeys] count] == [[[notification userInfo] objectForKey:@"oldItemKeys"] count]) {
                 //NO CHANGES!
             } else {
                 //[self scrollToBottom:YES];
+                [self tryToReload];
             }
         });
     }
@@ -208,6 +212,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 {
     [self.tableView reloadData];
     [self setTitle:[[self bucket] firstName]];
+    //NSLog(@"%@", [self bucket]);
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -218,7 +223,6 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return MIN(PAGE_COUNT*(page+1), [[[self bucket] itemKeys] count]);
-    return [[[self bucket] itemKeys] count];
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tV cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -287,6 +291,10 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) didPressRightButton:(id)sender
 {
     NSMutableDictionary* item = [NSMutableDictionary createItemWithMessage:self.textView.text];
+    if ([self bucket] && [[self bucket] localKey] && ![[[self bucket] localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
+        [item setObject:[[self bucket] localKey] forKey:@"bucket_local_key"];
+        [item setObject:@"assigned" forKey:@"status"];
+    }
     [[self bucket] addItem:item atIndex:0];
     
     [self reloadScreen];

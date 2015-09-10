@@ -211,7 +211,7 @@ static LXObjectManager* defaultManager = nil;
     for (NSString* key in copyOfKeys) {
         if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
             [[NSUserDefaults standardUserDefaults] setObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) forKey:key];
-            NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
+            //NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
         }
     }
     [[NSUserDefaults standardUserDefaults] synchronize];

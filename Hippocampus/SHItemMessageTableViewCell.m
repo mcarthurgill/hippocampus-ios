@@ -15,7 +15,7 @@
 
 - (void)awakeFromNib
 {
-    [self.label setFont:[UIFont titleLightFontWithSize:18.0f]];
+    [self.label setFont:[UIFont titleFontWithSize:15.0f]];
     [self.label setTextColor:[UIColor SHFontDarkGray]];
     
     [self setBackgroundColor:[UIColor slightBackgroundColor]];

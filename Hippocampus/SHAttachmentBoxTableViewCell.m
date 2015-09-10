@@ -24,6 +24,7 @@
 @synthesize centerLabel;
 @synthesize rightLabel;
 
+@synthesize centerLabelHeight;
 @synthesize verticalSpaceBetweenLabels;
 @synthesize leftAlignmentForBottomLabel;
 
@@ -111,16 +112,18 @@
     NSLog(@"bucket: %@", bucket);
     
     [self.centerLabel setHidden:NO];
-    [self.centerLabel setText:[NSString stringWithFormat:@"  %@  ",[bucket firstName]]];
+    [self.centerLabel setText:[NSString stringWithFormat:@"   %@   ",[bucket firstName]]];
     [self.centerLabel setBackgroundColor:[bucket bucketColor]];
     [self.centerLabel setTextColor:[UIColor whiteColor]];
-    [self.centerLabel.layer setCornerRadius:15.5];
+    [self.centerLabel setFont:[UIFont secondaryFontWithSize:13.0f]];
+    [self.centerLabel.layer setCornerRadius:11];
     [self.centerLabel setClipsToBounds:YES];
     
     [self.rightLabel setHidden:NO];
     [self.rightLabel setText:[NSString stringWithFormat:@"%@ Thoughts", [bucket itemsCount]]];
     
-    self.leftAlignmentForBottomLabel.constant = 10;
+    self.centerLabelHeight.constant = 22.0f;
+    self.leftAlignmentForBottomLabel.constant = 6;
     self.verticalSpaceBetweenLabels.constant = 2;
 }
 

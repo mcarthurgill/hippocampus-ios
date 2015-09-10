@@ -23,6 +23,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *bottomLabel;
 @property (strong, nonatomic) IBOutlet UILabel *rightLabel;
 
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerLabelHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenLabels;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *leftAlignmentForBottomLabel;
 

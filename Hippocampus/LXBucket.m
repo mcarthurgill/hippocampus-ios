@@ -42,12 +42,16 @@ static NSInteger maxRecentCount = 5;
                            success:^(id responseObject) {
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    BOOL shouldRefresh = NO;
-                                   NSMutableArray* oldItemKeys = [[LXObjectManager objectWithLocalKey:[responseObject localKey]] itemKeys] ? [[LXObjectManager objectWithLocalKey:[responseObject localKey]] itemKeys] : [@[] mutableCopy];
                                    NSMutableDictionary* bucket = [[responseObject objectForKey:@"bucket"] mutableCopy];
+                                   if ([[responseObject objectForKey:@"object_type"] isEqualToString:@"all-thoughts"]) {
+                                       [bucket setObject:[NSMutableDictionary allThoughtsLocalKey] forKey:@"local_key"];
+                                   }
+                                   NSMutableArray* oldItemKeys = [[NSMutableArray alloc] initWithArray:([[LXObjectManager objectWithLocalKey:[bucket localKey]] itemKeys] ? [[LXObjectManager objectWithLocalKey:[bucket localKey]] itemKeys] : @[])];
                                    if ([responseObject objectForKey:@"item_keys"] && NULL_TO_NIL([responseObject objectForKey:@"item_keys"])) {
                                        [bucket setObject:[responseObject objectForKey:@"item_keys"] forKey:@"item_keys"];
                                    }
                                    shouldRefresh = [bucket assignLocalVersionIfNeeded] || shouldRefresh;
+                                   
                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket, @"oldItemKeys":oldItemKeys}];
                                });
                                if (successCallback) {
@@ -95,6 +99,7 @@ static NSInteger maxRecentCount = 5;
         [keys removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(maxRecentCount, ([keys count] - maxRecentCount))]];
     }
     [LXObjectManager assignLocal:keys WithLocalKey:recentBucketsKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedBucketLocalKeys" object:nil];
 }
 
 + (void) removeRecentBucketLocalKey:(NSString*)key
@@ -149,6 +154,10 @@ static NSInteger maxRecentCount = 5;
 - (void) addItem:(NSMutableDictionary*)item atIndex:(NSInteger)index
 {
     //[[self items] insertObject:item atIndex:index];
+    if (![self itemKeys]) {
+        [self setObject:[[NSMutableArray alloc] init] forKey:@"item_keys"];
+    }
+    [self setObject:[NSMutableArray arrayWithArray:[self itemKeys]] forKey:@"item_keys"];
     [[self itemKeys] insertObject:[item localKey] atIndex:index];
     
     [self removeObjectForKey:@"updated_at"];

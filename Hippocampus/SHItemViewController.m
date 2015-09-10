@@ -7,6 +7,8 @@
 //
 
 #import "SHItemViewController.h"
+#import "SHSlackThoughtsViewController.h"
+
 #import "SHItemMessageTableViewCell.h"
 #import "SHItemAuthorTableViewCell.h"
 #import "SHMediaBoxTableViewCell.h"
@@ -34,7 +36,6 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     [self setupSettings];
     [self setupBottomView];
     
-    [self reloadScreen];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self reloadScreen];
     });
@@ -56,6 +57,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     [self.tableView registerNib:[UINib nibWithNibName:messageCellIdentifier bundle:nil] forCellReuseIdentifier:messageCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:mediaBoxCellIdentifier bundle:nil] forCellReuseIdentifier:mediaBoxCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:attachmentCellIdentifier bundle:nil] forCellReuseIdentifier:attachmentCellIdentifier];
+    
+    [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, 20.0f, self.tableView.contentInset.right)];
 }
 
 - (void) setupBottomView
@@ -70,6 +73,12 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 - (void) setTitle
 {
     [self setTitle:[NSDate timeAgoInWordsFromDatetime:[[self item] createdAt]]];
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self reloadScreen];
 }
 
 - (void)didReceiveMemoryWarning
@@ -196,6 +205,17 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 
 
 
+# pragma mark actions
+
+- (void) tableView:(UITableView *)tV didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+        //PUSH BUCKET!
+        UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
+        [(SHSlackThoughtsViewController*)vc setLocalKey:[[[[self item] bucketsArray] objectAtIndex:indexPath.row] localKey]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
 
 
 @end
