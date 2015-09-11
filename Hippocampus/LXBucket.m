@@ -19,12 +19,10 @@ static NSInteger maxRecentCount = 5;
 {
     [[LXServer shared] requestPath:@"/buckets/keys" withMethod:@"GET" withParamaters:nil authType:@"user"
                            success:^(id responseObject){
-                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                                   if ([responseObject respondsToSelector:@selector(count)]) {
-                                       [LXObjectManager assignLocal:responseObject WithLocalKey:@"bucketLocalKeys"];
-                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedBucketLocalKeys" object:nil userInfo:nil];
-                                   }
-                               });
+                               if ([responseObject respondsToSelector:@selector(count)]) {
+                                   [LXObjectManager assignLocal:responseObject WithLocalKey:@"bucketLocalKeys"];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedBucketLocalKeys" object:nil userInfo:nil];
+                               }
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
@@ -41,7 +39,8 @@ static NSInteger maxRecentCount = 5;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/detail.json", [self ID]] withMethod:@"GET" withParamaters:nil
                            success:^(id responseObject) {
                                
-                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                               dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.queuecopy24", 0);
+                               dispatch_async(backgroundQueue, ^{
                                    BOOL shouldRefresh = NO;
                                    
                                    NSMutableDictionary* bucket = [[responseObject objectForKey:@"bucket"] mutableCopy];
@@ -57,7 +56,9 @@ static NSInteger maxRecentCount = 5;
                                    
                                    shouldRefresh = [bucket assignLocalVersionIfNeeded] || shouldRefresh;
                                    
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket, @"oldItemKeys":oldItemKeys}];
+                                   dispatch_async(dispatch_get_main_queue(), ^{
+                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket, @"oldItemKeys":oldItemKeys}];
+                                   });
                                });
                                
                                if (successCallback) {

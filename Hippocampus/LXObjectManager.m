@@ -117,7 +117,8 @@ static LXObjectManager* defaultManager = nil;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/%@/changes", pluralObjectType] withMethod:@"GET" withParamaters:@{@"updated_at_timestamp":(updatedAtString ? updatedAtString : ([LXObjectManager objectWithLocalKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]] ? [NSString stringWithFormat:@"%f",[[NSDate timeWithString:[LXObjectManager objectWithLocalKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]]] timeIntervalSince1970]] : @"0"))}
                            success:^(id responseObject){
                                
-                               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                               dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.queuecopy32", 0);
+                               dispatch_async(backgroundQueue, ^{
                                    BOOL shouldRefresh = NO;
                                    
                                    for (NSDictionary* object in responseObject) {
