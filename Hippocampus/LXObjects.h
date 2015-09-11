@@ -23,6 +23,8 @@
 
 - (BOOL) updatedMoreRecentThan:(NSMutableDictionary*)otherObject;
 
+- (NSDictionary*) parameterReady;
+
 // saving and syncing
 
 - (void) saveRemote;

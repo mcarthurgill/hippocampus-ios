@@ -50,6 +50,7 @@ static LXObjectManager* defaultManager = nil;
 //set singleton variables
 - (void) setVariables
 {
+    runningQueries = NO;
     self.library = [[NSMutableDictionary alloc] init];
     self.queries = [[NSMutableArray alloc] init];
     [self initializeWithFailedQueries];
@@ -69,32 +70,56 @@ static LXObjectManager* defaultManager = nil;
 
 - (void) runQueries
 {
-    if ([self.queries count] > 0) {
-        NSArray* query = [self.queries firstObject];
-        [[LXServer shared] requestPath:query[0] withMethod:query[1] withParamaters:query[2] authType:query[3]
-                               success:^(id responseObject){
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"successfulQueryDelayed" object:nil userInfo:@{@"query":query}];//,@"responseObject":responseObject
-                                   [self removeQuery:query];
-                                   [self saveQueries];
-                                   [self runQueries];
-                               }
-                               failure:^(NSError* error){
-                                   NSLog(@"CODE=%ld", (long)error.code);
-                                   if (![LXServer errorBecauseOfBadConnection:error.code]) {
+    if ([self.queries count] > 0 && !runningQueries) {
+        runningQueries = YES;
+        NSMutableDictionary* query = [self.queries firstObject];
+        
+        NSMutableDictionary* obj = [LXObjectManager objectWithLocalKey:[query objectForKey:@"local_key"]];
+        if ((!obj && ![query objectForKey:@"object"]) || ![query objectForKey:@"path"] || ![query objectForKey:@"method"]) {
+            [self removeQuery:query];
+            [self saveQueries];
+            [self runQueries];
+        } else {
+            [[LXServer shared] requestPath:[query objectForKey:@"path"] withMethod:[query objectForKey:@"method"] withParamaters:(obj ? [obj parameterReady] : [query objectForKey:@"object"]) authType:nil
+                                   success:^(id responseObject){
+                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"successfulQueryDelayed" object:nil userInfo:@{@"query":query}];//,@"responseObject":responseObject
                                        [self removeQuery:query];
                                        [self saveQueries];
                                        [self runQueries];
                                    }
-                               }
-         ];
+                                   failure:^(NSError* error){
+                                       NSLog(@"CODE=%ld", (long)error.code);
+                                       if (![LXServer errorBecauseOfBadConnection:error.code]) {
+                                           [self removeQuery:query];
+                                           [self saveQueries];
+                                           [self runQueries];
+                                       }
+                                   }
+             ];
+        }
+    } else {
+        runningQueries = NO;
     }
     [self saveQueries];
 }
 
-- (void) addQuery:(NSString*)path withMethod:(NSString*)method withObject:(NSDictionary*)object withAuthType:(NSString*)authType
+- (void) addQuery:(NSString*)path withMethod:(NSString*)method withLocalKey:(NSString*)localKey withObject:(NSDictionary*)object
 {
-    [self.queries addObject:@[path, method, object, authType]];
-    [self runQueries];
+    NSMutableDictionary* dictOfCalls = [[NSMutableDictionary alloc] init];
+    if (path) {
+        [dictOfCalls setObject:path forKey:@"path"];
+    } else if (method) {
+        [dictOfCalls setObject:method forKey:@"method"];
+    } else if (localKey) {
+        [dictOfCalls setObject:localKey forKey:@"local_key"];
+    } else if (object) {
+        [dictOfCalls setObject:object forKey:@"object"];
+    }
+    if (dictOfCalls) {
+        [self.queries addObject:dictOfCalls];
+        NSLog(@"QUERIES: %@", self.queries);
+        [self runQueries];
+    }
 }
 
 - (void) removeQuery:(id)query

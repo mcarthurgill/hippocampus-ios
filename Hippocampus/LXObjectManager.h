@@ -9,13 +9,16 @@
 #import <Foundation/Foundation.h>
 
 @interface LXObjectManager : NSObject
+{
+    BOOL runningQueries;
+}
 
 + (LXObjectManager*) defaultManager;
 @property (strong, nonatomic) NSMutableDictionary* library;
 @property (strong, nonatomic) NSMutableArray* queries;
 
 - (void) runQueries;
-- (void) addQuery:(NSString*)path withMethod:(NSString*)method withObject:(NSDictionary*)object withAuthType:(NSString*)authType;
+- (void) addQuery:(NSString*)path withMethod:(NSString*)method withLocalKey:(NSString*)localKey withObject:(NSDictionary*)object;
 
 - (void) refreshObjectTypes:(NSString*)pluralObjectType withAboveUpdatedAt:(NSString*)updatedAtString success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) refreshObjectWithKey:(NSString*)localKey success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;

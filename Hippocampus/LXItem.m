@@ -211,7 +211,6 @@
                                }
                            }
                            failure:^(NSError* error) {
-                               [[LXObjectManager defaultManager] addQuery:@"/items/update_buckets" withMethod:@"PUT" withObject:@{@"local_key":[self localKey],@"local_keys":newLocalKeys} withAuthType:@"user"];
                                if (failureCallback) {
                                    failureCallback(error);
                                }

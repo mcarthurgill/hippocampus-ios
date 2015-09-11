@@ -126,6 +126,9 @@
 		28ED42311BA276A0000292AE /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED422F1BA276A0000292AE /* 37x-Checkmark.png */; };
 		28ED42321BA276A0000292AE /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED42301BA276A0000292AE /* 37x-Checkmark@2x.png */; };
 		28ED42351BA2B866000292AE /* SHEditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED42341BA2B866000292AE /* SHEditItemViewController.m */; };
+		28ED42501BA357F0000292AE /* compose_media.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED424D1BA357F0000292AE /* compose_media.png */; };
+		28ED42511BA357F0000292AE /* compose_media@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED424E1BA357F0000292AE /* compose_media@2x.png */; };
+		28ED42521BA357F0000292AE /* compose_media@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED424F1BA357F0000292AE /* compose_media@3x.png */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -307,6 +310,9 @@
 		28ED42301BA276A0000292AE /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
 		28ED42331BA2B866000292AE /* SHEditItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHEditItemViewController.h; sourceTree = "<group>"; };
 		28ED42341BA2B866000292AE /* SHEditItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHEditItemViewController.m; sourceTree = "<group>"; };
+		28ED424D1BA357F0000292AE /* compose_media.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = compose_media.png; sourceTree = "<group>"; };
+		28ED424E1BA357F0000292AE /* compose_media@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose_media@2x.png"; sourceTree = "<group>"; };
+		28ED424F1BA357F0000292AE /* compose_media@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose_media@3x.png"; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -684,6 +690,7 @@
 		288F123D1B752EC90001E0B0 /* Seahorse */ = {
 			isa = PBXGroup;
 			children = (
+				28ED42361BA31618000292AE /* Add Media */,
 				28ED422E1BA2766B000292AE /* Other */,
 				28ED42051BA20A71000292AE /* Toolbar Icons */,
 				28ED42001BA10241000292AE /* Item Detail Icons */,
@@ -802,6 +809,16 @@
 				28ED42301BA276A0000292AE /* 37x-Checkmark@2x.png */,
 			);
 			name = Other;
+			sourceTree = "<group>";
+		};
+		28ED42361BA31618000292AE /* Add Media */ = {
+			isa = PBXGroup;
+			children = (
+				28ED424D1BA357F0000292AE /* compose_media.png */,
+				28ED424E1BA357F0000292AE /* compose_media@2x.png */,
+				28ED424F1BA357F0000292AE /* compose_media@3x.png */,
+			);
+			name = "Add Media";
 			sourceTree = "<group>";
 		};
 		76CA904B1AE1572800C6E400 /* Permissions */ = {
@@ -925,6 +942,7 @@
 				288A74621B7531DD00F6A618 /* search@2x.png in Resources */,
 				28ED41FD1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib in Resources */,
 				28ED42111BA210AE000292AE /* toolbar_location.png in Resources */,
+				28ED42511BA357F0000292AE /* compose_media@2x.png in Resources */,
 				287423D31B059F7200A3242C /* email-screen.jpg in Resources */,
 				288A74821B8A2FEB00F6A618 /* plus_icon_white_swipe.png in Resources */,
 				28ED41DA1B9E1CDE000292AE /* add_new.png in Resources */,
@@ -959,11 +977,13 @@
 				28ACA39D1B8B73E800D7B215 /* SHLoadingTableViewCell.xib in Resources */,
 				2837E7FC1ABD06460089FA33 /* Photo-100.png in Resources */,
 				28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */,
+				28ED42501BA357F0000292AE /* compose_media.png in Resources */,
 				28ED42101BA210AE000292AE /* toolbar_duplicate.png in Resources */,
 				28CD3FC01AEA887200B3ABB6 /* new-collection-screen.jpg in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				28ACA3A21B8B7CF900D7B215 /* SHBucketTableViewCell.xib in Resources */,
 				28ED41FF1BA0F637000292AE /* Roboto-Medium.ttf in Resources */,
+				28ED42521BA357F0000292AE /* compose_media@3x.png in Resources */,
 				28ED42211BA25245000292AE /* nudge_detail_icon.png in Resources */,
 				28CD3FC41AEADC1A00B3ABB6 /* permission-screen.jpg in Resources */,
 				28CD3FBA1AE9C80800B3ABB6 /* assign-screen.jpg in Resources */,

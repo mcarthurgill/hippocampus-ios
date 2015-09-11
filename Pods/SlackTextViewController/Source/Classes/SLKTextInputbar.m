@@ -98,6 +98,16 @@
     
     //ADDED BY ME
     self.backgroundColor = [UIColor whiteColor];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardWillHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+- (void)slk_didShowOrHideKeyboard:(NSNotification*)notifiction
+{
+    [self slk_updateConstraintConstants];
 }
 
 
@@ -115,7 +125,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return CGSizeMake(UIViewNoIntrinsicMetric, 60.0); //previously 44.0f
+    return [self.textView isFirstResponder] ? CGSizeMake(UIViewNoIntrinsicMetric, 44.0f) : CGSizeMake(UIViewNoIntrinsicMetric, 60.0f); //previously 44.0f
 }
 
 + (BOOL)requiresConstraintBasedLayout
@@ -176,7 +186,7 @@
     {
         _rightButton = [UIButton buttonWithType:UIButtonTypeSystem];
         _rightButton.translatesAutoresizingMaskIntoConstraints = NO;
-        _rightButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0];
+        _rightButton.titleLabel.font = [UIFont fontWithName:@"Roboto-Regular" size:15.0];
         _rightButton.enabled = NO;
         
         [_rightButton setTitle:NSLocalizedString(@"Send", nil) forState:UIControlStateNormal];
@@ -601,6 +611,7 @@
     NSDictionary *metrics = @{@"top" : @(self.contentInset.top),
                               @"bottom" : @(self.contentInset.bottom),
                               @"left" : @(self.contentInset.left),
+                              @"halfLeft" : @(0),
                               @"right" : @(self.contentInset.right),
                               @"rightVerMargin" : @(rightVerMargin),
                               @"minTextViewHeight" : @(self.textView.intrinsicContentSize.height),
@@ -646,6 +657,12 @@
     else {
         self.editorContentViewHC.constant = zero;
         
+        if ([self.textView isFirstResponder]) {
+            [[self leftButton] setImage:[UIImage imageNamed:@"compose_media"] forState:UIControlStateNormal];
+        } else {
+            [[self leftButton] setImage:nil forState:UIControlStateNormal];
+        }
+        
         CGSize leftButtonSize = [self.leftButton imageForState:self.leftButton.state].size;
         
         if (leftButtonSize.width > 0) {
@@ -654,7 +671,7 @@
         }
         
         self.leftButtonWC.constant = roundf(leftButtonSize.width);
-        self.leftMarginWC.constant = (leftButtonSize.width > 0) ? self.contentInset.left : zero;
+        self.leftMarginWC.constant = (leftButtonSize.width > 0) ? self.contentInset.left+2.0f : zero;
         
         self.rightButtonWC.constant = [self slk_appropriateRightButtonWidth];
         self.rightMarginWC.constant = [self slk_appropriateRightButtonMargin];

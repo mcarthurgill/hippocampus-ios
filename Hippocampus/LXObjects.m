@@ -132,7 +132,7 @@
 
 - (void) delaySaveRemote
 {
-    [[LXObjectManager defaultManager] addQuery:[self requestPath] withMethod:[self requestMethod] withObject:[self parameterReady] withAuthType:[self authTypeForRequest]];
+    [[LXObjectManager defaultManager] addQuery:[self requestPath] withMethod:[self requestMethod] withLocalKey:[self localKey] withObject:nil];
 }
 
 - (void) saveRemote:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
@@ -216,7 +216,6 @@
                                }
                            }
                            failure:^(NSError* error) {
-                               [[LXObjectManager defaultManager] addQuery:[self requestPath] withMethod:@"DELETE" withObject:[self parameterReady] withAuthType:[self authTypeForRequest]];
                                if (failureCallback) {
                                    failureCallback(error);
                                }

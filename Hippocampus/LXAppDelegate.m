@@ -68,8 +68,8 @@
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     if (([name isEqualToString:@"Seahorse"]) && [[LXSession thisSession] user]) {
-        [[[LXSession thisSession] user] performSelector:@selector(updateTimeZone) withObject:nil afterDelay:10];
-        //[[[LXSession thisSession] user] updateTimeZone];
+        //[[[LXSession thisSession] user] performSelector:@selector(updateTimeZone) withObject:nil afterDelay:10];
+        [[[LXSession thisSession] user] updateTimeZone];
         [self refreshObjects];
     }
 }
@@ -110,8 +110,8 @@
     [self handleAppLaunch];
     
     if ([[LXSession thisSession] locationPermissionDetermined]) {
-        //[[LXSession thisSession] startLocationUpdates];
-        [[LXSession thisSession] performSelector:@selector(startLocationUpdates) withObject:nil afterDelay:2];
+        [[LXSession thisSession] startLocationUpdates];
+        //[[LXSession thisSession] performSelector:@selector(startLocationUpdates) withObject:nil afterDelay:2];
     }
     
     [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] refreshFromServerWithSuccess:^(id responseObject){} failure:^(NSError* error){}];
@@ -175,8 +175,8 @@
 
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
-    [self performSelector:@selector(registerDeviceToken:) withObject:deviceToken afterDelay:3];
-    //[self registerDeviceToken:deviceToken];
+    //[self performSelector:@selector(registerDeviceToken:) withObject:deviceToken afterDelay:3];
+    [self registerDeviceToken:deviceToken];
 }
 
 - (void) registerDeviceToken:(NSData*)deviceToken
