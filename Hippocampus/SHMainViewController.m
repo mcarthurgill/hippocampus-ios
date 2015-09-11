@@ -111,6 +111,8 @@
         [[self.viewControllersCached objectForKey:fromName] removeFromParentViewController];
         if ([[self.viewControllersCached objectForKey:fromName] respondsToSelector:@selector(textView)] && [[self.viewControllersCached objectForKey:fromName] textView]) {
             [[[self.viewControllersCached objectForKey:fromName] textView] resignFirstResponder];
+        } else if ([[self.viewControllersCached objectForKey:fromName] respondsToSelector:@selector(searchBar)] && [[self.viewControllersCached objectForKey:fromName] searchBar]) {
+            [[[self.viewControllersCached objectForKey:fromName] searchBar] resignFirstResponder];
         }
     }
     

@@ -26,7 +26,7 @@
 
 - (NSString*) mediaThumbnailURLWithScreenWidth
 {
-    return [self mediaThumbnailURLWithWidth:[[UIScreen mainScreen] bounds].size.width];
+    return [self mediaThumbnailURLWithWidth:([[UIScreen mainScreen] scale]*[[UIScreen mainScreen] bounds].size.width)];
 }
 
 - (NSString*) mediaThumbnailURLWithWidth:(NSInteger)width

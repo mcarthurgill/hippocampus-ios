@@ -23,6 +23,9 @@
 
 + (NSMutableDictionary*) allBucketNames;
 
++ (NSMutableArray*) recentBucketLocalKeys;
++ (void) addRecentBucketLocalKey:(NSString*)key;
++ (void) removeRecentBucketLocalKey:(NSString*)key;
 
 - (NSMutableArray*) items;
 - (NSMutableArray*) itemKeys;
@@ -30,6 +33,7 @@
 
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index;
 
+- (NSString*) relationLevel;
 - (UIColor*) bucketColor;
 
 - (BOOL) isAllThoughtsBucket;

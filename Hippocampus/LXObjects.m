@@ -209,7 +209,7 @@
     if ([self status]) {
         [self setObject:@"deleted" forKey:@"status"];
     }
-    [[LXServer shared] requestPath:[self requestPath] withMethod:@"DELETE" withParamaters:[self parameterReady] authType:[self authTypeForRequest]
+    [[LXServer shared] requestPath:[self requestPath] withMethod:@"DELETE" withParamaters:@{@"local_key":[self localKey]} authType:[self authTypeForRequest]
                            success:^(id responseObject) {
                                if (successCallback) {
                                    successCallback(responseObject);

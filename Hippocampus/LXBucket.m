@@ -10,6 +10,9 @@
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
+static NSString *recentBucketsKey = @"recentBuckeyKeys";
+static NSInteger maxRecentCount = 5;
+
 @implementation NSMutableDictionary (LXBucket)
 
 + (void) bucketKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
@@ -37,16 +40,26 @@
 {
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/detail.json", [self ID]] withMethod:@"GET" withParamaters:nil
                            success:^(id responseObject) {
+                               
                                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                                    BOOL shouldRefresh = NO;
-                                   NSMutableArray* oldItemKeys = [[LXObjectManager objectWithLocalKey:[responseObject localKey]] itemKeys] ? [[LXObjectManager objectWithLocalKey:[responseObject localKey]] itemKeys] : [@[] mutableCopy];
+                                   
                                    NSMutableDictionary* bucket = [[responseObject objectForKey:@"bucket"] mutableCopy];
+                                   if ([[responseObject objectForKey:@"object_type"] isEqualToString:@"all-thoughts"]) {
+                                       [bucket setObject:[NSMutableDictionary allThoughtsLocalKey] forKey:@"local_key"];
+                                   }
+                                   
+                                   NSMutableArray* oldItemKeys = [[NSMutableArray alloc] initWithArray:([[LXObjectManager objectWithLocalKey:[bucket localKey]] itemKeys] ? [[LXObjectManager objectWithLocalKey:[bucket localKey]] itemKeys] : @[])];
+                                   
                                    if ([responseObject objectForKey:@"item_keys"] && NULL_TO_NIL([responseObject objectForKey:@"item_keys"])) {
                                        [bucket setObject:[responseObject objectForKey:@"item_keys"] forKey:@"item_keys"];
                                    }
+                                   
                                    shouldRefresh = [bucket assignLocalVersionIfNeeded] || shouldRefresh;
+                                   
                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket, @"oldItemKeys":oldItemKeys}];
                                });
+                               
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
@@ -71,12 +84,35 @@
     NSMutableDictionary* names = [[NSMutableDictionary alloc] init];
     for (NSString* key in keys) {
         NSMutableDictionary* bucket = [LXObjectManager objectWithLocalKey:key];
-        if (bucket) {
+        if (bucket && [bucket firstName]) {
             [names setObject:[bucket firstName] forKey:[bucket firstName]];
         }
     }
-    NSLog(@"%@", names);
     return names;
+}
+
++ (NSMutableArray*) recentBucketLocalKeys
+{
+    return [LXObjectManager objectWithLocalKey:recentBucketsKey] ? [[LXObjectManager objectWithLocalKey:recentBucketsKey] mutableCopy] : [@[] mutableCopy];
+}
+
++ (void) addRecentBucketLocalKey:(NSString*)key
+{
+    NSMutableArray* keys = [self recentBucketLocalKeys];
+    [keys removeObject:key];
+    [keys insertObject:key atIndex:0];
+    if ([keys count] > maxRecentCount) {
+        [keys removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(maxRecentCount, ([keys count] - maxRecentCount))]];
+    }
+    [LXObjectManager assignLocal:keys WithLocalKey:recentBucketsKey];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedBucketLocalKeys" object:nil];
+}
+
++ (void) removeRecentBucketLocalKey:(NSString*)key
+{
+    NSMutableArray* keys = [self recentBucketLocalKeys];
+    [keys removeObject:key];
+    [LXObjectManager assignLocal:keys WithLocalKey:recentBucketsKey];
 }
 
 - (NSMutableArray*) items
@@ -100,7 +136,7 @@
 - (NSString*) cachedItemMessage
 {
     if ([self objectForKey:@"cached_item_message"] && NULL_TO_NIL([self objectForKey:@"cached_item_message"]))
-        return [self objectForKey:@"cached_item_message"];
+        return [[[self objectForKey:@"cached_item_message"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\uFFFC"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     return nil;
 }
 
@@ -109,13 +145,18 @@
     return [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] ? [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] : [@{} mutableCopy];
 }
 
+- (NSString*) relationLevel
+{
+    return [self objectForKey:@"relation_level"] && NULL_TO_NIL([self objectForKey:@"relation_level"]) ? [self objectForKey:@"relation_level"] : @"recent";
+}
+
 - (UIColor*) bucketColor
 {
-    if ([[self ID] integerValue]%3 == 0) {
-        return [UIColor SHColorGreen];
-    } else if ([[self ID] integerValue]%3 == 1) {
+    if ([[self relationLevel] isEqualToString:@"recent"]) {
         return [UIColor SHColorBlue];
-    } else if ([[self ID] integerValue]%3 == 2) {
+    } else if ([[self relationLevel] isEqualToString:@"future"]) {
+        return [UIColor SHColorGreen];
+    } else if ([[self relationLevel] isEqualToString:@"past"]) {
         return [UIColor SHColorOrange];
     }
     return [UIColor SHFontPurple];
@@ -124,6 +165,10 @@
 - (void) addItem:(NSMutableDictionary*)item atIndex:(NSInteger)index
 {
     //[[self items] insertObject:item atIndex:index];
+    if (![self itemKeys]) {
+        [self setObject:[[NSMutableArray alloc] init] forKey:@"item_keys"];
+    }
+    [self setObject:[NSMutableArray arrayWithArray:[self itemKeys]] forKey:@"item_keys"];
     [[self itemKeys] insertObject:[item localKey] atIndex:index];
     
     [self removeObjectForKey:@"updated_at"];
@@ -134,6 +179,15 @@
 
 - (void) removeItemFromBucket:(NSMutableDictionary*)item
 {
+    NSMutableDictionary* bucket = [LXObjectManager objectWithLocalKey:[self localKey]];
+    if ([item localKey] && [bucket itemKeys]) {
+        NSMutableArray* itemKeys = [[bucket itemKeys] mutableCopy];
+        [itemKeys removeObject:[item localKey]];
+        [bucket setObject:itemKeys forKey:@"item_keys"];
+        [bucket assignLocalVersionIfNeeded];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"removedItemFromBucket" object:nil userInfo:@{@"item":item,@"bucket":bucket}];
+    }
+    return;
     NSMutableArray* items = [[self items] mutableCopy];
     for (NSInteger i = 0; i < [items count]; ++i) {
         NSMutableDictionary* compareToItem = [items objectAtIndex:i];

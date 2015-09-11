@@ -9,11 +9,13 @@
 #import "SHSlackThoughtsViewController.h"
 #import "SHItemTableViewCell.h"
 #import "SHLoadingTableViewCell.h"
+#import "SHItemViewController.h"
 
 #define PAGE_COUNT 64
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
+static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 @interface SHSlackThoughtsViewController ()
 
@@ -42,6 +44,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     [super viewWillAppear:animated];
     //[self beginningActions];
+    [self reloadScreen];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -52,6 +55,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    if ([self.textView isFirstResponder]) {
+        [self.textView resignFirstResponder];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,6 +73,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bucketRefreshed:) name:@"bucketRefreshed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removedItemFromBucket:) name:@"removedItemFromBucket" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshVCWithLocalKey:) name:@"refreshVCWithLocalKey" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     page = 0;
     
@@ -79,6 +86,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self.textView setPlaceholder:@"What's on your mind?..."];
     [self.textView setFont:[UIFont inputFont]];
     
+    [[self rightButton] setTitle:@"Save" forState:UIControlStateNormal];
+    
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
@@ -86,10 +95,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) beginningActions
 {
-    [[self bucket] refreshFromServerWithSuccess:^(id responseObject){
-        [self tryToReload];
-    } failure:^(NSError* error){}];
+    [[self bucket] refreshFromServerWithSuccess:^(id responseObject){} failure:^(NSError* error){}];
 }
+
+
+
 
 
 # pragma mark herlps
@@ -119,6 +129,10 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     }
 }
 
+- (void) keyboardDidShow:(NSNotification*)notification
+{
+    [self scrollToBottom:YES];
+}
 
 
 # pragma mark scrolling helpers
@@ -185,20 +199,25 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 }
 
 
+
 # pragma mark table view data source and delegate
 
 - (void) bucketRefreshed:(NSNotification*)notification
 {
     if ([[notification userInfo] objectForKey:@"bucket"] && [[[[notification userInfo] objectForKey:@"bucket"] localKey] isEqualToString:self.localKey]) {
         //BUCKET MATCHES!
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW,0.01*NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self tryToReload];
-            if ([[[self bucket] itemKeys] isEqualToArray:[[notification userInfo] objectForKey:@"oldItemKeys"]]) {
-                //NO CHANGES!
-            } else {
-                //[self scrollToBottom:YES];
-            }
-        });
+        [self performSelectorOnMainThread:@selector(reloadIfDifferentCountOfKeys:) withObject:[[notification userInfo] objectForKey:@"oldItemKeys"] waitUntilDone:NO];
+    }
+}
+
+- (void) reloadIfDifferentCountOfKeys:(NSArray*)oldKeys
+{
+    NSLog(@"%lu, %lu", (unsigned long)[[[self bucket] itemKeys] count], (unsigned long)[oldKeys count]);
+    if ([[[self bucket] itemKeys] count] == [oldKeys count]) {
+        //NO CHANGES!
+    } else {
+        //[self scrollToBottom:YES];
+        [self tryToReload];
     }
 }
 
@@ -206,6 +225,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     [self.tableView reloadData];
     [self setTitle:[[self bucket] firstName]];
+    //NSLog(@"%@", [self bucket]);
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -216,7 +236,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return MIN(PAGE_COUNT*(page+1), [[[self bucket] itemKeys] count]);
-    return [[[self bucket] itemKeys] count];
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tV cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -272,6 +291,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     //NSLog(@"estimated %li height: %f", (long)indexPath.row, [self tableView:tV estimatedHeightForRowAtIndexPath:indexPath]);
     [tV deselectRowAtIndexPath:indexPath animated:YES];
+    UIViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:itemViewControllerIdentifier];
+    [(SHItemViewController*)vc setLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -282,6 +304,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) didPressRightButton:(id)sender
 {
     NSMutableDictionary* item = [NSMutableDictionary createItemWithMessage:self.textView.text];
+    if ([self bucket] && [[self bucket] localKey] && ![[[self bucket] localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
+        [item setObject:[[self bucket] localKey] forKey:@"bucket_local_key"];
+        [item setObject:@"assigned" forKey:@"status"];
+        [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] addItem:item atIndex:0];
+    }
     [[self bucket] addItem:item atIndex:0];
     
     [self reloadScreen];

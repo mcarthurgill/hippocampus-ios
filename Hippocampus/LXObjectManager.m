@@ -124,10 +124,8 @@ static LXObjectManager* defaultManager = nil;
                                        shouldRefresh = [[object mutableCopy] assignLocalVersionIfNeeded] || shouldRefresh;
                                        [self assignRefreshDate:[object updatedAt] forObjectTypes:pluralObjectType];
                                    }
-                                   if (shouldRefresh) {
-                                       //[[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket}];
-                                   }
                                });
+                               
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
@@ -211,7 +209,7 @@ static LXObjectManager* defaultManager = nil;
     for (NSString* key in copyOfKeys) {
         if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
             [[NSUserDefaults standardUserDefaults] setObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) forKey:key];
-            NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
+            //NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
         }
     }
     [[NSUserDefaults standardUserDefaults] synchronize];

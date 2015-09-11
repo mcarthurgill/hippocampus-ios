@@ -30,6 +30,16 @@
     return [UIFont fontWithName:@"Roboto-Regular" size:size];
 }
 
++ (UIFont*) titleLightFontWithSize:(NSInteger)size
+{
+    return [UIFont fontWithName:@"Roboto-Light" size:size];
+}
+
++ (UIFont*) titleMediumFontWithSize:(NSInteger)size
+{
+    return [UIFont fontWithName:@"Roboto-Medium" size:size];
+}
+
 + (UIFont*) itemContentFont
 {
     return [UIFont fontWithName:@"Roboto-Regular" size:14.0f];

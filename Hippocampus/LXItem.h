@@ -12,6 +12,8 @@
 
 + (NSMutableDictionary*) createItemWithMessage:(NSString*)message;
 
++ (NSInteger) unassignedThoughtCount;
+
 - (void) destroyItem;
 
 - (BOOL) hasMedia;
@@ -20,10 +22,17 @@
 - (BOOL) shouldShowAvatar;
 - (NSString*) avatarURLString;
 
+- (BOOL) hasAuthorName;
+- (NSString*) authorName;
+
 - (NSMutableArray*) bucketsArray;
 
 - (void) updateBucketsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 - (CGFloat) estimatedCellHeight;
+
+- (NSString*) reminderDescriptionString;
+
+- (NSMutableArray*) rawImages;
 
 @end

@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SHBucketsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SHBucketsViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+
+@property (strong, nonatomic) NSMutableArray* sections;
 
 @end

@@ -208,6 +208,10 @@
     [iv setClipsToBounds:YES];
     [iv setTranslatesAutoresizingMaskIntoConstraints:NO];
     [iv setBackgroundColor:[UIColor SHLightGray]];
+    
+    iv.layer.cornerRadius = 3.0f;
+    [iv.layer setBorderWidth:1.0f];
+    [iv.layer setBorderColor:[UIColor SHLightGray].CGColor];
     //[self addActivityIndicatorToView:iv];
     
     return iv;
@@ -279,7 +283,7 @@
         UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignBucketsViewController"];
         SHAssignBucketsViewController* vc = [[nc viewControllers] firstObject];
         [vc setLocalKey:self.itemLocalKey];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc,@"animated":@YES}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc,@"animated":@NO}];
     }
     return YES;
 }
@@ -352,6 +356,8 @@
 
 - (UIButton*) buttonForBucket:(NSMutableDictionary*)bucket
 {
+    bucket = [LXObjectManager objectWithLocalKey:[bucket localKey]];
+    
     UIButton* button = [[UIButton alloc] init];
     [button setTranslatesAutoresizingMaskIntoConstraints:NO];
     

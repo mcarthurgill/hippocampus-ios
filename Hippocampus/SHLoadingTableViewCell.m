@@ -12,6 +12,7 @@
 @implementation SHLoadingTableViewCell
 
 @synthesize responseObject;
+@synthesize label;
 
 - (void)awakeFromNib
 {
@@ -24,6 +25,11 @@
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedObject:) name:@"refreshedObject" object:nil];
+    
+    [self.label setFont:[UIFont secondaryFontWithSize:13.0f]];
+    [self.label setTextColor:[UIColor SHFontLightGray]];
+    
+    [self setBackgroundColor:[UIColor slightBackgroundColor]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

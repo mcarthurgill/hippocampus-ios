@@ -14,7 +14,26 @@
 {
     NSMutableDictionary* i = [NSMutableDictionary create:@"item"];
     [i setObject:message forKey:@"message"];
+    [i setObject:@"outstanding" forKey:@"status"];
     return i;
+}
+
++ (NSInteger) unassignedThoughtCount
+{
+    NSMutableDictionary* allThoughtBucket = [LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
+    NSInteger count = 0;
+    NSInteger index = 0;
+    for (NSString* key in [allThoughtBucket itemKeys]) {
+        NSMutableDictionary* object = [LXObjectManager objectWithLocalKey:key];
+        if (object && [object isOutstanding]) {
+            ++count;
+        }
+        ++index;
+        if (index > 256) {
+            return count;
+        }
+    }
+    return count;
 }
 
 - (void) destroyItem
@@ -23,8 +42,8 @@
         //remove from all items
         [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] removeItemFromBucket:self];
         //remove from each bucket
-        for (NSMutableDictionary* bucket in [self buckets]) {
-            [bucket removeItemFromBucket:self];
+        for (NSMutableDictionary* bucket in [self bucketsArray]) {
+            [[bucket mutableCopy] removeItemFromBucket:self];
         }
         [self destroyBoth];
     }
@@ -54,6 +73,15 @@
     return [NSString stringWithFormat:@"%@/avatar/%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIRoot"], [self userID]];
 }
 
+- (BOOL) hasAuthorName
+{
+    return [self objectForKey:@"user"] && [[self objectForKey:@"user"] objectForKey:@"name"] && NULL_TO_NIL([[self objectForKey:@"user"] objectForKey:@"name"]) && [[[self objectForKey:@"user"] objectForKey:@"name"] length] > 0;
+}
+
+- (NSString*) authorName
+{
+    return [[self objectForKey:@"user"] objectForKey:@"name"];
+}
 
 
 - (NSMutableArray*) bucketsArray
@@ -65,10 +93,10 @@
 - (void) updateBucketsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     //OLD BUCKET KEYS
-    NSMutableArray* removedFromBucketKeys = [[NSMutableArray alloc] init];
+    NSMutableArray* oldBucketKeys = [[NSMutableArray alloc] init];
     if ([self bucketsArray]) {
         for (NSMutableDictionary* oldStub in [self bucketsArray]) {
-            [removedFromBucketKeys addObject:[oldStub localKey]];
+            [oldBucketKeys addObject:[oldStub localKey]];
         }
     }
     //CREATE NEW BUCKETS ARRAY
@@ -79,13 +107,14 @@
         if (tempBucket) {
             [newBucketsArray addObject:tempBucket];
             //ADD TO BUCKET ON DISK
-            if ([tempBucket itemKeys] && ![[tempBucket itemKeys] containsObject:[self localKey]]) {
-                NSMutableArray* tempItemKeys = [[tempBucket itemKeys] mutableCopy];
-                [tempItemKeys addObject:[self localKey]];
-                [tempBucket setObject:tempItemKeys forKey:@"item_keys"];
-                [tempBucket removeObjectForKey:@"updated_at"];
-                [tempBucket assignLocalVersionIfNeeded];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":tempBucket}];
+            if ([tempBucket itemKeys]) {
+                //THE LINES BELOW WERE CAUSING A BUG OF REMOVING THE OTHER ITEM KEYS FROM THE BUCKET
+//                NSMutableArray* tempItemKeys = [[tempBucket itemKeys] mutableCopy];
+//                [tempItemKeys addObject:[self localKey]];
+//                [tempBucket setObject:tempItemKeys forKey:@"item_keys"];
+//                [tempBucket removeObjectForKey:@"updated_at"];
+//                [tempBucket assignLocalVersionIfNeeded];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":tempBucket}];
             } else {
                 [tempBucket setObject:[@[[self localKey]] mutableCopy] forKey:@"item_keys"];
             }
@@ -93,12 +122,15 @@
                 [unsavedNewBucketsArray addObject:tempBucket];
             }
         }
-        if ([removedFromBucketKeys containsObject:key]) {
-            [removedFromBucketKeys removeObject:key];
+        if ([oldBucketKeys containsObject:key]) {
+            [oldBucketKeys removeObject:key];
+        } else {
+            //add to recent buckets
+            [NSMutableDictionary addRecentBucketLocalKey:key];
         }
     }
     //REMOVE FROM THESE BUCKETS
-    for (NSString* key in removedFromBucketKeys) {
+    for (NSString* key in oldBucketKeys) {
         NSMutableDictionary* tempBucket = [LXObjectManager objectWithLocalKey:key];
         if (tempBucket && [tempBucket itemKeys]) {
             NSMutableArray* tempItemKeys = [[tempBucket itemKeys] mutableCopy];
@@ -274,5 +306,42 @@
     
     return ceilf(messageHeight + imageHeight + THOUGHT_TOP_SIDE_MARGIN + THOUGHT_BOTTOM_SIDE_MARGIN);
 }
+
+- (NSString*) reminderDescriptionString
+{
+    if (![self hasReminder]) {
+        return @"No Nudge Set";
+    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSDate *d = [NSDate timeWithString:[self reminderDate]];
+    if ([[[self itemType] lowercaseString] isEqualToString:@"once"]) {
+        [formatter setDateFormat:@"MMMM d, yyyy"];
+        return [formatter stringFromDate:d];
+    } else if ([[[self itemType] lowercaseString] isEqualToString:@"yearly"]) {
+        [formatter setDateFormat:@"MMMM d"];
+        return [NSString stringWithFormat:@"Every %@", [formatter stringFromDate:d]];
+    } else if ([[[self itemType] lowercaseString] isEqualToString:@"monthly"]) {
+        [formatter setDateFormat:@"d"];
+        return [NSString stringWithFormat:@"the %@ of every month", [formatter stringFromDate:d]];
+    } else if ([[[self itemType] lowercaseString] isEqualToString:@"weekly"]) {
+        [formatter setDateFormat:@"eeee"];
+        return [NSString stringWithFormat:@"Every %@", [formatter stringFromDate:d]];
+    } else if ([[[self itemType] lowercaseString] isEqualToString:@"daily"]) {
+        return @"Every Day";
+    }
+    return [NSDate formattedDateFromString:[self reminderDate]];
+}
+
+- (NSMutableArray*) rawImages
+{
+    NSMutableArray* tempImages = [[NSMutableArray alloc] init];
+    for (NSDictionary* medium in [self media]) {
+        if ([SGImageCache haveImageForURL:[medium mediaThumbnailURLWithScreenWidth]]) {
+            [tempImages addObject:[SGImageCache imageForURL:[medium mediaThumbnailURLWithScreenWidth]]];
+        }
+    }
+    return tempImages;
+}
+
 
 @end

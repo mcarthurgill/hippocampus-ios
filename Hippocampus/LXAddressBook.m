@@ -75,7 +75,8 @@ static LXAddressBook* thisBook = nil;
 
 - (void) obtainContactList:(void (^) (BOOL success))completion
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.queuecopy2", 0);
+    dispatch_async(backgroundQueue, ^{
         self.contactsForAssignment = [[NSMutableArray alloc] init];
         self.allContacts = [[NSMutableArray alloc] init];
         CFErrorRef *error = NULL;
@@ -108,9 +109,11 @@ static LXAddressBook* thisBook = nil;
             }
         }
         
-        [self sortContacts];
-        //NSLog(@"*******sortedContacts*******");
-        completion(YES);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self sortContacts];
+            //NSLog(@"*******sortedContacts*******");
+            completion(YES);
+        });
     });
 }
 
