@@ -80,7 +80,7 @@ static LXObjectManager* defaultManager = nil;
             [self saveQueries];
             [self runQueries];
         } else {
-            [[LXServer shared] requestPath:[query objectForKey:@"path"] withMethod:[query objectForKey:@"method"] withParamaters:(obj ? [obj parameterReady] : [query objectForKey:@"object"]) authType:nil
+            [[LXServer shared] requestPath:[query objectForKey:@"path"] withMethod:[query objectForKey:@"method"] withParamaters:(obj ? [obj parameterReady] : [query objectForKey:@"object"]) authType:@"repeat"
                                    success:^(id responseObject){
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"successfulQueryDelayed" object:nil userInfo:@{@"query":query}];//,@"responseObject":responseObject
                                        [self removeQuery:query];
@@ -108,16 +108,20 @@ static LXObjectManager* defaultManager = nil;
     NSMutableDictionary* dictOfCalls = [[NSMutableDictionary alloc] init];
     if (path) {
         [dictOfCalls setObject:path forKey:@"path"];
-    } else if (method) {
+    }
+    if (method) {
         [dictOfCalls setObject:method forKey:@"method"];
-    } else if (localKey) {
+    }
+    if (localKey) {
         [dictOfCalls setObject:localKey forKey:@"local_key"];
-    } else if (object) {
+    }
+    if (object) {
         [dictOfCalls setObject:object forKey:@"object"];
     }
     if (dictOfCalls) {
         [self.queries addObject:dictOfCalls];
         NSLog(@"QUERIES: %@", self.queries);
+        [LXObjectManager assignLocal:self.queries WithLocalKey:@"failed-queries"];
         [self runQueries];
     }
 }

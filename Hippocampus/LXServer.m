@@ -76,7 +76,7 @@
             [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
-            if ([[LXSession thisSession] user]) {
+            if ([[LXSession thisSession] user] && ![authType isEqualToString:@"repeat"]) {
                 [[LXObjectManager defaultManager] addQuery:path withMethod:method withLocalKey:[self localStringForParams:p] withObject:p];
             }
             if (failureCallback)
@@ -91,7 +91,7 @@
             [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
-            if ([[LXSession thisSession] user]) {
+            if ([[LXSession thisSession] user] && ![authType isEqualToString:@"repeat"]) {
                 [[LXObjectManager defaultManager] addQuery:path withMethod:method withLocalKey:[self localStringForParams:p] withObject:p];
             }
             if (failureCallback)
@@ -106,8 +106,8 @@
             [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
-            if ([[LXSession thisSession] user]) {
-                [[LXObjectManager defaultManager] addQuery:path withMethod:method withLocalKey:[self localStringForParams:p] withObject:p];
+            if ([[LXSession thisSession] user] && ![authType isEqualToString:@"repeat"]) {
+                [[LXObjectManager defaultManager] addQuery:path withMethod:method.uppercaseString withLocalKey:[self localStringForParams:p] withObject:p];
             }
             if (failureCallback)
                 failureCallback(error);
