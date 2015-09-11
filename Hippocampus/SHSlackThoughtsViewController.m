@@ -85,6 +85,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     
     [self.textView setPlaceholder:@"What's on your mind?..."];
     [self.textView setFont:[UIFont inputFont]];
+    [self.textView setTextColor:[UIColor SHFontDarkGray]];
     
     [[self rightButton] setTitle:@"Save" forState:UIControlStateNormal];
     

@@ -53,17 +53,21 @@
     }
     
     if ([method.uppercaseString isEqualToString:@"GET"]) {
-        [self GET:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
-            //NSLog(@"%@", responseObject);
-            if (successCallback)
-                successCallback(responseObject);
-            [[UIApplication sharedApplication] endBackgroundTask:bgt];
-        } failure:^(NSURLSessionDataTask* task, NSError* error) {
-            NSLog(@"ERROR! %@", [error localizedDescription]);
-            if (failureCallback)
-                failureCallback(error);
-            [[UIApplication sharedApplication] endBackgroundTask:bgt];
-        }];
+        if ([[LXObjectManager defaultManager] queries] && [[[LXObjectManager defaultManager] queries] count] > 0) {
+            [[LXObjectManager defaultManager] runQueries];
+        } else {
+            [self GET:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
+                //NSLog(@"%@", responseObject);
+                if (successCallback)
+                    successCallback(responseObject);
+                [[UIApplication sharedApplication] endBackgroundTask:bgt];
+            } failure:^(NSURLSessionDataTask* task, NSError* error) {
+                NSLog(@"ERROR! %@", [error localizedDescription]);
+                if (failureCallback)
+                    failureCallback(error);
+                [[UIApplication sharedApplication] endBackgroundTask:bgt];
+            }];
+        }
     } else if ([method.uppercaseString isEqualToString:@"POST"]) {
         [self POST:path parameters:params constructingBodyWithBlock:block success:^(NSURLSessionDataTask* task, id responseObject) {
             //NSLog(@"%@", responseObject);
@@ -72,6 +76,9 @@
             [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
+            if ([[LXSession thisSession] user] && ![authType isEqualToString:@"repeat"]) {
+                [[LXObjectManager defaultManager] addQuery:path withMethod:method withLocalKey:[self localStringForParams:p] withObject:p];
+            }
             if (failureCallback)
                 failureCallback(error);
             [[UIApplication sharedApplication] endBackgroundTask:bgt];
@@ -84,6 +91,9 @@
             [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
+            if ([[LXSession thisSession] user] && ![authType isEqualToString:@"repeat"]) {
+                [[LXObjectManager defaultManager] addQuery:path withMethod:method withLocalKey:[self localStringForParams:p] withObject:p];
+            }
             if (failureCallback)
                 failureCallback(error);
             [[UIApplication sharedApplication] endBackgroundTask:bgt];
@@ -96,11 +106,26 @@
             [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
+            if ([[LXSession thisSession] user] && ![authType isEqualToString:@"repeat"]) {
+                [[LXObjectManager defaultManager] addQuery:path withMethod:method.uppercaseString withLocalKey:[self localStringForParams:p] withObject:p];
+            }
             if (failureCallback)
                 failureCallback(error);
             [[UIApplication sharedApplication] endBackgroundTask:bgt];
         }];
     }
+}
+
+- (NSString*) localStringForParams:(NSDictionary*)params
+{
+    if ([params objectForKey:@"local_key"]) {
+        return [params objectForKey:@"local_key"];
+    } else if ([params objectForKey:@"item"] && [[params objectForKey:@"item"] objectForKey:@"local_key"]) {
+        return [[params objectForKey:@"item"] objectForKey:@"local_key"];
+    } else if ([params objectForKey:@"bucket"] && [[params objectForKey:@"bucket"] objectForKey:@"local_key"]) {
+        return [[params objectForKey:@"bucket"] objectForKey:@"local_key"];
+    }
+    return nil;
 }
 
 + (BOOL) errorBecauseOfBadConnection:(NSInteger)code
