@@ -465,7 +465,15 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     
     if ([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
         // Media is an image
-//        UIImage *image = info[UIImagePickerControllerOriginalImage];
+        UIImage *image = info[UIImagePickerControllerOriginalImage];
+
+        // Create path.
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Image.png"];
+        // Save image.
+        [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];
+        
+        
     }
     else if ([mediaType isEqualToString:(NSString*)kUTTypeMovie]) {
         // Media is a video
