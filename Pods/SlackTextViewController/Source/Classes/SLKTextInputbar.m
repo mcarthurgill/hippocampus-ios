@@ -98,16 +98,6 @@
     
     //ADDED BY ME
     self.backgroundColor = [UIColor whiteColor];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardWillHideNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardDidShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(slk_didShowOrHideKeyboard:) name:UIKeyboardDidHideNotification object:nil];
-}
-
-- (void)slk_didShowOrHideKeyboard:(NSNotification*)notifiction
-{
-    [self slk_updateConstraintConstants];
 }
 
 
@@ -125,7 +115,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return [self.textView isFirstResponder] ? CGSizeMake(UIViewNoIntrinsicMetric, 44.0f) : CGSizeMake(UIViewNoIntrinsicMetric, 60.0f); //previously 44.0f
+    return CGSizeMake(UIViewNoIntrinsicMetric, 60.0f);
+    //return [self.textView isFirstResponder] ? CGSizeMake(UIViewNoIntrinsicMetric, 44.0f) : CGSizeMake(UIViewNoIntrinsicMetric, 60.0f); //previously 44.0f
 }
 
 + (BOOL)requiresConstraintBasedLayout
@@ -657,11 +648,11 @@
     else {
         self.editorContentViewHC.constant = zero;
         
-        if ([self.textView isFirstResponder]) {
-            [[self leftButton] setImage:[UIImage imageNamed:@"compose_media"] forState:UIControlStateNormal];
-        } else {
-            [[self leftButton] setImage:nil forState:UIControlStateNormal];
-        }
+//        if ([self.textView isFirstResponder]) {
+//            [[self leftButton] setImage:[UIImage imageNamed:@"compose_media"] forState:UIControlStateNormal];
+//        } else {
+//            [[self leftButton] setImage:nil forState:UIControlStateNormal];
+//        }
         
         CGSize leftButtonSize = [self.leftButton imageForState:self.leftButton.state].size;
         
