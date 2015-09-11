@@ -142,7 +142,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [self.sections addObject:@"media"];
     }
     if ([[self item] hasReminder]) {
-        //[self.sections addObject:@"nudge"];
+        [self.sections addObject:@"nudge"];
     }
     if ([[self item] hasBuckets]) {
         [self.sections addObject:@"buckets"];
@@ -161,6 +161,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         return [[[self item] media] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
         return [[[self item] bucketsArray] count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"nudge"]) {
+        return 1;
     }
     return 0;
 }
@@ -173,6 +175,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         return [self tableView:tV messsageCellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return [self tableView:tV mediaBoxCellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"nudge"]) {
+        return [self tableView:tV attachmentCellForRowAtIndexPath:indexPath attachment:[self item] type:@"nudge"];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
         return [self tableView:tV attachmentCellForRowAtIndexPath:indexPath attachment:[[[self item] bucketsArray] objectAtIndex:indexPath.row] type:@"bucket"];
     }
@@ -221,6 +225,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
         [(SHSlackThoughtsViewController*)vc setLocalKey:[[[[self item] bucketsArray] objectAtIndex:indexPath.row] localKey]];
         [self.navigationController pushViewController:vc animated:YES];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"nudge"]) {
+        [self presentNudgeScreen];
     }
 }
 
@@ -229,6 +235,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     NSLog(@"successful %@ call", action);
     if ([action isEqualToString:@"bucket"]) {
         [self presentAssignScreen];
+    } else if ([action isEqualToString:@"nudge"]) {
+        [self presentNudgeScreen];
     }
 }
 

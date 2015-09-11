@@ -30,6 +30,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerLabelHeight;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceBetweenLabels;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *leftAlignmentForBottomLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerLabelCenterY;
 
 - (void) configureWithLocalKey:(NSString*)key attachment:(NSMutableDictionary*)attchmnt type:(NSString*)type;
 

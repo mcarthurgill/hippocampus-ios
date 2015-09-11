@@ -50,10 +50,20 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jFy-a8-0Gz">
+                                <rect key="frame" x="71" y="16" width="205" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="aqt-2X-Q6m"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="S3w-8q-7wc" firstAttribute="centerY" secondItem="m9F-Li-9Zo" secondAttribute="centerY" constant="-8" id="A3v-UC-tah"/>
+                            <constraint firstItem="S3w-8q-7wc" firstAttribute="leading" secondItem="jFy-a8-0Gz" secondAttribute="leading" id="Crn-sY-C32"/>
                             <constraint firstItem="HYG-m1-XV3" firstAttribute="top" secondItem="S3w-8q-7wc" secondAttribute="bottom" id="EvR-hi-Uel"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="S3w-8q-7wc" secondAttribute="trailing" constant="8" id="F6P-He-bFb"/>
                             <constraint firstItem="S3w-8q-7wc" firstAttribute="leading" secondItem="m9F-Li-9Zo" secondAttribute="trailing" constant="19" id="KdM-qw-rIR"/>
@@ -63,8 +73,10 @@
                             <constraint firstAttribute="bottom" secondItem="rPR-Rp-d1C" secondAttribute="bottom" id="TmV-De-RXU"/>
                             <constraint firstItem="m9F-Li-9Zo" firstAttribute="leading" secondItem="1uj-oB-MIL" secondAttribute="leading" constant="10" id="XQj-2h-YiF"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="Xnw-7i-QlK"/>
+                            <constraint firstAttribute="trailing" secondItem="jFy-a8-0Gz" secondAttribute="trailing" constant="8" id="Xxe-sB-s2C"/>
                             <constraint firstAttribute="centerY" secondItem="m9F-Li-9Zo" secondAttribute="centerY" id="nej-lQ-YGL"/>
                             <constraint firstAttribute="trailing" secondItem="HYG-m1-XV3" secondAttribute="trailing" constant="8" id="oXe-BJ-A96"/>
+                            <constraint firstItem="S3w-8q-7wc" firstAttribute="top" secondItem="jFy-a8-0Gz" secondAttribute="bottom" constant="-4" id="xln-6C-C07"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -80,11 +92,13 @@
                 <outlet property="bottomLabel" destination="HYG-m1-XV3" id="4Me-ok-OGD"/>
                 <outlet property="card" destination="1uj-oB-MIL" id="9LR-T5-Tdm"/>
                 <outlet property="centerLabel" destination="S3w-8q-7wc" id="Ura-wi-uX0"/>
+                <outlet property="centerLabelCenterY" destination="A3v-UC-tah" id="RAD-2k-FKv"/>
                 <outlet property="centerLabelHeight" destination="C6C-VQ-wc5" id="pnB-xB-GLY"/>
                 <outlet property="leftAlignmentForBottomLabel" destination="Kde-Dv-RL1" id="sH4-VS-yKz"/>
                 <outlet property="leftImageView" destination="m9F-Li-9Zo" id="jxO-nP-E3E"/>
                 <outlet property="rightLabel" destination="HYG-m1-XV3" id="akw-w2-xvC"/>
                 <outlet property="separatorView" destination="rPR-Rp-d1C" id="AtI-il-Dj9"/>
+                <outlet property="topLabel" destination="jFy-a8-0Gz" id="PqK-CX-nD2"/>
                 <outlet property="verticalSpaceBetweenLabels" destination="EvR-hi-Uel" id="aEA-rG-RAl"/>
             </connections>
             <point key="canvasLocation" x="192" y="314.5"/>

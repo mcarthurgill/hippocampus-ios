@@ -307,4 +307,30 @@
     return ceilf(messageHeight + imageHeight + THOUGHT_TOP_SIDE_MARGIN + THOUGHT_BOTTOM_SIDE_MARGIN);
 }
 
+- (NSString*) reminderDescriptionString
+{
+    if (![self hasReminder]) {
+        return @"No Nudge Set";
+    }
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSDate *d = [NSDate timeWithString:[self reminderDate]];
+    if ([[[self itemType] lowercaseString] isEqualToString:@"once"]) {
+        [formatter setDateFormat:@"MMMM d, yyyy"];
+        return [formatter stringFromDate:d];
+    } else if ([[[self itemType] lowercaseString] isEqualToString:@"yearly"]) {
+        [formatter setDateFormat:@"MMMM d"];
+        return [NSString stringWithFormat:@"Every %@", [formatter stringFromDate:d]];
+    } else if ([[[self itemType] lowercaseString] isEqualToString:@"monthly"]) {
+        [formatter setDateFormat:@"d"];
+        return [NSString stringWithFormat:@"the %@ of every month", [formatter stringFromDate:d]];
+    } else if ([[[self itemType] lowercaseString] isEqualToString:@"weekly"]) {
+        [formatter setDateFormat:@"eeee"];
+        return [NSString stringWithFormat:@"Every %@", [formatter stringFromDate:d]];
+    } else if ([[[self itemType] lowercaseString] isEqualToString:@"daily"]) {
+        return @"Every Day";
+    }
+    return [NSDate formattedDateFromString:[self reminderDate]];
+}
+
+
 @end

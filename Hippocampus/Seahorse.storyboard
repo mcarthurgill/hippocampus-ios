@@ -162,7 +162,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="y0Z-jj-vZF">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" image="person.png" id="u9F-3q-Jau">
+                        <barButtonItem key="leftBarButtonItem" enabled="NO" image="person.png" id="u9F-3q-Jau">
                             <connections>
                                 <action selector="leftBarButtonAction:" destination="Ffk-65-DpX" id="DOj-Hm-vPC"/>
                             </connections>

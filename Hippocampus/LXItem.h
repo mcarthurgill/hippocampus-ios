@@ -31,4 +31,6 @@
 
 - (CGFloat) estimatedCellHeight;
 
+- (NSString*) reminderDescriptionString;
+
 @end

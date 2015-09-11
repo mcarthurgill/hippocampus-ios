@@ -120,7 +120,8 @@
 		28ED42111BA210AE000292AE /* toolbar_location.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED420C1BA210AE000292AE /* toolbar_location.png */; };
 		28ED42121BA210AE000292AE /* toolbar_media.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED420D1BA210AE000292AE /* toolbar_media.png */; };
 		28ED42131BA210AE000292AE /* toolbar_trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED420E1BA210AE000292AE /* toolbar_trash.png */; };
-		28ED421B1BA22307000292AE /* toolbar_bella.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED421A1BA22307000292AE /* toolbar_bella.png */; };
+		28ED42211BA25245000292AE /* nudge_detail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED42201BA25245000292AE /* nudge_detail_icon.png */; };
+		28ED42231BA26EBD000292AE /* toolbar_bella.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED42221BA26EBD000292AE /* toolbar_bella.png */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -295,7 +296,8 @@
 		28ED420C1BA210AE000292AE /* toolbar_location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_location.png; sourceTree = "<group>"; };
 		28ED420D1BA210AE000292AE /* toolbar_media.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_media.png; sourceTree = "<group>"; };
 		28ED420E1BA210AE000292AE /* toolbar_trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_trash.png; sourceTree = "<group>"; };
-		28ED421A1BA22307000292AE /* toolbar_bella.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bella.png; sourceTree = "<group>"; };
+		28ED42201BA25245000292AE /* nudge_detail_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nudge_detail_icon.png; sourceTree = "<group>"; };
+		28ED42221BA26EBD000292AE /* toolbar_bella.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bella.png; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -761,6 +763,7 @@
 		28ED42001BA10241000292AE /* Item Detail Icons */ = {
 			isa = PBXGroup;
 			children = (
+				28ED42201BA25245000292AE /* nudge_detail_icon.png */,
 				28ED42031BA102F4000292AE /* bucket_detail_icon.png */,
 			);
 			name = "Item Detail Icons";
@@ -769,7 +772,7 @@
 		28ED42051BA20A71000292AE /* Toolbar Icons */ = {
 			isa = PBXGroup;
 			children = (
-				28ED421A1BA22307000292AE /* toolbar_bella.png */,
+				28ED42221BA26EBD000292AE /* toolbar_bella.png */,
 				28ED420A1BA210AE000292AE /* toolbar_bucket.png */,
 				28ED420B1BA210AE000292AE /* toolbar_duplicate.png */,
 				28ED420C1BA210AE000292AE /* toolbar_location.png */,
@@ -886,6 +889,7 @@
 			files = (
 				28CD3FBE1AEA0F8700B3ABB6 /* item-screen.jpg in Resources */,
 				28ED42121BA210AE000292AE /* toolbar_media.png in Resources */,
+				28ED42231BA26EBD000292AE /* toolbar_bella.png in Resources */,
 				28ED41C71B9C96FA000292AE /* Abel-Regular.ttf in Resources */,
 				281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */,
 				281CA923196C29F800E6BE96 /* 179-notepad@2x.png in Resources */,
@@ -936,7 +940,7 @@
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				28ACA3A21B8B7CF900D7B215 /* SHBucketTableViewCell.xib in Resources */,
 				28ED41FF1BA0F637000292AE /* Roboto-Medium.ttf in Resources */,
-				28ED421B1BA22307000292AE /* toolbar_bella.png in Resources */,
+				28ED42211BA25245000292AE /* nudge_detail_icon.png in Resources */,
 				28CD3FC41AEADC1A00B3ABB6 /* permission-screen.jpg in Resources */,
 				28CD3FBA1AE9C80800B3ABB6 /* assign-screen.jpg in Resources */,
 				288A74611B7531DD00F6A618 /* search.png in Resources */,

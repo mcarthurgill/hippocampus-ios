@@ -32,6 +32,7 @@
 @synthesize centerLabelHeight;
 @synthesize verticalSpaceBetweenLabels;
 @synthesize leftAlignmentForBottomLabel;
+@synthesize centerLabelCenterY;
 
 - (void)awakeFromNib
 {
@@ -102,6 +103,8 @@
     
     if ([self isBucketType]) {
         [self configureForBucket];
+    } else if ([self isNudgeType]) {
+        [self configureForNudge];
     }
     
     [self setNeedsLayout];
@@ -141,6 +144,31 @@
     self.verticalSpaceBetweenLabels.constant = 2;
 }
 
+- (void) configureForNudge
+{
+    [self.leftImageView setImage:[UIImage imageNamed:@"nudge_detail_icon.png"]];
+    
+    if (![[[self.attachment itemType] lowercaseString] isEqualToString:@"daily"]) {
+        [topLabel setHidden:NO];
+    }
+    [topLabel setText:[NSString stringWithFormat:@"%@ Nudge",([[self.attachment itemType] isEqualToString:@"once"] ? @"One-time" : [[self.attachment itemType] capitalizedString])]];
+    
+    [centerLabel setHidden:NO];
+    [self.centerLabel setText:[self.attachment reminderDescriptionString]];
+    [self.centerLabel setFont:[UIFont titleFontWithSize:16.0f]];
+    
+    if ([[[self.attachment itemType] lowercaseString] isEqualToString:@"once"]) {
+        [self.rightLabel setHidden:NO];
+        [self.rightLabel setText:[[NSDate timeWithString:[self.attachment reminderDate]] dayOfWeek]];
+        self.verticalSpaceBetweenLabels.constant = -4;
+        self.centerLabelCenterY.constant = 0;
+    } else if ([[[self.attachment itemType] lowercaseString] isEqualToString:@"daily"]) {
+        self.centerLabelCenterY.constant = 0;
+    } else {
+        self.centerLabelCenterY.constant = 8;
+    }
+}
+
 
 
 # pragma mark types
@@ -148,6 +176,11 @@
 - (BOOL) isBucketType
 {
     return [self.attachmentType isEqualToString:@"bucket"];
+}
+
+- (BOOL) isNudgeType
+{
+    return [self.attachmentType isEqualToString:@"nudge"];
 }
 
 
