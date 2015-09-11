@@ -14,6 +14,7 @@
 }
 
 @property (strong, nonatomic) NSMutableDictionary* responseObject;
+@property (strong, nonatomic) IBOutlet UILabel *label;
 
 - (void) configureWithResponseObject:(NSMutableDictionary*)rO;
 

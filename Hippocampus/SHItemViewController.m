@@ -34,6 +34,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 @synthesize sections;
 @synthesize toolbarOptions;
 @synthesize trailingSpace;
+@synthesize outstandingLabel;
 
 - (void)viewDidLoad
 {
@@ -82,7 +83,27 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self addOutstandingLabelIfNecessary];
     [self reloadScreen];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+}
+
+- (void) addOutstandingLabelIfNecessary
+{
+    UIButton* button = [self buttonForOption:@"bucket"];
+    if ([[self item] isOutstanding]) {
+        if (button) {
+            [button setTintColor:[UIColor SHBlue]];
+        }
+    } else {
+        if (button) {
+            [button setTintColor:[UIColor SHGreen]];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning

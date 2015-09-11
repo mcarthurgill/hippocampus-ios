@@ -18,6 +18,8 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *bottomToolbar;
 
+@property (strong, nonatomic) UILabel* outstandingLabel;
+
 @property (strong, nonatomic) NSMutableArray* sections;
 @property (strong, nonatomic) NSMutableArray* toolbarOptions;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *trailingSpace;

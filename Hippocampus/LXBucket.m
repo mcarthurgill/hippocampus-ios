@@ -136,7 +136,7 @@ static NSInteger maxRecentCount = 5;
 - (NSString*) cachedItemMessage
 {
     if ([self objectForKey:@"cached_item_message"] && NULL_TO_NIL([self objectForKey:@"cached_item_message"]))
-        return [self objectForKey:@"cached_item_message"];
+        return [[[self objectForKey:@"cached_item_message"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\uFFFC"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     return nil;
 }
 
