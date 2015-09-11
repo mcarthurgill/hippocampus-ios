@@ -406,6 +406,10 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Are you sure you want to delete this thought?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
         [av setTag:(sender.tag+100)];
         [av show];
+    } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"media"]) {
+        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Photo Library", nil];
+        [as setTag:50];
+        [as showInView:self.view];
     } else {
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:[self optionAtIndex:[sender tag]] message:@"Nice action." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [av show];
@@ -428,6 +432,21 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         }
     }
 }
+
+
+
+
+# pragma mark action sheet delegate
+
+-  (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag == 50) {
+        //photo
+        UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
+        [imagePicker setDelegate:self];
+    }
+}
+
 
 
 
