@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SHItemViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface SHItemViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
     MBProgressHUD* hud;
 }
