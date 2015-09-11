@@ -44,7 +44,13 @@
 {
     [self setLocalKey:key];
     
-    [self.label setText:[[self item] message]];
+    if ([[self item] hasMessage]) {
+        [self.label setText:[[self item] message]];
+    } else {
+        [self.label setText:@"Tap here to add text."];
+        [self.label setTextColor:[UIColor SHFontLightGray]];
+        [self.label setFont:[UIFont titleFontWithSize:13.0f]];
+    }
     
     [self setNeedsLayout];
 }

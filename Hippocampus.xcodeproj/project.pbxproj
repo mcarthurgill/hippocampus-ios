@@ -125,6 +125,7 @@
 		28ED422D1BA2728A000292AE /* toolbar_bells.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED422C1BA2728A000292AE /* toolbar_bells.png */; };
 		28ED42311BA276A0000292AE /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED422F1BA276A0000292AE /* 37x-Checkmark.png */; };
 		28ED42321BA276A0000292AE /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED42301BA276A0000292AE /* 37x-Checkmark@2x.png */; };
+		28ED42351BA2B866000292AE /* SHEditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED42341BA2B866000292AE /* SHEditItemViewController.m */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -304,6 +305,8 @@
 		28ED422C1BA2728A000292AE /* toolbar_bells.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bells.png; sourceTree = "<group>"; };
 		28ED422F1BA276A0000292AE /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
 		28ED42301BA276A0000292AE /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
+		28ED42331BA2B866000292AE /* SHEditItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHEditItemViewController.h; sourceTree = "<group>"; };
+		28ED42341BA2B866000292AE /* SHEditItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHEditItemViewController.m; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -744,6 +747,8 @@
 				28ED41E91BA0986A000292AE /* Cells */,
 				28ED41E11BA089AC000292AE /* SHItemViewController.h */,
 				28ED41E21BA089AC000292AE /* SHItemViewController.m */,
+				28ED42331BA2B866000292AE /* SHEditItemViewController.h */,
+				28ED42341BA2B866000292AE /* SHEditItemViewController.m */,
 			);
 			name = Item;
 			sourceTree = "<group>";
@@ -1031,6 +1036,7 @@
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
 				76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */,
 				288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */,
+				28ED42351BA2B866000292AE /* SHEditItemViewController.m in Sources */,
 				28ED41FC1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.m in Sources */,
 				288F122A1B751B040001E0B0 /* LXItem.m in Sources */,
 				288F12241B73DFC90001E0B0 /* LXUser.m in Sources */,

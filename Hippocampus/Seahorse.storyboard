@@ -136,6 +136,43 @@
             </objects>
             <point key="canvasLocation" x="740" y="-527"/>
         </scene>
+        <!--Edit Item View Controller-->
+        <scene sceneID="Kxa-TT-BI1">
+            <objects>
+                <viewController storyboardIdentifier="SHEditItemViewController" id="Cly-aO-JSF" customClass="SHEditItemViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RVI-Ob-yeT"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ofi-kh-cSo"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ybB-Kj-g2Q">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pHg-Fv-f8U">
+                                <rect key="frame" x="18" y="0.0" width="564" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="pHg-Fv-f8U" firstAttribute="leading" secondItem="ybB-Kj-g2Q" secondAttribute="leadingMargin" constant="2" id="8jB-8N-SwN"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="pHg-Fv-f8U" secondAttribute="trailing" constant="2" id="Dmz-zk-15i"/>
+                            <constraint firstItem="pHg-Fv-f8U" firstAttribute="top" secondItem="RVI-Ob-yeT" secondAttribute="bottom" constant="-20" id="cLC-SR-W8d"/>
+                            <constraint firstItem="Ofi-kh-cSo" firstAttribute="top" secondItem="pHg-Fv-f8U" secondAttribute="bottom" id="x0i-RP-qy7"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="bottomMargin" destination="x0i-RP-qy7" id="JQa-ps-mJA"/>
+                        <outlet property="textView" destination="pHg-Fv-f8U" id="VDB-R3-8eA"/>
+                        <outlet property="topMargin" destination="cLC-SR-W8d" id="r41-Zc-t8l"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="okE-ys-3N3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3" y="-527"/>
+        </scene>
         <!--Main View Controller-->
         <scene sceneID="eBE-TJ-pmG">
             <objects>

@@ -73,6 +73,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bucketRefreshed:) name:@"bucketRefreshed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removedItemFromBucket:) name:@"removedItemFromBucket" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshVCWithLocalKey:) name:@"refreshVCWithLocalKey" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     page = 0;
     
@@ -84,6 +85,8 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     
     [self.textView setPlaceholder:@"What's on your mind?..."];
     [self.textView setFont:[UIFont inputFont]];
+    
+    [[self rightButton] setTitle:@"Save" forState:UIControlStateNormal];
     
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
@@ -124,6 +127,11 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     if ([[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.localKey]) {
         [self tryToReload];
     }
+}
+
+- (void) keyboardDidShow:(NSNotification*)notification
+{
+    [self scrollToBottom:YES];
 }
 
 

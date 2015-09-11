@@ -84,7 +84,7 @@ static NSInteger maxRecentCount = 5;
     NSMutableDictionary* names = [[NSMutableDictionary alloc] init];
     for (NSString* key in keys) {
         NSMutableDictionary* bucket = [LXObjectManager objectWithLocalKey:key];
-        if (bucket) {
+        if (bucket && [bucket firstName]) {
             [names setObject:[bucket firstName] forKey:[bucket firstName]];
         }
     }

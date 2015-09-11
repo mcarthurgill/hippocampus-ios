@@ -10,6 +10,7 @@
 #import "SHSlackThoughtsViewController.h"
 #import "SHAssignBucketsViewController.h"
 #import "HCReminderViewController.h"
+#import "SHEditItemViewController.h"
 
 #import "SHItemMessageTableViewCell.h"
 #import "SHItemAuthorTableViewCell.h"
@@ -135,9 +136,9 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     if (![[self item] belongsToCurrentUser]) {
         [self.sections addObject:@"author"];
     }
-    if ([[self item] hasMessage]) {
+    //if ([[self item] hasMessage] || [[self item] belongsToCurrentUser]) {
         [self.sections addObject:@"message"];
-    }
+    //}
     if ([[self item] hasMedia]) {
         [self.sections addObject:@"media"];
     }
@@ -227,6 +228,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"nudge"]) {
         [self presentNudgeScreen];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
+        [self presentEditMessageScreen];
     }
 }
 
@@ -263,6 +266,13 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     [vc.view addSubview:backgroundFrame];
     [vc.view sendSubviewToBack:backgroundFrame];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc,@"animated":@NO}];
+}
+
+- (void) presentEditMessageScreen
+{
+    SHEditItemViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHEditItemViewController"];
+    [vc setLocalKey:self.localKey];
+    [self.navigationController pushViewController:vc animated:NO];
 }
 
 - (void) performDeletion
