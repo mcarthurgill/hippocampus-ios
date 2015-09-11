@@ -33,4 +33,6 @@
 
 - (NSString*) reminderDescriptionString;
 
+- (NSMutableArray*) rawImages;
+
 @end

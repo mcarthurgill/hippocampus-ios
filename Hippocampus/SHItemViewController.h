@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface SHItemViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+{
+    MBProgressHUD* hud;
+}
 
 @property (strong, nonatomic) NSString* localKey;
 

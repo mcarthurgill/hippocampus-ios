@@ -122,6 +122,9 @@
 		28ED42131BA210AE000292AE /* toolbar_trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED420E1BA210AE000292AE /* toolbar_trash.png */; };
 		28ED42211BA25245000292AE /* nudge_detail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED42201BA25245000292AE /* nudge_detail_icon.png */; };
 		28ED42291BA2700F000292AE /* toolbar_bella.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED42281BA2700F000292AE /* toolbar_bella.png */; };
+		28ED422D1BA2728A000292AE /* toolbar_bells.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED422C1BA2728A000292AE /* toolbar_bells.png */; };
+		28ED42311BA276A0000292AE /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED422F1BA276A0000292AE /* 37x-Checkmark.png */; };
+		28ED42321BA276A0000292AE /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28ED42301BA276A0000292AE /* 37x-Checkmark@2x.png */; };
 		28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */; };
 		28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */; };
 		28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */; };
@@ -298,6 +301,9 @@
 		28ED420E1BA210AE000292AE /* toolbar_trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_trash.png; sourceTree = "<group>"; };
 		28ED42201BA25245000292AE /* nudge_detail_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nudge_detail_icon.png; sourceTree = "<group>"; };
 		28ED42281BA2700F000292AE /* toolbar_bella.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bella.png; sourceTree = "<group>"; };
+		28ED422C1BA2728A000292AE /* toolbar_bells.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bells.png; sourceTree = "<group>"; };
+		28ED422F1BA276A0000292AE /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark.png"; sourceTree = "<group>"; };
+		28ED42301BA276A0000292AE /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37x-Checkmark@2x.png"; sourceTree = "<group>"; };
 		28F5B8A91ACC46BE00C7F5BC /* NSNumber+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Helpers.h"; sourceTree = "<group>"; };
 		28F5B8AA1ACC46BE00C7F5BC /* NSNumber+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Helpers.m"; sourceTree = "<group>"; };
 		28F5B8AE1ACC58BE00C7F5BC /* AlarmClock-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AlarmClock-100.png"; sourceTree = "<group>"; };
@@ -675,6 +681,7 @@
 		288F123D1B752EC90001E0B0 /* Seahorse */ = {
 			isa = PBXGroup;
 			children = (
+				28ED422E1BA2766B000292AE /* Other */,
 				28ED42051BA20A71000292AE /* Toolbar Icons */,
 				28ED42001BA10241000292AE /* Item Detail Icons */,
 				28ED41D41B9CE833000292AE /* Check */,
@@ -772,6 +779,7 @@
 		28ED42051BA20A71000292AE /* Toolbar Icons */ = {
 			isa = PBXGroup;
 			children = (
+				28ED422C1BA2728A000292AE /* toolbar_bells.png */,
 				28ED42281BA2700F000292AE /* toolbar_bella.png */,
 				28ED420A1BA210AE000292AE /* toolbar_bucket.png */,
 				28ED420B1BA210AE000292AE /* toolbar_duplicate.png */,
@@ -780,6 +788,15 @@
 				28ED420E1BA210AE000292AE /* toolbar_trash.png */,
 			);
 			name = "Toolbar Icons";
+			sourceTree = "<group>";
+		};
+		28ED422E1BA2766B000292AE /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				28ED422F1BA276A0000292AE /* 37x-Checkmark.png */,
+				28ED42301BA276A0000292AE /* 37x-Checkmark@2x.png */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 		76CA904B1AE1572800C6E400 /* Permissions */ = {
@@ -889,6 +906,7 @@
 			files = (
 				28CD3FBE1AEA0F8700B3ABB6 /* item-screen.jpg in Resources */,
 				28ED42121BA210AE000292AE /* toolbar_media.png in Resources */,
+				28ED422D1BA2728A000292AE /* toolbar_bells.png in Resources */,
 				28ED42291BA2700F000292AE /* toolbar_bella.png in Resources */,
 				28ED41C71B9C96FA000292AE /* Abel-Regular.ttf in Resources */,
 				281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */,
@@ -915,6 +933,7 @@
 				28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
 				28ED41E71BA097EA000292AE /* Roboto-Light.ttf in Resources */,
+				28ED42321BA276A0000292AE /* 37x-Checkmark@2x.png in Resources */,
 				2837E8001ABD09400089FA33 /* More-100.png in Resources */,
 				288A747B1B7985DA00F6A618 /* nudge_icon_white_swipe.png in Resources */,
 				28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */,
@@ -946,6 +965,7 @@
 				288A74611B7531DD00F6A618 /* search.png in Resources */,
 				28ED42131BA210AE000292AE /* toolbar_trash.png in Resources */,
 				28ED42041BA102F4000292AE /* bucket_detail_icon.png in Resources */,
+				28ED42311BA276A0000292AE /* 37x-Checkmark.png in Resources */,
 				2826C6101ADDA5D1008DC533 /* txt_scrnsht.png in Resources */,
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,
 				28ED41F31BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib in Resources */,

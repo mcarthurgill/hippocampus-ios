@@ -302,7 +302,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         
         if ([option isEqualToString:@"nudge"]) {
-            [button setImage:[UIImage imageNamed:@"toolbar_bella.png"] forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"toolbar_bells.png"] forState:UIControlStateNormal];
         } else if ([option isEqualToString:@"bucket"]) {
             [button setImage:[UIImage imageNamed:@"toolbar_bucket.png"] forState:UIControlStateNormal];
         } else if ([option isEqualToString:@"media"]) {
@@ -347,6 +347,30 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [self presentNudgeScreen];
     } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"bucket"]) {
         [self presentAssignScreen];
+    } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"duplicate"]) {
+        
+        MBProgressHUD* h = [[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:h];
+        h.labelText = @"Copying";
+        h.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
+        [h show:YES];
+        dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.queuecopy", 0);
+        dispatch_async(backgroundQueue, ^{
+            if ([[self item] hasMedia] && [[self item] hasMessage]) {
+                [[UIPasteboard generalPasteboard] addItems:@[@{(NSString*)kUTTypeUTF8PlainText:[[self item] message]}]];
+                for (UIImage* image in [[self item] rawImages]) {
+                    [[UIPasteboard generalPasteboard] addItems:@[@{(NSString*)kUTTypePNG:image}]];
+                }
+            } else if ([[self item] hasMedia]) {
+                [[UIPasteboard generalPasteboard] setImages:[[self item] rawImages]];
+            } else if ([[self item] hasMessage]) {
+                [[UIPasteboard generalPasteboard] setString:[[self item] message]];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [h hide:NO];
+                [self showCopiedHUD];
+            });
+        });
     } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"delete"]) {
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Are you sure you want to delete this thought?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
         [av setTag:(sender.tag+100)];
@@ -372,6 +396,25 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
             [self performDeletion];
         }
     }
+}
+
+
+
+# pragma mark hud
+
+- (void) showCopiedHUD
+{
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    
+    hud.customView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]];
+    hud.mode = MBProgressHUDModeCustomView;
+    
+    hud.labelText = @"Copied to Clipboard";
+    hud.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
+    
+    [hud show:NO];
+    [hud hide:YES afterDelay:0.5f];
 }
 
 @end

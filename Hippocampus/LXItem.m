@@ -332,5 +332,16 @@
     return [NSDate formattedDateFromString:[self reminderDate]];
 }
 
+- (NSMutableArray*) rawImages
+{
+    NSMutableArray* tempImages = [[NSMutableArray alloc] init];
+    for (NSDictionary* medium in [self media]) {
+        if ([SGImageCache haveImageForURL:[medium mediaThumbnailURLWithScreenWidth]]) {
+            [tempImages addObject:[SGImageCache imageForURL:[medium mediaThumbnailURLWithScreenWidth]]];
+        }
+    }
+    return tempImages;
+}
+
 
 @end
