@@ -471,9 +471,18 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Image.png"];
         // Save image.
-        [UIImagePNGRepresentation(image) writeToFile:filePath atomically:YES];
+        [UIImageJPEGRepresentation(image, 0.9) writeToFile:filePath atomically:YES];
         
+        NSMutableDictionary* medium = [[NSMutableDictionary alloc] init];
+        [medium setObject:filePath forKey:@"local_file_path"];
         
+        NSMutableArray* tempMedia = [[[self item] media] mutableCopy];
+        
+        [tempMedia addObject:medium];
+        
+        [[self item] setObject:tempMedia forKey:@"media_cache"];
+        
+        [[self item] saveMediaIfNecessary];
     }
     else if ([mediaType isEqualToString:(NSString*)kUTTypeMovie]) {
         // Media is a video

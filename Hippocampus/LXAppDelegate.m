@@ -103,7 +103,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"appAwake" object:nil];
     
     if ([[LXSession thisSession] user]) {
-        [[LXObjectManager defaultManager] runQueries];
+        //[[LXObjectManager defaultManager] runQueries];
         //[[LXObjectManager defaultManager] performSelector:@selector(runQueries) withObject:nil afterDelay:1];
     }
     

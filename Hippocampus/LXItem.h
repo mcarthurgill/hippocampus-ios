@@ -35,4 +35,6 @@
 
 - (NSMutableArray*) rawImages;
 
+- (void) saveMediaIfNecessary;
+
 @end
