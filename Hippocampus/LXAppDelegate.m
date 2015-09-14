@@ -38,6 +38,8 @@
     }
     [self loadAddressBook];
     
+    [self handleAppLaunch];
+    
     return YES;
 }
 
@@ -106,8 +108,6 @@
         //[[LXObjectManager defaultManager] runQueries];
         //[[LXObjectManager defaultManager] performSelector:@selector(runQueries) withObject:nil afterDelay:1];
     }
-    
-    [self handleAppLaunch];
     
     if ([[LXSession thisSession] locationPermissionDetermined]) {
         [[LXSession thisSession] startLocationUpdates];

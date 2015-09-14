@@ -406,12 +406,12 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Are you sure you want to delete this thought?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
         [av setTag:(sender.tag+100)];
         [av show];
-    } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"media"]) {
+    } else if (NO) { //([[self optionAtIndex:sender.tag] isEqualToString:@"media"]) {
         UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Photo Library", ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ? @"Camera" : nil), nil];
         [as setTag:50];
         [as showInView:self.bottomToolbar];
     } else {
-        UIAlertView* av = [[UIAlertView alloc] initWithTitle:[self optionAtIndex:[sender tag]] message:@"Nice action." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        UIAlertView* av = [[UIAlertView alloc] initWithTitle:[self optionAtIndex:[sender tag]] message:@"Coming soon." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [av show];
     }
 }
