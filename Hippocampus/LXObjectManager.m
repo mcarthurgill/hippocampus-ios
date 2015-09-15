@@ -280,7 +280,7 @@ static LXObjectManager* defaultManager = nil;
         for (NSString* key in copyOfKeys) {
             if ([copyOfDictionary objectForKey:key]) {
                 //[[NSUserDefaults standardUserDefaults] setObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) forKey:key];
-                NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
+                //NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
                 NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
                 [NSKeyedArchiver archiveRootObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) toFile:filePath];
             }

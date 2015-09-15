@@ -53,15 +53,8 @@
 - (void) loadIfNoChildController
 {
     if ([[self.containerView subviews] count] == 0) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [self switchContainerToView:@"thoughtsViewController" fromView:@"bucketsViewController"];
-        });
-        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-            UIViewController* vc = [self loadViewController:@"bucketsViewController"];
-            dispatch_async(dispatch_get_main_queue(), ^(void){
-                [self.viewControllersCached setObject:vc forKey:@"bucketsViewController"];
-            });
-        });
+        [self switchContainerToView:@"bucketsViewController" fromView:nil];
+        [self switchContainerToView:@"thoughtsViewController" fromView:@"bucketsViewController"];
     }
 }
 
