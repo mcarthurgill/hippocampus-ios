@@ -21,5 +21,13 @@
     return newImage;
 }
 
+- (UIImage*) croppedImage:(CGRect)bounds
+{
+    CGImageRef imageRef = CGImageCreateWithImageInRect([self CGImage], bounds);
+    UIImage *croppedImage = [UIImage imageWithCGImage:imageRef];
+    CGImageRelease(imageRef);
+    return croppedImage;
+}
+
 
 @end

@@ -93,6 +93,7 @@
 		28CD3FC01AEA887200B3ABB6 /* new-collection-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FBF1AEA887200B3ABB6 /* new-collection-screen.jpg */; };
 		28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FC11AEA89F400B3ABB6 /* nudge-screen.jpg */; };
 		28CD3FC41AEADC1A00B3ABB6 /* permission-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FC31AEADC1A00B3ABB6 /* permission-screen.jpg */; };
+		28D8E5671BA8CF8300AEEEBC /* UIImageView+Addons.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D8E5661BA8CF8300AEEEBC /* UIImageView+Addons.m */; };
 		28ED41C71B9C96FA000292AE /* Abel-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41C61B9C96FA000292AE /* Abel-Regular.ttf */; };
 		28ED41CB1B9CB943000292AE /* SHAssignBucketsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41CA1B9CB943000292AE /* SHAssignBucketsViewController.m */; };
 		28ED41D21B9CD641000292AE /* SHAssignBucketTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41D01B9CD641000292AE /* SHAssignBucketTableViewCell.m */; };
@@ -268,6 +269,8 @@
 		28CD3FBF1AEA887200B3ABB6 /* new-collection-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "new-collection-screen.jpg"; sourceTree = "<group>"; };
 		28CD3FC11AEA89F400B3ABB6 /* nudge-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "nudge-screen.jpg"; sourceTree = "<group>"; };
 		28CD3FC31AEADC1A00B3ABB6 /* permission-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "permission-screen.jpg"; sourceTree = "<group>"; };
+		28D8E5651BA8CF8300AEEEBC /* UIImageView+Addons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+Addons.h"; sourceTree = "<group>"; };
+		28D8E5661BA8CF8300AEEEBC /* UIImageView+Addons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+Addons.m"; sourceTree = "<group>"; };
 		28ED41C61B9C96FA000292AE /* Abel-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Abel-Regular.ttf"; sourceTree = "<group>"; };
 		28ED41C91B9CB943000292AE /* SHAssignBucketsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAssignBucketsViewController.h; sourceTree = "<group>"; };
 		28ED41CA1B9CB943000292AE /* SHAssignBucketsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAssignBucketsViewController.m; sourceTree = "<group>"; };
@@ -570,6 +573,8 @@
 				28F5B8B11ACC9AD600C7F5BC /* UIImage+Helpers.m */,
 				288F12351B7527AF0001E0B0 /* UIColor+HCColors.h */,
 				288F12361B7527AF0001E0B0 /* UIColor+HCColors.m */,
+				28D8E5651BA8CF8300AEEEBC /* UIImageView+Addons.h */,
+				28D8E5661BA8CF8300AEEEBC /* UIImageView+Addons.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1081,6 +1086,7 @@
 				28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */,
 				2826C6131ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m in Sources */,
 				288A74691B75346800F6A618 /* SHBucketsViewController.m in Sources */,
+				28D8E5671BA8CF8300AEEEBC /* UIImageView+Addons.m in Sources */,
 				28ACA3A11B8B7CF900D7B215 /* SHBucketTableViewCell.m in Sources */,
 				288F12271B751AF30001E0B0 /* LXBucket.m in Sources */,
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
