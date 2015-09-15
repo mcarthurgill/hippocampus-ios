@@ -132,7 +132,9 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void) keyboardDidShow:(NSNotification*)notification
 {
-    [self scrollToBottom:YES];
+    if ([self.textView isFirstResponder]) {
+        [self scrollToBottom:YES];
+    }
 }
 
 

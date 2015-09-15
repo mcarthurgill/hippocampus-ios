@@ -350,5 +350,24 @@
     return tempImages;
 }
 
+- (void) saveMediaIfNecessary
+{
+    for (NSDictionary* medium in [self media]) {
+        NSLog(@"MEDIUM HERE: %@", medium);
+        if ([medium objectForKey:@"local_file_path"] && !([medium objectForKey:@"url"] || [medium objectForKey:@"secure_url"])) {
+            //save this image
+            NSData *data = [[NSFileManager defaultManager] contentsAtPath:[medium objectForKey:@"local_file_path"]];
+            [[LXServer shared] requestPath:@"/media.json" withMethod:@"POST" withParamaters:@{@"medium":medium}
+                 constructingBodyWithBlock:^(id <AFMultipartFormData>formData){
+                     [formData appendPartWithFileData:data name:@"file" fileName:@"temp.jpeg" mimeType:@"image/jpeg"];
+                 }
+                                   success:^(id responseObject){
+                                       NSLog(@"form success: %@", responseObject);
+                                   }
+                                   failure:^(NSError* error){}
+             ];
+        }
+    }
+}
 
 @end

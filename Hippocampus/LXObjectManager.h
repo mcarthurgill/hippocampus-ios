@@ -15,6 +15,7 @@
 
 + (LXObjectManager*) defaultManager;
 @property (strong, nonatomic) NSMutableDictionary* library;
+@property (strong, nonatomic) NSMutableDictionary* notFoundOnDisk;
 @property (strong, nonatomic) NSMutableArray* queries;
 
 - (void) runQueries;
@@ -26,6 +27,7 @@
 // getting
 
 + (id) objectWithLocalKey:(NSString*)key;
++ (void) storeLocal:(id)object WithLocalKey:(NSString*)key;
 + (void) assignLocal:(id)object WithLocalKey:(NSString*)key;
 + (void) saveToDisk;
 

@@ -62,8 +62,8 @@ static LXSession* thisSession = nil;
     if (self.cachedUser) {
         return self.cachedUser;
     } else {
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"localUserKey"]) {
-            NSMutableDictionary *u = [LXObjectManager objectWithLocalKey:[[NSUserDefaults standardUserDefaults] objectForKey:@"localUserKey"]];
+        if ([LXObjectManager objectWithLocalKey:@"localUserKey"]) {
+            NSMutableDictionary *u = [LXObjectManager objectWithLocalKey:[LXObjectManager objectWithLocalKey:@"localUserKey"]];
             [self setCachedUser:u];
             return u;
         } else {

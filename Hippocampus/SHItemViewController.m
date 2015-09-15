@@ -407,11 +407,11 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [av setTag:(sender.tag+100)];
         [av show];
     } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"media"]) {
-        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Photo Library", nil];
+        UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Photo Library", ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ? @"Camera" : nil), nil];
         [as setTag:50];
-        [as showInView:self.view];
+        [as showInView:self.bottomToolbar];
     } else {
-        UIAlertView* av = [[UIAlertView alloc] initWithTitle:[self optionAtIndex:[sender tag]] message:@"Nice action." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        UIAlertView* av = [[UIAlertView alloc] initWithTitle:[self optionAtIndex:[sender tag]] message:@"Coming soon." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [av show];
     }
 }
@@ -441,10 +441,56 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 -  (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (actionSheet.tag == 50) {
-        //photo
-        UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
-        [imagePicker setDelegate:self];
+        if (buttonIndex == 0) {
+            UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
+            [imagePicker setDelegate:self];
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+            [imagePicker setMediaTypes:@[(NSString*)kUTTypeImage, (NSString*)kUTTypeMovie]];
+            [imagePicker setAllowsEditing:NO];
+            [self presentViewController:imagePicker animated:YES completion:^(void){}];
+        } else if (buttonIndex == 1) {
+            UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
+            [imagePicker setDelegate:self];
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+            [imagePicker setMediaTypes:@[(NSString*)kUTTypeImage]];
+            [imagePicker setAllowsEditing:NO];
+            [self presentViewController:imagePicker animated:YES completion:^(void){}];
+        }
     }
+}
+
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    
+    if ([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
+        // Media is an image
+        UIImage *image = info[UIImagePickerControllerOriginalImage];
+
+        // Create path.
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Image.png"];
+        // Save image.
+        [UIImageJPEGRepresentation(image, 0.9) writeToFile:filePath atomically:YES];
+        
+        NSMutableDictionary* medium = [[NSMutableDictionary alloc] init];
+        [medium setObject:filePath forKey:@"local_file_path"];
+        [medium setObject:[[[LXSession thisSession] user] ID] forKey:@"user_id"];
+        [medium setObject:[[self item] localKey] forKey:@"item_local_key"];
+        
+        NSMutableArray* tempMedia = [[[self item] media] mutableCopy];
+        
+        [tempMedia addObject:medium];
+        
+        [[self item] setObject:tempMedia forKey:@"media_cache"];
+        
+        [[self item] saveMediaIfNecessary];
+    }
+    else if ([mediaType isEqualToString:(NSString*)kUTTypeMovie]) {
+        // Media is a video
+//        NSURL *url = info[UIImagePickerControllerMediaURL];
+    }
+    [picker dismissViewControllerAnimated:NO completion:^(void){}];
 }
 
 

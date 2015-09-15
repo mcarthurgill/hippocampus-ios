@@ -13,6 +13,7 @@ static LXObjectManager* defaultManager = nil;
 @implementation LXObjectManager
 
 @synthesize library;
+@synthesize notFoundOnDisk;
 @synthesize queries;
 
 
@@ -52,6 +53,7 @@ static LXObjectManager* defaultManager = nil;
 {
     runningQueries = NO;
     self.library = [[NSMutableDictionary alloc] init];
+    self.notFoundOnDisk = [[NSMutableDictionary alloc] init];
     self.queries = [[NSMutableArray alloc] init];
     [self initializeWithFailedQueries];
 }
@@ -61,6 +63,7 @@ static LXObjectManager* defaultManager = nil;
 
 - (void) initializeWithFailedQueries
 {
+    return;
     NSLog(@"failed-queries: %@", [[NSUserDefaults  standardUserDefaults] objectForKey:@"failed-queries"]);
     if ([[NSUserDefaults  standardUserDefaults] objectForKey:@"failed-queries"] && [[[NSUserDefaults  standardUserDefaults] objectForKey:@"failed-queries"] count] > 0) {
         [self.queries addObjectsFromArray:[[NSUserDefaults  standardUserDefaults] objectForKey:@"failed-queries"]];
@@ -133,6 +136,7 @@ static LXObjectManager* defaultManager = nil;
 
 - (void) saveQueries
 {
+    return;
     if ([self.queries count] > 0) {
         [[NSUserDefaults standardUserDefaults] setObject:self.queries forKey:@"failed-queries"];
         [[NSUserDefaults standardUserDefaults] synchronize];
@@ -208,15 +212,27 @@ static LXObjectManager* defaultManager = nil;
 
 + (id) objectWithLocalKey:(NSString*)key
 {
+    //NSLog(@"getting object With Key: %@", key);
     if (key && key.length > 0) {
         if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
             return [[[LXObjectManager defaultManager] library] objectForKey:key];
-        } else if ([[NSUserDefaults standardUserDefaults] objectForKey:key]) {
-            [[[LXObjectManager defaultManager] library] setObject:[[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy] forKey:key];
-            return [[[LXObjectManager defaultManager] library] objectForKey:key];
-        } else {
+        //} else if ([[NSUserDefaults standardUserDefaults] objectForKey:key]) {
+        //    [[[LXObjectManager defaultManager] library] setObject:[[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy] forKey:key];
+        //    return [[[LXObjectManager defaultManager] library] objectForKey:key];
+        } else { //if (![self notFoundOnDisk:key]) {
             //[[LXObjectManager defaultManager] refreshObjectWithKey:key success:nil failure:nil];
             //theoretically, go refresh object in question.
+            NSLog(@"GOING TO DISK!: %@", key);
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
+            id obj = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+            if (obj) {
+                [[[LXObjectManager defaultManager] library] setObject:[obj mutableCopy] forKey:key];
+                return [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+            } else {
+                //[self addNotFoundOnDisk:key];
+            }
         }
     }
     return nil;
@@ -228,23 +244,51 @@ static LXObjectManager* defaultManager = nil;
     [[[LXObjectManager defaultManager] library] setObject:mutableCopy forKey:key];
 }
 
++ (void) storeLocal:(id)object WithLocalKey:(NSString*)key
+{
+    [self assignLocal:object WithLocalKey:key];
+    if ([self objectWithLocalKey:key]) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
+        [NSKeyedArchiver archiveRootObject:[self objectWithLocalKey:key] toFile:filePath];
+    }
+}
+
++ (BOOL) notFoundOnDisk:(NSString*)key
+{
+    return [[[LXObjectManager defaultManager] notFoundOnDisk] objectForKey:key];
+}
+
++ (void) addNotFoundOnDisk:(NSString*)key
+{
+    [[[LXObjectManager defaultManager] notFoundOnDisk] setObject:@YES forKey:key];
+}
+
 + (void) saveToDisk
 {
     UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
     }];
     
-    NSArray* copyOfKeys = [[[[LXObjectManager defaultManager] library] allKeys] copy];
-    NSMutableDictionary* copyOfDictionary = [[[LXObjectManager defaultManager] library] copy];
-    
-    for (NSString* key in copyOfKeys) {
-        if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
-            [[NSUserDefaults standardUserDefaults] setObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) forKey:key];
-            //NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSArray* copyOfKeys = [[[[LXObjectManager defaultManager] library] allKeys] copy];
+        NSMutableDictionary* copyOfDictionary = [[[LXObjectManager defaultManager] library] copy];
+        
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        
+        for (NSString* key in copyOfKeys) {
+            if ([copyOfDictionary objectForKey:key]) {
+                //[[NSUserDefaults standardUserDefaults] setObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) forKey:key];
+                NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
+                NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
+                [NSKeyedArchiver archiveRootObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) toFile:filePath];
+            }
         }
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    [[UIApplication sharedApplication] endBackgroundTask:bgt];
+        //[[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [[UIApplication sharedApplication] endBackgroundTask:bgt];
+    });
 }
 
 

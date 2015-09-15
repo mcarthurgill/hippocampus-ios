@@ -38,6 +38,8 @@
     }
     [self loadAddressBook];
     
+    [self handleAppLaunch];
+    
     return YES;
 }
 
@@ -103,11 +105,9 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"appAwake" object:nil];
     
     if ([[LXSession thisSession] user]) {
-        [[LXObjectManager defaultManager] runQueries];
+        //[[LXObjectManager defaultManager] runQueries];
         //[[LXObjectManager defaultManager] performSelector:@selector(runQueries) withObject:nil afterDelay:1];
     }
-    
-    [self handleAppLaunch];
     
     if ([[LXSession thisSession] locationPermissionDetermined]) {
         [[LXSession thisSession] startLocationUpdates];

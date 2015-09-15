@@ -53,8 +53,15 @@
 - (void) loadIfNoChildController
 {
     if ([[self.containerView subviews] count] == 0) {
-        [self switchContainerToView:@"bucketsViewController" fromView:nil];
-        [self switchContainerToView:@"thoughtsViewController" fromView:@"bucketsViewController"];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.01 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self switchContainerToView:@"thoughtsViewController" fromView:@"bucketsViewController"];
+        });
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+            UIViewController* vc = [self loadViewController:@"bucketsViewController"];
+            dispatch_async(dispatch_get_main_queue(), ^(void){
+                [self.viewControllersCached setObject:vc forKey:@"bucketsViewController"];
+            });
+        });
     }
 }
 
@@ -120,14 +127,16 @@
         [self setTitle:@"Thoughts"];
     } else if ([toName isEqualToString:@"bucketsViewController"]) {
         [self setTitle:@"Buckets"];
-        [[(SHBucketsViewController*)vc tableView] reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [[(SHBucketsViewController*)vc tableView] reloadData];
+        });
     }
 }
 
-- (void) loadViewController:(NSString*)viewControllerName
+- (UIViewController*) loadViewController:(NSString*)viewControllerName
 {
-    UIViewController* vc;
-    if (![self.viewControllersCached objectForKey:viewControllerName]) {
+    UIViewController* vc = [self.viewControllersCached objectForKey:viewControllerName];
+    if (!vc) {
         if ([viewControllerName isEqualToString:@"thoughtsViewController"]) {
             vc = [[SHSlackThoughtsViewController alloc] init];
             [(SHSlackThoughtsViewController*)vc setLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
@@ -136,6 +145,7 @@
         }
         [self.viewControllersCached setObject:vc forKey:viewControllerName];
     }
+    return vc;
 }
 
 - (void) pushBucketViewController:(NSNotification*)notification

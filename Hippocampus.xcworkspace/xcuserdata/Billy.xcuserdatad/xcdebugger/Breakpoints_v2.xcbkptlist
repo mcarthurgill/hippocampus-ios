@@ -1379,22 +1379,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Hippocampus/LXUser.m"
-            timestampString = "460593016.852879"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "18"
-            endingLineNumber = "18"
-            landmarkName = "-makeLoggedInUser"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Hippocampus/LXSetup.m"
             timestampString = "460592782.320256"
             startingColumnNumber = "9223372036854775807"
@@ -1444,11 +1428,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMainViewController.m"
-            timestampString = "463258940.465198"
+            timestampString = "464028313.027356"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
             landmarkName = "-segmentControlAction:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1460,11 +1444,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/LXObjectManager.m"
-            timestampString = "463692075.045799"
+            timestampString = "464027597.139579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "-runQueries"
             landmarkType = "5">
          </BreakpointContent>
@@ -1476,11 +1460,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/LXObjectManager.m"
-            timestampString = "463692646.834576"
+            timestampString = "464027597.139579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "201"
-            endingLineNumber = "201"
+            startingLineNumber = "205"
+            endingLineNumber = "205"
             landmarkName = "-assignRefreshDate:forObjectTypes:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1508,11 +1492,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/LXObjectManager.m"
-            timestampString = "463692646.834576"
+            timestampString = "464027597.139579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "155"
-            endingLineNumber = "155"
+            startingLineNumber = "159"
+            endingLineNumber = "159"
             landmarkName = "-refreshObjectTypes:withAboveUpdatedAt:success:failure:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1634,11 +1618,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/LXAppDelegate.m"
-            timestampString = "463585295.296514"
+            timestampString = "463953144.127914"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "-applicationDidBecomeActive:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1842,11 +1826,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHSlackThoughtsViewController.m"
-            timestampString = "463690185.729365"
+            timestampString = "463953828.739523"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "267"
-            endingLineNumber = "267"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
             landmarkName = "-tableView:loadingCellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1922,11 +1906,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHBucketsViewController.m"
-            timestampString = "463604005.380637"
+            timestampString = "464028510.02984"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "228"
-            endingLineNumber = "228"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
             landmarkName = "-scrollViewDidScroll:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1938,11 +1922,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHBucketsViewController.m"
-            timestampString = "463604005.380637"
+            timestampString = "464028510.02984"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
+            startingLineNumber = "234"
+            endingLineNumber = "234"
             landmarkName = "-scrollViewDidScroll:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1954,27 +1938,27 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHBucketsViewController.m"
-            timestampString = "463604005.380637"
+            timestampString = "464028510.02984"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "-scrollViewDidScroll:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hippocampus/SHBucketsViewController.m"
+            timestampString = "464028510.02984"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "225"
             endingLineNumber = "225"
-            landmarkName = "-scrollViewDidScroll:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Hippocampus/SHBucketsViewController.m"
-            timestampString = "463604005.380637"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "224"
-            endingLineNumber = "224"
             landmarkName = "-scrollViewDidScroll:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2002,11 +1986,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHSlackThoughtsViewController.m"
-            timestampString = "463690185.729365"
+            timestampString = "463953828.739523"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "208"
-            endingLineNumber = "208"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
             landmarkName = "-bucketRefreshed:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2066,11 +2050,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHSlackThoughtsViewController.m"
-            timestampString = "463690185.729365"
+            timestampString = "463953828.739523"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
             landmarkName = "-bucketRefreshed:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2082,11 +2066,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHSlackThoughtsViewController.m"
-            timestampString = "463690185.729365"
+            timestampString = "463953828.739523"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "216"
-            endingLineNumber = "216"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
             landmarkName = "-reloadIfDifferentCountOfKeys:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2247,6 +2231,54 @@
             startingLineNumber = "98"
             endingLineNumber = "98"
             landmarkName = "-addOutstandingLabelIfNecessary"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hippocampus/SHItemViewController.m"
+            timestampString = "463704007.913621"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "468"
+            endingLineNumber = "468"
+            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hippocampus/SHItemViewController.m"
+            timestampString = "464024098.806083"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "487"
+            endingLineNumber = "487"
+            landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hippocampus/SHMainViewController.m"
+            timestampString = "464028313.027356"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "-loadViewController:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
