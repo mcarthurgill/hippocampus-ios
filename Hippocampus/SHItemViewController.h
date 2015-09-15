@@ -14,6 +14,7 @@
 }
 
 @property (strong, nonatomic) NSString* localKey;
+@property (strong, nonatomic) NSMutableDictionary* mediaInQuestion;
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *bottomToolbar;

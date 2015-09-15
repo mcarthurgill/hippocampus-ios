@@ -34,7 +34,7 @@
 @synthesize leftAlignmentForBottomLabel;
 @synthesize centerLabelCenterY;
 
-- (void)awakeFromNib
+- (void) awakeFromNib
 {
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
     
@@ -46,6 +46,11 @@
     
     [self.separatorView setBackgroundColor:[UIColor SHLightGray]];
     
+    [self setupGestureRecognizers];
+}
+
+- (void) resetAppearance
+{
     [self.topLabel setFont:[UIFont secondaryFontWithSize:12.0f]];
     [self.topLabel setTextColor:[UIColor SHFontLightGray]];
     
@@ -54,8 +59,6 @@
     
     [self.rightLabel setFont:[UIFont secondaryFontWithSize:12.0f]];
     [self.rightLabel setTextColor:[UIColor SHFontLightGray]];
-    
-    [self setupGestureRecognizers];
 }
 
 - (void) setupGestureRecognizers
@@ -99,6 +102,7 @@
     [self setAttachmentType:type];
     [self setAttachment:attchmnt];
     
+    [self resetAppearance];
     [self hideSubviewsOfCard];
     
     if ([self isBucketType]) {

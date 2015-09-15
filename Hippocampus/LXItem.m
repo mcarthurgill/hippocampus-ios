@@ -45,7 +45,7 @@
         for (NSMutableDictionary* bucket in [self bucketsArray]) {
             [[bucket mutableCopy] removeItemFromBucket:self];
         }
-        [self destroyBoth];
+        [self destroyRemote];
     }
 }
 
@@ -362,12 +362,33 @@
                      [formData appendPartWithFileData:data name:@"file" fileName:@"temp.jpeg" mimeType:@"image/jpeg"];
                  }
                                    success:^(id responseObject){
+                                       //update on disk
+                                       if ([[responseObject mutableCopy] assignLocalVersionIfNeeded]) {
+                                           //notify system of change
+                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
+                                       }
                                        NSLog(@"form success: %@", responseObject);
                                    }
                                    failure:^(NSError* error){}
              ];
         }
     }
+}
+
+- (void) removeMediumWithLocalKey:(NSString*)mediumLocalKey
+{
+    NSMutableArray* tempMedia = [[NSMutableArray alloc] init];
+    for (NSMutableDictionary* medium in [self media]) {
+        if (![medium localKey] || ![[medium localKey] isEqualToString:mediumLocalKey]) {
+            [tempMedia addObject:medium];
+        } else {
+            //delete
+            [medium destroyRemote];
+        }
+    }
+    [self setObject:tempMedia forKey:@"media_cache"];
+    [self assignLocalVersionIfNeeded];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:self];
 }
 
 @end

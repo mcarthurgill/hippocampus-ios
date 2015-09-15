@@ -29,6 +29,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 @implementation SHItemViewController
 
 @synthesize localKey;
+@synthesize mediaInQuestion;
 @synthesize tableView;
 @synthesize bottomToolbar;
 @synthesize sections;
@@ -225,6 +226,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 {
     SHMediaBoxTableViewCell* cell = (SHMediaBoxTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:mediaBoxCellIdentifier];
     [cell configureWithLocalKey:self.localKey medium:[[[self item] media] objectAtIndex:indexPath.row]];
+    [cell setDelegate:self];
     return cell;
 }
 
@@ -251,6 +253,9 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [self presentNudgeScreen];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         [self presentEditMessageScreen];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
+        [self setMediaInQuestion:[[[self item] media] objectAtIndex:indexPath.row]];
+        [self presentMediaActionSheet];
     }
 }
 
@@ -261,6 +266,9 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [self presentAssignScreen];
     } else if ([action isEqualToString:@"nudge"]) {
         [self presentNudgeScreen];
+    } else if ([action isEqualToString:@"media"]) {
+        [self setMediaInQuestion:[object mutableCopy]];
+        [self presentMediaActionSheet];
     }
 }
 
@@ -294,6 +302,21 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     SHEditItemViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHEditItemViewController"];
     [vc setLocalKey:self.localKey];
     [self.navigationController pushViewController:vc animated:NO];
+}
+
+- (void) presentMediaActionSheet
+{
+    UIActionSheet* as;
+    if ([self.mediaInQuestion belongsToCurrentUser]) {
+        as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Image" otherButtonTitles:@"Copy", nil];
+        [as setTag:51];
+    } else {
+        as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Copy Image", nil];
+        [as setTag:51];
+    }
+    if (as) {
+        [as showInView:self.bottomToolbar];
+    }
 }
 
 - (void) performDeletion
@@ -423,6 +446,13 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if ([alertView tag] == 91782364) {
+        //remove image
+        if (buttonIndex != [alertView cancelButtonIndex]) {
+            [[self item] removeMediumWithLocalKey:[self.mediaInQuestion localKey]];
+            [self reloadScreen];
+        }
+    }
     if (alertView.tag-100 >= [self.toolbarOptions count]) {
         return;
     }
@@ -441,6 +471,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 -  (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (actionSheet.tag == 50) {
+        //image picker
         if (buttonIndex == 0) {
             UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
             [imagePicker setDelegate:self];
@@ -455,6 +486,32 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
             [imagePicker setMediaTypes:@[(NSString*)kUTTypeImage]];
             [imagePicker setAllowsEditing:NO];
             [self presentViewController:imagePicker animated:YES completion:^(void){}];
+        }
+    } else if (actionSheet.tag == 51) {
+        //image action
+        if (buttonIndex == [actionSheet destructiveButtonIndex]) {
+            UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete Image" message:@"Are you sure you want to delete this image?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+            [av setTag:(91782364)];
+            [av show];
+        } else if (buttonIndex != [actionSheet cancelButtonIndex]) {
+            //copy image
+            
+            MBProgressHUD* h = [[MBProgressHUD alloc] initWithView:self.view];
+            [self.view addSubview:h];
+            h.labelText = @"Copying";
+            h.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
+            [h show:YES];
+            dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.queuecopy", 0);
+            dispatch_async(backgroundQueue, ^{
+                [[UIPasteboard generalPasteboard] setImage:[SGImageCache imageForURL:[self.mediaInQuestion mediaThumbnailURLWithScreenWidth]]];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [h hide:NO];
+                    [self showCopiedHUD];
+                });
+            });
+            
+        } else {
+            NSLog(@"index: %li", (long)buttonIndex);
         }
     }
 }
@@ -473,10 +530,11 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         // Save image.
         [UIImageJPEGRepresentation(image, 0.9) writeToFile:filePath atomically:YES];
         
-        NSMutableDictionary* medium = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary* medium = [NSMutableDictionary create:@"medium"];
         [medium setObject:filePath forKey:@"local_file_path"];
-        [medium setObject:[[[LXSession thisSession] user] ID] forKey:@"user_id"];
         [medium setObject:[[self item] localKey] forKey:@"item_local_key"];
+        [medium setObject:[NSNumber numberWithFloat:image.size.width] forKey:@"width"];
+        [medium setObject:[NSNumber numberWithFloat:image.size.height] forKey:@"height"];
         
         NSMutableArray* tempMedia = [[[self item] media] mutableCopy];
         
@@ -485,6 +543,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [[self item] setObject:tempMedia forKey:@"media_cache"];
         
         [[self item] saveMediaIfNecessary];
+        
     }
     else if ([mediaType isEqualToString:(NSString*)kUTTypeMovie]) {
         // Media is a video

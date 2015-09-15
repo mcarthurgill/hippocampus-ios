@@ -15,7 +15,6 @@
 
 + (LXObjectManager*) defaultManager;
 @property (strong, nonatomic) NSMutableDictionary* library;
-@property (strong, nonatomic) NSMutableDictionary* notFoundOnDisk;
 @property (strong, nonatomic) NSMutableArray* queries;
 
 - (void) runQueries;
