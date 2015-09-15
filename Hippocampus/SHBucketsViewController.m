@@ -202,6 +202,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    return 80.0f;
     if (indexPath.section >= [self.sections count]) {
         return 44.0f;
     }
@@ -229,7 +230,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     float scrollContentSizeHeight = scrollView.contentSize.height;
     float scrollOffset = scrollView.contentOffset.y;
     //NSLog(@"scrollOffset = %f", scrollOffset);
-    if ((NSInteger)scrollOffset == (NSInteger)-64) {
+    if ((NSInteger)scrollOffset == (NSInteger)-64 && [self recent] && [[self recent] count] > 0) {
         // then we are at the top
         [self.searchBar becomeFirstResponder];
     }

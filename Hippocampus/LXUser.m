@@ -14,9 +14,8 @@
 
 - (void) makeLoggedInUser
 {
-    [[NSUserDefaults standardUserDefaults] setObject:self forKey:[self localKey]];
-    [[NSUserDefaults standardUserDefaults] setObject:[self localKey] forKey:@"localUserKey"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [LXObjectManager storeLocal:self WithLocalKey:[self localKey]];
+    [LXObjectManager storeLocal:[self localKey] WithLocalKey:@"localUserKey"];
 }
 
 - (void) updateTimeZone

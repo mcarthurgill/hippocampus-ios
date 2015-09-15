@@ -406,7 +406,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Are you sure you want to delete this thought?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
         [av setTag:(sender.tag+100)];
         [av show];
-    } else if (NO) { //([[self optionAtIndex:sender.tag] isEqualToString:@"media"]) {
+    } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"media"]) {
         UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Photo Library", ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ? @"Camera" : nil), nil];
         [as setTag:50];
         [as showInView:self.bottomToolbar];
@@ -475,6 +475,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         
         NSMutableDictionary* medium = [[NSMutableDictionary alloc] init];
         [medium setObject:filePath forKey:@"local_file_path"];
+        [medium setObject:[[[LXSession thisSession] user] ID] forKey:@"user_id"];
+        [medium setObject:[[self item] localKey] forKey:@"item_local_key"];
         
         NSMutableArray* tempMedia = [[[self item] media] mutableCopy];
         
