@@ -36,5 +36,6 @@
 - (NSMutableArray*) rawImages;
 
 - (void) saveMediaIfNecessary;
+- (void) removeMediumWithLocalKey:(NSString*)mediumLocalKey;
 
 @end

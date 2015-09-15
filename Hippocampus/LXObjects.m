@@ -61,6 +61,8 @@
 
 - (NSString*) pluralObjectType
 {
+    if ([[self objectType] isEqualToString:@"medium"])
+        return @"media";
     return [NSString stringWithFormat:@"%@%@", [self objectType], @"s"];
 }
 
@@ -153,49 +155,6 @@
                                }
                            }
      ];
-}
-
-- (void) destroyBoth
-{
-    [self destroyBoth:nil failure:nil];
-}
-
-- (void) destroyBoth:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    //destroy remote
-    [self destroyRemote:^(id responseObject) {
-                    //destroy local
-                    [self destroyLocal:successCallback failure:failureCallback];
-                }
-                failure:^(NSError* error) {
-                }
-     ];
-}
-
-- (void) destroyLocal
-{
-    [self destroyLocal:nil failure:nil];
-}
-
-- (void) destroyLocal:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    //REMOVE FROM DISK
-    [self destroyLocalWithKey:[self localKey] success:successCallback failure:failureCallback];
-}
-
-- (void) destroyLocalWithKey:(NSString*)key
-{
-    [self destroyLocalWithKey:key success:nil failure:nil];
-}
-
-- (void) destroyLocalWithKey:(NSString*)key success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:key];
-    //[[NSUserDefaults standardUserDefaults] synchronize];
-    [[[LXObjectManager defaultManager] library] removeObjectForKey:[self localKey]];
-    if (successCallback) {
-        successCallback(@{});
-    }
 }
 
 - (void) destroyRemote

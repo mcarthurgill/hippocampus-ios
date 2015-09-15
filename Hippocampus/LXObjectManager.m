@@ -13,7 +13,6 @@ static LXObjectManager* defaultManager = nil;
 @implementation LXObjectManager
 
 @synthesize library;
-@synthesize notFoundOnDisk;
 @synthesize queries;
 
 
@@ -53,7 +52,6 @@ static LXObjectManager* defaultManager = nil;
 {
     runningQueries = NO;
     self.library = [[NSMutableDictionary alloc] init];
-    self.notFoundOnDisk = [[NSMutableDictionary alloc] init];
     self.queries = [[NSMutableArray alloc] init];
     [self initializeWithFailedQueries];
 }
@@ -216,13 +214,7 @@ static LXObjectManager* defaultManager = nil;
     if (key && key.length > 0) {
         if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
             return [[[LXObjectManager defaultManager] library] objectForKey:key];
-        //} else if ([[NSUserDefaults standardUserDefaults] objectForKey:key]) {
-        //    [[[LXObjectManager defaultManager] library] setObject:[[[NSUserDefaults standardUserDefaults] objectForKey:key] mutableCopy] forKey:key];
-        //    return [[[LXObjectManager defaultManager] library] objectForKey:key];
-        } else { //if (![self notFoundOnDisk:key]) {
-            //[[LXObjectManager defaultManager] refreshObjectWithKey:key success:nil failure:nil];
-            //theoretically, go refresh object in question.
-            NSLog(@"GOING TO DISK!: %@", key);
+        } else {
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *documentsDirectory = [paths objectAtIndex:0];
             NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
@@ -230,8 +222,6 @@ static LXObjectManager* defaultManager = nil;
             if (obj) {
                 [[[LXObjectManager defaultManager] library] setObject:[obj mutableCopy] forKey:key];
                 return [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-            } else {
-                //[self addNotFoundOnDisk:key];
             }
         }
     }
@@ -255,16 +245,6 @@ static LXObjectManager* defaultManager = nil;
     }
 }
 
-+ (BOOL) notFoundOnDisk:(NSString*)key
-{
-    return [[[LXObjectManager defaultManager] notFoundOnDisk] objectForKey:key];
-}
-
-+ (void) addNotFoundOnDisk:(NSString*)key
-{
-    [[[LXObjectManager defaultManager] notFoundOnDisk] setObject:@YES forKey:key];
-}
-
 + (void) saveToDisk
 {
     UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
@@ -279,14 +259,10 @@ static LXObjectManager* defaultManager = nil;
         
         for (NSString* key in copyOfKeys) {
             if ([copyOfDictionary objectForKey:key]) {
-                //[[NSUserDefaults standardUserDefaults] setObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) forKey:key];
-                //NSLog(@"object: %@", [copyOfDictionary objectForKey:key]);
                 NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
                 [NSKeyedArchiver archiveRootObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) toFile:filePath];
             }
         }
-        //[[NSUserDefaults standardUserDefaults] synchronize];
-        
         [[UIApplication sharedApplication] endBackgroundTask:bgt];
     });
 }

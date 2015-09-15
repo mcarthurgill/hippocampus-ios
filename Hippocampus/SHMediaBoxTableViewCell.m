@@ -7,16 +7,20 @@
 //
 
 #import "SHMediaBoxTableViewCell.h"
+#import "SHItemViewController.h"
 
 #define IMAGE_FADE_IN_TIME 0.4f
 
 @implementation SHMediaBoxTableViewCell
 
+@synthesize delegate;
 @synthesize localKey;
+@synthesize medium;
 @synthesize imageView;
 @synthesize activityIndicator;
 @synthesize imageViewHeightConstraint;
 @synthesize imageViewWidthConstraint;
+@synthesize longPress;
 
 - (void)awakeFromNib
 {
@@ -29,6 +33,17 @@
     
     [self.imageView.layer setBorderWidth:1.0f];
     [self.imageView.layer setBorderColor:[UIColor SHLightGray].CGColor];
+    
+    [self setupGestureRecognizers];
+}
+
+- (void) setupGestureRecognizers
+{
+    if (!self.longPress) {
+        self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
+        //[self.imageView addGestureRecognizer:longPress];
+        [self addGestureRecognizer:longPress];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -50,9 +65,10 @@
 
 # pragma mark configure
 
-- (void) configureWithLocalKey:(NSString*)key medium:(NSDictionary*)medium
+- (void) configureWithLocalKey:(NSString*)key medium:(NSDictionary*)m
 {
     [self setLocalKey:key];
+    [self setMedium:m];
     
     [self.activityIndicator startAnimating];
     
@@ -88,6 +104,19 @@
     
     [self setNeedsLayout];
     [self layoutIfNeeded];
+}
+
+
+
+
+
+# pragma mark actions
+
+- (IBAction)longPressAction:(UILongPressGestureRecognizer*)sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan){
+        [(SHItemViewController*)delegate longPressWithObject:[self.medium mutableCopy] type:@"media"];
+    }
 }
 
 @end
