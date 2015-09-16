@@ -12,7 +12,8 @@
 
 @property (strong, nonatomic) NSString* localKey;
 
-@property (strong, nonatomic) IBOutlet UILabel *label;
+@property (strong, nonatomic) IBOutlet UITextView *messageView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *messageViewHeight;
 
 - (void) configureWithLocalKey:(NSString*)key;
 

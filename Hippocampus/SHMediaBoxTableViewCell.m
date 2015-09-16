@@ -34,6 +34,9 @@
     [self.imageView.layer setBorderWidth:1.0f];
     [self.imageView.layer setBorderColor:[UIColor SHLightGray].CGColor];
     
+    [self.activityIndicator removeFromSuperview];
+    [self.imageView addSubview:self.activityIndicator];
+    
     [self setupGestureRecognizers];
 }
 
@@ -72,36 +75,7 @@
     
     [self.activityIndicator startAnimating];
     
-    self.imageView.image = nil;
-    
-    if ([SGImageCache haveImageForURL:[medium mediaThumbnailURLWithScreenWidth]]) {
-        self.imageView.image = [SGImageCache imageForURL:[medium mediaThumbnailURLWithScreenWidth]];
-        [self.imageView setAlpha:1.0f];
-        self.activityIndicator.alpha = 0.0;
-        [self.activityIndicator removeFromSuperview];
-    } else if (![self.imageView.image isEqual:[SGImageCache imageForURL:[medium mediaThumbnailURLWithScreenWidth]]]) {
-        self.imageView.image = nil;
-        if ([medium objectForKey:@"local_file_path"] && [UIImage imageWithContentsOfFile:[medium objectForKey:@"local_file_path"]]) {
-            self.imageView.image = [UIImage imageWithContentsOfFile:[medium objectForKey:@"local_file_path"]];
-        }
-        [self.imageView setAlpha:1.0f];
-        [SGImageCache getImageForURL:[medium mediaThumbnailURLWithScreenWidth]].then(^(UIImage* image) {
-            if (image) {
-                float curAlpha = [self.imageView alpha];
-                if (!self.imageView.image) {
-                    [self.imageView setAlpha:0.0f];
-                }
-                self.imageView.image = image;
-                [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
-                    [self.imageView setAlpha:curAlpha];
-                    self.activityIndicator.alpha = 0.0;
-                    [self.activityIndicator removeFromSuperview];
-                }];
-            }
-        });
-    }
-    
-    //self.imageViewWidthConstraint.constant = self.bounds.size.width;
+    [self.imageView loadInImageWithRemoteURL:[medium mediaThumbnailURLWithScreenWidth] localURL:[medium objectForKey:@"local_file_path"]];
     
     [self setNeedsLayout];
     [self layoutIfNeeded];

@@ -11,7 +11,6 @@
 #import "SHSlackThoughtsViewController.h"
 #import "HCReminderViewController.h"
 
-#define IMAGE_FADE_IN_TIME 0.4f
 #define PICTURE_HEIGHT 100
 #define PICTURE_MARGIN_TOP 8.0f
 #define AVATAR_DIMENSION 32.0f
@@ -141,7 +140,8 @@
         inverted = YES;
     }
     
-    [self.message setText:[self.item message]];
+    [self setMessageText];
+    
     [self addMessageTrailingSpaceConstraint];
     
     self.nudgeImageViewTrailingSpace.constant = 6.0f;
@@ -166,28 +166,7 @@
     if (![self.item belongsToCurrentUser] || ([self bucket] && [[self bucket] isCollaborativeThread])) {
         self.avatarHeightConstraint.constant = AVATAR_DIMENSION;
         [self.avatarView setHidden:NO];
-        
-        if ([SGImageCache haveImageForURL:[self.item avatarURLString]]) {
-            self.avatarView.image = [SGImageCache imageForURL:[self.item avatarURLString]];
-            [self.avatarView setAlpha:1.0f];
-            [self.avatarView viewWithTag:1].alpha = 0.0;
-            [[self.avatarView viewWithTag:1] removeFromSuperview];
-        } else if (![self.avatarView.image isEqual:[SGImageCache imageForURL:[self.item avatarURLString]]]) {
-            self.avatarView.image = nil;
-            [self.avatarView setAlpha:1.0f];
-            [SGImageCache getImageForURL:[self.item avatarURLString]].then(^(UIImage* image) {
-                if (image) {
-                    float curAlpha = [self.avatarView alpha];
-                    [self.avatarView setAlpha:0.0f];
-                    self.avatarView.image = image;
-                    [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
-                        [self.avatarView setAlpha:curAlpha];
-                        [self.avatarView viewWithTag:1].alpha = 0.0;
-                        [[self.avatarView viewWithTag:1] removeFromSuperview];
-                    }];
-                }
-            });
-        }
+        [self.avatarView loadInImageWithRemoteURL:[self.item avatarURLString] localURL:nil];
     } else {
         self.avatarHeightConstraint.constant = 0.0f;
         [self.avatarView setHidden:YES];
@@ -198,6 +177,21 @@
     [self handleBucketButtons];
     
     [self setNeedsLayout];
+}
+
+- (void) setMessageText
+{
+    NSString* text = [self.item message];
+    NSMutableAttributedString* as = [[NSMutableAttributedString alloc] initWithString:text];
+    for (NSString* link in [self.item links]) {
+        NSRange range = [text rangeOfString:link];
+        if (range.length > 0) {
+            //[as addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:1] range:range];
+            //[as addAttribute:NSUnderlineColorAttributeName value:[UIColor SHBlue] range:range];
+            [as addAttribute:NSForegroundColorAttributeName value:[UIColor SHBlue] range:range];
+        }
+    }
+    [self.message setAttributedText:as];
 }
 
 - (UIImageView*) imageViewForMedium:(NSMutableDictionary*)medium
@@ -219,43 +213,10 @@
 
 - (void) loadInImageForImageView:(UIImageView*)iv andMedium:(NSMutableDictionary*)medium
 {
-    if ([medium hasID]) {
-        
-        NSString* croppedMediaURL = [medium mediaThumbnailURLWithScreenWidth];
-        NSLog(@"url: %@", croppedMediaURL);
-        
-        if ([SGImageCache haveImageForURL:croppedMediaURL]) {
-            iv.image = [SGImageCache imageForURL:croppedMediaURL];
-            [iv setAlpha:1.0f];
-            [iv viewWithTag:1].alpha = 0.0;
-            [[iv viewWithTag:1] removeFromSuperview];
-        } else if (![iv.image isEqual:[SGImageCache imageForURL:croppedMediaURL]]) {
-            iv.image = nil;
-            [iv setAlpha:1.0f];
-            [SGImageCache getImageForURL:croppedMediaURL].then(^(UIImage* image) {
-                if (image) {
-                    float curAlpha = [iv alpha];
-                    [iv setAlpha:0.0f];
-                    iv.image = image;
-                    [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
-                        [iv setAlpha:curAlpha];
-                        [iv viewWithTag:1].alpha = 0.0;
-                        [[iv viewWithTag:1] removeFromSuperview];
-                    }];
-                }
-            });
-        }
-        
-    } else {
-        if ([NSData dataWithContentsOfFile:[medium mediaURL]] && ![iv.image isEqual:[UIImage imageWithData:[NSData dataWithContentsOfFile:[medium mediaURL]]]]) {
-            [iv setAlpha:0.0f];
-            iv.image = [UIImage imageWithData:[NSData dataWithContentsOfFile:[medium mediaURL]]];
-            [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void) {
-                [iv setAlpha:1.0f];
-                [iv viewWithTag:1].alpha = 0.0;
-            }];
-        }
-    }
+    NSString* croppedMediaURL = [medium mediaThumbnailURLWithScreenWidth];
+    NSLog(@"url: %@", croppedMediaURL);
+    
+    [iv loadInImageWithRemoteURL:croppedMediaURL localURL:[medium objectForKey:@"local_file_path"]];
 }
 
 

@@ -38,4 +38,5 @@
     #import "LXBucket.h"
     #import "LXItem.h"
     #import "UIColor+HCColors.h"
+    #import "UIImageView+Addons.h"
 #endif

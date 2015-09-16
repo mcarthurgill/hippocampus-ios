@@ -12,4 +12,6 @@
 
 - (UIImage*) scaledToSize:(CGFloat)newHeight;
 
+- (UIImage*) croppedImage:(CGRect)bounds;
+
 @end

@@ -410,6 +410,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [h show:YES];
         dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.queuecopy", 0);
         dispatch_async(backgroundQueue, ^{
+            [[UIPasteboard generalPasteboard] setItems:@[]];
             if ([[self item] hasMedia] && [[self item] hasMessage]) {
                 [[UIPasteboard generalPasteboard] addItems:@[@{(NSString*)kUTTypeUTF8PlainText:[[self item] message]}]];
                 for (UIImage* image in [[self item] rawImages]) {

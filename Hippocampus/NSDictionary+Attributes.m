@@ -233,7 +233,7 @@
 
 - (NSString*) description
 {
-    return [self objectForKey:@"description"];
+    return [self objectForKey:@"description"] && NULL_TO_NIL([self objectForKey:@"description"]) ? [[[self objectForKey:@"description"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\uFFFC"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] : nil;
 }
 
 - (NSString*) firstName

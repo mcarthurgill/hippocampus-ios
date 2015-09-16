@@ -58,27 +58,7 @@
         [self.label setText:@""];
     }
     
-    if ([SGImageCache haveImageForURL:[self.item avatarURLString]]) {
-        self.avatarView.image = [SGImageCache imageForURL:[self.item avatarURLString]];
-        [self.avatarView setAlpha:1.0f];
-        [self.avatarView viewWithTag:1].alpha = 0.0;
-        [[self.avatarView viewWithTag:1] removeFromSuperview];
-    } else if (![self.avatarView.image isEqual:[SGImageCache imageForURL:[self.item avatarURLString]]]) {
-        self.avatarView.image = nil;
-        [self.avatarView setAlpha:1.0f];
-        [SGImageCache getImageForURL:[self.item avatarURLString]].then(^(UIImage* image) {
-            if (image) {
-                float curAlpha = [self.avatarView alpha];
-                [self.avatarView setAlpha:0.0f];
-                self.avatarView.image = image;
-                [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
-                    [self.avatarView setAlpha:curAlpha];
-                    [self.avatarView viewWithTag:1].alpha = 0.0;
-                    [[self.avatarView viewWithTag:1] removeFromSuperview];
-                }];
-            }
-        });
-    }
+    [self.avatarView loadInImageWithRemoteURL:[self.item avatarURLString] localURL:nil];
     
     [self setNeedsLayout];
 }

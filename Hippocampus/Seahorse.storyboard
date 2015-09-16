@@ -351,7 +351,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <searchBar contentMode="redraw" placeholder="Filter buckets..." translatesAutoresizingMaskIntoConstraints="NO" id="VBv-EO-qlC">
-                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <rect key="frame" x="0.0" y="122" width="600" height="44"/>
                                 <color key="barTintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                 <connections>
@@ -367,7 +367,7 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ALf-j8-BZr">
-                                <rect key="frame" x="0.0" y="108" width="600" height="56"/>
+                                <rect key="frame" x="0.0" y="66" width="600" height="56"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add_new.png" translatesAutoresizingMaskIntoConstraints="NO" id="bP6-Qs-fcW">
                                         <rect key="frame" x="18" y="15" width="25" height="25"/>
@@ -412,7 +412,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b5Q-VX-0PG">
-                                <rect key="frame" x="0.0" y="108" width="600" height="56"/>
+                                <rect key="frame" x="0.0" y="66" width="600" height="56"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filled_check.png" translatesAutoresizingMaskIntoConstraints="NO" id="S1f-fv-8Xj">
                                         <rect key="frame" x="18" y="15" width="25" height="25"/>
@@ -476,16 +476,24 @@
                             <constraint firstItem="VBv-EO-qlC" firstAttribute="trailing" secondItem="ALf-j8-BZr" secondAttribute="trailing" id="AWh-iJ-ICB"/>
                             <constraint firstItem="gcI-GQ-rle" firstAttribute="leading" secondItem="VBv-EO-qlC" secondAttribute="leading" id="BYV-Xj-EBU"/>
                             <constraint firstItem="aiD-xi-VcM" firstAttribute="top" secondItem="gcI-GQ-rle" secondAttribute="bottom" id="F1M-ez-jcY"/>
+                            <constraint firstItem="gcI-GQ-rle" firstAttribute="top" secondItem="VBv-EO-qlC" secondAttribute="bottom" constant="-2" id="IF4-1J-JbD"/>
                             <constraint firstItem="b5Q-VX-0PG" firstAttribute="centerX" secondItem="ALf-j8-BZr" secondAttribute="centerX" id="Iqg-mo-6l9"/>
                             <constraint firstItem="VBv-EO-qlC" firstAttribute="top" secondItem="iM5-9u-cG4" secondAttribute="bottom" id="M96-IO-aye"/>
                             <constraint firstItem="gcI-GQ-rle" firstAttribute="trailing" secondItem="VBv-EO-qlC" secondAttribute="trailing" id="Pet-Bs-yiQ"/>
+                            <constraint firstItem="VBv-EO-qlC" firstAttribute="top" secondItem="ALf-j8-BZr" secondAttribute="bottom" id="T7I-xK-nD0"/>
                             <constraint firstItem="VBv-EO-qlC" firstAttribute="leading" secondItem="ALf-j8-BZr" secondAttribute="leading" id="dTx-vq-nyN"/>
                             <constraint firstItem="gcI-GQ-rle" firstAttribute="top" secondItem="VBv-EO-qlC" secondAttribute="top" constant="44" id="iBZ-DL-2gp"/>
+                            <constraint firstItem="VBv-EO-qlC" firstAttribute="top" secondItem="ALf-j8-BZr" secondAttribute="bottom" id="jGv-95-zNC"/>
                             <constraint firstItem="b5Q-VX-0PG" firstAttribute="height" secondItem="ALf-j8-BZr" secondAttribute="height" id="p2y-Ka-Ssm"/>
                             <constraint firstItem="ALf-j8-BZr" firstAttribute="top" secondItem="VBv-EO-qlC" secondAttribute="bottom" id="qAi-wu-b7F"/>
+                            <constraint firstItem="ALf-j8-BZr" firstAttribute="top" secondItem="iM5-9u-cG4" secondAttribute="bottom" constant="2" id="rka-Ac-r02"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="qAi-wu-b7F"/>
+                                <exclude reference="M96-IO-aye"/>
+                                <exclude reference="jGv-95-zNC"/>
+                                <exclude reference="802-mh-swz"/>
                                 <exclude reference="iBZ-DL-2gp"/>
                             </mask>
                         </variation>
