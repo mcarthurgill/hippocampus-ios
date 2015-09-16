@@ -11,12 +11,14 @@
 @implementation SHItemMessageTableViewCell
 
 @synthesize localKey;
-@synthesize label;
+@synthesize messageView;
+@synthesize messageViewHeight;
 
 - (void)awakeFromNib
 {
-    [self.label setFont:[UIFont titleFontWithSize:15.0f]];
-    [self.label setTextColor:[UIColor SHFontDarkGray]];
+    [self.messageView setFont:[UIFont titleFontWithSize:15.0f]];
+    [self.messageView setTextColor:[UIColor SHFontDarkGray]];
+    [self.messageView setBackgroundColor:[UIColor clearColor]];
     
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
 }
@@ -45,12 +47,16 @@
     [self setLocalKey:key];
     
     if ([[self item] hasMessage]) {
-        [self.label setText:[[self item] message]];
+        [self.messageView setText:[[self item] message]];
+        [self.messageView setTextColor:[UIColor SHFontDarkGray]];
+        [self.messageView setFont:[UIFont titleFontWithSize:15.0f]];
     } else {
-        [self.label setText:@"Tap here to add text."];
-        [self.label setTextColor:[UIColor SHFontLightGray]];
-        [self.label setFont:[UIFont titleFontWithSize:13.0f]];
+        [self.messageView setText:@"Tap here to add text."];
+        [self.messageView setTextColor:[UIColor SHFontLightGray]];
+        [self.messageView setFont:[UIFont titleFontWithSize:13.0f]];
     }
+    
+    self.messageViewHeight.constant = [self.messageView sizeThatFits:CGSizeMake(self.messageView.bounds.size.width, 10000000)].height + 10.0f;
     
     [self setNeedsLayout];
 }
