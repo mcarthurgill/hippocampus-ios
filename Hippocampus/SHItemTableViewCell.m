@@ -140,7 +140,8 @@
         inverted = YES;
     }
     
-    [self.message setText:[self.item message]];
+    [self setMessageText];
+    
     [self addMessageTrailingSpaceConstraint];
     
     self.nudgeImageViewTrailingSpace.constant = 6.0f;
@@ -176,6 +177,21 @@
     [self handleBucketButtons];
     
     [self setNeedsLayout];
+}
+
+- (void) setMessageText
+{
+    NSString* text = [self.item message];
+    NSMutableAttributedString* as = [[NSMutableAttributedString alloc] initWithString:text];
+    for (NSString* link in [self.item links]) {
+        NSRange range = [text rangeOfString:link];
+        if (range.length > 0) {
+            //[as addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:1] range:range];
+            //[as addAttribute:NSUnderlineColorAttributeName value:[UIColor SHBlue] range:range];
+            [as addAttribute:NSForegroundColorAttributeName value:[UIColor SHBlue] range:range];
+        }
+    }
+    [self.message setAttributedText:as];
 }
 
 - (UIImageView*) imageViewForMedium:(NSMutableDictionary*)medium

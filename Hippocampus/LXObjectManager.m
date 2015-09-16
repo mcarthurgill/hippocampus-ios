@@ -220,7 +220,7 @@ static LXObjectManager* defaultManager = nil;
             NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
             id obj = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
             if (obj) {
-                [[[LXObjectManager defaultManager] library] setObject:[obj mutableCopy] forKey:key];
+                [[[LXObjectManager defaultManager] library] setObject:([obj isKindOfClass:[NSDictionary class]] || [obj isKindOfClass:[NSMutableDictionary class]] ? [obj cleanDictionary] : [obj mutableCopy]) forKey:key];
                 return [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
             }
         }
