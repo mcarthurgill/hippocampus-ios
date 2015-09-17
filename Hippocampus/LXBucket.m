@@ -213,5 +213,9 @@ static NSInteger maxRecentCount = 5;
     return [self localKey] && [[self localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]];
 }
 
+- (BOOL) hasAuthorizedUserID:(NSString *)uID
+{
+    return ([self objectForKey:@"authorized_user_ids"] && [[self objectForKey:@"authorized_user_ids"] containsObject:[[[LXSession thisSession] user] ID]]) || ([self objectForKey:@"authorized_user_ids"] && [[self objectForKey:@"authorized_user_ids"] containsObject:[NSString stringWithFormat:@"%@",[[[LXSession thisSession] user] ID]]]);
+}
 
 @end

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SHEditBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface SHEditBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) NSString* localKey;
 @property (strong, nonatomic) NSMutableArray* sections;

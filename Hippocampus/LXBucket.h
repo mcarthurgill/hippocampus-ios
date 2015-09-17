@@ -40,4 +40,6 @@
 
 - (BOOL) isAllThoughtsBucket;
 
+- (BOOL) hasAuthorizedUserID:(NSString*)uID;
+
 @end

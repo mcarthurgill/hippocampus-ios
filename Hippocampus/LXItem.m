@@ -88,8 +88,8 @@
 {
     NSMutableArray* temp = [[NSMutableArray alloc] init];
     if ([self objectForKey:@"buckets_array"] && [[self objectForKey:@"buckets_array"] count] > 0) {
-        for (NSDictionary* bucket in [self objectForKey:@"buckets_array"]) {
-            if ([bucket objectForKey:@"authorized_user_ids"] && [[bucket objectForKey:@"authorized_user_ids"] containsObject:[[[LXSession thisSession] user] ID]]) {
+        for (NSMutableDictionary* bucket in [self objectForKey:@"buckets_array"]) {
+            if ([bucket hasAuthorizedUserID:[[[LXSession thisSession] user] ID]]) {
                 [temp addObject:bucket];
             }
         }

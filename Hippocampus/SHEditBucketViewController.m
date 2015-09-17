@@ -37,9 +37,7 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
 
 - (void) setupSettings
 {
-    if ([self bucket]) {
-        [self setTitle:[NSString stringWithFormat:@"Edit %@", [[self bucket] firstName]]];
-    }
+    [self setTitle];
     
     [self.view setBackgroundColor:[UIColor slightBackgroundColor]];
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
@@ -61,6 +59,13 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     }
 }
 
+- (void) setTitle
+{
+    if ([self bucket]) {
+        [self setTitle:[NSString stringWithFormat:@"Edit %@", [[self bucket] firstName]]];
+    }
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -78,6 +83,12 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
 
 
 # pragma mark table view delegate
+
+- (void) reloadScreen
+{
+    [self setTitle];
+    [self.tableView reloadData];
+}
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tV
 {
@@ -194,8 +205,43 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
         } else {
             //new collaborator
         }
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
+        if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"rename"]) {
+            UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Rename Bucket" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go", nil];
+            av.alertViewStyle = UIAlertViewStylePlainTextInput;
+            UITextField* textField = [av textFieldAtIndex:0];
+            [textField setText:[[self bucket] firstName]];
+            [textField setFont:[UIFont titleFontWithSize:16.0f]];
+            [av setTag:1];
+            [av show];
+        } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"delete"]) {
+            
+        }
     }
 }
+
+
+
+
+
+# pragma mark alert view delegate
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1) {
+        //rename
+        if ([alertView cancelButtonIndex] != buttonIndex && [alertView textFieldAtIndex:0].text.length > 0) {
+            //action!
+            NSMutableDictionary* bucketTemp = [self bucket];
+            [bucketTemp setObject:[alertView textFieldAtIndex:0].text forKey:@"first_name"];
+            [bucketTemp saveRemote];
+            [bucketTemp assignLocalVersionIfNeeded];
+            [self reloadScreen];
+        }
+    }
+}
+
+
 
 @end
 

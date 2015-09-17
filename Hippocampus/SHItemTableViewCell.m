@@ -300,7 +300,7 @@
         
         //NSLog(@"bucketsArray: %@", bucketStub);
         
-        if ([[bucketStub objectForKey:@"authorized_user_ids"] containsObject:[[[LXSession thisSession] user] ID]]) {
+        if ([bucketStub hasAuthorizedUserID:[[[LXSession thisSession] user] ID]]) {
             UIButton* button = [self buttonForBucket:bucketStub];
             [button setTag:count];
             
