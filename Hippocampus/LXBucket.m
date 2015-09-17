@@ -141,6 +141,11 @@ static NSInteger maxRecentCount = 5;
     return nil;
 }
 
+- (NSArray*) authorizedUsers
+{
+    return [self objectForKey:@"bucket_user_pairs"];
+}
+
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index
 {
     return [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] ? [LXObjectManager objectWithLocalKey:[[self itemKeys] objectAtIndex:index]] : [@{} mutableCopy];

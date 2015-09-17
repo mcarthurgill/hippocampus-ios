@@ -136,6 +136,60 @@
             </objects>
             <point key="canvasLocation" x="740" y="-527"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bSd-GJ-b6q">
+            <objects>
+                <navigationController storyboardIdentifier="navigationSHEditBucketViewController" id="Kkh-fV-RiR" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JNC-rX-jAP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Nz2-vC-A56" kind="relationship" relationship="rootViewController" id="O5f-PJ-vUQ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fsU-CN-ONC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="740" y="-1198"/>
+        </scene>
+        <!--Edit Bucket View Controller-->
+        <scene sceneID="1ut-tO-3Kl">
+            <objects>
+                <viewController storyboardIdentifier="SHEditBucketViewController" id="Nz2-vC-A56" customClass="SHEditBucketViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6Pg-yS-5s5"/>
+                        <viewControllerLayoutGuide type="bottom" id="Q6j-53-e4T"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ttW-Sc-2gK">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="06D-wO-YPf">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Nz2-vC-A56" id="mx2-96-LlD"/>
+                                    <outlet property="delegate" destination="Nz2-vC-A56" id="zCK-oV-ngc"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="06D-wO-YPf" secondAttribute="centerX" id="8t3-Uj-pdL"/>
+                            <constraint firstAttribute="centerY" secondItem="06D-wO-YPf" secondAttribute="centerY" id="Elx-st-hLY"/>
+                            <constraint firstItem="06D-wO-YPf" firstAttribute="width" secondItem="ttW-Sc-2gK" secondAttribute="width" id="I9r-Cr-j6J"/>
+                            <constraint firstItem="06D-wO-YPf" firstAttribute="height" secondItem="ttW-Sc-2gK" secondAttribute="height" id="tlJ-pI-UER"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="nve-rU-yDO"/>
+                    <connections>
+                        <outlet property="tableView" destination="06D-wO-YPf" id="f38-CV-ZDc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0dI-Nl-fqJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1441" y="-1198"/>
+        </scene>
         <!--Edit Item View Controller-->
         <scene sceneID="Kxa-TT-BI1">
             <objects>

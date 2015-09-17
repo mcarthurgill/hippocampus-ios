@@ -10,12 +10,15 @@
 #import "SHItemTableViewCell.h"
 #import "SHLoadingTableViewCell.h"
 #import "SHItemViewController.h"
+#import "SHEditBucketViewController.h"
 
 #define PAGE_COUNT 64
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 static NSString *itemViewControllerIdentifier = @"SHItemViewController";
+
+static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 @interface SHSlackThoughtsViewController ()
 
@@ -92,6 +95,11 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
+    
+    if (![self.localKey isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
+        UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear.png"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemAction:)];
+        [self.navigationItem setRightBarButtonItem:item];
+    }
 }
 
 - (void) beginningActions
@@ -99,7 +107,13 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     [[self bucket] refreshFromServerWithSuccess:^(id responseObject){} failure:^(NSError* error){}];
 }
 
-
+- (void) rightBarButtonItemAction:(UIBarButtonItem*)button
+{
+    SHEditBucketViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:editBucketIdentifier];
+    [vc setLocalKey:self.localKey];
+    [self setTitle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 
 
@@ -288,7 +302,9 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
         [self reloadScreen];
         [self.tableView flashScrollIndicators];
     }
-    //NSLog(@"actual %li height: %f", (long)indexPath.row, cell.frame.size.height);
+    CGFloat actual = cell.frame.size.height;
+    CGFloat proj = [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+    NSLog(@"%li: ACTUAL: %f PROJECTED: %f DELTA: %f", (long)indexPath.row, actual, proj, actual-proj);
 }
 
 - (void) tableView:(UITableView *)tV didSelectRowAtIndexPath:(NSIndexPath *)indexPath

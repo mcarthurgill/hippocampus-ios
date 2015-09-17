@@ -31,6 +31,8 @@
 - (NSMutableArray*) itemKeys;
 - (NSString*) cachedItemMessage;
 
+- (NSArray*) authorizedUsers;
+
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index;
 
 - (NSString*) relationLevel;

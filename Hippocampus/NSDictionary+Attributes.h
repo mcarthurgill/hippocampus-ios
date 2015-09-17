@@ -23,6 +23,8 @@
 - (CGFloat) widthForHeight:(CGFloat)height;
 - (CGFloat) heightForWidth:(CGFloat)width;
 
+- (NSString*) avatarURLStringFromPhone;
+
 //OLD
 
 - (NSString*) ID;

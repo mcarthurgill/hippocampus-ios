@@ -85,7 +85,8 @@
     }
     [bucketName setAttributedText:titleString];
     
-    [bucketItemMessage setText:[bucket cachedItemMessage]];
+    [bucketItemMessage setText:[[[bucket cachedItemMessage] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] stringByReplacingOccurrencesOfString:@"\n" withString:@" "]];
+    [bucketItemMessage setLineBreakMode:NSLineBreakByTruncatingTail];
     
     [self setNeedsLayout];
     

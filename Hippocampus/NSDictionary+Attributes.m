@@ -75,6 +75,10 @@
     return 0.0f;
 }
 
+- (NSString*) avatarURLStringFromPhone
+{
+    return [NSString stringWithFormat:@"%@/avatar/%@/phone", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIRoot"], [self phoneNumber]];
+}
 
 //OLD
 
