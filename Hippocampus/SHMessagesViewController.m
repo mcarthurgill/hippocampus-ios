@@ -443,6 +443,46 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self textViewDidChange:self.textView];
 }
 
+- (BOOL) textView:(UITextView *)tV shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    if ([text isEqualToString:@""]) {
+        [self performSelector:@selector(leaveRemainingAttachments) withObject:nil afterDelay:0.05];
+    }
+    return YES;
+}
+
+- (void) leaveRemainingAttachments
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSAttributedString* as = [self.textView.attributedText copy];
+        NSMutableArray* remainingImages = [[NSMutableArray alloc] init];
+        [as enumerateAttribute:NSAttachmentAttributeName inRange:NSMakeRange(0, self.textView.attributedText.length) options:0
+                    usingBlock:^(id value, NSRange r, BOOL *stop) {
+                        NSTextAttachment* attachment = (NSTextAttachment*)value;
+                        if (attachment != NULL && attachment.image) {
+                            [remainingImages addObject:attachment.image];
+                        }
+                    }
+         ];
+        if ([remainingImages count] == [[self.blankItem media] count]) {
+            //do nothing
+        } else {
+            NSMutableArray* tempMedia = [[NSMutableArray alloc] init];
+            for (NSMutableDictionary* medium in [self.blankItem media]) {
+                UIImage* comparison = [UIImage imageWithContentsOfFile:[medium objectForKey:@"local_file_path"]];
+                if (comparison) {
+                    for (UIImage* img in remainingImages) {
+                        if ([UIImagePNGRepresentation(img) isEqual:UIImagePNGRepresentation(comparison)]) {
+                            [tempMedia addObject:medium];
+                        }
+                    }
+                    //(*stop) = YES; // stop so we only write the first attachment
+                }
+            }
+            [self.blankItem setObject:tempMedia forKey:@"media_cache"];
+        }
+    });
+}
 
 
 
