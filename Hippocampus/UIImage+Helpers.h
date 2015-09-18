@@ -14,4 +14,6 @@
 
 - (UIImage*) croppedImage:(CGRect)bounds;
 
+- (UIImage*) resizeImageWithNewSize:(CGSize)newSize;
+
 @end

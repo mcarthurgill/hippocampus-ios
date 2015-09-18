@@ -22,6 +22,7 @@
 - (CGFloat) mediaSizeRatio;
 - (CGFloat) widthForHeight:(CGFloat)height;
 - (CGFloat) heightForWidth:(CGFloat)width;
+- (CGSize) sizeWithNewWidth:(CGFloat)width;
 
 - (NSString*) avatarURLStringFromPhone;
 

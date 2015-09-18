@@ -75,10 +75,16 @@
     return 0.0f;
 }
 
+- (CGSize) sizeWithNewWidth:(CGFloat)width
+{
+    return CGSizeMake(width, [self heightForWidth:width]);
+}
+
 - (NSString*) avatarURLStringFromPhone
 {
     return [NSString stringWithFormat:@"%@/avatar/%@/phone", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIRoot"], [self phoneNumber]];
 }
+
 
 //OLD
 

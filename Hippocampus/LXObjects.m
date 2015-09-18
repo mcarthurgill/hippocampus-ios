@@ -139,22 +139,46 @@
 
 - (void) saveRemote:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    //SEND TO SERVER
-    [[LXServer shared] requestPath:[self requestPath] withMethod:[self requestMethod] withParamaters:[self parameterReady] authType:[self authTypeForRequest]
-                           success:^(id responseObject) {
-                               //SAVE LOCALLY
-                               [[responseObject mutableCopy] assignLocalVersionIfNeeded];
-                               if (successCallback) {
-                                   successCallback(responseObject);
+    if ([[self objectType] isEqualToString:@"item"] && [self hasUnsavedMedia]) {
+        //SEND TO SERVER WITH MEDIA
+        [[LXServer shared] requestPath:[self requestPath] withMethod:[self requestMethod] withParamaters:[self parameterReady] authType:[self authTypeForRequest]
+             constructingBodyWithBlock:^(id <AFMultipartFormData>formData) {
+                 NSInteger i = 0;
+                 for (NSMutableDictionary* medium in [self media]) {
+                     NSData *data = [[NSFileManager defaultManager] contentsAtPath:[medium objectForKey:@"local_file_path"]];
+                     [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media[]"] fileName:[medium localKey] mimeType:@"image/jpeg"];
+                     ++i;
+                 }
+             } success:^(id responseObject) {
+                 //SAVE LOCALLY
+                 [[responseObject mutableCopy] assignLocalVersionIfNeeded];
+                 if (successCallback) {
+                     successCallback(responseObject);
+                 }
+             } failure:^(NSError* error) {
+                 if (failureCallback) {
+                     failureCallback(error);
+                 }
+             }
+         ];
+    } else {
+        //SEND TO SERVER
+        [[LXServer shared] requestPath:[self requestPath] withMethod:[self requestMethod] withParamaters:[self parameterReady] authType:[self authTypeForRequest]
+                               success:^(id responseObject) {
+                                   //SAVE LOCALLY
+                                   [[responseObject mutableCopy] assignLocalVersionIfNeeded];
+                                   if (successCallback) {
+                                       successCallback(responseObject);
+                                   }
                                }
-                           }
-                           failure:^(NSError* error) {
-                               
-                               if (failureCallback) {
-                                   failureCallback(error);
+                               failure:^(NSError* error) {
+                                   
+                                   if (failureCallback) {
+                                       failureCallback(error);
+                                   }
                                }
-                           }
-     ];
+         ];
+    }
 }
 
 - (void) destroyRemote

@@ -527,7 +527,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 
         // Create path.
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Image.png"];
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"Image-%f.png", [[NSDate date] timeIntervalSince1970]]];
         // Save image.
         [UIImageJPEGRepresentation(image, 0.9) writeToFile:filePath atomically:YES];
         

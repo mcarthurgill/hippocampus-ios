@@ -16,6 +16,8 @@
 @property (strong, nonatomic) NSString* localKey;
 @property (nonatomic) BOOL shouldReload;
 
+@property (strong, nonatomic) NSMutableDictionary* blankItem;
+
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *inputToolbar;
 @property (strong, nonatomic) IBOutlet UITextView *textView;

@@ -350,6 +350,17 @@
     return tempImages;
 }
 
+- (BOOL) hasUnsavedMedia
+{
+    for (NSDictionary* medium in [self media]) {
+        NSLog(@"MEDIUM HERE: %@", medium);
+        if ([medium objectForKey:@"local_file_path"] && !([medium objectForKey:@"url"] || [medium objectForKey:@"secure_url"])) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 - (void) saveMediaIfNecessary
 {
     for (NSDictionary* medium in [self media]) {

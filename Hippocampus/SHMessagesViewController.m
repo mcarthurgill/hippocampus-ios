@@ -11,6 +11,7 @@
 #import "SHLoadingTableViewCell.h"
 #import "SHItemViewController.h"
 #import "SHEditBucketViewController.h"
+#import "UIImage+Helpers.h"
 
 #define PAGE_COUNT 64
 #define MAX_TEXTVIEW_HEIGHT 140
@@ -29,6 +30,8 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 @synthesize localKey;
 @synthesize shouldReload;
+
+@synthesize blankItem;
 
 @synthesize tableView;
 @synthesize inputToolbar;
@@ -51,6 +54,8 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self setupSettings];
     
     [self beginningActions];
+    
+    [self resetBox];
     
     [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
 }
@@ -367,15 +372,17 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 {
     if (![self canSave])
         return;
-    NSMutableDictionary* item = [NSMutableDictionary createItemWithMessage:self.textView.text];
-    if ([self bucket] && [[self bucket] localKey] && ![[[self bucket] localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
-        [item setObject:[[self bucket] localKey] forKey:@"bucket_local_key"];
-        [item setObject:@"assigned" forKey:@"status"];
-        [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] addItem:item atIndex:0];
-    }
-    [[self bucket] addItem:item atIndex:0];
     
-    [item saveRemote:^(id responseObject) {
+    [self.blankItem setObject:[[[[[self.textView attributedText] string] stringByReplacingOccurrencesOfString:@"\uFFFC" withString:@""] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\uFFFC"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:@"message"];
+    
+    if ([self bucket] && [[self bucket] localKey] && ![[[self bucket] localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
+        [self.blankItem setObject:[[self bucket] localKey] forKey:@"bucket_local_key"];
+        [self.blankItem setObject:@"assigned" forKey:@"status"];
+        [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] addItem:self.blankItem atIndex:0];
+    }
+    [[self bucket] addItem:self.blankItem atIndex:0];
+    
+    [self.blankItem saveRemote:^(id responseObject) {
         [self reloadScreen];
     }
              failure:^(NSError* error){
@@ -385,13 +392,16 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (void) resetBox
 {
-    [self.textView setText:@""];
+    [self.textView setAttributedText:[[NSMutableAttributedString alloc] init]];
+    [self.textView setText:nil];
     [self textViewDidChange:self.textView];
+    
+    self.blankItem = [NSMutableDictionary createItemWithMessage:self.textView.text];
 }
 
 - (BOOL) canSave
 {
-    return self.textView.text && self.textView.text.length > 0;
+    return (self.textView.text && self.textView.text.length > 0) || [self.blankItem hasUnsavedMedia];
 }
 
 
@@ -403,6 +413,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 {
     [self resizeTextView];
     [self handleButtons];
+    [self.textView setFont:[UIFont inputFont]];
 }
 
 - (void) resizeTextView
@@ -413,6 +424,24 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.inputToolbar layoutIfNeeded];
 }
 
+- (void) redrawMessage
+{
+    NSMutableAttributedString* as = [[NSMutableAttributedString alloc] init];
+    if ([self.blankItem hasUnsavedMedia]) {
+        for (NSMutableDictionary* medium in [self.blankItem media]) {
+            NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
+            //textAttachment.image = [[UIImage imageWithContentsOfFile:[medium objectForKey:@"local_file_path"]] resizeImageWithNewSize:[medium sizeWithNewWidth:self.inputToolbar.bounds.size.width]];
+            textAttachment.image = [UIImage imageWithContentsOfFile:[medium objectForKey:@"local_file_path"]];
+            [textAttachment setBounds:CGRectMake(0, 0, self.inputToolbar.bounds.size.width/2.0, [medium heightForWidth:self.inputToolbar.bounds.size.width/2.0])];
+            NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
+            [as appendAttributedString:attrStringWithImage];
+            [as appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
+        }
+    }
+    [as appendAttributedString:[[NSAttributedString alloc] initWithString:[[[[[self.textView attributedText] string] stringByReplacingOccurrencesOfString:@"\uFFFC" withString:@""]stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\uFFFC"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]]];
+    [self.textView setAttributedText:as];
+    [self textViewDidChange:self.textView];
+}
 
 
 
@@ -526,21 +555,21 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         
         // Create path.
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Image.png"];
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"Image-%f.png", [[NSDate date] timeIntervalSince1970]]];
         // Save image.
-        [UIImageJPEGRepresentation(image, 0.9) writeToFile:filePath atomically:YES];
+        [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:YES];
         
         NSMutableDictionary* medium = [NSMutableDictionary create:@"medium"];
         [medium setObject:filePath forKey:@"local_file_path"];
-        //[medium setObject:[[self item] localKey] forKey:@"item_local_key"];
+        [medium setObject:[self.blankItem localKey] forKey:@"item_local_key"];
         [medium setObject:[NSNumber numberWithFloat:image.size.width] forKey:@"width"];
         [medium setObject:[NSNumber numberWithFloat:image.size.height] forKey:@"height"];
         
-        //NSMutableArray* tempMedia = [[[self item] media] mutableCopy];
+        NSMutableArray* tempMedia = [[self.blankItem media] mutableCopy];
+        [tempMedia addObject:medium];
+        [self.blankItem setObject:tempMedia forKey:@"media_cache"];
         
-        //[tempMedia addObject:medium];
-        
-        //[[self item] setObject:tempMedia forKey:@"media_cache"];
+        [self redrawMessage];
     }
     else if ([mediaType isEqualToString:(NSString*)kUTTypeMovie]) {
         // Media is a video
