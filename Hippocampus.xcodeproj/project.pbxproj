@@ -68,7 +68,6 @@
 		288A74631B7531DD00F6A618 /* search@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74601B7531DD00F6A618 /* search@3x.png */; };
 		288A74691B75346800F6A618 /* SHBucketsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A74681B75346800F6A618 /* SHBucketsViewController.m */; };
 		288A746C1B77E6F600F6A618 /* LXObjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A746B1B77E6F600F6A618 /* LXObjectManager.m */; };
-		288A746F1B782FB400F6A618 /* SHSlackThoughtsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */; };
 		288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 288A74721B7859F600F6A618 /* SHItemTableViewCell.m */; };
 		288A74751B7859F600F6A618 /* SHItemTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 288A74731B7859F600F6A618 /* SHItemTableViewCell.xib */; };
 		288A747B1B7985DA00F6A618 /* nudge_icon_white_swipe.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74791B7985DA00F6A618 /* nudge_icon_white_swipe.png */; };
@@ -248,8 +247,6 @@
 		288A74681B75346800F6A618 /* SHBucketsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHBucketsViewController.m; sourceTree = "<group>"; };
 		288A746A1B77E6F600F6A618 /* LXObjectManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXObjectManager.h; sourceTree = "<group>"; };
 		288A746B1B77E6F600F6A618 /* LXObjectManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXObjectManager.m; sourceTree = "<group>"; };
-		288A746D1B782FB400F6A618 /* SHSlackThoughtsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHSlackThoughtsViewController.h; sourceTree = "<group>"; };
-		288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHSlackThoughtsViewController.m; sourceTree = "<group>"; };
 		288A74711B7859F600F6A618 /* SHItemTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHItemTableViewCell.h; sourceTree = "<group>"; };
 		288A74721B7859F600F6A618 /* SHItemTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHItemTableViewCell.m; sourceTree = "<group>"; };
 		288A74731B7859F600F6A618 /* SHItemTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHItemTableViewCell.xib; sourceTree = "<group>"; };
@@ -714,8 +711,6 @@
 				288A74681B75346800F6A618 /* SHBucketsViewController.m */,
 				28419A1F1BAC57E100CF21A6 /* SHMessagesViewController.h */,
 				28419A201BAC57E100CF21A6 /* SHMessagesViewController.m */,
-				288A746D1B782FB400F6A618 /* SHSlackThoughtsViewController.h */,
-				288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -1202,7 +1197,6 @@
 				28ACA3A11B8B7CF900D7B215 /* SHBucketTableViewCell.m in Sources */,
 				288F12271B751AF30001E0B0 /* LXBucket.m in Sources */,
 				281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */,
-				288A746F1B782FB400F6A618 /* SHSlackThoughtsViewController.m in Sources */,
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
 				28ED41F21BA0A3EF000292AE /* SHItemAuthorTableViewCell.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,

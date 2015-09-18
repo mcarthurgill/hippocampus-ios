@@ -10,7 +10,7 @@
 #import "SHItemTableViewCell.h"
 #import "SHBucketTableViewCell.h"
 #import "SHSearch.h"
-#import "SHSlackThoughtsViewController.h"
+#import "SHMessagesViewController.h"
 #import "SHItemViewController.h"
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
@@ -197,8 +197,8 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"blank"]) {
         [self dismissView];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
-        UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
-        [(SHSlackThoughtsViewController*)vc setLocalKey:[self.bucketResultKeys objectAtIndex:indexPath.row]];
+        SHMessagesViewController* vc = (SHMessagesViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+        [vc setLocalKey:[self.bucketResultKeys objectAtIndex:indexPath.row]];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"results"]) {
         UIViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:itemViewControllerIdentifier];
@@ -278,14 +278,13 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) dismissView
 {
     [self dismissViewControllerAnimated:NO completion:^(void){
-        
     }];
 }
 
 - (void) pushBucketViewController:(NSNotification*)notification
 {
-    UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
-    [(SHSlackThoughtsViewController*)vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
+    SHMessagesViewController* vc = (SHMessagesViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+    [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
