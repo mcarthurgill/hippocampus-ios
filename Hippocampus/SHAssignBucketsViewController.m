@@ -130,7 +130,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     if ([self.searchBar text] && [[self.searchBar text] length] > 0)
         return [[[SHSearch defaultManager] getCachedObjects:@"contacts" withTerm:[self.searchBar text]] removeContacts:self.contactsSelected];
-    return [[[LXAddressBook thisBook] allContacts] removeContacts:self.contactsSelected];
+    return [[[LXAddressBook thisBook] contactsForAssignment] removeContacts:self.contactsSelected];
 }
 
 - (NSArray*) recent

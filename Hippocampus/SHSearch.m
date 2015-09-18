@@ -217,7 +217,7 @@ static SHSearch* defaultManager = nil;
             return [self.cachedContacts objectForKey:key];
         }
     }
-    return [[LXAddressBook thisBook] allContacts];
+    return [[LXAddressBook thisBook] contactsForAssignment];
 }
 
 
