@@ -83,7 +83,6 @@
     return [[self objectForKey:@"user"] objectForKey:@"name"];
 }
 
-
 - (NSMutableArray*) bucketsArray
 {
     NSMutableArray* temp = [[NSMutableArray alloc] init];

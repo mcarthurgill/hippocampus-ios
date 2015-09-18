@@ -41,8 +41,6 @@
     [self setDelegate:d];
     [self setCollaborator:c];
     
-    NSLog(@"collaborator: %@", self.collaborator);
-    
     if (self.collaborator) {
         [self setupForUser];
     } else {

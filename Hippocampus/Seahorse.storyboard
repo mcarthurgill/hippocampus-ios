@@ -192,6 +192,85 @@
             </objects>
             <point key="canvasLocation" x="1441" y="-1198"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="epc-dd-HiL">
+            <objects>
+                <navigationController storyboardIdentifier="collaboratorsViewController" id="10G-Vu-BW2" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="CYO-ap-jjC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="EX7-qT-kGZ" kind="relationship" relationship="rootViewController" id="qdr-Lj-ffG"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="II4-wk-Eua" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="740" y="-1909"/>
+        </scene>
+        <!--Collaborators View Controller-->
+        <scene sceneID="7Mw-fJ-9Bp">
+            <objects>
+                <viewController id="EX7-qT-kGZ" customClass="SHCollaboratorsViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="fBl-tW-JMN"/>
+                        <viewControllerLayoutGuide type="bottom" id="qIN-Xj-ys8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="63V-dh-WZx">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" text="" placeholder="Filter contacts" translatesAutoresizingMaskIntoConstraints="NO" id="CO3-tr-Pt9">
+                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Aia-3t-Raa"/>
+                                </constraints>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="EX7-qT-kGZ" id="Uo2-6l-3Rx"/>
+                                </connections>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cEM-W2-LKx">
+                                <rect key="frame" x="0.0" y="108" width="600" height="519"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="EX7-qT-kGZ" id="eVo-ec-ysi"/>
+                                    <outlet property="delegate" destination="EX7-qT-kGZ" id="iru-C0-D16"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="cEM-W2-LKx" firstAttribute="leading" secondItem="63V-dh-WZx" secondAttribute="leading" id="5ZY-vq-k98"/>
+                            <constraint firstItem="cEM-W2-LKx" firstAttribute="top" secondItem="CO3-tr-Pt9" secondAttribute="bottom" id="75b-V5-Rvq"/>
+                            <constraint firstItem="CO3-tr-Pt9" firstAttribute="width" secondItem="cEM-W2-LKx" secondAttribute="width" id="IMP-Gc-R8Y"/>
+                            <constraint firstItem="cEM-W2-LKx" firstAttribute="top" secondItem="63V-dh-WZx" secondAttribute="top" constant="108" id="OMD-Un-scW"/>
+                            <constraint firstItem="CO3-tr-Pt9" firstAttribute="centerX" secondItem="63V-dh-WZx" secondAttribute="centerX" id="cxL-zB-chx"/>
+                            <constraint firstItem="cEM-W2-LKx" firstAttribute="bottom" secondItem="qIN-Xj-ys8" secondAttribute="top" constant="27" id="x4G-ns-mpd"/>
+                            <constraint firstAttribute="trailing" secondItem="cEM-W2-LKx" secondAttribute="trailing" id="ytt-C7-wA2"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="U1n-Y1-Lzf">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="jEL-Le-U17">
+                            <connections>
+                                <action selector="cancelAction:" destination="EX7-qT-kGZ" id="AlO-Uq-LAK"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Invite" id="teP-Jp-Qt0">
+                            <connections>
+                                <action selector="inviteAction:" destination="EX7-qT-kGZ" id="W8x-lh-WAt"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="searchBar" destination="CO3-tr-Pt9" id="1iZ-zi-sBs"/>
+                        <outlet property="tableView" destination="cEM-W2-LKx" id="H9s-hx-N3B"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KcD-qc-Bt6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1441" y="-1909"/>
+        </scene>
         <!--Edit Item View Controller-->
         <scene sceneID="Kxa-TT-BI1">
             <objects>
@@ -332,7 +411,7 @@
                                                         <constraint firstAttribute="height" constant="547" id="S76-a4-vmd"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -440,7 +519,7 @@
                                             <constraint firstAttribute="height" constant="25" id="loM-Iu-MY8"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LFc-hn-ahJ">
