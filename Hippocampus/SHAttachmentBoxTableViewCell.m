@@ -34,8 +34,12 @@
 @synthesize leftAlignmentForBottomLabel;
 @synthesize centerLabelCenterY;
 
+@synthesize initialConstraintConstants;
+
 - (void) awakeFromNib
 {
+    self.initialConstraintConstants = @[@(centerLabelHeight.constant), @(verticalSpaceBetweenLabels.constant), @(leftAlignmentForBottomLabel.constant), @(centerLabelCenterY.constant)];
+    
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
     
     self.card.layer.cornerRadius = 4.0f;
@@ -59,6 +63,15 @@
     
     [self.rightLabel setFont:[UIFont secondaryFontWithSize:12.0f]];
     [self.rightLabel setTextColor:[UIColor SHFontLightGray]];
+    
+    [self.topLabel setBackgroundColor:[UIColor clearColor]];
+    [self.centerLabel setBackgroundColor:[UIColor clearColor]];
+    [self.rightLabel setBackgroundColor:[UIColor clearColor]];
+    
+    self.centerLabelHeight.constant = [self.initialConstraintConstants[0] floatValue];
+    self.verticalSpaceBetweenLabels.constant = [self.initialConstraintConstants[1] floatValue];
+    self.leftAlignmentForBottomLabel.constant = [self.initialConstraintConstants[2] floatValue];
+    self.centerLabelCenterY.constant = [self.initialConstraintConstants[3] floatValue];
 }
 
 - (void) setupGestureRecognizers

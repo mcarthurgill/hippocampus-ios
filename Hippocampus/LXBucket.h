@@ -31,11 +31,15 @@
 - (NSMutableArray*) itemKeys;
 - (NSString*) cachedItemMessage;
 
+- (NSArray*) authorizedUsers;
+
 - (NSMutableDictionary*) itemAtIndex:(NSInteger)index;
 
 - (NSString*) relationLevel;
 - (UIColor*) bucketColor;
 
 - (BOOL) isAllThoughtsBucket;
+
+- (BOOL) hasAuthorizedUserID:(NSString*)uID;
 
 @end

@@ -16,6 +16,8 @@
 @property (strong, nonatomic) NSMutableDictionary* attachment;
 @property (strong, nonatomic) NSString* attachmentType;
 
+@property (strong, nonatomic) NSArray* initialConstraintConstants;
+
 @property (strong, nonatomic) UILongPressGestureRecognizer* longPress;
 
 @property (strong, nonatomic) IBOutlet UIView *card;
