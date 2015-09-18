@@ -211,6 +211,25 @@ static NSInteger maxRecentCount = 6;
     return;
 }
 
+- (void) addCollaboratorsWithContacts:(NSMutableArray*)contacts success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/add_collaborators", [self ID]] withMethod:@"POST" withParamaters:@{@"contacts": contacts} authType:@"none"
+                           success:^(id responseObject){
+                               if ([responseObject objectForKey:@"bucket"]) {
+                                   [[responseObject objectForKey:@"bucket"] refreshFromServerWithSuccess:^(id responseObject){} failure:^(NSError* error){}];
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+
+}
+
 - (BOOL) isAllThoughtsBucket
 {
     return [self localKey] && [[self localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]];

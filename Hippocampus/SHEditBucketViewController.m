@@ -36,6 +36,12 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     //NSLog(@"bucket: %@", [self bucket]);
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self reloadScreen]; 
+}
+
 - (void) setupSettings
 {
     [self setTitle];
@@ -80,7 +86,6 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
 {
     return [LXObjectManager objectWithLocalKey:self.localKey];
 }
-
 
 
 # pragma mark table view delegate

@@ -209,10 +209,28 @@ static NSString *contactCellIdentifier = @"SHContactTableViewCell";
     [alert show];
 }
 
+- (void) alertForFailure
+{
+    UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Sorry"
+                                                     message:@"We were unable to invite your collaborators."
+                                                    delegate:self
+                                           cancelButtonTitle:@"OK"
+                                           otherButtonTitles: nil];
+    [alert setTag:3];
+    [alert show];
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (alertView.tag == 2 && alertView.cancelButtonIndex != buttonIndex) {
-        NSLog(@"inviting = %@", self.contactsToInvite);
+        [[self bucket] addCollaboratorsWithContacts:self.contactsToInvite
+                                    success:^(id responseObject){
+                                        [self dismissViewControllerAnimated:YES completion:^(void){}];
+                                    }failure:^(NSError *error) {
+                                        [self alertForFailure];
+                                    }
+         ];
+    } else if (alertView.tag == 3) {
         [self dismissViewControllerAnimated:YES completion:^(void){}];
     }
 }
