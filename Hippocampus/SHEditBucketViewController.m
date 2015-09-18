@@ -10,6 +10,7 @@
 
 #import "SHCollaboratorTableViewCell.h"
 #import "SHBucketActionTableViewCell.h"
+#import "SHCollaboratorsViewController.h"
 
 static NSString *collaboratorCellIdentifier = @"SHCollaboratorTableViewCell";
 static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
@@ -201,9 +202,12 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborators"]) {
         if ([[self bucket] authorizedUsers] && indexPath.row < [[[self bucket] authorizedUsers] count]) {
-            //collaborator
+            //current collaborator
         } else {
-            //new collaborator
+            UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"collaboratorsViewController"];
+            SHCollaboratorsViewController* vc = [[nc viewControllers] firstObject];
+            [vc setLocalKey:self.localKey];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc,@"animated":@YES}];
         }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"rename"]) {
@@ -215,13 +219,9 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
             [av setTag:1];
             [av show];
         } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"delete"]) {
-            
         }
     }
 }
-
-
-
 
 
 # pragma mark alert view delegate
@@ -240,7 +240,6 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
         }
     }
 }
-
 
 
 @end

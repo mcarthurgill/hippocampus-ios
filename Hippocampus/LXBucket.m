@@ -194,18 +194,6 @@ static NSInteger maxRecentCount = 5;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"removedItemFromBucket" object:nil userInfo:@{@"item":item,@"bucket":bucket}];
     }
     return;
-    NSMutableArray* items = [[self items] mutableCopy];
-    for (NSInteger i = 0; i < [items count]; ++i) {
-        NSMutableDictionary* compareToItem = [items objectAtIndex:i];
-        if ([[compareToItem localKey] isEqualToString:[item localKey]]) {
-            [items removeObjectAtIndex:i];
-            [self setObject:items forKey:@"items"];
-            [self removeObjectForKey:@"updated_at"];
-            [self assignLocalVersionIfNeeded];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"removedItemFromBucket" object:nil userInfo:@{@"item":item,@"bucket":self}];
-            return;
-        }
-    }
 }
 
 - (BOOL) isAllThoughtsBucket
@@ -217,5 +205,6 @@ static NSInteger maxRecentCount = 5;
 {
     return ([self objectForKey:@"authorized_user_ids"] && [[self objectForKey:@"authorized_user_ids"] containsObject:[[[LXSession thisSession] user] ID]]) || ([self objectForKey:@"authorized_user_ids"] && [[self objectForKey:@"authorized_user_ids"] containsObject:[NSString stringWithFormat:@"%@",[[[LXSession thisSession] user] ID]]]);
 }
+
 
 @end
