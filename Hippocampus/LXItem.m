@@ -220,7 +220,7 @@
 
 - (CGFloat) estimatedCellHeight
 {
-    CGFloat THOUGHT_LEFT_SIDE_MARGIN = 29.0f;
+    CGFloat THOUGHT_LEFT_SIDE_MARGIN = 39.0f;
     CGFloat THOUGHT_RIGHT_SIDE_MARGIN = 27.0f;
     CGFloat THOUGHT_TOP_SIDE_MARGIN = 18.0f;
     CGFloat THOUGHT_BOTTOM_SIDE_MARGIN = 18.0f;
@@ -389,5 +389,13 @@
     [self assignLocalVersionIfNeeded];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:self];
 }
+
+
+- (void) addEstimatedRowHeight:(CGFloat)height
+{
+    [self setObject:[NSNumber numberWithFloat:height] forKey:@"estimated_row_height"];
+    [self assignLocalVersionIfNeeded];
+}
+
 
 @end

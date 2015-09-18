@@ -19,6 +19,7 @@
 + (UIColor*) SHRed;
 + (UIColor*) SHGreen;
 + (UIColor*) SHBlue;
++ (UIColor*) SHLightBlue;
 + (UIColor*) SHLightGray;
 + (UIColor*) SHLighterGray;
 

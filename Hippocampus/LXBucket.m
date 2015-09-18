@@ -11,9 +11,24 @@
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
 static NSString *recentBucketsKey = @"recentBuckeyKeys";
-static NSInteger maxRecentCount = 5;
+static NSInteger maxRecentCount = 6;
 
 @implementation NSMutableDictionary (LXBucket)
+
+- (void) destroyBucket
+{
+    if ([self belongsToCurrentUser]) {
+        [self destroyRemote:^(id responseObject){
+            [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] refreshFromServerWithSuccess:^(id responseObject){
+                [[LXObjectManager defaultManager] refreshObjectTypes:@"items" withAboveUpdatedAt:nil success:^(id responseObject){} failure:^(NSError* error){}];
+            } failure:^(NSError* error){}];
+        } failure:nil];
+        NSMutableArray* bucketKeys = [[LXObjectManager objectWithLocalKey:@"bucketLocalKeys"] mutableCopy];
+        [bucketKeys removeObject:[self localKey]];
+        [NSMutableDictionary removeRecentBucketLocalKey:[self localKey]];
+        [LXObjectManager assignLocal:bucketKeys WithLocalKey:@"bucketLocalKeys"];
+    }
+}
 
 + (void) bucketKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {

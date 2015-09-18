@@ -8,7 +8,7 @@
 
 #import "SHMainViewController.h"
 #import "SHBucketsViewController.h"
-#import "SHSlackThoughtsViewController.h"
+#import "SHMessagesViewController.h"
 #import "SHSearchViewController.h"
 
 @interface SHMainViewController ()
@@ -131,8 +131,8 @@
     UIViewController* vc = [self.viewControllersCached objectForKey:viewControllerName];
     if (!vc) {
         if ([viewControllerName isEqualToString:@"thoughtsViewController"]) {
-            vc = [[SHSlackThoughtsViewController alloc] init];
-            [(SHSlackThoughtsViewController*)vc setLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
+            vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+            [(SHMessagesViewController*)vc setLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
         } else {
             vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:viewControllerName];
         }
@@ -143,8 +143,8 @@
 
 - (void) pushBucketViewController:(NSNotification*)notification
 {
-    UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
-    [(SHSlackThoughtsViewController*)vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
+    SHMessagesViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+    [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
