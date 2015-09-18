@@ -122,6 +122,7 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
 
 - (UITableViewCell*) tableView:(UITableView *)tV collaboratorCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"bucket: %@", [self bucket]);
     SHCollaboratorTableViewCell* cell = (SHCollaboratorTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:collaboratorCellIdentifier];
     if ([[self bucket] authorizedUsers] && indexPath.row < [[[self bucket] authorizedUsers] count]) {
         [cell configureWithLocalKey:self.localKey delegate:self collaborator:[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row]];
@@ -215,7 +216,14 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
             [av setTag:1];
             [av show];
         } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"delete"]) {
-            
+            if ([[self bucket] belongsToCurrentUser]) {
+                UIAlertView* av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] firstName]] message:@"Are you sure you want to delete this bucket?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
+                [av setTag:2];
+                [av show];
+            } else {
+                UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Not yours!" message:@"You can't delete a bucket you didn't create." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+                [av show];
+            }
         }
     }
 }
@@ -237,6 +245,13 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
             [bucketTemp saveRemote];
             [bucketTemp assignLocalVersionIfNeeded];
             [self reloadScreen];
+        }
+    } else if (alertView.tag == 2) {
+        //delete
+        if ([alertView cancelButtonIndex] != buttonIndex) {
+            //delete!
+            [[self bucket] destroyBucket];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
 }

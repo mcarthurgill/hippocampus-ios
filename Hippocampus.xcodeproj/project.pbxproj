@@ -49,6 +49,8 @@
 		2837E8061AC11D2A0089FA33 /* HCInitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2837E8051AC11D2A0089FA33 /* HCInitialViewController.m */; };
 		2837E8091AC11D400089FA33 /* HCOnboardingPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2837E8081AC11D400089FA33 /* HCOnboardingPageViewController.m */; };
 		2837E80C1AC11D550089FA33 /* HCMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2837E80B1AC11D550089FA33 /* HCMessageViewController.m */; };
+		28419A211BAC57E100CF21A6 /* SHMessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28419A201BAC57E100CF21A6 /* SHMessagesViewController.m */; settings = {ASSET_TAGS = (); }; };
+		28419A251BAC9A9700CF21A6 /* compose-media.png in Resources */ = {isa = PBXBuildFile; fileRef = 28419A241BAC9A9700CF21A6 /* compose-media.png */; settings = {ASSET_TAGS = (); }; };
 		28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDA1A8D692E00B12548 /* 11-clock.png */; };
 		28431DDD1A8D692E00B12548 /* 11-clock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDB1A8D692E00B12548 /* 11-clock@2x.png */; };
 		28431DE01A8D69BA00B12548 /* 78-stopwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDE1A8D69BA00B12548 /* 78-stopwatch.png */; };
@@ -218,6 +220,9 @@
 		2837E8081AC11D400089FA33 /* HCOnboardingPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCOnboardingPageViewController.m; sourceTree = "<group>"; };
 		2837E80A1AC11D550089FA33 /* HCMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCMessageViewController.h; sourceTree = "<group>"; };
 		2837E80B1AC11D550089FA33 /* HCMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCMessageViewController.m; sourceTree = "<group>"; };
+		28419A1F1BAC57E100CF21A6 /* SHMessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHMessagesViewController.h; sourceTree = "<group>"; };
+		28419A201BAC57E100CF21A6 /* SHMessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHMessagesViewController.m; sourceTree = "<group>"; };
+		28419A241BAC9A9700CF21A6 /* compose-media.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "compose-media.png"; sourceTree = "<group>"; };
 		28431DDA1A8D692E00B12548 /* 11-clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock.png"; sourceTree = "<group>"; };
 		28431DDB1A8D692E00B12548 /* 11-clock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "11-clock@2x.png"; sourceTree = "<group>"; };
 		28431DDE1A8D69BA00B12548 /* 78-stopwatch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "78-stopwatch.png"; sourceTree = "<group>"; };
@@ -699,6 +704,8 @@
 				288F12331B7526AD0001E0B0 /* SHMainViewController.m */,
 				288A74671B75346800F6A618 /* SHBucketsViewController.h */,
 				288A74681B75346800F6A618 /* SHBucketsViewController.m */,
+				28419A1F1BAC57E100CF21A6 /* SHMessagesViewController.h */,
+				28419A201BAC57E100CF21A6 /* SHMessagesViewController.m */,
 				288A746D1B782FB400F6A618 /* SHSlackThoughtsViewController.h */,
 				288A746E1B782FB400F6A618 /* SHSlackThoughtsViewController.m */,
 			);
@@ -864,6 +871,7 @@
 		28ED42051BA20A71000292AE /* Toolbar Icons */ = {
 			isa = PBXGroup;
 			children = (
+				28419A241BAC9A9700CF21A6 /* compose-media.png */,
 				28ED422C1BA2728A000292AE /* toolbar_bells.png */,
 				28ED42281BA2700F000292AE /* toolbar_bella.png */,
 				28ED420A1BA210AE000292AE /* toolbar_bucket.png */,
@@ -1058,6 +1066,7 @@
 				28F5B8AF1ACC58BE00C7F5BC /* AlarmClock-100.png in Resources */,
 				28ED42501BA357F0000292AE /* compose_media.png in Resources */,
 				28ED42101BA210AE000292AE /* toolbar_duplicate.png in Resources */,
+				28419A251BAC9A9700CF21A6 /* compose-media.png in Resources */,
 				28CD3FC01AEA887200B3ABB6 /* new-collection-screen.jpg in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				28ACA3A21B8B7CF900D7B215 /* SHBucketTableViewCell.xib in Resources */,
@@ -1155,6 +1164,7 @@
 				289D2F8D1BAA60F0007F719B /* SHBucketActionTableViewCell.m in Sources */,
 				28ED41CB1B9CB943000292AE /* SHAssignBucketsViewController.m in Sources */,
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
+				28419A211BAC57E100CF21A6 /* SHMessagesViewController.m in Sources */,
 				2837E80C1AC11D550089FA33 /* HCMessageViewController.m in Sources */,
 				28F5B8B21ACC9AD600C7F5BC /* UIImage+Helpers.m in Sources */,
 				76450E541AEA8509004D7FAD /* HCPermissionViewController.m in Sources */,

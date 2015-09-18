@@ -64,7 +64,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //[self reloadScreen];
+    [self reloadScreen];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -200,25 +200,25 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     return cell;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 80.0f;
-    if (indexPath.section >= [self.sections count]) {
-        return 44.0f;
-    }
-    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
-        if ([LXObjectManager objectWithLocalKey:[[self recent] objectAtIndex:indexPath.row]]) {
-            NSMutableDictionary* bucket = [self bucketAtIndexPath:indexPath];
-            return MIN(33.0f,([bucket cachedItemMessage] ? [[bucket cachedItemMessage] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:14.0f]] : 0)) + ([bucket firstName] ? [[bucket firstName] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:16.0f]] : 0) + 39.0f;
-        }
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
-        if ([LXObjectManager objectWithLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]]) {
-            NSMutableDictionary* bucket = [self bucketAtIndexPath:indexPath];
-            return MIN(33.0f,([bucket cachedItemMessage] ? [[bucket cachedItemMessage] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:14.0f]] : 0)) + ([bucket firstName] ? [[bucket firstName] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:16.0f]] : 0) + 39.0f;
-        }
-    }
-    return 44.0f;
-}
+//- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return 80.0f;
+//    if (indexPath.section >= [self.sections count]) {
+//        return 44.0f;
+//    }
+//    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
+//        if ([LXObjectManager objectWithLocalKey:[[self recent] objectAtIndex:indexPath.row]]) {
+//            NSMutableDictionary* bucket = [self bucketAtIndexPath:indexPath];
+//            return MIN(33.0f,([bucket cachedItemMessage] ? [[bucket cachedItemMessage] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:14.0f]] : 0)) + ([bucket firstName] ? [[bucket firstName] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:16.0f]] : 0) + 39.0f;
+//        }
+//    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+//        if ([LXObjectManager objectWithLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]]) {
+//            NSMutableDictionary* bucket = [self bucketAtIndexPath:indexPath];
+//            return MIN(33.0f,([bucket cachedItemMessage] ? [[bucket cachedItemMessage] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:14.0f]] : 0)) + ([bucket firstName] ? [[bucket firstName] heightForTextWithWidth:([[UIScreen mainScreen] bounds].size.width-(42.0f)) font:[UIFont titleFontWithSize:16.0f]] : 0) + 39.0f;
+//        }
+//    }
+//    return 44.0f;
+//}
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {

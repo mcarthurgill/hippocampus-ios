@@ -232,6 +232,7 @@ static LXObjectManager* defaultManager = nil;
 {
     id mutableCopy = [object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSMutableDictionary class]] ? [object cleanDictionary] : [object mutableCopy];
     [[[LXObjectManager defaultManager] library] setObject:mutableCopy forKey:key];
+    [self saveToDisk:mutableCopy WithLocalKey:key];
 }
 
 + (void) storeLocal:(id)object WithLocalKey:(NSString*)key
@@ -264,6 +265,18 @@ static LXObjectManager* defaultManager = nil;
             }
         }
         [[UIApplication sharedApplication] endBackgroundTask:bgt];
+    });
+}
+
++ (void) saveToDisk:(id)object WithLocalKey:(NSString*)key
+{
+    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.savetodiskqueue", 0);
+    dispatch_async(backgroundQueue, ^{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths objectAtIndex:0];
+        
+        NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
+        [NSKeyedArchiver archiveRootObject:object toFile:filePath];
     });
 }
 

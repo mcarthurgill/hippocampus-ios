@@ -38,4 +38,6 @@
 - (void) saveMediaIfNecessary;
 - (void) removeMediumWithLocalKey:(NSString*)mediumLocalKey;
 
+- (void) addEstimatedRowHeight:(CGFloat)height;
+
 @end

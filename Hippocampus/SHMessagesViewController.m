@@ -1,18 +1,19 @@
 //
-//  SHSlackThoughtsViewController.m
+//  SHMessagesViewController.m
 //  Hippocampus
 //
-//  Created by Will Schreiber on 8/9/15.
-//  Copyright (c) 2015 LXV. All rights reserved.
+//  Created by Will Schreiber on 9/18/15.
+//  Copyright © 2015 LXV. All rights reserved.
 //
 
-#import "SHSlackThoughtsViewController.h"
+#import "SHMessagesViewController.h"
 #import "SHItemTableViewCell.h"
 #import "SHLoadingTableViewCell.h"
 #import "SHItemViewController.h"
 #import "SHEditBucketViewController.h"
 
 #define PAGE_COUNT 64
+#define MAX_TEXTVIEW_HEIGHT 140
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
@@ -20,14 +21,24 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
-@interface SHSlackThoughtsViewController ()
+@interface SHMessagesViewController ()
 
 @end
 
-@implementation SHSlackThoughtsViewController
+@implementation SHMessagesViewController
 
 @synthesize localKey;
 @synthesize shouldReload;
+
+@synthesize tableView;
+@synthesize inputToolbar;
+@synthesize textView;
+@synthesize toolbarBottomConstraint;
+@synthesize textViewHeightConstraint;
+@synthesize inputControlToolbarHeightConstraint;
+@synthesize inputControlToolbar;
+@synthesize rightButton;
+@synthesize leftButton;
 
 - (void)viewDidLoad
 {
@@ -36,6 +47,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.tableView registerNib:[UINib nibWithNibName:itemCellIdentifier bundle:nil] forCellReuseIdentifier:itemCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:loadingCellIdentifier bundle:nil] forCellReuseIdentifier:loadingCellIdentifier];
     
+    [self registerForKeyboardNotifications];
     [self setupSettings];
     
     [self beginningActions];
@@ -46,7 +58,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //[self beginningActions];
     [self reloadScreen];
 }
 
@@ -66,7 +77,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void) setupSettings
@@ -76,31 +86,48 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bucketRefreshed:) name:@"bucketRefreshed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removedItemFromBucket:) name:@"removedItemFromBucket" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshVCWithLocalKey:) name:@"refreshVCWithLocalKey" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
     
     page = 0;
     
-    self.bounces = YES;
-    self.shakeToClearEnabled = YES;
-    self.keyboardPanningEnabled = YES;
-    self.shouldScrollToBottomAfterKeyboardShows = YES;
-    self.inverted = YES;
-    
-    [self.textView setPlaceholder:@"What's on your mind?..."];
     [self.textView setFont:[UIFont inputFont]];
     [self.textView setTextColor:[UIColor SHFontDarkGray]];
     
-    [[self rightButton] setTitle:@"Save" forState:UIControlStateNormal];
+    [self.placeholderLabel setFont:self.textView.font];
+    [self.placeholderLabel setTextColor:[UIColor SHFontLightGray]];
+    [self textViewResignedFirstResponder];
     
+    CALayer *TopBorder = [CALayer layer];
+    TopBorder.frame = CGRectMake(0.0f, 0.0f, self.inputToolbar.bounds.size.width, 1.0f);
+    TopBorder.backgroundColor = [UIColor SHLightGray].CGColor;
+    [inputToolbar.layer addSublayer:TopBorder];
+
+    CALayer *TopBorder2 = [CALayer layer];
+    TopBorder2.frame = CGRectMake(0.0f, 0.0f, self.inputToolbar.bounds.size.width, 1.0f);
+    TopBorder2.backgroundColor = [UIColor SHLightGray].CGColor;
+    [inputControlToolbar.layer addSublayer:TopBorder2];
+    
+    [self.inputControlToolbar setBackgroundColor:[UIColor whiteColor]];
+    [self.rightButton setBackgroundColor:[UIColor SHLightBlue]];
+    [[self.rightButton titleLabel] setTextColor:[UIColor SHBlue]];
+    [[self.rightButton titleLabel] setFont:[UIFont titleMediumFontWithSize:13.0f]];
+    
+    self.tableView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
-    //[self.tableView setEstimatedRowHeight:83.0f];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
     
     if (![self.localKey isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
         UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear.png"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemAction:)];
         [self.navigationItem setRightBarButtonItem:item];
     }
+    
+    [self.view setBackgroundColor:[UIColor slightBackgroundColor]];
+    
+    [self.leftButton setImage:[UIImage imageNamed:@"compose-media.png"] forState:UIControlStateNormal];
+    [self.leftButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [self.leftButton setContentMode:UIViewContentModeScaleAspectFit];
+    [self.leftButton setTintColor:[UIColor SHGreen]];
+    [self.leftButton setTitle:nil forState:UIControlStateNormal];
 }
 
 - (void) beginningActions
@@ -145,12 +172,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     }
 }
 
-- (void) keyboardDidShow:(NSNotification*)notification
-{
-    if ([self.textView isFirstResponder]) {
-        [self scrollToBottom:YES];
-    }
-}
+
 
 
 # pragma mark scrolling helpers
@@ -180,7 +202,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (BOOL) scrollViewShouldScrollToTop:(UIScrollView *)scrollView
 {
-    [super scrollViewShouldScrollToTop:scrollView];
     BOOL should = YES;
     if (should) {
         [self scrollToTop:YES];
@@ -233,9 +254,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 {
     NSLog(@"%lu, %lu", (unsigned long)[[[self bucket] itemKeys] count], (unsigned long)[oldKeys count]);
     if ([[[self bucket] itemKeys] count] == [oldKeys count]) {
-        //NO CHANGES!
     } else {
-        //[self scrollToBottom:YES];
         [self tryToReload];
     }
 }
@@ -244,7 +263,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 {
     [self.tableView reloadData];
     [self setTitle:[[self bucket] firstName]];
-    //NSLog(@"%@", [self bucket]);
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -303,9 +321,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         [self reloadScreen];
         [self.tableView flashScrollIndicators];
     }
-//    CGFloat actual = cell.frame.size.height;
-//    CGFloat proj = [self tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
-//    NSLog(@"%li: ACTUAL: %f PROJECTED: %f DELTA: %f", (long)indexPath.row, actual, proj, actual-proj);
     NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
     if (item) {
         [item addEstimatedRowHeight:cell.frame.size.height];
@@ -314,7 +329,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (void) tableView:(UITableView *)tV didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSLog(@"estimated %li height: %f", (long)indexPath.row, [self tableView:tV estimatedHeightForRowAtIndexPath:indexPath]);
     [tV deselectRowAtIndexPath:indexPath animated:YES];
     UIViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:itemViewControllerIdentifier];
     [(SHItemViewController*)vc setLocalKey:[[[self bucket] itemKeys] objectAtIndex:indexPath.row]];
@@ -326,8 +340,33 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 # pragma mark toolbar delegate
 
+- (IBAction)rightButtonAction:(id)sender
+{
+    [self didPressRightButton:sender];
+}
+
+- (IBAction)leftButtonAction:(id)sender
+{
+    [self.textView resignFirstResponder];
+    UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Photo Library", ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ? @"Camera" : nil), nil];
+    [as setTag:50];
+    [as showInView:self.view];
+}
+
 - (void) didPressRightButton:(id)sender
 {
+    [self saveThought];
+    
+    [self reloadScreen];
+    [self scrollToBottom:YES];
+    
+    [self resetBox];
+}
+
+- (void) saveThought
+{
+    if (![self canSave])
+        return;
     NSMutableDictionary* item = [NSMutableDictionary createItemWithMessage:self.textView.text];
     if ([self bucket] && [[self bucket] localKey] && ![[[self bucket] localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
         [item setObject:[[self bucket] localKey] forKey:@"bucket_local_key"];
@@ -336,18 +375,178 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     }
     [[self bucket] addItem:item atIndex:0];
     
-    [self reloadScreen];
-    [self scrollToBottom:YES];
-    
     [item saveRemote:^(id responseObject) {
         [self reloadScreen];
     }
-           failure:^(NSError* error){
-           }
+             failure:^(NSError* error){
+             }
      ];
-    
-    [super didPressRightButton:sender];
 }
 
+- (void) resetBox
+{
+    [self.textView setText:@""];
+    [self textViewDidChange:self.textView];
+}
+
+- (BOOL) canSave
+{
+    return self.textView.text && self.textView.text.length > 0;
+}
+
+
+
+
+# pragma mark text view delegate
+
+- (void) textViewDidChange:(UITextView *)tV
+{
+    [self resizeTextView];
+    [self handleButtons];
+}
+
+- (void) resizeTextView
+{
+    CGSize size = [self.textView sizeThatFits:CGSizeMake(self.textView.bounds.size.width, MAX_TEXTVIEW_HEIGHT)];
+    self.textViewHeightConstraint.constant = MIN(200, MAX(size.height, 56));
+    [self.inputToolbar setNeedsLayout];
+    [self.inputToolbar layoutIfNeeded];
+}
+
+
+
+
+
+
+# pragma mark keyboard
+
+// Call this method somewhere in your view controller setup code.
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showKeyboard:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showKeyboard:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:) name:UIKeyboardDidHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+// Called when the UIKeyboardDidShowNotification is sent.
+- (void)showKeyboard:(NSNotification*)notification
+{
+    CGRect endFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    [UIView animateWithDuration:0.2f animations:^(void){
+        self.toolbarBottomConstraint.constant = endFrame.size.height;
+    }];
+    
+    if ([self.textView isFirstResponder]) {
+        [self scrollToBottom:YES];
+        [self textViewBecameFirstResponder];
+    }
+}
+
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)hideKeyboard:(NSNotification*)notification
+{
+    [UIView animateWithDuration:0.2f animations:^(void){
+        self.toolbarBottomConstraint.constant = 0;
+    }];
+    
+    [self textViewResignedFirstResponder];
+}
+
+- (void) textViewResignedFirstResponder
+{
+    if (!self.textView.text || self.textView.text.length == 0) {
+        [self.placeholderLabel setHidden:NO];
+    }
+    self.inputControlToolbarHeightConstraint.constant = 0;
+    [self.rightButton setHidden:YES];
+    [self handleButtons];
+}
+
+- (void) textViewBecameFirstResponder
+{
+    [self.placeholderLabel setHidden:YES];
+    self.inputControlToolbarHeightConstraint.constant = 44.0f;
+    [self.rightButton setHidden:NO];
+    [self handleButtons];
+}
+
+- (void) handleButtons
+{
+    if ([self canSave]) {
+        [self.rightButton setEnabled:YES];
+    } else {
+        [self.rightButton setEnabled:NO];
+    }
+}
+
+
+
+
+
+
+
+
+# pragma mark action sheet delegate
+
+-  (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag == 50) {
+        //image picker
+        if (buttonIndex == 0) {
+            UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
+            [imagePicker setDelegate:self];
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+            [imagePicker setMediaTypes:@[(NSString*)kUTTypeImage, (NSString*)kUTTypeMovie]];
+            [imagePicker setAllowsEditing:NO];
+            [self presentViewController:imagePicker animated:YES completion:^(void){}];
+        } else if (buttonIndex == 1) {
+            UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
+            [imagePicker setDelegate:self];
+            [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+            [imagePicker setMediaTypes:@[(NSString*)kUTTypeImage]];
+            [imagePicker setAllowsEditing:NO];
+            [self presentViewController:imagePicker animated:YES completion:^(void){}];
+        }
+    }
+}
+
+
+# pragma mark uiimagepicker delegate
+
+- (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [self.textView becomeFirstResponder];
+    
+    NSString *mediaType = info[UIImagePickerControllerMediaType];
+    
+    if ([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
+        // Media is an image
+        UIImage *image = info[UIImagePickerControllerOriginalImage];
+        
+        // Create path.
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:@"Image.png"];
+        // Save image.
+        [UIImageJPEGRepresentation(image, 0.9) writeToFile:filePath atomically:YES];
+        
+        NSMutableDictionary* medium = [NSMutableDictionary create:@"medium"];
+        [medium setObject:filePath forKey:@"local_file_path"];
+        //[medium setObject:[[self item] localKey] forKey:@"item_local_key"];
+        [medium setObject:[NSNumber numberWithFloat:image.size.width] forKey:@"width"];
+        [medium setObject:[NSNumber numberWithFloat:image.size.height] forKey:@"height"];
+        
+        //NSMutableArray* tempMedia = [[[self item] media] mutableCopy];
+        
+        //[tempMedia addObject:medium];
+        
+        //[[self item] setObject:tempMedia forKey:@"media_cache"];
+    }
+    else if ([mediaType isEqualToString:(NSString*)kUTTypeMovie]) {
+        // Media is a video
+        //        NSURL *url = info[UIImagePickerControllerMediaURL];
+    }
+    [picker dismissViewControllerAnimated:NO completion:^(void){}];
+}
 
 @end

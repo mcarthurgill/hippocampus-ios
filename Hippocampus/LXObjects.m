@@ -78,7 +78,7 @@
 {
     if (!otherObject || ![otherObject updatedAt] || ![self updatedAt])
         return YES;
-    return [self updatedAt] > [otherObject updatedAt];
+    return [self updatedAt] >= [otherObject updatedAt];
 }
 
 

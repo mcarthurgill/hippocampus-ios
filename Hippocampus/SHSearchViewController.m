@@ -70,7 +70,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
     
     [self.tableView setRowHeight:UITableViewAutomaticDimension];
-    //[self.tableView setEstimatedRowHeight:100.0f];
+    [self.tableView setEstimatedRowHeight:80.0f];
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
 }
 
@@ -216,22 +216,22 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     }
 }
 
-- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"blank"]) {
-        return 570.0f;
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
-        return 91.0f;
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"results"]) {
-        NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:[[self.searchResults objectAtIndex:indexPath.row] localKey]];
-        if (item) {
-            return [item estimatedCellHeight] + (![item belongsToCurrentUser] ? 32.0f : 0.0f ) + ([item hasBuckets] ? 30.0f : 0.0f );
-        } else {
-            return 44.0f;
-        }
-    }
-    return 100.0f;
-}
+//- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"blank"]) {
+//        return 570.0f;
+//    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+//        return 91.0f;
+//    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"results"]) {
+//        NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:[[self.searchResults objectAtIndex:indexPath.row] localKey]];
+//        if (item) {
+//            return [item estimatedCellHeight] + (![item belongsToCurrentUser] ? 32.0f : 0.0f ) + ([item hasBuckets] ? 30.0f : 0.0f );
+//        } else {
+//            return 44.0f;
+//        }
+//    }
+//    return 100.0f;
+//}
 
 
 

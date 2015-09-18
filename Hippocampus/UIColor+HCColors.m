@@ -50,6 +50,11 @@
     return [UIColor colorWithRed:0.235f green:0.592f blue:0.867f alpha:1.0f];
 }
 
++ (UIColor*) SHLightBlue
+{
+    return [UIColor colorWithRed:232.0f/255.0f green:242.0f/255.0f blue:1 alpha:1.0f];
+}
+
 + (UIColor*) SHLightGray
 {
     return [UIColor colorWithRed:0.902f green:0.913f blue:0.922f alpha:1.0f];

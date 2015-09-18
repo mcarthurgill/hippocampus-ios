@@ -10,6 +10,8 @@
 
 @interface NSMutableDictionary (LXBucket)
 
+- (void) destroyBucket;
+
 + (NSString*) allThoughtsLocalKey;
 
 + (void) bucketKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
