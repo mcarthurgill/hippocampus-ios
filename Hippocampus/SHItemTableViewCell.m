@@ -8,7 +8,7 @@
 
 #import "SHItemTableViewCell.h"
 #import "SHAssignBucketsViewController.h"
-#import "SHSlackThoughtsViewController.h"
+#import "SHMessagesViewController.h"
 #import "HCReminderViewController.h"
 
 #define PICTURE_HEIGHT 100

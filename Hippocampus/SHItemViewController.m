@@ -7,7 +7,7 @@
 //
 
 #import "SHItemViewController.h"
-#import "SHSlackThoughtsViewController.h"
+#import "SHMessagesViewController.h"
 #import "SHAssignBucketsViewController.h"
 #import "HCReminderViewController.h"
 #import "SHEditItemViewController.h"
@@ -246,8 +246,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
         //PUSH BUCKET!
-        UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
-        [(SHSlackThoughtsViewController*)vc setLocalKey:[[[[self item] bucketsArray] objectAtIndex:indexPath.row] localKey]];
+        SHMessagesViewController* vc = (SHMessagesViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+        [vc setLocalKey:[[[[self item] bucketsArray] objectAtIndex:indexPath.row] localKey]];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"nudge"]) {
         [self presentNudgeScreen];

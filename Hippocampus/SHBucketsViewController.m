@@ -8,7 +8,7 @@
 
 #import "SHBucketsViewController.h"
 #import "SHBucketTableViewCell.h"
-#import "SHSlackThoughtsViewController.h"
+#import "SHMessagesViewController.h"
 #import "SHLoadingTableViewCell.h"
 #import "SHSearch.h"
 
@@ -319,11 +319,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UIViewController* vc = [[SHSlackThoughtsViewController alloc] init];
+    SHMessagesViewController* vc = (SHMessagesViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
-        [(SHSlackThoughtsViewController*)vc setLocalKey:[[self recent] objectAtIndex:indexPath.row]];
+        [(SHMessagesViewController*)vc setLocalKey:[[self recent] objectAtIndex:indexPath.row]];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
-        [(SHSlackThoughtsViewController*)vc setLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
+        [(SHMessagesViewController*)vc setLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
     }
     [self.navigationController pushViewController:vc animated:YES];
 }

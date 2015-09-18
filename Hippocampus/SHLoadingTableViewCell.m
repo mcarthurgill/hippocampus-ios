@@ -7,7 +7,7 @@
 //
 
 #import "SHLoadingTableViewCell.h"
-#import "SHSlackThoughtsViewController.h"
+#import "SHMessagesViewController.h"
 
 @implementation SHLoadingTableViewCell
 
@@ -53,7 +53,7 @@
     if ([[notification userInfo] objectForKey:@"local_key"] && [self.responseObject localKey] && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:[self.responseObject localKey]]) {
         //this is a hit, a currently displaying talbeivewcell. reload it.
         if ([[self.responseObject objectForKey:@"vc"] respondsToSelector:@selector(tryToReload)]) {
-            [(SHSlackThoughtsViewController*)[self.responseObject objectForKey:@"vc"] tryToReload];
+            [(SHMessagesViewController*)[self.responseObject objectForKey:@"vc"] tryToReload];
         }
     }
 }
