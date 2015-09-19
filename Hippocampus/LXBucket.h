@@ -45,5 +45,6 @@
 - (BOOL) hasAuthorizedUserID:(NSString*)uID;
 
 - (void) addCollaboratorsWithContacts:(NSMutableArray*)contacts success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (void) removeCollaboratorWithPhone:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 @end

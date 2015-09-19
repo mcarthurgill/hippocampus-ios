@@ -216,7 +216,15 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborators"]) {
         if ([[self bucket] authorizedUsers] && indexPath.row < [[[self bucket] authorizedUsers] count]) {
-            //current collaborator
+            if ([[self bucket] belongsToCurrentUser]) {
+                if (![[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] phoneNumber] isEqualToString: [[[LXSession thisSession] user] phone]]) { //not you
+                    [self showAlertWithTitle:@"Remove Collaborator?" andMessage:[NSString stringWithFormat:@"Are you sure you want to remove %@ from %@", [[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name], [[self bucket] firstName]] andCancelButtonTitle:@"No" andOtherTitle:@"Yes" andTag:3 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:indexPath];
+                } else { //you
+                    [self showAlertWithTitle:@"Change your name in this bucket?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:nil];
+                }
+            } else if ([[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] phoneNumber] isEqualToString: [[[LXSession thisSession] user] phone]]) { //you
+                [self showAlertWithTitle:@"Change your name in this bucket?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:nil];
+            }
         } else {
             UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"collaboratorsViewController"];
             SHCollaboratorsViewController* vc = [[nc viewControllers] firstObject];
@@ -225,21 +233,12 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
         }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"rename"]) {
-            UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Rename Bucket" message:nil delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Go", nil];
-            av.alertViewStyle = UIAlertViewStylePlainTextInput;
-            UITextField* textField = [av textFieldAtIndex:0];
-            [textField setText:[[self bucket] firstName]];
-            [textField setFont:[UIFont titleFontWithSize:16.0f]];
-            [av setTag:1];
-            [av show];
+            [self showAlertWithTitle:@"Rename Bucket" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:1 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[self bucket] firstName] andIndexPath:nil];
         } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"delete"]) {
             if ([[self bucket] belongsToCurrentUser]) {
-                UIAlertView* av = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] firstName]] message:@"Are you sure you want to delete this bucket?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Yes", nil];
-                [av setTag:2];
-                [av show];
+                [self showAlertWithTitle:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] firstName]] andMessage:@"Are you sure you want to delete this bucket?" andCancelButtonTitle:@"Cancel" andOtherTitle:@"Yes" andTag:2 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:nil];
             } else {
-                UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Not yours!" message:@"You can't delete a bucket you didn't create." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-                [av show];
+                [self showAlertWithTitle:@"Not yours!" andMessage:@"You can't delete a bucket you didn't create." andCancelButtonTitle:@"Okay" andOtherTitle:nil andTag:0 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:nil];
             }
         }
     }
@@ -247,6 +246,21 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
 
 
 # pragma mark alert view delegate
+
+
+- (void) showAlertWithTitle:(NSString*)title andMessage:(NSString*)message andCancelButtonTitle:(NSString*)cancel andOtherTitle:(NSString*)successTitle andTag:(NSInteger)tag andAlertType:(UIAlertViewStyle)alertStyle andTextInput:(NSString*)textInput andIndexPath:(NSIndexPath*)indexPath {
+    UIAlertView* av = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:successTitle, nil];
+    av.alertViewStyle = alertStyle;
+    av.delegate = self;
+    av.indexPath = indexPath;
+    if (alertStyle == UIAlertViewStylePlainTextInput) {
+        UITextField* textField = [av textFieldAtIndex:0];
+        [textField setText:textInput];
+        [textField setFont:[UIFont titleFontWithSize:16.0f]];
+    }
+    [av setTag:tag];
+    [av show];
+}
 
 - (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -266,6 +280,17 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
             //delete!
             [[self bucket] destroyBucket];
             [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    } else if (alertView.tag == 3) {
+        //remove collaborator
+        if ([alertView cancelButtonIndex] != buttonIndex) {
+            //remove!
+            [[self bucket] removeCollaboratorWithPhone:[[[[self bucket] authorizedUsers] objectAtIndex:alertView.indexPath.row] phoneNumber] success:nil failure:nil];
+        }
+    } else if (alertView.tag == 4) {
+        //change user name for bucket
+        if ([alertView cancelButtonIndex] != buttonIndex) {
+            //change!
         }
     }
 }

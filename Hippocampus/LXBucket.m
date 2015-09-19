@@ -228,7 +228,26 @@ static NSInteger maxRecentCount = 6;
                                }
                            }
      ];
+}
 
+- (void) removeCollaboratorWithPhone:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/remove_collaborators", [self ID]] withMethod:@"POST" withParamaters:@{@"phone": phone} authType:@"none"
+                           success:^(id responseObject){
+                               if ([responseObject objectForKey:@"bucket"]) {
+                                   [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:[responseObject objectForKey:@"bucket"]];
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+    
 }
 
 - (BOOL) isAllThoughtsBucket

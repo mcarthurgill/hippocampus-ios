@@ -39,4 +39,5 @@
     #import "LXItem.h"
     #import "UIColor+HCColors.h"
     #import "UIImageView+Addons.h"
+    #import "UIAlertView+Addons.h"
 #endif

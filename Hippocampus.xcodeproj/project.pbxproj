@@ -149,6 +149,7 @@
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		76450E541AEA8509004D7FAD /* HCPermissionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76450E531AEA8509004D7FAD /* HCPermissionViewController.m */; };
 		766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */; };
+		76906E6D1BADAEF9005BF124 /* UIAlertView+Addons.m in Sources */ = {isa = PBXBuildFile; fileRef = 76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */; settings = {ASSET_TAGS = (); }; };
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
 		76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029761AC20247003539B4 /* UILabel+Bold.m */; };
 /* End PBXBuildFile section */
@@ -358,6 +359,8 @@
 		76450E521AEA8509004D7FAD /* HCPermissionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCPermissionViewController.h; sourceTree = "<group>"; };
 		76450E531AEA8509004D7FAD /* HCPermissionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCPermissionViewController.m; sourceTree = "<group>"; };
 		766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		76906E6B1BADAEF9005BF124 /* UIAlertView+Addons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Addons.h"; sourceTree = "<group>"; };
+		76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Addons.m"; sourceTree = "<group>"; };
 		76B0296F1AC1AF99003539B4 /* LXAddressBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXAddressBook.h; sourceTree = "<group>"; };
 		76B029701AC1AF99003539B4 /* LXAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXAddressBook.m; sourceTree = "<group>"; };
 		76B029751AC20247003539B4 /* UILabel+Bold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Bold.h"; sourceTree = "<group>"; };
@@ -609,6 +612,8 @@
 				288F12361B7527AF0001E0B0 /* UIColor+HCColors.m */,
 				28D8E5651BA8CF8300AEEEBC /* UIImageView+Addons.h */,
 				28D8E5661BA8CF8300AEEEBC /* UIImageView+Addons.m */,
+				76906E6B1BADAEF9005BF124 /* UIAlertView+Addons.h */,
+				76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1200,6 +1205,7 @@
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
 				28ED41F21BA0A3EF000292AE /* SHItemAuthorTableViewCell.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
+				76906E6D1BADAEF9005BF124 /* UIAlertView+Addons.m in Sources */,
 				28ED41ED1BA09882000292AE /* SHItemMessageTableViewCell.m in Sources */,
 				28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */,
 				28ED41E01BA00156000292AE /* HCReminderViewController.m in Sources */,
