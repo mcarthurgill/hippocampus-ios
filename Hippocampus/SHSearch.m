@@ -110,31 +110,41 @@ static SHSearch* defaultManager = nil;
 
 - (void) searchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [self remoteSearchWithTerm:term
-                       success:^(id responseObject){
-                           if (successCallback) {
-                               successCallback(responseObject);
+    dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.searchqueue", 0);
+    dispatch_async(backgroundQueue, ^{
+        [self remoteSearchWithTerm:term
+                           success:^(id responseObject){
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   if (successCallback) {
+                                       successCallback(responseObject);
+                                   }
+                               });
                            }
-                       }
-                       failure:^(NSError* error){
-                           if (failureCallback) {
-                               failureCallback(error);
+                           failure:^(NSError* error){
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   if (failureCallback) {
+                                       failureCallback(error);
+                                   }
+                               });
                            }
-                       }
-     ];
-    [self localBucketSearchWithTerm:term
-                            success:^(id responseObject){
-                                //NSLog(@"response: %@", responseObject);
-                                if (successCallback) {
-                                    successCallback(responseObject);
+         ];
+        [self localBucketSearchWithTerm:term
+                                success:^(id responseObject){
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        if (successCallback) {
+                                            successCallback(responseObject);
+                                        }
+                                    });
                                 }
-                            }
-                            failure:^(NSError* error){
-                                if (failureCallback) {
-                                    failureCallback(error);
+                                failure:^(NSError* error){
+                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                        if (failureCallback) {
+                                            failureCallback(error);
+                                        }
+                                    });
                                 }
-                            }
-     ];
+         ];
+    });
 }
 
 - (void) remoteSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
@@ -146,9 +156,9 @@ static SHSearch* defaultManager = nil;
     [index search:query
           success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
               [self.cachedItems setObject:[[NSMutableArray alloc] initWithArray:[answer objectForKey:@"hits"]] forKey:[[query fullTextQuery] lowercaseString]];
-              for (NSDictionary* tempDict in [answer objectForKey:@"hits"]) {
-                  [[tempDict mutableCopy] assignLocalVersionIfNeeded];
-              }
+              //for (NSDictionary* tempDict in [answer objectForKey:@"hits"]) {
+                  //[[tempDict mutableCopy] assignLocalVersionIfNeeded];
+              //}
               if (successCallback) {
                   successCallback(answer);
               }
