@@ -216,7 +216,8 @@ static NSInteger maxRecentCount = 6;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/add_collaborators", [self ID]] withMethod:@"POST" withParamaters:@{@"contacts": contacts} authType:@"none"
                            success:^(id responseObject){
                                if ([responseObject objectForKey:@"bucket"]) {
-                                   [[responseObject objectForKey:@"bucket"] refreshFromServerWithSuccess:^(id responseObject){} failure:^(NSError* error){}];
+                                   [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:[responseObject objectForKey:@"bucket"]];
                                }
                                if (successCallback) {
                                    successCallback(responseObject);

@@ -33,7 +33,15 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     [self setupSettings];
     [self setupActions];
     
-    //NSLog(@"bucket: %@", [self bucket]);
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedObject:) name:@"refreshedObject" object:nil];
+}
+
+- (void) refreshedObject:(NSNotification*)notification
+{
+    NSMutableDictionary* object = [[notification userInfo] mutableCopy];
+    if ([[object localKey] isEqualToString:self.localKey]) {
+        [self reloadScreen];
+    }
 }
 
 - (void) viewWillAppear:(BOOL)animated
