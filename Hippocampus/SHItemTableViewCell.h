@@ -11,6 +11,7 @@
 @interface SHItemTableViewCell : MGSwipeTableCell <MGSwipeTableCellDelegate>
 {
     BOOL inverted;
+    NSInteger bucketCount;
 }
 
 @property (nonatomic) BOOL shouldInvert;

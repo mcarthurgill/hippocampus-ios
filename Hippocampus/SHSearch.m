@@ -156,9 +156,9 @@ static SHSearch* defaultManager = nil;
     [index search:query
           success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
               [self.cachedItems setObject:[[NSMutableArray alloc] initWithArray:[answer objectForKey:@"hits"]] forKey:[[query fullTextQuery] lowercaseString]];
-              //for (NSDictionary* tempDict in [answer objectForKey:@"hits"]) {
-                  //[[tempDict mutableCopy] assignLocalVersionIfNeeded];
-              //}
+              for (NSDictionary* tempDict in [answer objectForKey:@"hits"]) {
+                  [[tempDict mutableCopy] assignLocalVersionIfNeeded:NO];
+              }
               if (successCallback) {
                   successCallback(answer);
               }

@@ -41,6 +41,14 @@
     inverted = NO;
     self.shouldInvert = YES;
     
+    self.mediaViews = [[NSMutableArray alloc] init];
+    self.bucketButtons = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < 6; ++i) {
+        [self imageViewForMediumAtIndex:i];
+        [self getBlankBucketButtonAtIndex:i];
+    }
+    
+    
     [self setupAppearanceSettings];
     [self setupGestureRecognizers];
     [self setupSwipeButtons];
@@ -173,7 +181,6 @@
     }
     
     [self handleMediaViews];
-    
     [self handleBucketButtons];
     
     [self setNeedsLayout];
@@ -182,20 +189,27 @@
 - (void) setMessageText
 {
     NSString* text = [self.item message];
-    NSMutableAttributedString* as = [[NSMutableAttributedString alloc] initWithString:text];
-    for (NSString* link in [self.item links]) {
-        NSRange range = [text rangeOfString:link];
-        if (range.length > 0) {
-            //[as addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:1] range:range];
-            //[as addAttribute:NSUnderlineColorAttributeName value:[UIColor SHBlue] range:range];
-            [as addAttribute:NSForegroundColorAttributeName value:[UIColor SHBlue] range:range];
+    if (text) {
+        NSMutableAttributedString* as = [[NSMutableAttributedString alloc] initWithString:text];
+        for (NSString* link in [self.item links]) {
+            NSRange range = [text rangeOfString:link];
+            if (range.length > 0) {
+                //[as addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInt:1] range:range];
+                //[as addAttribute:NSUnderlineColorAttributeName value:[UIColor SHBlue] range:range];
+                [as addAttribute:NSForegroundColorAttributeName value:[UIColor SHBlue] range:range];
+            }
         }
+        [self.message setAttributedText:as];
+    } else {
+        [self.message setAttributedText:[[NSAttributedString alloc] initWithString:@""]];
     }
-    [self.message setAttributedText:as];
 }
 
-- (UIImageView*) imageViewForMedium:(NSMutableDictionary*)medium
+- (UIImageView*) imageViewForMediumAtIndex:(NSInteger)index
 {
+    if (index < [self.mediaViews count])
+        return [self.mediaViews objectAtIndex:index];
+    
     UIImageView* iv = [[UIImageView alloc] init];
     
     [iv setContentMode:UIViewContentModeScaleAspectFill];
@@ -206,7 +220,8 @@
     iv.layer.cornerRadius = 3.0f;
     [iv.layer setBorderWidth:1.0f];
     [iv.layer setBorderColor:[UIColor SHLightGray].CGColor];
-    //[self addActivityIndicatorToView:iv];
+    
+    [self.mediaViews addObject:iv];
     
     return iv;
 }
@@ -292,39 +307,42 @@
 
 - (void) createBucketButtons
 {
-    self.bucketButtons = [[NSMutableArray alloc] init];
     self.bucketButtonConstraints = [[NSMutableArray alloc] init];
     
     NSInteger count = 0;
     for (NSMutableDictionary* bucketStub in [self.item bucketsArray]) {
-        
-        //NSLog(@"bucketsArray: %@", bucketStub);
-        
         if ([bucketStub hasAuthorizedUserID:[[[LXSession thisSession] user] ID]]) {
-            UIButton* button = [self buttonForBucket:bucketStub];
+            UIButton* button = [self buttonForBucket:bucketStub atIndex:count];
             [button setTag:count];
-            
-            [self.contentView addSubview:button];
-            [self.bucketButtons addObject:button];
+            [button setHidden:NO];
         }
-        
         ++count;
-        
     }
-    
+    bucketCount = count;
     [self layoutButtons];
 }
 
-- (UIButton*) buttonForBucket:(NSMutableDictionary*)bucket
+- (UIButton*) buttonForBucket:(NSMutableDictionary*)bucket atIndex:(NSInteger)index
 {
     bucket = [LXObjectManager objectWithLocalKey:[bucket localKey]];
+    
+    UIButton* button = [self getBlankBucketButtonAtIndex:index];
+    
+    [button setTitle:[NSString stringWithFormat:@"   %@   ", [bucket firstName]] forState:UIControlStateNormal];
+    [button setBackgroundColor:[bucket bucketColor]];
+    [[button titleLabel] setFont:[UIFont secondaryFontWithSize:12.0f]];
+    
+    return button;
+}
+
+- (UIButton*) getBlankBucketButtonAtIndex:(NSInteger)index
+{
+    if (index < [self.bucketButtons count])
+        return [self.bucketButtons objectAtIndex:index];
     
     UIButton* button = [[UIButton alloc] init];
     [button setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    [button setTitle:[NSString stringWithFormat:@"   %@   ", [bucket firstName]] forState:UIControlStateNormal];
-    
-    [button setBackgroundColor:[bucket bucketColor]];
     [[button titleLabel] setFont:[UIFont secondaryFontWithSize:12.0f]];
     [button.layer setCornerRadius:10];
     [button setClipsToBounds:YES];
@@ -335,7 +353,35 @@
     
     [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
     
+    [self.bucketButtons addObject:button];
+    [self.contentView addSubview:button];
+    
     return button;
+}
+
+- (void) layoutButtons
+{
+    for (NSInteger index = 0; index < bucketCount; ++index) {
+        UIButton* button = [self.bucketButtons objectAtIndex:index];
+        //left align
+        if (index == 0) {
+            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
+        } else {
+            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:[self.bucketButtons objectAtIndex:(index-1)] attribute:NSLayoutAttributeTrailing multiplier:1 constant:6] toView:self.contentView];
+        }
+        
+        //top align
+        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self.message attribute:NSLayoutAttributeBottom multiplier:1 constant:10] toView:self.contentView];
+        if ([self.mediaUsed count] > 0 && [self.mediaUsed count]-1 < [self.mediaViews count]) {
+            UIView* bottommostImage = [self.mediaViews objectAtIndex:([self.mediaUsed count]-1)];
+            if (bottommostImage && [bottommostImage.superview isEqual:[button superview]]) {
+                [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:bottommostImage attribute:NSLayoutAttributeBottom multiplier:1 constant:10] toView:self.contentView];
+            }
+        }
+        
+        //bottom
+        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:button attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:18] toView:self.contentView];
+    }
 }
 
 - (void) buttonTapped:(UIButton*)sender
@@ -346,36 +392,11 @@
     }
 }
 
-- (void) layoutButtons
-{
-    NSInteger index = 0;
-    for (UIButton* button in self.bucketButtons) {
-        //left align
-        if (index == 0) {
-            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
-        } else {
-            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:[self.bucketButtons objectAtIndex:(index-1)] attribute:NSLayoutAttributeTrailing multiplier:1 constant:6] toView:self.contentView];
-        }
-        
-        //top align
-        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self.message attribute:NSLayoutAttributeBottom multiplier:1 constant:10] toView:self.contentView];
-        if (self.mediaViews && [self.mediaViews count] > 0) {
-            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:[self.mediaViews lastObject] attribute:NSLayoutAttributeBottom multiplier:1 constant:10] toView:self.contentView];
-        }
-        
-        //bottom
-        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:button attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:18] toView:self.contentView];
-        
-        ++index;
-    }
-}
-
 - (void) deleteBucketButtons
 {
     for (UIView* bucketButton in self.bucketButtons) {
-        [bucketButton removeFromSuperview];
+        [bucketButton setHidden:YES];
     }
-    self.bucketButtons = nil;
     
     for (NSLayoutConstraint* constraint in self.bucketButtonConstraints) {
         [self.contentView removeConstraint:constraint];
@@ -393,7 +414,6 @@
 
 - (void) createMediaViews
 {
-    self.mediaViews = [[NSMutableArray alloc] init];
     self.mediaUsed = [[NSMutableArray alloc] init];
     self.addedConstraints = [[NSMutableArray alloc] init];
     
@@ -403,9 +423,8 @@
         if ([medium width] > 0.0 && [medium height] > 0.0) {
             [self.mediaUsed addObject:medium];
             
-            UIImageView* iv = [self imageViewForMedium:medium];
+            UIImageView* iv = [self imageViewForMediumAtIndex:count];
             [self.contentView addSubview:iv];
-            [self.mediaViews addObject:iv];
             [self loadInImageForImageView:iv andMedium:medium];
             
             ++count;
@@ -421,7 +440,7 @@
     for (UIView* mediaView in self.mediaViews) {
         [mediaView removeFromSuperview];
     }
-    self.mediaViews = nil;
+    //self.mediaViews = nil;
     
     for (NSLayoutConstraint* constraint in self.addedConstraints) {
         [self.contentView removeConstraint:constraint];
@@ -432,7 +451,7 @@
 
 - (void) layoutMedia
 {
-    if ([self.mediaViews count] == 1) {
+    if ([self.mediaUsed count] == 1) {
         UIImageView* iv = [self.mediaViews firstObject];
         NSMutableDictionary* medium = [self.mediaUsed firstObject];
         
@@ -469,12 +488,12 @@
             //bottom
             [self addConstraint:[NSLayoutConstraint constraintWithItem:[self contentView] attribute:NSLayoutAttributeBottomMargin relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:iv attribute:NSLayoutAttributeBottomMargin multiplier:1 constant:18] toView:self.contentView];
         }
-    } else if ([self.mediaViews count] > 1) {
+    } else if ([self.mediaUsed count] > 1) {
         
         //multiple medias
-        for (NSInteger count = 0; count < [self.mediaViews count]; nil) {
+        for (NSInteger count = 0; count < [self.mediaUsed count]; nil) {
             
-            if (([self.mediaViews count]-count) == 3) {
+            if (([self.mediaUsed count]-count) == 3) {
                 
                 //line up the remaining three
                 for (NSInteger i = 0; i < 3; i++) {

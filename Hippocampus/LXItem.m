@@ -144,7 +144,7 @@
             [tempItemKeys removeObject:[self localKey]];
             [tempBucket setObject:tempItemKeys forKey:@"item_keys"];
             [tempBucket removeObjectForKey:@"updated_at"];
-            [tempBucket assignLocalVersionIfNeeded];
+            [tempBucket assignLocalVersionIfNeeded:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":tempBucket}];
         }
     }
@@ -152,7 +152,7 @@
     [self setObject:newBucketsArray forKey:@"buckets_array"];
     [self setObject:([newBucketsArray count] > 0 ? @"assigned" : @"outstanding") forKey:@"status"];
     [self removeObjectForKey:@"updated_at"];
-    [self assignLocalVersionIfNeeded];
+    [self assignLocalVersionIfNeeded:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:self];
     NSLog(@"item: %@", [LXObjectManager objectWithLocalKey:[self localKey]]);
     //SAVE UNSAVED BUCKETS FIRST
@@ -203,7 +203,7 @@
     [[LXServer shared] requestPath:@"/items/update_buckets" withMethod:@"PUT" withParamaters:@{@"local_key":[self localKey],@"local_keys":newLocalKeys} authType:@"user"
                            success:^(id responseObject) {
                                //SAVE LOCALLY
-                               [[responseObject mutableCopy] assignLocalVersionIfNeeded];
+                               [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
                                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -373,7 +373,7 @@
                  }
                                    success:^(id responseObject){
                                        //update on disk
-                                       if ([[responseObject mutableCopy] assignLocalVersionIfNeeded]) {
+                                       if ([[responseObject mutableCopy] assignLocalVersionIfNeeded:YES]) {
                                            //notify system of change
                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
                                        }
@@ -397,7 +397,7 @@
         }
     }
     [self setObject:tempMedia forKey:@"media_cache"];
-    [self assignLocalVersionIfNeeded];
+    [self assignLocalVersionIfNeeded:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:self];
 }
 
@@ -405,7 +405,7 @@
 - (void) addEstimatedRowHeight:(CGFloat)height
 {
     [self setObject:[NSNumber numberWithFloat:height] forKey:@"estimated_row_height"];
-    [self assignLocalVersionIfNeeded];
+    [self assignLocalVersionIfNeeded:NO];
 }
 
 

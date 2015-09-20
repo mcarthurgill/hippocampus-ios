@@ -151,7 +151,7 @@
                  }
              } success:^(id responseObject) {
                  //SAVE LOCALLY
-                 [[responseObject mutableCopy] assignLocalVersionIfNeeded];
+                 [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
                  if (successCallback) {
                      successCallback(responseObject);
                  }
@@ -166,7 +166,7 @@
         [[LXServer shared] requestPath:[self requestPath] withMethod:[self requestMethod] withParamaters:[self parameterReady] authType:[self authTypeForRequest]
                                success:^(id responseObject) {
                                    //SAVE LOCALLY
-                                   [[responseObject mutableCopy] assignLocalVersionIfNeeded];
+                                   [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
                                    if (successCallback) {
                                        successCallback(responseObject);
                                    }
@@ -207,26 +207,26 @@
 }
 
 
-- (BOOL) assignLocalVersionIfNeeded
+- (BOOL) assignLocalVersionIfNeeded:(BOOL)alsoSaveToDisk
 {
     NSMutableDictionary* updateWith = [self mutableCopy];
     NSMutableDictionary* oldCopy = [LXObjectManager objectWithLocalKey:[updateWith localKey]];
     if (!oldCopy) {
-        [updateWith assignLocalWithKey:[updateWith localKey]];
+        [updateWith assignLocalWithKey:[updateWith localKey] alsoSaveToDisk:alsoSaveToDisk];
         return YES;
     } else {
         for (NSString* key in [updateWith allKeys]) {
             [oldCopy setObject:[updateWith objectForKey:key] forKey:key];
         }
-        [oldCopy assignLocalWithKey:[oldCopy localKey]];
+        [oldCopy assignLocalWithKey:[oldCopy localKey] alsoSaveToDisk:alsoSaveToDisk];
         return YES;
     }
 }
 
-- (void) assignLocalWithKey:(NSString*)key
+- (void) assignLocalWithKey:(NSString*)key alsoSaveToDisk:(BOOL)alsoSaveToDisk
 {
     if ([self updatedMoreRecentThan:[LXObjectManager objectWithLocalKey:[self localKey]]]) {
-        [LXObjectManager assignLocal:self WithLocalKey:key];
+        [LXObjectManager assignLocal:self WithLocalKey:key alsoToDisk:alsoSaveToDisk];
     }
 }
 

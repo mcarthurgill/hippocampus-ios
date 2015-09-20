@@ -122,7 +122,7 @@ static LXObjectManager* defaultManager = nil;
     if (dictOfCalls) {
         [self.queries addObject:dictOfCalls];
         NSLog(@"QUERIES: %@", self.queries);
-        [LXObjectManager assignLocal:self.queries WithLocalKey:@"failed-queries"];
+        [LXObjectManager assignLocal:self.queries WithLocalKey:@"failed-queries" alsoToDisk:YES];
         [self runQueries];
     }
 }
@@ -153,7 +153,7 @@ static LXObjectManager* defaultManager = nil;
                                    BOOL shouldRefresh = NO;
                                    
                                    for (NSDictionary* object in responseObject) {
-                                       shouldRefresh = [[object mutableCopy] assignLocalVersionIfNeeded] || shouldRefresh;
+                                       shouldRefresh = [[object mutableCopy] assignLocalVersionIfNeeded:YES] || shouldRefresh;
                                        [self assignRefreshDate:[object updatedAt] forObjectTypes:pluralObjectType];
                                    }
                                });
@@ -179,7 +179,7 @@ static LXObjectManager* defaultManager = nil;
     [[LXServer shared] requestPath:@"/key" withMethod:@"GET" withParamaters:tempObject authType:@"user"
                            success:^(id responseObject) {
                                //update on disk
-                               if ([[responseObject mutableCopy] assignLocalVersionIfNeeded]) {
+                               if ([[responseObject mutableCopy] assignLocalVersionIfNeeded:YES]) {
                                    //notify system of change
                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
                                }
@@ -200,7 +200,7 @@ static LXObjectManager* defaultManager = nil;
     NSString* currentDate = [LXObjectManager objectWithLocalKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]];
     //NSLog(@"%@|%@", currentDate, updatedAt);
     if (!currentDate || currentDate < updatedAt) {
-        [LXObjectManager assignLocal:updatedAt WithLocalKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType]];
+        [LXObjectManager assignLocal:updatedAt WithLocalKey:[NSString stringWithFormat:@"%@-lastUpdatedAt", pluralObjectType] alsoToDisk:NO];
     }
 }
 
@@ -228,16 +228,18 @@ static LXObjectManager* defaultManager = nil;
     return nil;
 }
 
-+ (void) assignLocal:(id)object WithLocalKey:(NSString*)key
++ (void) assignLocal:(id)object WithLocalKey:(NSString*)key alsoToDisk:(BOOL)toDisk
 {
     id mutableCopy = [object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSMutableDictionary class]] ? [object cleanDictionary] : [object mutableCopy];
     [[[LXObjectManager defaultManager] library] setObject:mutableCopy forKey:key];
-    [self saveToDisk:mutableCopy WithLocalKey:key];
+    if (toDisk) {
+        [self saveToDisk:mutableCopy WithLocalKey:key];
+    }
 }
 
 + (void) storeLocal:(id)object WithLocalKey:(NSString*)key
 {
-    [self assignLocal:object WithLocalKey:key];
+    [self assignLocal:object WithLocalKey:key alsoToDisk:NO];
     if ([self objectWithLocalKey:key]) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentsDirectory = [paths objectAtIndex:0];

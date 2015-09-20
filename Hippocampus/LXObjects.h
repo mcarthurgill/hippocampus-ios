@@ -34,8 +34,8 @@
 - (void) destroyRemote;
 - (void) destroyRemote:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
-- (BOOL) assignLocalVersionIfNeeded;
-- (void) assignLocalWithKey:(NSString*)key;
+- (BOOL) assignLocalVersionIfNeeded:(BOOL)alsoSaveToDisk;
+- (void) assignLocalWithKey:(NSString*)key alsoSaveToDisk:(BOOL)alsoSaveToDisk;
 
 
 @end

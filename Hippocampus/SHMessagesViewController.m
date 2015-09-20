@@ -134,6 +134,9 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.leftButton setContentMode:UIViewContentModeScaleAspectFit];
     [self.leftButton setTintColor:[UIColor SHGreen]];
     [self.leftButton setTitle:nil forState:UIControlStateNormal];
+    
+    [self.tableView setScrollsToTop:YES];
+    [self.textView setScrollsToTop:NO];
 }
 
 - (void) beginningActions

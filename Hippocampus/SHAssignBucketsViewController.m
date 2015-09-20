@@ -333,7 +333,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         [newBucket setObject:[[[self contacts] objectAtIndex:indexPath.row] objectForKey:@"name"] forKey:@"first_name"];
         [newBucket setObject:[@{@"object_type":@"contact_card", @"contact_details":[[self contacts] objectAtIndex:indexPath.row]} mutableCopy] forKey:@"contact_card"];
         [newBucket setObject:[[self contacts] objectAtIndex:indexPath.row] forKey:@"for_deselect"];
-        [newBucket assignLocalVersionIfNeeded];
+        [newBucket assignLocalVersionIfNeeded:YES];
         [self addKeyToSelected:[newBucket localKey]];
         [self reloadScreen];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
@@ -537,7 +537,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     //CREATE BUCKET
     NSMutableDictionary* newBucket = [NSMutableDictionary create:@"bucket"];
     [newBucket setObject:text forKey:@"first_name"];
-    [newBucket assignLocalVersionIfNeeded];
+    [newBucket assignLocalVersionIfNeeded:YES];
     [self addKeyToSelected:[newBucket localKey]];
     [self reloadScreen];
 }

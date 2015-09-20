@@ -85,7 +85,7 @@
 {
     NSMutableDictionary* i = [self item];
     [i setObject:self.textView.text forKey:@"message"];
-    [i assignLocalVersionIfNeeded];
+    [i assignLocalVersionIfNeeded:YES];
     [i saveRemote];
     [self.navigationController popViewControllerAnimated:NO];
 }

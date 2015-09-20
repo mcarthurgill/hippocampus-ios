@@ -26,7 +26,7 @@ static NSInteger maxRecentCount = 6;
         NSMutableArray* bucketKeys = [[LXObjectManager objectWithLocalKey:@"bucketLocalKeys"] mutableCopy];
         [bucketKeys removeObject:[self localKey]];
         [NSMutableDictionary removeRecentBucketLocalKey:[self localKey]];
-        [LXObjectManager assignLocal:bucketKeys WithLocalKey:@"bucketLocalKeys"];
+        [LXObjectManager assignLocal:bucketKeys WithLocalKey:@"bucketLocalKeys" alsoToDisk:YES];
     }
 }
 
@@ -35,7 +35,7 @@ static NSInteger maxRecentCount = 6;
     [[LXServer shared] requestPath:@"/buckets/keys" withMethod:@"GET" withParamaters:nil authType:@"user"
                            success:^(id responseObject){
                                if ([responseObject respondsToSelector:@selector(count)]) {
-                                   [LXObjectManager assignLocal:responseObject WithLocalKey:@"bucketLocalKeys"];
+                                   [LXObjectManager assignLocal:responseObject WithLocalKey:@"bucketLocalKeys" alsoToDisk:YES];
                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedBucketLocalKeys" object:nil userInfo:nil];
                                }
                                if (successCallback) {
@@ -69,7 +69,7 @@ static NSInteger maxRecentCount = 6;
                                        [bucket setObject:[responseObject objectForKey:@"item_keys"] forKey:@"item_keys"];
                                    }
                                    
-                                   shouldRefresh = [bucket assignLocalVersionIfNeeded] || shouldRefresh;
+                                   shouldRefresh = [bucket assignLocalVersionIfNeeded:YES] || shouldRefresh;
                                    
                                    dispatch_async(dispatch_get_main_queue(), ^{
                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"bucketRefreshed" object:nil userInfo:@{@"bucket":bucket, @"oldItemKeys":oldItemKeys}];
@@ -120,7 +120,7 @@ static NSInteger maxRecentCount = 6;
     if ([keys count] > maxRecentCount) {
         [keys removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(maxRecentCount, ([keys count] - maxRecentCount))]];
     }
-    [LXObjectManager assignLocal:keys WithLocalKey:recentBucketsKey];
+    [LXObjectManager assignLocal:keys WithLocalKey:recentBucketsKey alsoToDisk:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedBucketLocalKeys" object:nil];
 }
 
@@ -128,7 +128,7 @@ static NSInteger maxRecentCount = 6;
 {
     NSMutableArray* keys = [self recentBucketLocalKeys];
     [keys removeObject:key];
-    [LXObjectManager assignLocal:keys WithLocalKey:recentBucketsKey];
+    [LXObjectManager assignLocal:keys WithLocalKey:recentBucketsKey alsoToDisk:YES];
 }
 
 - (NSMutableArray*) items
@@ -193,9 +193,9 @@ static NSInteger maxRecentCount = 6;
     [[self itemKeys] insertObject:[item localKey] atIndex:index];
     
     [self removeObjectForKey:@"updated_at"];
-    [self assignLocalVersionIfNeeded];
+    [self assignLocalVersionIfNeeded:YES];
     
-    [item assignLocalVersionIfNeeded];
+    [item assignLocalVersionIfNeeded:YES];
 }
 
 - (void) removeItemFromBucket:(NSMutableDictionary*)item
@@ -205,7 +205,7 @@ static NSInteger maxRecentCount = 6;
         NSMutableArray* itemKeys = [[bucket itemKeys] mutableCopy];
         [itemKeys removeObject:[item localKey]];
         [bucket setObject:itemKeys forKey:@"item_keys"];
-        [bucket assignLocalVersionIfNeeded];
+        [bucket assignLocalVersionIfNeeded:YES];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"removedItemFromBucket" object:nil userInfo:@{@"item":item,@"bucket":bucket}];
     }
     return;
@@ -216,7 +216,7 @@ static NSInteger maxRecentCount = 6;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/add_collaborators", [self ID]] withMethod:@"POST" withParamaters:@{@"contacts": contacts} authType:@"none"
                            success:^(id responseObject){
                                if ([responseObject objectForKey:@"bucket"]) {
-                                   [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded];
+                                   [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded:YES];
                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:[responseObject objectForKey:@"bucket"]];
                                }
                                if (successCallback) {
@@ -235,7 +235,7 @@ static NSInteger maxRecentCount = 6;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/remove_collaborators", [self ID]] withMethod:@"POST" withParamaters:@{@"phone": phone} authType:@"none"
                            success:^(id responseObject){
                                if ([responseObject objectForKey:@"bucket"]) {
-                                   [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded];
+                                   [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded:YES];
                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:[responseObject objectForKey:@"bucket"]];
                                }
                                if (successCallback) {
