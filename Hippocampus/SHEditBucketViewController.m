@@ -136,7 +136,6 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
 
 - (UITableViewCell*) tableView:(UITableView *)tV collaboratorCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"bucket: %@", [self bucket]);
     SHCollaboratorTableViewCell* cell = (SHCollaboratorTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:collaboratorCellIdentifier];
     if ([[self bucket] authorizedUsers] && indexPath.row < [[[self bucket] authorizedUsers] count]) {
         [cell configureWithLocalKey:self.localKey delegate:self collaborator:[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row]];
@@ -220,10 +219,10 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
                 if (![[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] phoneNumber] isEqualToString: [[[LXSession thisSession] user] phone]]) { //not you
                     [self showAlertWithTitle:@"Remove Collaborator?" andMessage:[NSString stringWithFormat:@"Are you sure you want to remove %@ from %@", [[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name], [[self bucket] firstName]] andCancelButtonTitle:@"No" andOtherTitle:@"Yes" andTag:3 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:indexPath];
                 } else { //you
-                    [self showAlertWithTitle:@"Change your name in this bucket?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:nil];
+                    [self showAlertWithTitle:@"Change your name in this bucket?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:indexPath];
                 }
             } else if ([[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] phoneNumber] isEqualToString: [[[LXSession thisSession] user] phone]]) { //you
-                [self showAlertWithTitle:@"Change your name in this bucket?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:nil];
+                [self showAlertWithTitle:@"Change your name in this bucket?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:indexPath];
             }
         } else {
             UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"collaboratorsViewController"];
@@ -291,6 +290,8 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
         //change user name for bucket
         if ([alertView cancelButtonIndex] != buttonIndex) {
             //change!
+            NSMutableDictionary *bup = [[[[self bucket] authorizedUsers] objectAtIndex:alertView.indexPath.row] mutableCopy];
+            [[self bucket] changeNameInBucketWithBucketUserPair:bup andNewName:[alertView textFieldAtIndex:0].text success:nil failure:nil]; 
         }
     }
 }

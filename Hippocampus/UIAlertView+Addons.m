@@ -11,7 +11,7 @@
 
 @implementation UIAlertView (Addons)
 
-@dynamic indexPath;  //Must do this
+@dynamic indexPath;
 
 -(void)setIndexPath:(NSIndexPath*)indexPath {
     objc_setAssociatedObject(self, @selector(indexPath), indexPath, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
