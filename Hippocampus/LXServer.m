@@ -55,19 +55,18 @@
     if ([method.uppercaseString isEqualToString:@"GET"]) {
         if ([[LXObjectManager defaultManager] queries] && [[[LXObjectManager defaultManager] queries] count] > 0) {
             [[LXObjectManager defaultManager] runQueries];
-        } else {
-            [self GET:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
-                //NSLog(@"%@", responseObject);
-                if (successCallback)
-                    successCallback(responseObject);
-                [[UIApplication sharedApplication] endBackgroundTask:bgt];
-            } failure:^(NSURLSessionDataTask* task, NSError* error) {
-                NSLog(@"ERROR! %@", [error localizedDescription]);
-                if (failureCallback)
-                    failureCallback(error);
-                [[UIApplication sharedApplication] endBackgroundTask:bgt];
-            }];
         }
+        [self GET:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
+            //NSLog(@"%@", responseObject);
+            if (successCallback)
+                successCallback(responseObject);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
+        } failure:^(NSURLSessionDataTask* task, NSError* error) {
+            NSLog(@"ERROR! %@", [error localizedDescription]);
+            if (failureCallback)
+                failureCallback(error);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
+        }];
     } else if ([method.uppercaseString isEqualToString:@"POST"]) {
         [self POST:path parameters:params constructingBodyWithBlock:block success:^(NSURLSessionDataTask* task, id responseObject) {
             //NSLog(@"%@", responseObject);

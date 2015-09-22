@@ -55,4 +55,40 @@
     return newImage;
 }
 
+
++ (UIImage *)thumbnailImageForVideo:(NSURL *)videoURL
+{
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:videoURL options:nil];
+    NSLog(@"asset: %@, url: %@", asset, videoURL);
+    if (asset) {
+        NSParameterAssert(asset);
+        AVAssetImageGenerator *assetIG =
+        [[AVAssetImageGenerator alloc] initWithAsset:asset];
+        assetIG.appliesPreferredTrackTransform = YES;
+        assetIG.apertureMode = AVAssetImageGeneratorApertureModeEncodedPixels;
+        
+        CGImageRef thumbnailImageRef = NULL;
+        
+        CMTime audioDuration = asset.duration;
+        float audioDurationSeconds = CMTimeGetSeconds(audioDuration);
+        
+        CFTimeInterval thumbnailImageTime = audioDurationSeconds/2.0f;
+        NSError *igError = nil;
+        thumbnailImageRef =
+        [assetIG copyCGImageAtTime:CMTimeMake(thumbnailImageTime, 60)
+                        actualTime:NULL
+                             error:&igError];
+        
+        if (!thumbnailImageRef)
+            NSLog(@"thumbnailImageGenerationError %@", igError );
+        
+        UIImage *thumbnailImage = thumbnailImageRef
+        ? [[UIImage alloc] initWithCGImage:thumbnailImageRef]
+        : nil;
+        
+        return thumbnailImage;
+    }
+    return nil;
+}
+
 @end

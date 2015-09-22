@@ -13,8 +13,13 @@
 @property (strong, nonatomic) NSString* bucketLocalKey;
 - (void) configureWithBucketLocalKey:(NSString*)key;
 
+@property (strong, nonatomic) NSMutableArray* collaboratorImages;
+
 @property (strong, nonatomic) IBOutlet UIView *card;
 @property (strong, nonatomic) IBOutlet UILabel *bucketName;
 @property (strong, nonatomic) IBOutlet UILabel *bucketItemMessage;
+
+@property (strong, nonatomic) IBOutlet UIView *collaborativeView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *collaborativeViewHeightConstraint;
 
 @end

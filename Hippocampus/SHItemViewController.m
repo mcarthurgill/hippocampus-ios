@@ -11,6 +11,7 @@
 #import "SHAssignBucketsViewController.h"
 #import "HCReminderViewController.h"
 #import "SHEditItemViewController.h"
+#import "SHMediaPlayerViewController.h"
 
 #import "SHItemMessageTableViewCell.h"
 #import "SHItemAuthorTableViewCell.h"
@@ -255,7 +256,10 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [self presentEditMessageScreen];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         [self setMediaInQuestion:[[[self item] media] objectAtIndex:indexPath.row]];
-        [self presentMediaActionSheet];
+        
+        SHMediaPlayerViewController* vc = (SHMediaPlayerViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMediaPlayerViewController"];
+        [vc setMedium:self.mediaInQuestion];
+        [self presentViewController:vc animated:NO completion:^(void){}];
     }
 }
 
@@ -527,12 +531,13 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 
         // Create path.
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"Image-%f.png", [[NSDate date] timeIntervalSince1970]]];
+        NSString* filename = [NSString stringWithFormat:@"Image-%f.png", [[NSDate date] timeIntervalSince1970]];
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:filename];
         // Save image.
         [UIImageJPEGRepresentation(image, 0.9) writeToFile:filePath atomically:YES];
         
         NSMutableDictionary* medium = [NSMutableDictionary create:@"medium"];
-        [medium setObject:filePath forKey:@"local_file_path"];
+        [medium setObject:filename forKey:@"local_file_name"];
         [medium setObject:[[self item] localKey] forKey:@"item_local_key"];
         [medium setObject:[NSNumber numberWithFloat:image.size.width] forKey:@"width"];
         [medium setObject:[NSNumber numberWithFloat:image.size.height] forKey:@"height"];
@@ -552,7 +557,6 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     }
     [picker dismissViewControllerAnimated:NO completion:^(void){}];
 }
-
 
 
 

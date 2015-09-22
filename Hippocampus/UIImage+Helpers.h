@@ -10,6 +10,8 @@
 
 @interface UIImage (Helpers)
 
++ (UIImage*) thumbnailImageForVideo:(NSURL*)videoURL;
+
 - (UIImage*) scaledToSize:(CGFloat)newHeight;
 
 - (UIImage*) croppedImage:(CGRect)bounds;

@@ -34,6 +34,11 @@
     // Configure the view for the selected state
 }
 
+- (NSMutableDictionary*) bucket
+{
+    return [LXObjectManager objectWithLocalKey:self.localKey];
+}
+
 
 - (void) configureWithLocalKey:(NSString*)lk delegate:(id)d collaborator:(NSDictionary*)c
 {
@@ -61,6 +66,11 @@
         [nameString addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:[nameString.string rangeOfString:@"(You)"]];
     } else {
         nameString = [[NSMutableAttributedString alloc] initWithString:[self.collaborator name]];
+    }
+    if ([self.collaborator ID] && [[self bucket] userID] && [[self.collaborator ID] integerValue] == [[[self bucket] userID] integerValue]) {
+        NSMutableAttributedString* creator = [[NSMutableAttributedString alloc] initWithString:@" (creator)"];
+        [creator addAttribute:NSForegroundColorAttributeName value:[UIColor lightGrayColor] range:NSMakeRange(0, [creator length])];
+        [nameString appendAttributedString:creator];
     }
     [self.label setAttributedText:nameString];
 }

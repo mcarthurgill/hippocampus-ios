@@ -75,7 +75,7 @@
     
     [self.activityIndicator startAnimating];
     
-    [self.imageView loadInImageWithRemoteURL:[medium mediaThumbnailURLWithScreenWidth] localURL:[medium objectForKey:@"local_file_path"]];
+    [self.imageView loadInImageWithRemoteURL:[medium mediaThumbnailURLWithScreenWidth] localURL:[medium objectForKey:@"local_file_name"]];
     
     [self setNeedsLayout];
     [self layoutIfNeeded];

@@ -136,7 +136,7 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
 
 - (UITableViewCell*) tableView:(UITableView *)tV collaboratorCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"bucket: %@", [self bucket]);
+    //NSLog(@"bucket: %@", [self bucket]);
     SHCollaboratorTableViewCell* cell = (SHCollaboratorTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:collaboratorCellIdentifier];
     if ([[self bucket] authorizedUsers] && indexPath.row < [[[self bucket] authorizedUsers] count]) {
         [cell configureWithLocalKey:self.localKey delegate:self collaborator:[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row]];

@@ -222,7 +222,7 @@ static NSInteger maxRecentCount = 6;
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
-                           }failure:^(NSError *error) {
+                           } failure:^(NSError *error) {
                                if (failureCallback) {
                                    failureCallback(error);
                                }

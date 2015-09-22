@@ -77,7 +77,7 @@
 - (void) pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray *)previousViewControllers transitionCompleted:(BOOL)completed
 {
     if ([[pageViewController.viewControllers firstObject] respondsToSelector:@selector(index)]) {
-        [self setChildIndex:[[pageViewController.viewControllers firstObject] index]];
+        [self setChildIndex:[(HCMessageViewController*)[pageViewController.viewControllers firstObject] index]];
     } else {
         [self setChildIndex:self.quotes.count];
     }

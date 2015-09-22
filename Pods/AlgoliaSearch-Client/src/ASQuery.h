@@ -26,7 +26,7 @@
 /**
  * Describes all parameters of search query.
  */
-@interface ASQuery : NSObject
+@interface ASQuery : NSObject <NSCopying>
 
 /**
  * Initialize query with a full text query string
@@ -42,6 +42,8 @@
  * Initialize query with a full text query string
  */
 -(instancetype) initWithFullTextQuery:(NSString*)fullTextQuery;
+
+-(instancetype) copyWithZone:(NSZone*)zone;
 
 /**
  *  Search for entries around a given latitude/longitude.
@@ -167,6 +169,12 @@
 @property (nonatomic) NSUInteger           hitsPerPage;
 
 /**
+ * Configure the precision of the proximity ranking criterion. By default, the minimum (and best) proximity value distance between 2 matching words is 1. Setting it to 2 (or 3) would allow 1 (or 2) words to be found between the matching words without degrading the proximity ranking value.
+ * Considering the query "javascript framework", if you set minProximity=2 the records "JavaScript framework" and "JavaScript charting framework" will get the same proximity score, even if the second one contains a word between the 2 matching words. Default to 1.
+ */
+@property (nonatomic) NSUInteger           minProximity;
+
+/**
  * if set, the result hits will contain ranking information in _rankingInfo attribute.
  */
 @property BOOL                             getRankingInfo;
@@ -203,14 +211,14 @@
 
 /**
  *
- * If set to YES, enable the distinct feature (disabled by default) if the attributeForDistinct index
- *   setting is set.
- *   This feature is similar to the SQL "distinct" keyword: when enabled in a query with the distinct=1 parameter,
- *   all hits containing a duplicate value for the attributeForDistinct attribute are removed from results.
- *   For example, if the chosen attribute is show_name and several hits have the same value for show_name, 
- *   then only the best one is kept and others are removed.
+ * Enable the distinct feature (disabled by default) if the attributeForDistinct index setting is set.
+ * This feature is similar to the SQL "distinct" keyword: when enabled in a query with the distinct=1 parameter,
+ * all hits containing a duplicate value for the attributeForDistinct attribute are removed from results.
+ * For example, if the chosen attribute is show_name and several hits have the same value for show_name,
+ * then only the best one is kept and others are removed.
+ * Specify the maximum number of hits to keep for each distinct value.
  */
-@property BOOL                             distinct;
+@property (nonatomic) NSUInteger           distinct;
 
 /**
   * Set the list of words that should be considered as optional when found in the query (array of NSString).
@@ -233,7 +241,7 @@
 @property (nonatomic) NSString            *facetFiltersRaw;
 
 /**
- * List of object attributes that you want to use for faceting. <br/>
+ * List of object attributes that you want to use for faceting.
  * Only attributes that have been added in **attributesForFaceting** index setting can be used in this parameter. 
  * You can also use `*` to perform faceting on all attributes specified in **attributesForFaceting**.
  */
@@ -248,14 +256,29 @@
 @property (nonatomic) NSString            *restrictSearchableAttributes;
 
 /**
+ * Specify the string that is inserted before the highlighted parts in the query result (default to "<em>").
+ */
+@property (nonatomic) NSString            *highlightPreTag;
+
+/**
+ * Specify the string that is inserted after the highlighted parts in the query result (default to "</em>").
+ */
+@property (nonatomic) NSString            *highlightPostTag;
+
+/**
  * Contains insideBoundingBox query (you should use searchInsideBoundingBox selector to set it)
  */
-@property (strong, nonatomic) NSString    *insideBoundingBox;
+@property (nonatomic) NSString            *insideBoundingBox;
 
 /**
  * Contains aroundLatLong query (you should use searchAroundLatitude:longitude:maxDist selector to set it)
  */
-@property (strong, nonatomic) NSString    *aroundLatLong;
+@property (nonatomic) NSString            *aroundLatLong;
+
+/**
+ * Tags can be used in the Analytics to analyze a subset of searches only. Comma-separated string list like @[@"ios", @"web"]
+ */
+@property (nonatomic) NSArray            *analyticsTags;
 
 /**
  * If set to YES use geolocation via client IP instead of passing a latitude/longitude manually

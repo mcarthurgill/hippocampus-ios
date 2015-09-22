@@ -31,8 +31,13 @@
 
 - (NSString*) mediaThumbnailURLWithWidth:(NSInteger)width
 {
+    CGFloat max_dimension = 4999.0/([[UIScreen mainScreen] scale]);
     if (!width)
         return [[self mediaThumbnailURL] croppedImageURLToScreenWidth];
+    if (width > max_dimension && [self width] > [self height])
+        width = max_dimension;
+    if ([self height] > [self width] && [self heightForWidth:width] > max_dimension)
+        width = [self widthForHeight:max_dimension];
     return [[self mediaThumbnailURL] croppedImageURLToWidth:width];
 }
 
@@ -83,6 +88,11 @@
 - (NSString*) avatarURLStringFromPhone
 {
     return [NSString stringWithFormat:@"%@/avatar/%@/phone", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIRoot"], [self phoneNumber]];
+}
+
+- (BOOL) isVideo
+{
+    return [self objectForKey:@"media_type"] && [[self objectForKey:@"media_type"] isEqualToString:@"video"];
 }
 
 

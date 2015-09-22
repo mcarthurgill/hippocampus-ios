@@ -28,7 +28,7 @@
 
 - (void) loadInImageWithRemoteURL:(NSString*)remoteURL localURL:(NSString*)localURL
 {
-    self.image = nil;
+    //self.image = nil;
     
     if ([SGImageCache haveImageForURL:remoteURL]) {
         [self drawImageAsync:[SGImageCache imageForURL:remoteURL]];
@@ -36,9 +36,18 @@
         [self viewWithTag:1].alpha = 0.0;
         [[self viewWithTag:1] removeFromSuperview];
     } else if (![self.image isEqual:[SGImageCache imageForURL:remoteURL]]) {
-        self.image = nil;
-        if (localURL && [UIImage imageWithContentsOfFile:localURL]) {
-            [self drawImageAsync:[UIImage imageWithContentsOfFile:localURL]];
+        //self.image = nil;
+        if (localURL) {
+            NSLog(@"localURL: %@", localURL);
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:localURL];
+            if ([UIImage imageWithContentsOfFile:filePath]) {
+                [self drawImageAsync:[UIImage imageWithContentsOfFile:filePath]];
+            } else {
+                self.image = nil;
+            }
+        } else {
+            self.image = nil;
         }
         [self setAlpha:1.0f];
         [SGImageCache getImageForURL:remoteURL].then(^(UIImage* img) {

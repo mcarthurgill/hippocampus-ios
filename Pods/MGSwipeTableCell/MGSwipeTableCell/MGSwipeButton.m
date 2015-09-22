@@ -73,10 +73,8 @@
     [button setTitle:title forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button setImage:icon forState:UIControlStateNormal];
-    [button.imageView setContentMode:UIViewContentModeScaleAspectFit];
     button.callback = callback;
     [button setEdgeInsets:insets];
-    [button setButtonWidth:(button.frame.size.width/2.0f)];
     return button;
 }
 
@@ -89,17 +87,17 @@
 }
 
 -(void) centerIconOverText {
-    const CGFloat spacing = 3.0;
-    CGSize size = self.imageView.image.size;
-    self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
-                                            -size.width,
-                                            -(size.height + spacing),
-                                            0.0);
-    size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName: self.titleLabel.font }];
-    self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + spacing),
-                                            0.0,
-                                            0.0,
-                                            -size.width);
+	const CGFloat spacing = 3.0;
+	CGSize size = self.imageView.image.size;
+	self.titleEdgeInsets = UIEdgeInsetsMake(0.0,
+											-size.width,
+											-(size.height + spacing),
+											0.0);
+	size = [self.titleLabel.text sizeWithAttributes:@{ NSFontAttributeName: self.titleLabel.font }];
+	self.imageEdgeInsets = UIEdgeInsetsMake(-(size.height + spacing),
+											0.0,
+											0.0,
+											-size.width);
 }
 
 -(void) setPadding:(CGFloat) padding

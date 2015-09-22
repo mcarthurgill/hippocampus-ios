@@ -1,6 +1,6 @@
 ## SGImageCache
 
-A lightweight iOS image cache with built in queue management. 
+A lightweight iOS image and data cache with built in queue management.
 
 ### CocoaPods Setup
 
@@ -74,6 +74,46 @@ This is useful for deprioritising image fetches for content that has scrolled of
 content may scroll back on screen later, so you still want the fetch to happen, but it is no
 longer urgently required.
 
+### Perform actions on remote fetch, fail or retry
+
+```objc
+// Objective-C
+SGCachePromise *promise = [SGImageCache getImageForURL:url];
+promise.then(^(UIImage *image) {
+  self.imageView.image = image;
+});
+promise.onRetry = ^{
+  // Called when SGImageCache automatically retries
+  // fetching the image due to a reachability change.
+  [self showLoadingSpinner];
+};
+promise.onFail = ^(NSError *error, BOOL fatal) {
+  // If the failure was fatal, SGImageCache will not
+  // automatically retry (eg. from a 404)
+  [self displayError:error];
+};
+```
+
+```swift
+// Swift
+let promise = SGImageCache.getImageForURL(url)
+promise.swiftThen({object in
+  if let image = object as? UIImage {
+      self.imageView.image = image
+  }
+  return nil
+})
+promise.onRetry = {
+  self.showLoadingSpinner()
+}
+promise.onFail = { (error: NSError?, wasFatal: Bool) -> () in
+  self.displayError(error)
+}
+
+```
+
+This is useful for displaying states of network failure, loading spinners on reachability change, or any other functionality that might need to be notified that an image or cache object could not be fetched.
+
 ### fastQueue
 
 `fastQueue` is a parallel queue, used for urgently required images. The `getImageForURL:`
@@ -102,3 +142,25 @@ warning, and subsequently restore them from cache if the image view returns to s
 This allows off screen but still existing view controllers (eg a previous controller in a
 nav controller's stack) to free up memory that would otherwise be unnecessarily retained, 
 and reduce the chances of your app being terminated by iOS in limited memory situations.
+
+### Generic caching of NSData
+
+You can use SGImageCache for caching of generic data in the form of an NSData object (eg. PDFs, JSON payloads).  Just use the equialent `SGCache` class method instead of the `SGImageCache` one:
+
+```objc
+// Objective-C
+[SGCache getFileForURL:url].then(^(NSData *data) {
+  // do something with data
+});
+
+```
+
+```swift
+// Swift
+SGCache.getFileForURL(url) swiftThen({object in
+  if let data = object as? NSData {
+    // do something with data
+  }
+  return nil
+})
+```

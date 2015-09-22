@@ -61,10 +61,9 @@ static LXObjectManager* defaultManager = nil;
 
 - (void) initializeWithFailedQueries
 {
-    return;
-    NSLog(@"failed-queries: %@", [[NSUserDefaults  standardUserDefaults] objectForKey:@"failed-queries"]);
-    if ([[NSUserDefaults  standardUserDefaults] objectForKey:@"failed-queries"] && [[[NSUserDefaults  standardUserDefaults] objectForKey:@"failed-queries"] count] > 0) {
-        [self.queries addObjectsFromArray:[[NSUserDefaults  standardUserDefaults] objectForKey:@"failed-queries"]];
+    NSLog(@"failed-queries: %@", [LXObjectManager objectWithLocalKey:@"failed-queries"]);
+    if ([LXObjectManager objectWithLocalKey:@"failed-queries"] && [[LXObjectManager objectWithLocalKey:@"failed-queries"] count] > 0) {
+        [self.queries addObjectsFromArray:[LXObjectManager objectWithLocalKey:@"failed-queries"]];
         NSLog(@"failed-queries-array: %@", self.queries);
     }
 }
@@ -75,30 +74,73 @@ static LXObjectManager* defaultManager = nil;
         runningQueries = YES;
         NSMutableDictionary* query = [self.queries firstObject];
         
-        NSMutableDictionary* obj = [LXObjectManager objectWithLocalKey:[query objectForKey:@"local_key"]];
-        if ((!obj && ![query objectForKey:@"object"]) || ![query objectForKey:@"path"] || ![query objectForKey:@"method"]) {
+        NSMutableDictionary* obj = [query objectForKey:@"object"] ? [[query objectForKey:@"object"] mutableCopy] : ([LXObjectManager objectWithLocalKey:[query objectForKey:@"local_key"]] ? [[[LXObjectManager objectWithLocalKey:[query objectForKey:@"local_key"] ] parameterReady] mutableCopy] : nil);
+        if (!obj || ![query objectForKey:@"path"] || ![query objectForKey:@"method"]) {
             [self removeQuery:query];
             [self saveQueries];
             [self runQueries];
         } else {
-            [[LXServer shared] requestPath:[query objectForKey:@"path"] withMethod:[query objectForKey:@"method"] withParamaters:(obj ? [obj parameterReady] : [query objectForKey:@"object"]) authType:@"repeat"
-                                   success:^(id responseObject){
-                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"successfulQueryDelayed" object:nil userInfo:@{@"query":query}];//,@"responseObject":responseObject
-                                       [self removeQuery:query];
-                                       [self saveQueries];
-                                       [self runQueries];
-                                   }
-                                   failure:^(NSError* error){
-                                       NSLog(@"CODE=%ld", (long)error.code);
-                                       if (![LXServer errorBecauseOfBadConnection:error.code]) {
+            if ([obj objectForKey:@"item"] && [[obj objectForKey:@"item"] hasUnsavedMedia]) {
+                //SEND TO SERVER WITH MEDIA
+                [[LXServer shared] requestPath:[query objectForKey:@"path"] withMethod:[query objectForKey:@"method"] withParamaters:obj authType:@"repeat"
+                     constructingBodyWithBlock:^(id <AFMultipartFormData>formData) {
+                         NSInteger i = 0;
+                         for (NSMutableDictionary* medium in [[obj objectForKey:@"item"] media]) {
+                             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                             NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[medium objectForKey:@"local_file_name"]];
+                             NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
+                             NSLog(@"file path: %@", [medium objectForKey:@"local_file_name"]);
+                             if (data) {
+                                 [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media[]"] fileName:[medium localKey] mimeType:@"image/jpeg"];
+                             }
+                             ++i;
+                         }
+                     } success:^(id responseObject) {
+                         for (NSMutableDictionary* medium in [[obj objectForKey:@"item"] media]) {
+                             NSFileManager *fileManager = [NSFileManager defaultManager];
+                             NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                             NSString *filePath = [documentsPath stringByAppendingPathComponent:[medium objectForKey:@"local_file_name"]];
+                             NSError *error;
+                             [fileManager removeItemAtPath:filePath error:&error];
+                         }
+                         //SAVE LOCALLY
+                         [[NSNotificationCenter defaultCenter] postNotificationName:@"successfulQueryDelayed" object:nil userInfo:@{@"query":query}];//,@"responseObject":responseObject
+                         [self removeQuery:query];
+                         [self saveQueries];
+                         runningQueries = NO;
+                         [self runQueries];
+                     } failure:^(NSError* error) {
+                         NSLog(@"CODE=%ld", (long)error.code);
+                         if (![LXServer errorBecauseOfBadConnection:error.code]) {
+                             [self removeQuery:query];
+                             [self saveQueries];
+                             runningQueries = NO;
+                             [self runQueries];
+                         }
+                     }
+                 ];
+            } else {
+                [[LXServer shared] requestPath:[query objectForKey:@"path"] withMethod:[query objectForKey:@"method"] withParamaters:obj authType:@"repeat"
+                                       success:^(id responseObject){
+                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"successfulQueryDelayed" object:nil userInfo:@{@"query":query}];//,@"responseObject":responseObject
                                            [self removeQuery:query];
                                            [self saveQueries];
+                                           runningQueries = NO;
                                            [self runQueries];
                                        }
-                                   }
-             ];
+                                       failure:^(NSError* error){
+                                           NSLog(@"CODE=%ld", (long)error.code);
+                                           if (![LXServer errorBecauseOfBadConnection:error.code]) {
+                                               [self removeQuery:query];
+                                               [self saveQueries];
+                                               runningQueries = NO;
+                                               [self runQueries];
+                                           }
+                                       }
+                 ];
+            }
         }
-    } else {
+    } else if ([self.queries count] == 0) {
         runningQueries = NO;
     }
     [self saveQueries];
@@ -134,13 +176,7 @@ static LXObjectManager* defaultManager = nil;
 
 - (void) saveQueries
 {
-    return;
-    if ([self.queries count] > 0) {
-        [[NSUserDefaults standardUserDefaults] setObject:self.queries forKey:@"failed-queries"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"failed-queries"];
-    }
+    [LXObjectManager assignLocal:self.queries WithLocalKey:@"failed-queries" alsoToDisk:YES];
 }
 
 - (void) refreshObjectTypes:(NSString*)pluralObjectType withAboveUpdatedAt:(NSString*)updatedAtString success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback

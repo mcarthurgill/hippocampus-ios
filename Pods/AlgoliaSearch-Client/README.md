@@ -2,6 +2,17 @@
 
 
 
+**&lt;Welcome Swift developers&gt;**
+
+In June 2015, we release our [Swift API Client](https://github.com/algolia/algoliasearch-client-swift).
+
+It is able to work with Swift and Objective-C. If you plan to use Swift in your project, please use it since we don't support Swift in our Objective-C API Client.
+
+The Objective-C API Client is still supported and updated.
+
+**&lt;/Welcome Swift developers&gt;**
+
+
 
 [Algolia Search](http://www.algolia.com) is a hosted full-text, numerical, and faceted search engine capable of delivering realtime results from the first keystroke.
 
@@ -30,6 +41,7 @@ Table of Contents
 1. [Add a new object](#add-a-new-object-to-the-index)
 1. [Update an object](#update-an-existing-object-in-the-index)
 1. [Search](#search)
+1. [Search cache](#search-cache)
 1. [Multiple queries](#multiple-queries)
 1. [Get an object](#get-an-object)
 1. [Delete an object](#delete-an-object)
@@ -55,12 +67,12 @@ To setup your project, follow these steps:
 
 
 
- 1. [Download and add sources](https://github.com/algolia/algoliasearch-client-objc/archive/master.zip) to your project or use cocoapods by adding `pod 'AlgoliaSearch-Client', '~> 3.3'` in your Podfile (or `pod 'AlgoliaSearch-Client', '~> 2.0'` if your are using AFNetworking 1.x in your project)  or drop the source folder on your project (If you are not using a Podfile, you will also need to add [AFNetworking library](https://github.com/AFNetworking/AFNetworking) in your project).
+ 1. [Download and add sources](https://github.com/algolia/algoliasearch-client-objc/archive/master.zip) to your project or use cocoapods by adding `pod 'AlgoliaSearch-Client', '~> 3.5'` in your Podfile (or `pod 'AlgoliaSearch-Client', '~> 2.0'` if your are using AFNetworking 1.x in your project)  or drop the source folder on your project (If you are not using a Podfile, you will also need to add [AFNetworking library](https://github.com/AFNetworking/AFNetworking) in your project).
  2. Add the `#import "ASAPIClient.h"` call to your project
  3. Initialize the client with your ApplicationID and API-Key. You can find all of them on [your Algolia account](http://www.algolia.com/users/edit).
 
 ```objc
-ASAPIClient *apiClient = 
+ASAPIClient *apiClient =
     [ASAPIClient apiClientWithApplicationID:@"YourApplicationID" apiKey:@"YourAPIKey"];
 ```
 
@@ -302,6 +314,8 @@ Search
 
 To perform a search, you only need to initialize the index and perform a call to the search function.
 
+The search query allows only to retrieve 1000 hits, if you need to retrieve more than 1000 hits for seo, you can use [Backup / Retrieve all index content](#backup--retrieve-of-all-index-content)
+
 You can use the following optional arguments on ASQuery class:
 
 ### Query Parameters
@@ -316,7 +330,7 @@ You can use the following optional arguments on ASQuery class:
  * **setRemoveWordsIfNoResults**: This option is used to select a strategy in order to avoid having an empty result page. There are three different options:
   * **lastWords**: When a query does not return any results, the last word will be added as optional. The process is repeated with n-1 word, n-2 word, ... until there are results.
   * **firstWords**: When a query does not return any results, the first word will be added as optional. The process is repeated with second word, third word, ... until there are results.
-  * **allOptional**: When a query does not return any results, a second trial will be made with all words as optional. This is equivalent to transforming the AND operand between query terms to an OR operand. 
+  * **allOptional**: When a query does not return any results, a second trial will be made with all words as optional. This is equivalent to transforming the AND operand between query terms to an OR operand.
   * **none**: No specific processing is done when a query does not return any results (default behavior).
  * **minWordSizeForApprox1**: The minimum number of characters in a query word to accept one typo in this word.<br/>Defaults to 4.
  * **minWordSizeForApprox2**: The minimum number of characters in a query word to accept two typos in this word.<br/>Defaults to 8.
@@ -350,7 +364,6 @@ You can use the following optional arguments on ASQuery class:
 
  * **searchAroundLatitudeLongitudeViaIP:**: Search for entries around the latitude/longitude automatically computed from user IP address.<br/>You specify the maximum distance in meters with the **maxDist** parameter.<br/>At indexing, you should specify the geo location of an object with the `_geoloc` attribute in the form ` {"_geoloc":{"lat":48.853409, "lng":2.348800}} `.
  * **searchAroundLatitudeLlongitude:precision**: Search for entries around a latitude/longitude automatically computed from user IP address with a given precision for ranking. For example if you set precision=100, two objects that are a distance of less than 100 meters will be considered as identical for the "geo" ranking parameter.
-
 
 
  * **searchInsideBoundingBoxWithLatitudeP1:longitudeP1:latitudeP2:longitudeP2**: Search entries inside a given area defined by the two extreme points of a rectangle (defined by 4 floats: p1Lat,p1Lng,p2Lat,p2Lng).<br/>For example, `searchInsideBoundingBoxWithLatitudeP1(47.3165, 4.9665, 47.3424, 5.0201)`).<br/>At indexing, you should specify the geo location of an object with the _geoloc attribute in the form `{"_geoloc":{"lat":48.853409, "lng":2.348800}}`.
@@ -439,6 +452,30 @@ The server response will look like:
 ```
 
 
+
+Search cache
+------------
+
+You can easily cache the results of the search queries by enabling the search cache.
+The results will be cached during a defined amount of time (default: 2 min).
+There is no pre-caching mechanism but you can simulated it by making search queries.
+
+By default, the cache is disabled.
+
+```objc
+[myIndex enableSearchCache];
+```
+
+Or:
+
+```objc
+[myIndex enableSearchCacheWithExpiringTimeInterval:300];
+```
+
+
+
+
+
 Multiple queries
 --------------
 
@@ -458,6 +495,8 @@ NSArray *queries = @[
   	NSLog(@"Result: %@", result);
 } failure:nil];
 ```
+
+The resulting JSON answer contains a ```results``` array storing the underlying queries answers. The answers order is the same than the requests order.
 
 You can specify a strategy to optimize your multiple queries:
 - **none**: Execute the sequence of queries until the end.
@@ -623,7 +662,15 @@ You can delete the index contents without removing settings and index specific A
 Wait indexing
 -------------
 
-All write operations return a `taskID` when the job is securely stored on our infrastructure but not when the job is published in your index. Even if it's extremely fast, you can easily ensure indexing is complete using the `waitTask` method on the `taskID` returned by a write operation.
+All write operations in Algolia are asynchronous by design.
+
+It means that when you add or update an object to your index, our servers will
+reply to your request with a `taskID` as soon as they understood the write
+operation.
+
+The actual insert and indexing will be done after replying to your code.
+
+You can wait for a task to complete using the `waitTask` method on the `taskID` returned by a write operation.
 
 For example, to wait for indexing of a new object:
 ```objc
@@ -637,14 +684,14 @@ For example, to wait for indexing of a new object:
 } failure:nil];
 ```
 
-
-If you want to ensure multiple objects have been indexed, you only need check the biggest taskID.
+If you want to ensure multiple objects have been indexed, you only need to check
+the biggest `taskID`.
 
 Batch writes
 -------------
 
 You may want to perform multiple operations with one API call to reduce latency.
-We expose three methods to perform batch operations:
+We expose four methods to perform batch operations:
  * `addObjects`: Add an array of objects using automatic `objectID` assignment.
  * `saveObjects`: Add or update an array of objects that contains an `objectID` attribute.
  * `deleteObjects`: Delete an array of objectIDs.
@@ -753,14 +800,14 @@ Example of API Key creation:
 
 You can also create an API Key with advanced settings:
 
- * Add a validity period. The key will be valid for a specific period of time (in seconds).
- * Specify the maximum number of API calls allowed from an IP address per hour. Each time an API call is performed with this key, a check is performed. If the IP at the source of the call did more than this number of calls in the last hour, a 403 code is returned. Defaults to 0 (no rate limit). This parameter can be used to protect you from attempts at retrieving your entire index contents by massively querying the index.
+ * **validity**: Add a validity period. The key will be valid for a specific period of time (in seconds).
+ * **maxQueriesPerIPPerHour**: Specify the maximum number of API calls allowed from an IP address per hour. Each time an API call is performed with this key, a check is performed. If the IP at the source of the call did more than this number of calls in the last hour, a 403 code is returned. Defaults to 0 (no rate limit). This parameter can be used to protect you from attempts at retrieving your entire index contents by massively querying the index.
 
- * Specify the maximum number of hits this API key can retrieve in one call. Defaults to 0 (unlimited). This parameter can be used to protect you from attempts at retrieving your entire index contents by massively querying the index.
- * Specify the list of targeted indices. You can target all indices starting with a prefix or ending with a suffix using the '*' character. For example, "dev_*" matches all indices starting with "dev_" and "*_dev" matches all indices ending with "_dev". Defaults to all indices if empty or blank.
- * Specify the list of referers. You can target all referers starting with a prefix or ending with a suffix using the '*' character. For example, "algolia.com/*" matches all referers starting with "algolia.com/" and "*.algolia.com" matches all referers ending with ".algolia.com". Defaults to all referers if empty or blank.
- * Specify the list of query parameters. You can force the query parameters for a query using the url string format (param1=X&param2=Y...).
- * Specify a description to describe where the key is used.
+ * **maxHitsPerQuery**: Specify the maximum number of hits this API key can retrieve in one call. Defaults to 0 (unlimited). This parameter can be used to protect you from attempts at retrieving your entire index contents by massively querying the index.
+ * **indexes**: Specify the list of targeted indices. You can target all indices starting with a prefix or ending with a suffix using the '\*' character. For example, "dev\_\*" matches all indices starting with "dev\_" and "\*\_dev" matches all indices ending with "\_dev". Defaults to all indices if empty or blank.
+ * **referers**: Specify the list of referers. You can target all referers starting with a prefix or ending with a suffix using the '\*' character. For example, "algolia.com/\*" matches all referers starting with "algolia.com/" and "\*.algolia.com" matches all referers ending with ".algolia.com". Defaults to all referers if empty or blank.
+ * **queryParameters**: Specify the list of query parameters. You can force the query parameters for a query using the url string format (param1=X&param2=Y...).
+ * **description**: Specify a description to describe where the key is used.
 
 
 ```objc
@@ -861,20 +908,24 @@ Backup / Retrieve of all index content
 -------------
 
 You can retrieve all index content for backup purposes or for SEO using the browse method.
-This method retrieves 1,000 objects via an API call and supports pagination.
+This method can retrieve up to 1,000 objects per call and supports full text search and filters but the distinct feature is not available
+Unlike the search method, the sort by typo, proximity, geo distance and matched words is not applied, the hits are only sorted by numeric attributes specified in the ranking and the custom ranking.
+
+You can browse the index:
 
 ```objc
-// Get first page
-[index browse:0 success:^(ASRemoteIndex *index, NSUInteger page, NSDictionary *result) {
-  NSLog(@"Index Content: %@", result);
-} failure:^(ASRemoteIndex *index, NSUInteger page, NSString *errorMessage) {
-  NSLog(@"browse error: %@", errorMessage);
-}];
-// Get second page
-[index browse:1 success:^(ASRemoteIndex *index, NSUInteger page, NSDictionary *result) {
-  NSLog(@"Index Content: %@", result);
-} failure:^(ASRemoteIndex *index, NSUInteger page, NSString *errorMessage) {
-  NSLog(@"browse error: %@", errorMessage);
+// Iterate with a filter over the index
+[index browseWithQuery:query block:^(ASBrowseIterator *iterator, BOOL end, NSString *error) {
+	// Retrieve the next cursor from the browse method
+	NSLog(iterator.cursor);
+    if (error != nil) {
+        // Handle errors
+    } else if (end) {
+        // End of the index
+    } else {
+        // Do something
+        [iterator next];
+    }
 }];
 ```
 

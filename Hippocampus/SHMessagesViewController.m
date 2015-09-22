@@ -111,7 +111,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     TopBorder2.backgroundColor = [UIColor SHLightGray].CGColor;
     [inputControlToolbar.layer addSublayer:TopBorder2];
     
-    [self.inputControlToolbar setBackgroundColor:[UIColor whiteColor]];
+    [self.inputControlToolbar setBackgroundColor:[[UIColor slightBackgroundColor] colorWithAlphaComponent:0.75f]];
     [self.rightButton setBackgroundColor:[UIColor SHLightBlue]];
     [[self.rightButton titleLabel] setTextColor:[UIColor SHBlue]];
     [[self.rightButton titleLabel] setFont:[UIFont titleMediumFontWithSize:13.0f]];
@@ -435,7 +435,9 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         for (NSMutableDictionary* medium in [self.blankItem media]) {
             NSTextAttachment *textAttachment = [[NSTextAttachment alloc] init];
             //textAttachment.image = [[UIImage imageWithContentsOfFile:[medium objectForKey:@"local_file_path"]] resizeImageWithNewSize:[medium sizeWithNewWidth:self.inputToolbar.bounds.size.width]];
-            textAttachment.image = [UIImage imageWithContentsOfFile:[medium objectForKey:@"local_file_path"]];
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[medium objectForKey:@"local_file_name"]];
+            textAttachment.image = [UIImage imageWithContentsOfFile:filePath];
             [textAttachment setBounds:CGRectMake(0, 0, self.inputToolbar.bounds.size.width/2.0, [medium heightForWidth:self.inputToolbar.bounds.size.width/2.0])];
             NSAttributedString *attrStringWithImage = [NSAttributedString attributedStringWithAttachment:textAttachment];
             [as appendAttributedString:attrStringWithImage];
@@ -473,7 +475,9 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         } else {
             NSMutableArray* tempMedia = [[NSMutableArray alloc] init];
             for (NSMutableDictionary* medium in [self.blankItem media]) {
-                UIImage* comparison = [UIImage imageWithContentsOfFile:[medium objectForKey:@"local_file_path"]];
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[medium objectForKey:@"local_file_name"]];
+                UIImage* comparison = [UIImage imageWithContentsOfFile:filePath];
                 if (comparison) {
                     for (UIImage* img in remainingImages) {
                         if ([UIImagePNGRepresentation(img) isEqual:UIImagePNGRepresentation(comparison)]) {
@@ -577,7 +581,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
             UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
             [imagePicker setDelegate:self];
             [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-            [imagePicker setMediaTypes:@[(NSString*)kUTTypeImage]];
+            [imagePicker setMediaTypes:@[(NSString*)kUTTypeImage, (NSString*)kUTTypeMovie]];
             [imagePicker setAllowsEditing:NO];
             [self presentViewController:imagePicker animated:YES completion:^(void){}];
         }
@@ -589,6 +593,8 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
+    NSLog(@"info: %@", info);
+    
     [self.textView becomeFirstResponder];
     
     NSString *mediaType = info[UIImagePickerControllerMediaType];
@@ -599,15 +605,18 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         
         // Create path.
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@"Image-%f.png", [[NSDate date] timeIntervalSince1970]]];
+        NSString* filename = [NSString stringWithFormat:@"Image-%f.png", [[NSDate date] timeIntervalSince1970]];
+        NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:filename];
+        NSLog(@"SAVE TO FILE NAME: %@", filename);
         // Save image.
         [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:YES];
         
         NSMutableDictionary* medium = [NSMutableDictionary create:@"medium"];
-        [medium setObject:filePath forKey:@"local_file_path"];
+        [medium setObject:filename forKey:@"local_file_name"];
         [medium setObject:[self.blankItem localKey] forKey:@"item_local_key"];
         [medium setObject:[NSNumber numberWithFloat:image.size.width] forKey:@"width"];
         [medium setObject:[NSNumber numberWithFloat:image.size.height] forKey:@"height"];
+        [medium setObject:@"image" forKey:@"media_type"];
         
         NSMutableArray* tempMedia = [[self.blankItem media] mutableCopy];
         [tempMedia addObject:medium];
@@ -616,10 +625,10 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         [self redrawMessage];
     }
     else if ([mediaType isEqualToString:(NSString*)kUTTypeMovie]) {
-        // Media is a video
-        //        NSURL *url = info[UIImagePickerControllerMediaURL];
+        
     }
     [picker dismissViewControllerAnimated:NO completion:^(void){}];
 }
+
 
 @end

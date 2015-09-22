@@ -353,7 +353,7 @@
 {
     for (NSDictionary* medium in [self media]) {
         NSLog(@"MEDIUM HERE: %@", medium);
-        if ([medium objectForKey:@"local_file_path"] && !([medium objectForKey:@"url"] || [medium objectForKey:@"secure_url"])) {
+        if ([medium objectForKey:@"local_file_name"] && !([medium objectForKey:@"url"] || [medium objectForKey:@"secure_url"])) {
             return YES;
         }
     }
@@ -364,14 +364,19 @@
 {
     for (NSDictionary* medium in [self media]) {
         NSLog(@"MEDIUM HERE: %@", medium);
-        if ([medium objectForKey:@"local_file_path"] && !([medium objectForKey:@"url"] || [medium objectForKey:@"secure_url"])) {
+        if ([medium objectForKey:@"local_file_name"] && !([medium objectForKey:@"url"] || [medium objectForKey:@"secure_url"])) {
             //save this image
-            NSData *data = [[NSFileManager defaultManager] contentsAtPath:[medium objectForKey:@"local_file_path"]];
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[medium objectForKey:@"local_file_name"]];
+            NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
             [[LXServer shared] requestPath:@"/media.json" withMethod:@"POST" withParamaters:@{@"medium":medium}
                  constructingBodyWithBlock:^(id <AFMultipartFormData>formData){
                      [formData appendPartWithFileData:data name:@"file" fileName:@"temp.jpeg" mimeType:@"image/jpeg"];
                  }
-                                   success:^(id responseObject){
+                                   success:^(id responseObject) {
+                                       NSError* error;
+                                       NSFileManager *fileManager = [NSFileManager defaultManager];
+                                       [fileManager removeItemAtPath:filePath error:&error];
                                        //update on disk
                                        if ([[responseObject mutableCopy] assignLocalVersionIfNeeded:YES]) {
                                            //notify system of change

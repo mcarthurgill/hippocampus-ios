@@ -145,11 +145,20 @@
              constructingBodyWithBlock:^(id <AFMultipartFormData>formData) {
                  NSInteger i = 0;
                  for (NSMutableDictionary* medium in [self media]) {
-                     NSData *data = [[NSFileManager defaultManager] contentsAtPath:[medium objectForKey:@"local_file_path"]];
+                     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                     NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[medium objectForKey:@"local_file_name"]];
+                     NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
                      [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media[]"] fileName:[medium localKey] mimeType:@"image/jpeg"];
                      ++i;
                  }
              } success:^(id responseObject) {
+                 for (NSMutableDictionary* medium in [self media]) {
+                     NSFileManager *fileManager = [NSFileManager defaultManager];
+                     NSString *documentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                     NSString *filePath = [documentsPath stringByAppendingPathComponent:[medium objectForKey:@"local_file_name"]];
+                     NSError *error;
+                     [fileManager removeItemAtPath:filePath error:&error];
+                 }
                  //SAVE LOCALLY
                  [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
                  if (successCallback) {

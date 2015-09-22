@@ -89,14 +89,14 @@
 - (void) setupSwipeButtons
 {
     //configure left buttons
-    self.leftButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"nudge_icon_white_swipe.png"] backgroundColor:[UIColor SHGreen]]];
+    self.leftButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"nudge_swipe.png"] backgroundColor:[UIColor SHGreen]]];
     self.leftSwipeSettings.transition = MGSwipeTransitionBorder;
     self.leftExpansion.buttonIndex = 0;
     self.leftExpansion.fillOnTrigger = NO;
     self.leftExpansion.threshold = 1.0f;
     
     //configure right buttons
-    self.rightButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"plus_icon_white_swipe.png"] backgroundColor:[UIColor SHBlue]]];
+    self.rightButtons = @[[MGSwipeButton buttonWithTitle:nil icon:[UIImage imageNamed:@"plus_swipe.png"] backgroundColor:[UIColor SHBlue]]];
     self.rightSwipeSettings.transition = MGSwipeTransitionBorder;
     self.rightExpansion.buttonIndex = 0;
     self.rightExpansion.fillOnTrigger = NO;
@@ -231,7 +231,7 @@
     NSString* croppedMediaURL = [medium mediaThumbnailURLWithScreenWidth];
     NSLog(@"url: %@", croppedMediaURL);
     
-    [iv loadInImageWithRemoteURL:croppedMediaURL localURL:[medium objectForKey:@"local_file_path"]];
+    [iv loadInImageWithRemoteURL:croppedMediaURL localURL:[medium objectForKey:@"local_file_name"]];
 }
 
 

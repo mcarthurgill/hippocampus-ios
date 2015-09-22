@@ -15,7 +15,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //flush images from SGImageCache
-    [SGImageCache flushImagesOlderThan:([[[NSDate alloc] init] timeIntervalSince1970]-24*60*60)];
+    //[SGImageCache flushImagesOlderThan:([[[NSDate alloc] init] timeIntervalSince1970]-24*60*60)];
+    [SGImageCache flushImagesOlderThan:([[[NSDate alloc] init] timeIntervalSinceNow]+64*24*60*60)];
     
     //Default appearance
     [self.window setTintColor:[UIColor mainColor]];
@@ -105,7 +106,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"appAwake" object:nil];
     
     if ([[LXSession thisSession] user]) {
-        //[[LXObjectManager defaultManager] runQueries];
+        [[LXObjectManager defaultManager] runQueries];
         //[[LXObjectManager defaultManager] performSelector:@selector(runQueries) withObject:nil afterDelay:1];
     }
     
