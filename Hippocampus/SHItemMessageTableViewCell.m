@@ -13,6 +13,7 @@
 @synthesize localKey;
 @synthesize messageView;
 @synthesize messageViewHeight;
+@synthesize label;
 
 - (void)awakeFromNib
 {
@@ -50,10 +51,17 @@
         [self.messageView setText:[[self item] message]];
         [self.messageView setTextColor:[UIColor SHFontDarkGray]];
         [self.messageView setFont:[UIFont titleFontWithSize:15.0f]];
+        [self.messageView setHidden:NO];
+        [self.label setHidden:YES];
     } else {
         [self.messageView setText:@"Tap here to add text."];
         [self.messageView setTextColor:[UIColor SHFontLightGray]];
         [self.messageView setFont:[UIFont titleFontWithSize:13.0f]];
+        [self.messageView setHidden:YES];
+        [self.label setText:@"Tap here to add text."];
+        [self.label setTextColor:[UIColor SHFontLightGray]];
+        [self.label setFont:[UIFont titleFontWithSize:13.0f]];
+        [self.label setHidden:NO];
     }
     
     self.messageViewHeight.constant = [self.messageView sizeThatFits:CGSizeMake(self.messageView.bounds.size.width, 10000000)].height + 10.0f;

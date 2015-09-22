@@ -109,9 +109,10 @@
     [bucketItemMessage setText:[[[bucket cachedItemMessage] stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]] stringByReplacingOccurrencesOfString:@"\n" withString:@" "]];
     [bucketItemMessage setLineBreakMode:NSLineBreakByTruncatingTail];
     
-    [self configureCollaborativeView];
-    
     [self setNeedsLayout];
+    [self layoutIfNeeded];
+    
+    [self configureCollaborativeView];
     
 }
 

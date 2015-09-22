@@ -10,6 +10,6 @@
 
 @interface UIAlertView (Addons)
 
-@property (strong, nonatomic) NSIndexPath *indexPath; 
+@property (strong, nonatomic) NSIndexPath *indexPath;
 
 @end

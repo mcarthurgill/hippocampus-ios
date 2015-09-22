@@ -250,6 +250,27 @@ static NSInteger maxRecentCount = 6;
     
 }
 
+
+- (void) changeNameInBucketWithBucketUserPair:(NSMutableDictionary *)bup andNewName:(NSString*)newName success:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback
+{
+    if (newName && newName.length > 0) {
+        [bup setObject:newName forKey:@"name"];
+        [bup saveRemote:^(id responseObject){
+            if ([responseObject objectForKey:@"bucket"]) {
+                [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded:YES];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:[responseObject objectForKey:@"bucket"]];
+            }
+            if (successCallback) {
+                successCallback(successCallback);
+            }
+        }failure:^(NSError *error){
+            if (failureCallback) {
+                failureCallback(error);
+            }
+        }];
+    }
+}
+
 - (BOOL) isAllThoughtsBucket
 {
     return [self localKey] && [[self localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]];
