@@ -27,6 +27,7 @@
 
 + (id) objectWithLocalKey:(NSString*)key;
 + (void) storeLocal:(id)object WithLocalKey:(NSString*)key;
++ (void) removeLocalWithKey:(NSString*)key;
 + (void) assignLocal:(id)object WithLocalKey:(NSString*)key alsoToDisk:(BOOL)toDisk;
 + (void) saveToDisk;
 

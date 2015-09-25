@@ -66,6 +66,9 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     [self.tableView registerNib:[UINib nibWithNibName:attachmentCellIdentifier bundle:nil] forCellReuseIdentifier:attachmentCellIdentifier];
     
     [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, 20.0f, self.tableView.contentInset.right)];
+    
+    UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonAction:)];
+    [self.navigationItem setRightBarButtonItem:item];
 }
 
 - (void) setupBottomView
@@ -276,6 +279,11 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     }
 }
 
+- (void) rightBarButtonAction:(UIBarButtonItem*)sender
+{
+    [self presentEditMessageScreen];
+}
+
 
 
 # pragma mark presentations
@@ -484,7 +492,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
             [imagePicker setMediaTypes:@[(NSString*)kUTTypeImage, (NSString*)kUTTypeMovie]];
             [imagePicker setAllowsEditing:NO];
             [self presentViewController:imagePicker animated:YES completion:^(void){}];
-        } else if (buttonIndex == 1) {
+        } else if (buttonIndex == 1 && buttonIndex != [actionSheet cancelButtonIndex]) {
             UIImagePickerController* imagePicker = [[UIImagePickerController alloc] init];
             [imagePicker setDelegate:self];
             [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];

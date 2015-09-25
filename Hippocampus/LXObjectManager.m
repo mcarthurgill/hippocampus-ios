@@ -247,7 +247,7 @@ static LXObjectManager* defaultManager = nil;
 + (id) objectWithLocalKey:(NSString*)key
 {
     //NSLog(@"getting object With Key: %@", key);
-    if (key && key.length > 0) {
+    if (key && key.length > 0 && [LXObjectManager defaultManager] && [[LXObjectManager defaultManager] library]) {
         if ([[[LXObjectManager defaultManager] library] objectForKey:key]) {
             return [[[LXObjectManager defaultManager] library] objectForKey:key];
         } else {
@@ -282,6 +282,20 @@ static LXObjectManager* defaultManager = nil;
         NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
         [NSKeyedArchiver archiveRootObject:[self objectWithLocalKey:key] toFile:filePath];
     }
+}
+
++ (void) removeLocalWithKey:(NSString*)key
+{
+    //remove from singleton
+    [[[LXObjectManager defaultManager] library] removeObjectForKey:key];
+    
+    //remove from disk
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
+    NSError *error;
+    [fileManager removeItemAtPath:filePath error:&error];
 }
 
 + (void) saveToDisk

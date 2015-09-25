@@ -50,6 +50,8 @@
     TopBorder.frame = CGRectMake(0.0f, 0.0f, self.contentView.bounds.size.width*3, 1.0f);
     TopBorder.backgroundColor = [UIColor SHLightGray].CGColor;
     [self.collaborativeView.layer addSublayer:TopBorder];
+
+    [self.collaborativeView setBackgroundColor:[UIColor clearColor]];
     
     [bucketName setFont:[UIFont titleFontWithSize:16.0f]];
     

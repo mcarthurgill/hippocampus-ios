@@ -40,4 +40,5 @@
     #import "UIColor+HCColors.h"
     #import "UIImageView+Addons.h"
     #import "UIAlertView+Addons.h"
+    #import "UIViewController+Permissions.h"
 #endif

@@ -10,6 +10,7 @@
 #import "SHBucketsViewController.h"
 #import "SHMessagesViewController.h"
 #import "SHSearchViewController.h"
+#import "SHProfileViewController.h"
 
 @interface SHMainViewController ()
 
@@ -74,8 +75,8 @@
 
 - (IBAction)leftBarButtonAction:(id)sender
 {
-    UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Not yet implemented!" message:nil delegate:nil cancelButtonTitle:@"Okay" otherButtonTitles:nil];
-    [av show];
+    SHProfileViewController* vc = (SHProfileViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHProfileViewController"];
+    [self presentViewController:vc animated:YES completion:^(void){}];
 }
 
 - (IBAction)rightBarButtonAction:(id)sender

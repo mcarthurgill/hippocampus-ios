@@ -23,6 +23,10 @@
 
 - (BOOL) updatedMoreRecentThan:(NSMutableDictionary*)otherObject;
 
+- (NSString*) requestPath;
+- (NSString*) requestMethod;
+- (NSString*) rootPath;
+- (NSString*) objectPath;
 - (NSDictionary*) parameterReady;
 
 // saving and syncing

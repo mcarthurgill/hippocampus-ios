@@ -18,6 +18,12 @@
     [LXObjectManager storeLocal:[self localKey] WithLocalKey:@"localUserKey"];
 }
 
+- (void) logout
+{
+    [LXObjectManager removeLocalWithKey:[self localKey]];
+    [LXObjectManager removeLocalWithKey:@"localUserKey"];
+}
+
 - (void) updateTimeZone
 {
     NSLog(@"timeZone: %@", [[NSTimeZone localTimeZone] name]);
@@ -78,6 +84,35 @@
 - (BOOL) completedSetup
 {
     return [self.setupCompletion integerValue] == 100;
+}
+
+- (void) updateProfilePictureWithImage:(UIImage*)image
+{
+    [SGImageCache flushImagesOlderThan:[[[NSDate alloc] init] timeIntervalSinceNow]];
+    
+    NSMutableDictionary* medium = [NSMutableDictionary create:@"medium"];
+    [medium setObject:[NSNumber numberWithFloat:image.size.width] forKey:@"width"];
+    [medium setObject:[NSNumber numberWithFloat:image.size.height] forKey:@"height"];
+    
+    [[LXServer shared] requestPath:@"/media/avatar.json" withMethod:@"POST" withParamaters:@{@"medium":medium}
+         constructingBodyWithBlock:^(id <AFMultipartFormData>formData) {
+             NSData *data = UIImageJPEGRepresentation(image, 0.8);
+             [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"file"] fileName:[self localKey] mimeType:@"image/jpeg"];
+         } success:^(id responseObject) {
+             //SAVE LOCALLY
+             [SGImageCache flushImagesOlderThan:[[[NSDate alloc] init] timeIntervalSinceNow]];
+             [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
+             NSLog(@"response: %@", responseObject);
+         } failure:^(NSError* error) {
+         }
+     ];
+}
+
+- (void) changeName:(NSString *)newName
+{
+    [self setObject:newName forKey:@"name"];
+    [self assignLocalVersionIfNeeded:YES];
+    [self saveRemote];
 }
 
 @end

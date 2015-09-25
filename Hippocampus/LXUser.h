@@ -11,6 +11,7 @@
 @interface NSMutableDictionary (User)
 
 - (void) makeLoggedInUser;
+- (void) logout;
 - (void) updateTimeZone;
 
 - (NSString*) email;
@@ -21,5 +22,8 @@
 - (NSNumber*) numberBuckets;
 - (NSNumber*) setupCompletion;
 - (BOOL) completedSetup;
+
+- (void) updateProfilePictureWithImage:(UIImage*)image;
+- (void) changeName:(NSString*)newName;
 
 @end

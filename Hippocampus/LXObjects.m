@@ -96,7 +96,7 @@
 {
     if ([self objectForKey:@"local_key"] && NULL_TO_NIL([self objectForKey:@"local_key"]))
         return [self objectForKey:@"local_key"];
-    return [NSString stringWithFormat:@"%@-%@-%@", [self objectType], ([self deviceTimestamp] ? [self deviceTimestamp] : @""), ([self isUser] ? @"" : [[[LXSession thisSession] user] ID])];
+    return [NSString stringWithFormat:@"%@-%@-%@", [self objectType], ([self deviceTimestamp] ? [self deviceTimestamp] : @""), ([self isUser] ? [self ID] : [[[LXSession thisSession] user] ID])];
 }
 
 - (NSString*) requestPath

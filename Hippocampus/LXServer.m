@@ -48,6 +48,7 @@
     }];
     
     NSMutableDictionary* params = [[NSMutableDictionary alloc] initWithDictionary:p];
+    [params setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"v"];
     if ([[LXSession thisSession] user]) {
         [params setObject:@{ @"uid":[[[LXSession thisSession] user] ID], @"token":[NSString userAuthToken] } forKey:@"auth"];
     }

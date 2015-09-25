@@ -255,6 +255,7 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     av.indexPath = indexPath;
     if (alertStyle == UIAlertViewStylePlainTextInput) {
         UITextField* textField = [av textFieldAtIndex:0];
+        [textField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
         [textField setText:textInput];
         [textField setFont:[UIFont titleFontWithSize:16.0f]];
     }

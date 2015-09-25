@@ -61,6 +61,7 @@
 		28431DE01A8D69BA00B12548 /* 78-stopwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDE1A8D69BA00B12548 /* 78-stopwatch.png */; };
 		28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDF1A8D69BA00B12548 /* 78-stopwatch@2x.png */; };
 		28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 28431DE31A93914200B12548 /* NSDictionary+Attributes.m */; };
+		284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */; settings = {ASSET_TAGS = (); }; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
@@ -98,6 +99,8 @@
 		28ACA39D1B8B73E800D7B215 /* SHLoadingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ACA39B1B8B73E800D7B215 /* SHLoadingTableViewCell.xib */; };
 		28ACA3A11B8B7CF900D7B215 /* SHBucketTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ACA39F1B8B7CF900D7B215 /* SHBucketTableViewCell.m */; };
 		28ACA3A21B8B7CF900D7B215 /* SHBucketTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28ACA3A01B8B7CF900D7B215 /* SHBucketTableViewCell.xib */; };
+		28B8BB6B1BB244E9005131EB /* SHProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BB6A1BB244E9005131EB /* SHProfileViewController.m */; settings = {ASSET_TAGS = (); }; };
+		28B8BB6F1BB2E551005131EB /* SHUserProfileTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28B8BB6E1BB2E551005131EB /* SHUserProfileTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
 		28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */ = {isa = PBXBuildFile; fileRef = 28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */; };
 		28CD3FB81AE9C2E200B3ABB6 /* compose-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FB71AE9C2E200B3ABB6 /* compose-screen.jpg */; };
 		28CD3FBA1AE9C80800B3ABB6 /* assign-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 28CD3FB91AE9C80800B3ABB6 /* assign-screen.jpg */; };
@@ -243,6 +246,8 @@
 		28431DDF1A8D69BA00B12548 /* 78-stopwatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "78-stopwatch@2x.png"; sourceTree = "<group>"; };
 		28431DE21A93914200B12548 /* NSDictionary+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Attributes.h"; sourceTree = "<group>"; };
 		28431DE31A93914200B12548 /* NSDictionary+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Attributes.m"; sourceTree = "<group>"; };
+		284861F11BB5CED000CF4EE7 /* UIViewController+Permissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Permissions.h"; sourceTree = "<group>"; };
+		284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Permissions.m"; sourceTree = "<group>"; };
 		286F434F1A9F71DB0086AAC9 /* UIFont+HCFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+HCFonts.h"; sourceTree = "<group>"; };
 		286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+HCFonts.m"; sourceTree = "<group>"; };
 		286F43521A9F7C290086AAC9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -297,6 +302,10 @@
 		28ACA39E1B8B7CF900D7B215 /* SHBucketTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHBucketTableViewCell.h; sourceTree = "<group>"; };
 		28ACA39F1B8B7CF900D7B215 /* SHBucketTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHBucketTableViewCell.m; sourceTree = "<group>"; };
 		28ACA3A01B8B7CF900D7B215 /* SHBucketTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHBucketTableViewCell.xib; sourceTree = "<group>"; };
+		28B8BB691BB244E9005131EB /* SHProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHProfileViewController.h; sourceTree = "<group>"; };
+		28B8BB6A1BB244E9005131EB /* SHProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHProfileViewController.m; sourceTree = "<group>"; };
+		28B8BB6D1BB2E551005131EB /* SHUserProfileTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHUserProfileTableViewCell.h; sourceTree = "<group>"; };
+		28B8BB6E1BB2E551005131EB /* SHUserProfileTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHUserProfileTableViewCell.m; sourceTree = "<group>"; };
 		28BD3EAD196F519B00BBF5B0 /* NSArray+Alphabet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Alphabet.h"; sourceTree = "<group>"; };
 		28BD3EAE196F519B00BBF5B0 /* NSArray+Alphabet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Alphabet.m"; sourceTree = "<group>"; };
 		28CD3FB71AE9C2E200B3ABB6 /* compose-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "compose-screen.jpg"; sourceTree = "<group>"; };
@@ -493,6 +502,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				28B8BB681BB244C5005131EB /* Profile */,
 				28419A261BB08D9C00CF21A6 /* Media Player */,
 				289D2F801BAA4854007F719B /* Bucket */,
 				28ED41E81BA0985E000292AE /* Item */,
@@ -816,6 +826,25 @@
 			name = Actions;
 			sourceTree = "<group>";
 		};
+		28B8BB681BB244C5005131EB /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				28B8BB6C1BB2E539005131EB /* Cells */,
+				28B8BB691BB244E9005131EB /* SHProfileViewController.h */,
+				28B8BB6A1BB244E9005131EB /* SHProfileViewController.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
+		28B8BB6C1BB2E539005131EB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				28B8BB6D1BB2E551005131EB /* SHUserProfileTableViewCell.h */,
+				28B8BB6E1BB2E551005131EB /* SHUserProfileTableViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		28CD3FB41AE9BD6200B3ABB6 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
@@ -961,6 +990,8 @@
 			children = (
 				76450E521AEA8509004D7FAD /* HCPermissionViewController.h */,
 				76450E531AEA8509004D7FAD /* HCPermissionViewController.m */,
+				284861F11BB5CED000CF4EE7 /* UIViewController+Permissions.h */,
+				284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */,
 			);
 			name = Permissions;
 			sourceTree = "<group>";
@@ -1196,6 +1227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28B8BB6B1BB244E9005131EB /* SHProfileViewController.m in Sources */,
 				288F12211B73DE100001E0B0 /* LXObjects.m in Sources */,
 				286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */,
 				281CA929196C2C2900E6BE96 /* HCLoginViewController.m in Sources */,
@@ -1224,6 +1256,7 @@
 				289D2F8D1BAA60F0007F719B /* SHBucketActionTableViewCell.m in Sources */,
 				28ED41CB1B9CB943000292AE /* SHAssignBucketsViewController.m in Sources */,
 				281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */,
+				28B8BB6F1BB2E551005131EB /* SHUserProfileTableViewCell.m in Sources */,
 				28419A211BAC57E100CF21A6 /* SHMessagesViewController.m in Sources */,
 				2837E80C1AC11D550089FA33 /* HCMessageViewController.m in Sources */,
 				761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */,
@@ -1247,6 +1280,7 @@
 				28ED41ED1BA09882000292AE /* SHItemMessageTableViewCell.m in Sources */,
 				28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */,
 				28ED41E01BA00156000292AE /* HCReminderViewController.m in Sources */,
+				284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */,
 				282FA8411B8F9C2E004ADA00 /* SHSearchViewController.m in Sources */,
 				282FA8441B909BD5004ADA00 /* SHSearch.m in Sources */,
 				28ED41F71BA0BBA8000292AE /* SHMediaBoxTableViewCell.m in Sources */,

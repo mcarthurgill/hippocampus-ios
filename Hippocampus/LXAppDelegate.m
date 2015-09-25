@@ -15,19 +15,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //flush images from SGImageCache
-    //[SGImageCache flushImagesOlderThan:([[[NSDate alloc] init] timeIntervalSince1970]-24*60*60)];
     [SGImageCache flushImagesOlderThan:([[[NSDate alloc] init] timeIntervalSinceNow]+64*24*60*60)];
     
-    //Default appearance
-    [self.window setTintColor:[UIColor mainColor]];
-    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:13.0f]} forState:UIControlStateNormal];
-    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:14.0f]} forState:UIControlStateNormal];
-    [[UIBarButtonItem appearance] setTintColor:[UIColor mainColor]];
-    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:16.0f], NSForegroundColorAttributeName : [UIColor SHFontDarkGray]}];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:@{NSFontAttributeName:[UIFont titleFontWithSize:14.0f]}];
+    [self setupAppearance];
     
-    // Override point for customization after application launch.
-    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
     [application setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
     
     [[LXSession thisSession] setVariables];
@@ -42,6 +33,20 @@
     [self handleAppLaunch];
     
     return YES;
+}
+
+- (void) setupAppearance
+{
+    //Default appearance
+    [self.window setTintColor:[UIColor mainColor]];
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:13.0f]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:14.0f]} forState:UIControlStateNormal];
+    [[UIBarButtonItem appearance] setTintColor:[UIColor mainColor]];
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSFontAttributeName : [UIFont titleFontWithSize:16.0f], NSForegroundColorAttributeName : [UIColor SHFontDarkGray]}];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:@{NSFontAttributeName:[UIFont titleFontWithSize:14.0f]}];
+    
+    // Override point for customization after application launch.
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
 }
 
 - (void) refreshObjects
@@ -248,46 +253,6 @@
 
 
 
-
-
-
-//- (void) permissionsDelegate:(NSString*)type
-//{
-//    if ([type isEqualToString:@"email"]) {
-//        MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
-//        mc.mailComposeDelegate = self;
-//        [mc setSubject:[NSString stringWithFormat:@"My Token: (%@==%@", [NSString userAuthToken], [[[LXSession thisSession] user] ID]]];
-//        [mc setMessageBody:@"Hit 'Send' in the top right corner to verify this email address! (and don't delete/change the subject of this email)\n\nVerify me! Cheers," isHTML:NO];
-//        [mc setToRecipients:@[@"thought@hppcmps.com"]];
-//        [self.window.rootViewController presentViewController:mc animated:YES completion:nil];
-//    }
-//}
-//
-//- (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
-//{
-//    switch (result)
-//    {
-//        case MFMailComposeResultCancelled:
-//            NSLog(@"Mail cancelled");
-//            break;
-//        case MFMailComposeResultSaved:
-//            NSLog(@"Mail saved");
-//            break;
-//        case MFMailComposeResultSent:
-//            NSLog(@"Mail sent");
-//            break;
-//        case MFMailComposeResultFailed:
-//            NSLog(@"Mail sent failure: %@", [error localizedDescription]);
-//            break;
-//        default:
-//            break;
-//    }
-//    [controller dismissViewControllerAnimated:YES completion:NULL];
-//}
-//
-//- (void) permissionsDelegate
-//{
-//}
 
 
 

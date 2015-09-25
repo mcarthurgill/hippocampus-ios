@@ -70,6 +70,8 @@
 
 - (NSString*) avatarURLString
 {
+    if ([[self objectType] isEqualToString:@"user"])
+        return [NSString stringWithFormat:@"%@/avatar/%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIRoot"], [self ID]];
     return [NSString stringWithFormat:@"%@/avatar/%@", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIRoot"], [self userID]];
 }
 
