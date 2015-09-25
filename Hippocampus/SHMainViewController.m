@@ -38,6 +38,7 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushBucketViewController:) name:@"pushBucketViewController" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentViewController:) name:@"presentViewController" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushViewController:) name:@"pushViewController" object:nil];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -156,5 +157,12 @@
     }
 }
 
+- (void) pushViewController:(NSNotification*)notification
+{
+    if ([self presentedViewController]) {
+        [[self presentedViewController] dismissViewControllerAnimated:NO completion:nil];
+    }
+    [self.navigationController pushViewController:[[notification userInfo] objectForKey:@"viewController"] animated:([[notification userInfo] objectForKey:@"animated"] ? [[[notification userInfo] objectForKey:@"animated"] boolValue] : YES)];
+}
 
 @end

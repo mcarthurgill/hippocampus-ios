@@ -11,6 +11,6 @@
 
 @interface UIViewController (Permissions) <MFMailComposeViewControllerDelegate>
 
-+ (void) permissionsDelegate:(NSString*)type fromViewController:(id)viewController;
+- (void) permissionsDelegate:(NSString*)type;
 
 @end

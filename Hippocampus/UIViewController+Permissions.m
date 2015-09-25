@@ -11,13 +11,13 @@
 
 @implementation UIViewController (Permissions)
 
-+ (void) permissionsDelegate:(NSString*)type fromViewController:(id)viewController
+- (void) permissionsDelegate:(NSString*)type
 {
     UIViewController* vc;
     if ([type isEqualToString:@"email"]) {
-        vc = [self emailSetterViewController:viewController];
+        vc = [self emailSetterViewController];
     }
-    [viewController presentViewController:vc animated:YES completion:^(void){}];
+    [self presentViewController:vc animated:YES completion:^(void){}];
 }
 
 
@@ -26,10 +26,10 @@
 
 # pragma mark view controllers
 
-+ (UIViewController*) emailSetterViewController:(id)viewController
+- (UIViewController*) emailSetterViewController
 {
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];
-    mc.mailComposeDelegate = viewController;
+    mc.mailComposeDelegate = self;
     [mc setSubject:[NSString stringWithFormat:@"My Token: (%@==%@", [NSString userAuthToken], [[[LXSession thisSession] user] ID]]];
     [mc setMessageBody:@"Hit 'Send' in the top right corner to verify this email address! (and don't delete/change the subject of this email)\n\nVerify me! Cheers," isHTML:NO];
     [mc setToRecipients:@[@"thought@hppcmps.com"]];

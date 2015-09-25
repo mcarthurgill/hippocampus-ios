@@ -237,7 +237,7 @@ static NSString *userProfileIdentifier = @"SHUserProfileTableViewCell";
     } else if ([action isEqualToString:@"changeName"]) {
         [self showAlertWithTitle:@"Edit Your Name" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:100 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[LXSession thisSession] user] name] andIndexPath:nil];
     } else if ([action isEqualToString:@"changeEmail"]) {
-        [UIViewController permissionsDelegate:@"email" fromViewController:self];
+        [self permissionsDelegate:@"email"];
     }
 }
 

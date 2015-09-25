@@ -9,6 +9,8 @@
 #import "LXAppDelegate.h"
 #import <AudioToolbox/AudioServices.h>
 #import "NSString+SHAEncryption.h"
+#import "SHMessagesViewController.h"
+#import "SHItemViewController.h"
 
 @implementation LXAppDelegate
 
@@ -209,7 +211,19 @@
     } else {
         [self setBadgeIcon];
     }
-    //[userInfo objectForKey:@"bucket_id"] && [[userInfo objectForKey:@"bucket_id"] respondsToSelector:@selector(intValue)]
+    
+    if ([userInfo objectForKey:@"object_type"] && [[userInfo objectForKey:@"object_type"] respondsToSelector:@selector(length)] && [userInfo objectForKey:@"local_key"]) {
+        if ([[userInfo objectForKey:@"object_type"] isEqualToString:@"item"]) {
+            SHItemViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHItemViewController"];
+            [vc setLocalKey:[userInfo objectForKey:@"local_key"]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"pushViewController" object:nil userInfo:@{@"viewController":vc,@"animated":@NO}];
+        } else if ([[userInfo objectForKey:@"object_type"] isEqualToString:@"bucket"]) {
+            SHMessagesViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+            [vc setLocalKey:[userInfo objectForKey:@"local_key"]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"pushViewController" object:nil userInfo:@{@"viewController":vc,@"animated":@NO}];
+        }
+    }
+    
 }
 
 
