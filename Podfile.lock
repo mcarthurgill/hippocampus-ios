@@ -22,6 +22,10 @@ PODS:
     - AFNetworking/NSURLSession
   - AlgoliaSearch-Client (3.6.0):
     - AFNetworking (~> 2.2)
+  - libPusher (1.6.1):
+    - libPusher/Core (= 1.6.1)
+  - libPusher/Core (1.6.1):
+    - SocketRocket (= 0.4.1)
   - MBProgressHUD (0.9.1)
   - MGEvents (1.0.3)
   - MGSwipeTableCell (HEAD based on 1.5.1)
@@ -43,10 +47,12 @@ PODS:
     - PromiseKit/base (~> 1.5)
     - SGHTTPRequest
   - SlackTextViewController (1.7)
+  - SocketRocket (0.4.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
   - AlgoliaSearch-Client (~> 3.0)
+  - libPusher (~> 1.6.1)
   - MBProgressHUD (~> 0.8)
   - MGSwipeTableCell (HEAD)
   - SGImageCache
@@ -55,6 +61,7 @@ DEPENDENCIES:
 SPEC CHECKSUMS:
   AFNetworking: 79f7eb1a0fcfa7beb409332b2ca49afe9ce53b05
   AlgoliaSearch-Client: 05cfb203e2444bfc5e8f03091e13113e9db43379
+  libPusher: 5ea58aeb83fa4ac1f5d8ef8543b1def6ace997b8
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MGEvents: 739ea3e582a8df05bd1044500c7fb6d8f7aff5c8
   MGSwipeTableCell: a51fa670c01f0aa048f12af040acebf315223137
@@ -62,5 +69,6 @@ SPEC CHECKSUMS:
   SGHTTPRequest: 7e535e01f9d4dfba8989773ad991b9afa9f11ed6
   SGImageCache: 1e6603abf78144f593a82ebc7594f12c8adcb036
   SlackTextViewController: 57e28248dd38b9753277733544449519842f1ea5
+  SocketRocket: ee0b5c34182d37bb4f1f8d628bbe737718126daa
 
 COCOAPODS: 0.38.2

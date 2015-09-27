@@ -54,59 +54,18 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SocketRocket.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>libPusher.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
-	<dict>
-		<key>05DA45E35997FD5809A15A85C0658951</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>0ADCEA293F6EF1EE279EC7C786E94386</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2829D5D7EA5A679795CACC5554AE7570</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2851DC439E79AE4EB9124B51B9A1A0DE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>35DE7DE41F15107DA4E52B4EE40CC31A</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>424A050634FDF1C79B7710B6FADB4089</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>9AA380CD2D26B732A05020EE853E910C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>A2F9B7BC9FC75CCD42DF354BA18F21DB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>AD1F506BA374219892AC51D63654D96C</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>FD68D4A7C04954DD557E74DB761C9BE4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-	</dict>
+	<dict/>
 </dict>
 </plist>
