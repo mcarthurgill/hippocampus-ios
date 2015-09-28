@@ -17,6 +17,7 @@
 
 - (NSMutableDictionary*) user;
 @property (strong, nonatomic) NSMutableDictionary* cachedUser;
+@property (strong, nonatomic) NSMutableDictionary* permissionsAsked;
 
 @property (strong, nonatomic) NSMutableArray* verifyingTokens;
 

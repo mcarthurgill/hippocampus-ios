@@ -63,9 +63,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         [self.searchBar performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.01];
     }
     
-    [[LXAddressBook thisBook] requestAccess:^(BOOL success) {
-        [self performSelector:@selector(reloadScreen) withObject:nil afterDelay:0.01];
-    }];
+    [self prePermissionsDelegate:@"contacts" message:@"Assigning thoughts is simple when choosing a contact from your address book."];
 }
 
 - (BOOL) shouldOpenOnSearchKeyboard

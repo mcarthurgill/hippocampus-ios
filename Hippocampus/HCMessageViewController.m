@@ -42,6 +42,8 @@
 
 - (void) setupAppearance
 {
+    [self.messageLabel setFont:[UIFont titleFontWithSize:16.0f]];
+    [self.messageLabel setTextColor:[UIColor SHFontDarkGray]];
 }
 
 - (void) setMessage:(NSString*)message

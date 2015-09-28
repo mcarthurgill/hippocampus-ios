@@ -32,4 +32,6 @@
 - (IBAction) rightButtonAction:(id)sender;
 - (IBAction) topViewButtonAction:(id)sender;
 
+- (void) reloadScreen;
+
 @end

@@ -42,34 +42,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    
-    //[[UIBarButtonItem appearance] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont flipbookActionFontWithSize:16.0f], NSFontAttributeName, nil] forState:UIControlStateNormal];
-    //[self.navigationItem.leftBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont flipbookActionFontWithSize:16.0f], NSFontAttributeName, nil] forState:UIControlStateNormal];
-    //[self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont flipbookActionFontWithSize:16.0f], NSFontAttributeName, nil] forState:UIControlStateNormal];
-    
-    //[self.navigationController.navigationBar setBarTintColor:[UIColor flipbookPurple]];
-    //[self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
-    //[self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont flipbookDescriptionFontWithSize:24.0f], NSFontAttributeName, [UIColor whiteColor], NSForegroundColorAttributeName, nil]];
-    //[self.navigationItem setTitle:@"Verify"];
     
     [self.view setBackgroundColor:[UIColor whiteColor]];
     
-    //[self.sendTextButton.titleLabel setFont:[UIFont flipbookActionFontWithSize:13.0f]];
-    //[self.sendTextButton.titleLabel setTextColor:[UIColor whiteColor]];
-    //[self.sendTextButton setBackgroundColor:[UIColor darkGrayColor]];
-    
-    //[self.verifyNowButton.titleLabel setFont:[UIFont flipbookActionFontWithSize:20.0f]];
-    //[self.verifyNowButton.titleLabel setTextColor:[UIColor whiteColor]];
-    //[self.verifyNowButton setBackgroundColor:[UIColor blueColor]]; //[self.verifyNowButton setBackgroundColor:[UIColor flipbookPurple]];
     [self.verifyNowButton.layer setCornerRadius:4.0f];
     [self.verifyNowButton setClipsToBounds:YES];
     
-    //[self.verifyLabel setFont:[UIFont flipbookDescriptionFontWithSize:28.0f]];
-    //[self.verifyLabel setText:@""];
-    //[self.verifyLabel setTextColor:[UIColor blackColor]];
-    
-    //[self.verifyDescriptionLabel setFont:[UIFont flipbookDescriptionFontWithSize:24.0f]];
     [self.verifyDescriptionLabel setTextColor:[UIColor blackColor]];
     
     self.screenshotImage.layer.shadowColor = [UIColor grayColor].CGColor;
@@ -77,6 +55,16 @@
     self.screenshotImage.layer.shadowOpacity = 1;
     self.screenshotImage.layer.shadowRadius = 1.0;
     self.screenshotImage.clipsToBounds = NO;
+    
+    [self.verifyDescriptionLabel setFont:[UIFont secondaryFontWithSize:18.0f]];
+    [self.verifyDescriptionLabel setTextColor:[UIColor SHFontDarkGray]];
+    
+    [[self.sendTextButton titleLabel] setFont:[UIFont titleFontWithSize:12.0f]];
+    [[self.sendTextButton titleLabel] setTextColor:[UIColor SHColorBlue]];
+    [self.sendTextButton setTintColor:[UIColor SHColorBlue]];
+    
+    [[self.verifyNowButton titleLabel] setFont:[UIFont titleFontWithSize:16.0f]];
+    [self.verifyNowButton setBackgroundColor:[UIColor SHColorBlue]];
     
 }
 
@@ -143,7 +131,7 @@
         [self.messageController setBody:message];
         // Present message view controller on screen
         
-        [self showHUDWithMessage:nil];
+        [self showHUDWithMessage:@"Getting token..."];
         
         [self presentViewController:self.messageController animated:YES completion:nil];
         
@@ -230,18 +218,20 @@
 
 - (void) showHUDWithMessage:(NSString*) message
 {
-    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
     hud.labelText = message;
-    //[hud setColor:[UIColor flipbookRed]];
-    //[hud setLabelFont:[UIFont flipbookDescriptionFontWithSize:16.0f]];
+    hud.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
+    [hud show:YES];
 }
 
 - (void) showVerifyingHUDWithMessage:(NSString*) message
 {
-    verifyingHud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    verifyingHud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:verifyingHud];
     verifyingHud.labelText = message;
-    //[hud setColor:[UIColor flipbookRed]];
-    //[hud setLabelFont:[UIFont flipbookDescriptionFontWithSize:16.0f]];
+    verifyingHud.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
+    [verifyingHud show:YES];
 }
 
 - (void) hideHUD

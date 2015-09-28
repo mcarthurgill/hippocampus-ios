@@ -16,6 +16,11 @@
 
 @implementation HCLoginViewController
 
+@synthesize titleLabel;
+@synthesize secondaryLabel;
+
+@synthesize whyButton;
+
 @synthesize numberTextField;
 @synthesize loginButton;
 @synthesize countryCodeTextField;
@@ -38,6 +43,24 @@
     [self.loginButton setClipsToBounds:YES];
     
     [self enableDisableNextButton];
+    
+    [self setupAppearance];
+}
+
+- (void) setupAppearance
+{
+    [self.titleLabel setFont:[UIFont titleMediumFontWithSize:18.0f]];
+    [self.secondaryLabel setFont:[UIFont secondaryFontWithSize:16.0f]];
+    [self.secondaryLabel setTextColor:[UIColor SHFontDarkGray]];
+    
+    [self.countryCodeTextField setFont:[UIFont titleFontWithSize:16.0f]];
+    [self.numberTextField setFont:[UIFont titleFontWithSize:16.0f]];
+    
+    [[self.loginButton titleLabel] setFont:[UIFont titleFontWithSize:16.0f]];
+    
+    [[self.whyButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
+    [[self.whyButton titleLabel] setTextColor:[UIColor SHColorBlue]];
+    [self.whyButton setTintColor:[UIColor SHColorBlue]];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -103,10 +126,10 @@
 - (void) enableDisableNextButton
 {
     if ([self canAdvance]) {
-        [self.loginButton setBackgroundColor:[UIColor blueColor]];
+        [self.loginButton setBackgroundColor:[UIColor SHColorBlue]];
         [self.loginButton setEnabled:YES];
     } else {
-        [self.loginButton setBackgroundColor:[UIColor grayColor]];
+        [self.loginButton setBackgroundColor:[UIColor SHLightGray]];
         [self.loginButton setEnabled:NO];
     }
 }
@@ -154,8 +177,11 @@
 
 - (void) showHUDWithMessage:(NSString*) message
 {
-    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
     hud.labelText = message;
+    hud.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
+    [hud show:YES];
 }
 
 - (void) hideHUD

@@ -19,6 +19,7 @@ static LXSession* thisSession = nil;
 @synthesize verifyingTokens;
 
 @synthesize cachedUser;
+@synthesize permissionsAsked;
 
 @synthesize backgroundTask;
 
@@ -40,6 +41,7 @@ static LXSession* thisSession = nil;
 {
     if (!thisSession) {
         thisSession = [[super allocWithZone:NULL] init];
+        [thisSession setVariables];
     }
     return thisSession;
 }
@@ -55,6 +57,7 @@ static LXSession* thisSession = nil;
 //set singleton variables
 - (void) setVariables
 {
+    self.permissionsAsked = [[NSMutableDictionary alloc] init];
 }
 
 - (NSMutableDictionary*) user

@@ -334,6 +334,11 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     if (item) {
         [item addEstimatedRowHeight:cell.frame.size.height];
     }
+    if ([item hasReminder]) {
+        [self prePermissionsDelegate:@"notifications" message:[NSString stringWithFormat:@"Enable notifications to get a nudge on the morning of %@%@.", [NSDate timeAgoActualFromDatetime:[item reminderDate]], [item message] && [[item message] length] > 0 ? [NSString stringWithFormat:@" about the thought: \"%@.\"", [item message]] : @""]];
+    } else if (![item belongsToCurrentUser]) {
+        [self prePermissionsDelegate:@"notifications" message:[NSString stringWithFormat:@"Enable notifications to get a nudge whenever %@ adds a thought to your Hippo.", ([item objectForKey:@"user"] && [[item objectForKey:@"user"] objectForKey:@"name"] && [[[item objectForKey:@"user"] objectForKey:@"name"] length] > 0 ? [[item objectForKey:@"user"] objectForKey:@"name"] : @"a colleague")]];
+    }
 }
 
 - (void) tableView:(UITableView *)tV didSelectRowAtIndexPath:(NSIndexPath *)indexPath

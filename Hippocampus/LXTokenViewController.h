@@ -14,8 +14,10 @@
 }
 
 @property (strong, nonatomic) NSString* phoneNumber;
+@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *explanationLabel;
 @property (strong, nonatomic) IBOutlet UITextField *tokenInput;
+@property (strong, nonatomic) IBOutlet UIButton *backButton;
 
 - (IBAction)goAction:(id)sender;
 - (IBAction)backAction:(id)sender;

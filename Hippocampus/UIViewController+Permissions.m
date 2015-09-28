@@ -8,6 +8,9 @@
 
 #import "UIViewController+Permissions.h"
 #import "NSString+SHAEncryption.h"
+#import "SHAssignBucketsViewController.h"
+
+@import PermissionScope;
 
 @implementation UIViewController (Permissions)
 
@@ -18,6 +21,58 @@
         vc = [self emailSetterViewController];
     }
     [self presentViewController:vc animated:YES completion:^(void){}];
+}
+
+- (void) prePermissionsDelegate:(NSString*)type message:(NSString*)message
+{
+    if ([[[LXSession thisSession] permissionsAsked] objectForKey:type])
+        return;
+    
+    PermissionScope* pscope = [[PermissionScope alloc] init];
+    [pscope setViewControllerForAlerts:pscope];
+    
+    [[[pscope closeButton] titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
+    [pscope setCloseButtonTextColor:[UIColor SHBlue]];
+    
+    [pscope setAuthorizedButtonColor:[UIColor SHColorBlue]];
+    [pscope setUnauthorizedButtonColor:[UIColor SHColorOrange]];
+    
+    [pscope setButtonFont:[UIFont titleFontWithSize:14.0f]];
+    [pscope setLabelFont:[UIFont secondaryFontWithSize:15.0f]];
+    
+    [[pscope headerLabel] setFont:[UIFont titleFontWithSize:16.0f]];
+    
+    [[pscope bodyLabel] setFont:[UIFont secondaryFontWithSize:15.0f]];
+    [[pscope bodyLabel] setTextColor:[UIColor SHFontDarkGray]];
+    [[pscope bodyLabel] setNumberOfLines:0];
+    
+    [pscope setPermissionLabelColor:[UIColor SHFontDarkGray]];
+    
+    [[pscope bodyLabel] setText:message];
+    if ([type isEqualToString:@"notifications"]) {
+        [[pscope headerLabel] setText:@"Do you want notifications?"];
+        [pscope addPermission:[[NotificationsPermission alloc] initWithNotificationCategories:nil] message:@"Tap to enable."];
+    } else if ([type isEqualToString:@"contacts"]) {
+        [[pscope headerLabel] setText:@"Use Address Book?"];
+        [pscope addPermission:[[ContactsPermission alloc] init] message:@"Tap to enable."];
+    } else if ([type isEqualToString:@"location"]) {
+        [[pscope headerLabel] setText:@"Add your location?"];
+        [pscope addPermission:[[LocationWhileInUsePermission alloc] init] message:@"Tap to enable."];
+    }
+    
+    [pscope show:^(BOOL finished, NSArray* result){
+        NSLog(@"result: %@", result);
+        if ([type isEqualToString:@"contacts"]) {
+            [[LXAddressBook thisBook] requestAccess:^(BOOL success) {
+                [(SHAssignBucketsViewController*)self performSelector:@selector(reloadScreen) withObject:nil afterDelay:0.01];
+            }];
+        }
+    } cancelled:^(NSArray* result){
+        NSLog(@"cancelled: %@", result);
+        [pscope hide];
+    }];
+    
+    [[[LXSession thisSession] permissionsAsked] setObject:@YES forKey:type];
 }
 
 

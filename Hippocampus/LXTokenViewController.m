@@ -19,12 +19,30 @@
 @synthesize tokenInput;
 @synthesize explanationLabel;
 
+@synthesize backButton;
+@synthesize titleLabel;
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
     [self.explanationLabel setText:[NSString stringWithFormat:@"We just texted a code to %@", phoneNumber]];
+    
+    [self setupAppearance];
+}
+
+- (void) setupAppearance
+{
+    [[self.backButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
+    [[self.backButton titleLabel] setTextColor:[UIColor SHColorBlue]];
+    [self.backButton setTintColor:[UIColor SHColorBlue]];
+    
+    [self.titleLabel setFont:[UIFont titleMediumFontWithSize:18.0f]];
+    [self.explanationLabel setFont:[UIFont secondaryFontWithSize:16.0f]];
+    [self.explanationLabel setTextColor:[UIColor SHFontDarkGray]];
+    
+    [self.tokenInput setFont:[UIFont titleMediumFontWithSize:24.0f]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -103,8 +121,11 @@
 
 - (void) showHUDWithMessage:(NSString*) message
 {
-    hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
     hud.labelText = message;
+    hud.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
+    [hud show:YES];
 }
 
 - (void) hideHUD
