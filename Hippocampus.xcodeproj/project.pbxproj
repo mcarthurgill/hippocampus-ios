@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		273C203826C44A489B4BC08C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DE8247FA37024A189440AC3C /* libPods.a */; };
 		281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CB1951EC7E00E6BE96 /* Foundation.framework */; };
 		281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */; };
 		281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CF1951EC7E00E6BE96 /* UIKit.framework */; };
@@ -160,6 +159,7 @@
 		76906E6D1BADAEF9005BF124 /* UIAlertView+Addons.m in Sources */ = {isa = PBXBuildFile; fileRef = 76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */; settings = {ASSET_TAGS = (); }; };
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
 		76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029761AC20247003539B4 /* UILabel+Bold.m */; };
+		907670E079B90E8CDEFCCDCF /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1BDB1382146DDED14F47F5D /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -386,7 +386,7 @@
 		76B029751AC20247003539B4 /* UILabel+Bold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Bold.h"; sourceTree = "<group>"; };
 		76B029761AC20247003539B4 /* UILabel+Bold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Bold.m"; sourceTree = "<group>"; };
 		9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		DE8247FA37024A189440AC3C /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1BDB1382146DDED14F47F5D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -400,7 +400,7 @@
 				281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */,
 				281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
 				281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
-				273C203826C44A489B4BC08C /* libPods.a in Frameworks */,
+				907670E079B90E8CDEFCCDCF /* Pods.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,7 +447,7 @@
 				281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */,
 				281CA8CF1951EC7E00E6BE96 /* UIKit.framework */,
 				281CA8ED1951EC7E00E6BE96 /* XCTest.framework */,
-				DE8247FA37024A189440AC3C /* libPods.a */,
+				E1BDB1382146DDED14F47F5D /* Pods.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1017,6 +1017,7 @@
 				281CA8C51951EC7E00E6BE96 /* Frameworks */,
 				281CA8C61951EC7E00E6BE96 /* Resources */,
 				D8CB7745B36648E88B33C586 /* Copy Pods Resources */,
+				563C40DBB9003AE41E07174F /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1190,6 +1191,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		563C40DBB9003AE41E07174F /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D8CB7745B36648E88B33C586 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

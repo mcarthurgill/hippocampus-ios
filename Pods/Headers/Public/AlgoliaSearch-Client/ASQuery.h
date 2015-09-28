@@ -1,1 +1,0 @@
-../../../AlgoliaSearch-Client/src/ASQuery.h
