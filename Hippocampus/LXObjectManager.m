@@ -89,7 +89,7 @@ static LXObjectManager* defaultManager = nil;
                              NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                              NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[medium objectForKey:@"local_file_name"]];
                              NSData *data = [[NSFileManager defaultManager] contentsAtPath:filePath];
-                             NSLog(@"file path: %@", [medium objectForKey:@"local_file_name"]);
+                             //NSLog(@"file path: %@", [medium objectForKey:@"local_file_name"]);
                              if (data) {
                                  [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media[]"] fileName:[medium localKey] mimeType:@"image/jpeg"];
                              }
@@ -163,7 +163,6 @@ static LXObjectManager* defaultManager = nil;
     }
     if (dictOfCalls) {
         [self.queries addObject:dictOfCalls];
-        NSLog(@"QUERIES: %@", self.queries);
         [LXObjectManager assignLocal:self.queries WithLocalKey:@"failed-queries" alsoToDisk:YES];
         [self runQueries];
     }
@@ -214,11 +213,7 @@ static LXObjectManager* defaultManager = nil;
     //setup query
     [[LXServer shared] requestPath:@"/key" withMethod:@"GET" withParamaters:tempObject authType:@"user"
                            success:^(id responseObject) {
-                               //update on disk
-                               if ([[responseObject mutableCopy] assignLocalVersionIfNeeded:YES]) {
-                                   //notify system of change
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
-                               }
+                               [LXObjectManager assignObject:responseObject];
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
@@ -229,6 +224,15 @@ static LXObjectManager* defaultManager = nil;
                                }
                            }
      ];
+}
+
++ (void) assignObject:(NSDictionary*)responseObject
+{
+    //update on disk
+    if ([[responseObject mutableCopy] assignLocalVersionIfNeeded:YES]) {
+        //notify system of change
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
+    }
 }
 
 - (void) assignRefreshDate:(NSString*)updatedAt forObjectTypes:(NSString*)pluralObjectType

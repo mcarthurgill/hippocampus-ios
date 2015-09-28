@@ -8,13 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "HCPermissionViewController.h"
+#import <Pusher/Pusher.h>
 
-@interface LXAppDelegate : UIResponder <UIApplicationDelegate>
+@interface LXAppDelegate : UIResponder <UIApplicationDelegate, PTPusherDelegate>
 {
     BOOL active;
 }
 
 @property (strong, nonatomic) UIWindow *window;
+
+@property (strong, nonatomic) PTPusher* client;
 
 - (void) setRootStoryboard:(NSString*)name;
 - (void) setBadgeIcon;

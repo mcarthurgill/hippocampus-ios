@@ -261,7 +261,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (void) reloadIfDifferentCountOfKeys:(NSArray*)oldKeys
 {
-    NSLog(@"%lu, %lu", (unsigned long)[[[self bucket] itemKeys] count], (unsigned long)[oldKeys count]);
+    //NSLog(@"%lu, %lu", (unsigned long)[[[self bucket] itemKeys] count], (unsigned long)[oldKeys count]);
     if ([[[self bucket] itemKeys] count] == [oldKeys count]) {
     } else {
         [self tryToReload];
@@ -593,8 +593,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSLog(@"info: %@", info);
-    
     [self.textView becomeFirstResponder];
     
     NSString *mediaType = info[UIImagePickerControllerMediaType];
@@ -607,7 +605,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString* filename = [NSString stringWithFormat:@"Image-%f.png", [[NSDate date] timeIntervalSince1970]];
         NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:filename];
-        NSLog(@"SAVE TO FILE NAME: %@", filename);
+        
         // Save image.
         [UIImageJPEGRepresentation(image, 1.0) writeToFile:filePath atomically:YES];
         

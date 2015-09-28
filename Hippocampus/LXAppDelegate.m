@@ -14,6 +14,8 @@
 
 @implementation LXAppDelegate
 
+@synthesize client;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //flush images from SGImageCache
@@ -33,6 +35,8 @@
     [self loadAddressBook];
     
     [self handleAppLaunch];
+    
+    [self setupPusher];
     
     return YES;
 }
@@ -78,7 +82,6 @@
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     if (([name isEqualToString:@"Seahorse"]) && [[LXSession thisSession] user]) {
-        //[[[LXSession thisSession] user] performSelector:@selector(updateTimeZone) withObject:nil afterDelay:10];
         [[[LXSession thisSession] user] updateTimeZone];
         [self refreshObjects];
     }
@@ -125,6 +128,7 @@
     [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] refreshFromServerWithSuccess:^(id responseObject){} failure:^(NSError* error){}];
     
     active = YES;
+    [self.client connect];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -267,6 +271,28 @@
 
 
 
+# pragma mark pusher
+
+- (void) setupPusher
+{
+    self.client = [PTPusher pusherWithKey:@"eee901e37beed226fa78" delegate:self encrypted:YES];
+    [self.client connect];
+    NSLog(@"channel %@", [NSString stringWithFormat:@"user-%@", [[[LXSession thisSession] user] ID]]);
+    PTPusherChannel *channel = [self.client subscribeToChannelNamed:[NSString stringWithFormat:@"user-%@", [[[LXSession thisSession] user] ID]]];
+    [channel bindToEventNamed:@"item-save" handleWithBlock:^(PTPusherEvent *channelEvent) {
+        // channelEvent.data is a NSDictionary of the JSON object received
+        if ([[channelEvent data] objectType] && [[[channelEvent data] objectType] isEqualToString:@"item"]) {
+            [LXObjectManager assignObject:[channelEvent data]];
+        }
+    }];
+    [channel bindToEventNamed:@"bucket-save" handleWithBlock:^(PTPusherEvent *channelEvent) {
+        // channelEvent.data is a NSDictionary of the JSON object received
+        if ([[channelEvent data] objectType] && [[[channelEvent data] objectType] isEqualToString:@"bucket"]) {
+            [LXObjectManager assignObject:[channelEvent data]];
+            [[[channelEvent data] mutableCopy] refreshFromServerWithSuccess:^(id responseObject){} failure:nil];
+        }
+    }];
+}
 
 
 

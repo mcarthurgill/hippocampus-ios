@@ -216,8 +216,7 @@ static NSInteger maxRecentCount = 6;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/add_collaborators", [self ID]] withMethod:@"POST" withParamaters:@{@"contacts": contacts} authType:@"none"
                            success:^(id responseObject){
                                if ([responseObject objectForKey:@"bucket"]) {
-                                   [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded:YES];
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:[responseObject objectForKey:@"bucket"]];
+                                   [LXObjectManager assignObject:[responseObject objectForKey:@"bucket"]];
                                }
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -235,8 +234,7 @@ static NSInteger maxRecentCount = 6;
     [[LXServer shared] requestPath:[NSString stringWithFormat:@"/buckets/%@/remove_collaborators", [self ID]] withMethod:@"POST" withParamaters:@{@"phone": phone} authType:@"none"
                            success:^(id responseObject){
                                if ([responseObject objectForKey:@"bucket"]) {
-                                   [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded:YES];
-                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:[responseObject objectForKey:@"bucket"]];
+                                   [LXObjectManager assignObject:[responseObject objectForKey:@"bucket"]];
                                }
                                if (successCallback) {
                                    successCallback(responseObject);
@@ -257,8 +255,7 @@ static NSInteger maxRecentCount = 6;
         [bup setObject:newName forKey:@"name"];
         [bup saveRemote:^(id responseObject){
             if ([responseObject objectForKey:@"bucket"]) {
-                [[responseObject objectForKey:@"bucket"] assignLocalVersionIfNeeded:YES];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:[responseObject objectForKey:@"bucket"]];
+                [LXObjectManager assignObject:[responseObject objectForKey:@"bucket"]];
             }
             if (successCallback) {
                 successCallback(successCallback);

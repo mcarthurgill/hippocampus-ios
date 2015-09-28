@@ -268,7 +268,6 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 
 - (void) longPressWithObject:(NSMutableDictionary*)object type:(NSString*)action
 {
-    NSLog(@"successful %@ call", action);
     if ([action isEqualToString:@"bucket"]) {
         [self presentAssignScreen];
     } else if ([action isEqualToString:@"nudge"]) {
@@ -524,7 +523,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
             });
             
         } else {
-            NSLog(@"index: %li", (long)buttonIndex);
+            //NSLog(@"index: %li", (long)buttonIndex);
         }
     }
 }

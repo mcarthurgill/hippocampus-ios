@@ -154,9 +154,8 @@
     [self setObject:newBucketsArray forKey:@"buckets_array"];
     [self setObject:([newBucketsArray count] > 0 ? @"assigned" : @"outstanding") forKey:@"status"];
     [self removeObjectForKey:@"updated_at"];
-    [self assignLocalVersionIfNeeded:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:self];
-    NSLog(@"item: %@", [LXObjectManager objectWithLocalKey:[self localKey]]);
+    [LXObjectManager assignObject:self];
+    //NSLog(@"item: %@", [LXObjectManager objectWithLocalKey:[self localKey]]);
     //SAVE UNSAVED BUCKETS FIRST
     if ([unsavedNewBucketsArray count] == 0) {
         //save now
@@ -205,8 +204,7 @@
     [[LXServer shared] requestPath:@"/items/update_buckets" withMethod:@"PUT" withParamaters:@{@"local_key":[self localKey],@"local_keys":newLocalKeys} authType:@"user"
                            success:^(id responseObject) {
                                //SAVE LOCALLY
-                               [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
-                               [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
+                               [LXObjectManager assignObject:responseObject];
                                if (successCallback) {
                                    successCallback(responseObject);
                                }
@@ -354,7 +352,7 @@
 - (BOOL) hasUnsavedMedia
 {
     for (NSDictionary* medium in [self media]) {
-        NSLog(@"MEDIUM HERE: %@", medium);
+        //NSLog(@"MEDIUM HERE: %@", medium);
         if ([medium objectForKey:@"local_file_name"] && !([medium objectForKey:@"url"] || [medium objectForKey:@"secure_url"])) {
             return YES;
         }
@@ -365,7 +363,7 @@
 - (void) saveMediaIfNecessary
 {
     for (NSDictionary* medium in [self media]) {
-        NSLog(@"MEDIUM HERE: %@", medium);
+        //NSLog(@"MEDIUM HERE: %@", medium);
         if ([medium objectForKey:@"local_file_name"] && !([medium objectForKey:@"url"] || [medium objectForKey:@"secure_url"])) {
             //save this image
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
@@ -380,11 +378,8 @@
                                        NSFileManager *fileManager = [NSFileManager defaultManager];
                                        [fileManager removeItemAtPath:filePath error:&error];
                                        //update on disk
-                                       if ([[responseObject mutableCopy] assignLocalVersionIfNeeded:YES]) {
-                                           //notify system of change
-                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
-                                       }
-                                       NSLog(@"form success: %@", responseObject);
+                                       [LXObjectManager assignObject:responseObject];
+                                       //NSLog(@"form success: %@", responseObject);
                                    }
                                    failure:^(NSError* error){}
              ];
@@ -404,8 +399,7 @@
         }
     }
     [self setObject:tempMedia forKey:@"media_cache"];
-    [self assignLocalVersionIfNeeded:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:self];
+    [LXObjectManager assignObject:self];
 }
 
 

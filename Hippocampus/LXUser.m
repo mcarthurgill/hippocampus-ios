@@ -102,7 +102,6 @@
              //SAVE LOCALLY
              [SGImageCache flushImagesOlderThan:[[[NSDate alloc] init] timeIntervalSinceNow]];
              [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
-             NSLog(@"response: %@", responseObject);
          } failure:^(NSError* error) {
          }
      ];

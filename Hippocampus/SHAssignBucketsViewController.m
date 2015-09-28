@@ -157,7 +157,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if (![self.bucketSelectedKeys containsObject:key]) {
         [self.bucketSelectedKeys addObject:key];
     }
-    NSLog(@"selected: %@", [[LXObjectManager objectWithLocalKey:key] objectForKey:@"for_deselect"]);
     if ([LXObjectManager objectWithLocalKey:key] && [[LXObjectManager objectWithLocalKey:key] objectForKey:@"for_deselect"]) {
         [self addContactToSelected:[[LXObjectManager objectWithLocalKey:key] objectForKey:@"for_deselect"]];
     }
@@ -166,7 +165,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) removeKeyFromSelected:(NSString*)key
 {
     [self.bucketSelectedKeys removeObject:key];
-    NSLog(@"remove: %@", [[LXObjectManager objectWithLocalKey:key] objectForKey:@"for_deselect"]);
     if ([LXObjectManager objectWithLocalKey:key] && [[LXObjectManager objectWithLocalKey:key] objectForKey:@"for_deselect"]) {
         [self removeContactFromSelected:[[LXObjectManager objectWithLocalKey:key] objectForKey:@"for_deselect"]];
     }
@@ -369,7 +367,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"height: %f", cell.bounds.size.height);
 }
 
 
@@ -533,7 +530,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) addBucketWithText:(NSString*)text
 {
-    NSLog(@"NEW BUCKET! %@", text);
     //CREATE BUCKET
     NSMutableDictionary* newBucket = [NSMutableDictionary create:@"bucket"];
     [newBucket setObject:text forKey:@"first_name"];

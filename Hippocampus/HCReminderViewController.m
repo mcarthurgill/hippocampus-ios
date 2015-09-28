@@ -385,8 +385,7 @@
         [item setObject:newDate forKey:@"reminder_date"];
         [item setObject:[self typeSelected] forKey:@"item_type"];
         [item removeObjectForKey:@"updated_at"];
-        [item assignLocalVersionIfNeeded:YES];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:item];
+        [LXObjectManager assignObject:item];
         [item saveRemote];
     }
     [self dismissViewControllerAnimated:NO completion:^(void){}];

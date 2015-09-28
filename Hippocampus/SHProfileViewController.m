@@ -231,7 +231,6 @@ static NSString *userProfileIdentifier = @"SHUserProfileTableViewCell";
 
 - (void) action:(NSString*)action
 {
-    NSLog(@"ACTION! %@", action);
     if ([action isEqualToString:@"changeImage"]) {
         [self showProfileImageActionSheet];
     } else if ([action isEqualToString:@"changeName"]) {
