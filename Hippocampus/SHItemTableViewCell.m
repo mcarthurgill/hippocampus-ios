@@ -140,6 +140,10 @@
     [self setItemLocalKey:[self.item localKey]];
     [self setBucketLocalKey:bucketKey];
     
+//    if (NOT_ASKED_FOR_PERMISSION && NO_PN_PERMISSION && (!BELONGS_TO_USER || HAS_NUDGE)) {
+//        PRESENT PN PERMISSION DIALOGE
+//    }
+    
     //NSLog(@"item: %@", [self.item ID]);
     //NSLog(@"item: %@", self.item);
     

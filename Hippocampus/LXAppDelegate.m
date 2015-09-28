@@ -283,6 +283,9 @@
         // channelEvent.data is a NSDictionary of the JSON object received
         if ([[channelEvent data] objectType] && [[[channelEvent data] objectType] isEqualToString:@"item"]) {
             [LXObjectManager assignObject:[channelEvent data]];
+            if (![[channelEvent data] belongsToCurrentUser] || [[channelEvent data] isOutstanding]) {
+                [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] refreshFromServerWithSuccess:^(id responseObject){} failure:nil];
+            }
         }
     }];
     [channel bindToEventNamed:@"bucket-save" handleWithBlock:^(PTPusherEvent *channelEvent) {
