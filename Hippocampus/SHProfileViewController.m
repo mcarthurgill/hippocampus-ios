@@ -70,7 +70,7 @@ static NSString *userProfileIdentifier = @"SHUserProfileTableViewCell";
         } else if ([section isEqualToString:@"info"]) {
             [self.sectionRows setObject:@[@"version", @"author"] forKey:section];
         } else if ([section isEqualToString:@"actions"]) {
-            [self.sectionRows setObject:@[@"email",@"logout"] forKey:section];
+            [self.sectionRows setObject:@[@"demo",@"email",@"logout"] forKey:section];
         }
     }
 }
@@ -113,6 +113,8 @@ static NSString *userProfileIdentifier = @"SHUserProfileTableViewCell";
         return [self tableView:tableView actionCellWithText:@"Email the Creators"];
     } else if ([[self rowForIndexPath:indexPath] isEqualToString:@"logout"]) {
         return [self tableView:tableView actionCellWithText:@"Logout"];
+    } else if ([[self rowForIndexPath:indexPath] isEqualToString:@"demo"]) {
+        return [self tableView:tableView actionCellWithText:@"Watch Demo Video"];
     }
     return nil;
 }
@@ -166,6 +168,9 @@ static NSString *userProfileIdentifier = @"SHUserProfileTableViewCell";
     } else if ([[self rowForIndexPath:indexPath] isEqualToString:@"logout"]) {
         [[[LXSession thisSession] user] logout];
         [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Login"];
+    } else if ([[self rowForIndexPath:indexPath] isEqualToString:@"demo"]) {
+        UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHAppPreviewViewController"];
+        [self presentViewController:vc animated:NO completion:^(void){}];
     }
 }
 
