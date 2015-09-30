@@ -52,6 +52,9 @@
     if ([type isEqualToString:@"notifications"]) {
         [[pscope headerLabel] setText:@"Do you want notifications?"];
         [pscope addPermission:[[NotificationsPermission alloc] initWithNotificationCategories:nil] message:@"Tap to enable."];
+        
+        //UIUserNotificationType types = UIUserNotificationTypeBadge|UIUserNotificationTypeSound|UIUserNotificationTypeAlert;
+        //UIUserNotificationSettings *mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
     } else if ([type isEqualToString:@"contacts"]) {
         [[pscope headerLabel] setText:@"Use Address Book?"];
         [pscope addPermission:[[ContactsPermission alloc] init] message:@"Tap to enable."];

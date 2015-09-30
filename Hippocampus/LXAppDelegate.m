@@ -18,6 +18,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentTutorial) name:@"presentTutorial" object:nil];
+    
     //flush images from SGImageCache
     [SGImageCache flushImagesOlderThan:([[[NSDate alloc] init] timeIntervalSinceNow]+64*24*60*60)];
     
@@ -129,11 +131,25 @@
     
     active = YES;
     [self.client connect];
+    
+    [self incrementApplicationDidBecomeActiveCount];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     
+}
+
+- (void) incrementApplicationDidBecomeActiveCount
+{
+    NSString* applicationDidBecomeActiveCount = [LXObjectManager objectWithLocalKey:@"applicationDidBecomeActiveCount"];
+    if (!applicationDidBecomeActiveCount) {
+        applicationDidBecomeActiveCount = [NSString stringWithFormat:@"0"];
+    }
+    applicationDidBecomeActiveCount = [NSString stringWithFormat:@"%li", ([applicationDidBecomeActiveCount integerValue]+1)];
+    [LXObjectManager assignLocal:applicationDidBecomeActiveCount WithLocalKey:@"applicationDidBecomeActiveCount" alsoToDisk:YES];
+    
+    NSLog(@"launch count: %@", applicationDidBecomeActiveCount);
 }
 
 
@@ -253,6 +269,13 @@
         //PUSH NOTIFICATIONS ENABLED
         [self getPushNotificationPermission];
     }
+}
+
+- (void) presentTutorial
+{
+    UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHAppPreviewViewController"];
+    [self.window.rootViewController presentViewController:vc animated:NO completion:^(void){
+    }];
 }
 
 

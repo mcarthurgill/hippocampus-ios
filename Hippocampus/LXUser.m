@@ -22,6 +22,21 @@
 {
     [LXObjectManager removeLocalWithKey:[self localKey]];
     [LXObjectManager removeLocalWithKey:@"localUserKey"];
+    
+    UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
+    }];
+    //dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        if ([[LXObjectManager defaultManager] library] && [[[LXObjectManager defaultManager] library] allKeys]) {
+            NSArray* copyOfKeys = [[[[LXObjectManager defaultManager] library] allKeys] copy];
+            NSMutableDictionary* copyOfDictionary = [[[LXObjectManager defaultManager] library] copy];
+            for (NSString* key in copyOfKeys) {
+                if ([copyOfDictionary objectForKey:key]) {
+                    [LXObjectManager removeLocalWithKey:key];
+                }
+            }
+        }
+        [[UIApplication sharedApplication] endBackgroundTask:bgt];
+    //});
 }
 
 - (void) updateTimeZone

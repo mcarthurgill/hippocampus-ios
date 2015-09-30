@@ -270,7 +270,7 @@ static LXObjectManager* defaultManager = nil;
 
 + (void) assignLocal:(id)object WithLocalKey:(NSString*)key alsoToDisk:(BOOL)toDisk
 {
-    id mutableCopy = [object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSMutableDictionary class]] ? [object cleanDictionary] : [object mutableCopy];
+    id mutableCopy = [object isKindOfClass:[NSDictionary class]] || [object isKindOfClass:[NSMutableDictionary class]] ? [object cleanDictionary] : ([object respondsToSelector:@selector(mutableCopy)] ? [object mutableCopy] : object);
     [[[LXObjectManager defaultManager] library] setObject:mutableCopy forKey:key];
     if (toDisk) {
         [self saveToDisk:mutableCopy WithLocalKey:key];
@@ -308,16 +308,18 @@ static LXObjectManager* defaultManager = nil;
     }];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSArray* copyOfKeys = [[[[LXObjectManager defaultManager] library] allKeys] copy];
-        NSMutableDictionary* copyOfDictionary = [[[LXObjectManager defaultManager] library] copy];
-        
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [paths objectAtIndex:0];
-        
-        for (NSString* key in copyOfKeys) {
-            if ([copyOfDictionary objectForKey:key]) {
-                NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
-                [NSKeyedArchiver archiveRootObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) toFile:filePath];
+        if ([[LXObjectManager defaultManager] library] && [[[LXObjectManager defaultManager] library] allKeys]) {
+            NSArray* copyOfKeys = [[[[LXObjectManager defaultManager] library] allKeys] copy];
+            NSMutableDictionary* copyOfDictionary = [[[LXObjectManager defaultManager] library] copy];
+            
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            NSString *documentsDirectory = [paths objectAtIndex:0];
+            
+            for (NSString* key in copyOfKeys) {
+                if ([copyOfDictionary objectForKey:key]) {
+                    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
+                    [NSKeyedArchiver archiveRootObject:([[copyOfDictionary objectForKey:key] respondsToSelector:@selector(cleanDictionary)] ? [[copyOfDictionary objectForKey:key] cleanDictionary] : [copyOfDictionary objectForKey:key]) toFile:filePath];
+                }
             }
         }
         [[UIApplication sharedApplication] endBackgroundTask:bgt];
@@ -332,6 +334,7 @@ static LXObjectManager* defaultManager = nil;
         NSString *documentsDirectory = [paths objectAtIndex:0];
         
         NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
+        
         [NSKeyedArchiver archiveRootObject:object toFile:filePath];
     });
 }

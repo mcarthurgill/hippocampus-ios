@@ -151,6 +151,9 @@
 		28F859A51BBA072600F7738C /* action_icon_flag.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859A41BBA072600F7738C /* action_icon_flag.png */; settings = {ASSET_TAGS = (); }; };
 		28F859A71BBA074100F7738C /* toolbar_bucket.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859A61BBA074100F7738C /* toolbar_bucket.png */; settings = {ASSET_TAGS = (); }; };
 		28F859A91BBA075000F7738C /* bucket_detail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859A81BBA075000F7738C /* bucket_detail_icon.png */; settings = {ASSET_TAGS = (); }; };
+		28F859AD1BBB53DA00F7738C /* backsplash.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AB1BBB53DA00F7738C /* backsplash.png */; settings = {ASSET_TAGS = (); }; };
+		28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */; settings = {ASSET_TAGS = (); }; };
+		28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */; settings = {ASSET_TAGS = (); }; };
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; settings = {ASSET_TAGS = (); }; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
@@ -370,6 +373,10 @@
 		28F859A41BBA072600F7738C /* action_icon_flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = action_icon_flag.png; sourceTree = "<group>"; };
 		28F859A61BBA074100F7738C /* toolbar_bucket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bucket.png; sourceTree = "<group>"; };
 		28F859A81BBA075000F7738C /* bucket_detail_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bucket_detail_icon.png; sourceTree = "<group>"; };
+		28F859AB1BBB53DA00F7738C /* backsplash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backsplash.png; sourceTree = "<group>"; };
+		28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HippoPreview.mp4; sourceTree = "<group>"; };
+		28F859B01BBB564F00F7738C /* SHAppPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppPreviewViewController.h; sourceTree = "<group>"; };
+		28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppPreviewViewController.m; sourceTree = "<group>"; };
 		48B234900A21648A78B84A3E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		761CACDA1BAC88CC00B5C682 /* SHCollaboratorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollaboratorsViewController.h; sourceTree = "<group>"; };
 		761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCollaboratorsViewController.m; sourceTree = "<group>"; };
@@ -502,6 +509,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				28F859AF1BBB564100F7738C /* Preview */,
 				28B8BB681BB244C5005131EB /* Profile */,
 				28419A261BB08D9C00CF21A6 /* Media Player */,
 				289D2F801BAA4854007F719B /* Bucket */,
@@ -520,6 +528,7 @@
 		281CA9041951EC9700E6BE96 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				28F859AA1BBB53C500F7738C /* Tutorial */,
 				288F123D1B752EC90001E0B0 /* Seahorse */,
 				288F12381B752A400001E0B0 /* Fonts */,
 				28CD3FB41AE9BD6200B3ABB6 /* Screens */,
@@ -973,6 +982,24 @@
 			name = "Add Media";
 			sourceTree = "<group>";
 		};
+		28F859AA1BBB53C500F7738C /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				28F859AB1BBB53DA00F7738C /* backsplash.png */,
+				28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */,
+			);
+			name = Tutorial;
+			sourceTree = "<group>";
+		};
+		28F859AF1BBB564100F7738C /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				28F859B01BBB564F00F7738C /* SHAppPreviewViewController.h */,
+				28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */,
+			);
+			name = Preview;
+			sourceTree = "<group>";
+		};
 		761CACDF1BAC8E5400B5C682 /* Add Collaborators */ = {
 			isa = PBXGroup;
 			children = (
@@ -1123,6 +1150,7 @@
 				288A745B1B75305100F6A618 /* person@3x.png in Resources */,
 				281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */,
 				28ED41D81B9CE854000292AE /* filled_check.png in Resources */,
+				28F859AD1BBB53DA00F7738C /* backsplash.png in Resources */,
 				28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
 				28ED41E71BA097EA000292AE /* Roboto-Light.ttf in Resources */,
@@ -1157,6 +1185,7 @@
 				28ED42501BA357F0000292AE /* compose_media.png in Resources */,
 				28ED42101BA210AE000292AE /* toolbar_duplicate.png in Resources */,
 				28419A251BAC9A9700CF21A6 /* compose-media.png in Resources */,
+				28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */,
 				28CD3FC01AEA887200B3ABB6 /* new-collection-screen.jpg in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				28ACA3A21B8B7CF900D7B215 /* SHBucketTableViewCell.xib in Resources */,
@@ -1263,6 +1292,7 @@
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */,
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
+				28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */,
 				289D2F881BAA51BF007F719B /* SHCollaboratorTableViewCell.m in Sources */,
 				28ED41E31BA089AC000292AE /* SHItemViewController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,

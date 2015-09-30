@@ -8,6 +8,77 @@
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
+        <!--App Preview View Controller-->
+        <scene sceneID="Nxp-Qn-Zel">
+            <objects>
+                <viewController storyboardIdentifier="SHAppPreviewViewController" id="9rL-2P-hEZ" customClass="SHAppPreviewViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QuR-1G-xEA"/>
+                        <viewControllerLayoutGuide type="bottom" id="NcV-4z-m2s"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yfz-pu-nwV">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backsplash.png" translatesAutoresizingMaskIntoConstraints="NO" id="ccJ-py-3y1">
+                                <rect key="frame" x="151" y="50" width="299" height="600"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="ccJ-py-3y1" secondAttribute="height" multiplier="79:159" id="5vI-yq-KSs"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i6J-eD-XEO">
+                                <rect key="frame" x="171" y="120" width="259" height="460"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="i6J-eD-XEO" secondAttribute="height" multiplier="251:445" id="qGi-wd-3RH"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yAT-GS-yiK">
+                                <rect key="frame" x="271" y="20" width="58" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="58" id="VWd-bT-O2D"/>
+                                </constraints>
+                                <state key="normal" title="Got It"/>
+                                <connections>
+                                    <action selector="topRightButtonAction:" destination="9rL-2P-hEZ" eventType="touchUpInside" id="hni-6U-HmJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="i6J-eD-XEO" firstAttribute="height" secondItem="ccJ-py-3y1" secondAttribute="height" id="51z-Tq-gBf"/>
+                            <constraint firstItem="ccJ-py-3y1" firstAttribute="top" secondItem="QuR-1G-xEA" secondAttribute="bottom" constant="30" id="6g1-kE-4Uz"/>
+                            <constraint firstItem="ccJ-py-3y1" firstAttribute="centerX" secondItem="yfz-pu-nwV" secondAttribute="centerX" id="8ZU-pz-t7L"/>
+                            <constraint firstItem="yAT-GS-yiK" firstAttribute="centerX" secondItem="yfz-pu-nwV" secondAttribute="centerX" id="CcE-Sw-BW6"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ccJ-py-3y1" secondAttribute="trailing" constant="20" id="IUj-DS-nqQ"/>
+                            <constraint firstItem="i6J-eD-XEO" firstAttribute="height" secondItem="ccJ-py-3y1" secondAttribute="height" id="Jey-ky-aQt"/>
+                            <constraint firstItem="i6J-eD-XEO" firstAttribute="centerX" secondItem="ccJ-py-3y1" secondAttribute="centerX" id="MbB-ME-gmr"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yAT-GS-yiK" secondAttribute="trailing" id="OJe-XC-0bF"/>
+                            <constraint firstItem="i6J-eD-XEO" firstAttribute="centerY" secondItem="ccJ-py-3y1" secondAttribute="centerY" id="Ok4-6Z-S5X"/>
+                            <constraint firstItem="yAT-GS-yiK" firstAttribute="top" secondItem="QuR-1G-xEA" secondAttribute="bottom" id="Rf5-6U-j0e"/>
+                            <constraint firstItem="ccJ-py-3y1" firstAttribute="leading" secondItem="yfz-pu-nwV" secondAttribute="leadingMargin" constant="20" id="ZnW-Qb-s0k"/>
+                            <constraint firstItem="i6J-eD-XEO" firstAttribute="height" secondItem="ccJ-py-3y1" secondAttribute="height" multiplier="0.76724" id="b91-Sb-kW8"/>
+                            <constraint firstItem="NcV-4z-m2s" firstAttribute="top" secondItem="ccJ-py-3y1" secondAttribute="bottom" constant="-50" id="xeF-np-Tvs"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="IUj-DS-nqQ"/>
+                                <exclude reference="ZnW-Qb-s0k"/>
+                                <exclude reference="51z-Tq-gBf"/>
+                                <exclude reference="Jey-ky-aQt"/>
+                                <exclude reference="OJe-XC-0bF"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <connections>
+                        <outlet property="topRightButton" destination="yAT-GS-yiK" id="BXU-VM-Ave"/>
+                        <outlet property="videoView" destination="i6J-eD-XEO" id="9aJ-j1-gz8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Zd6-0j-gIA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-798" y="226"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="jkF-ne-1Qx">
             <objects>
@@ -339,7 +410,7 @@
                                 <action selector="leftBarButtonAction:" destination="Ffk-65-DpX" id="DOj-Hm-vPC"/>
                             </connections>
                         </barButtonItem>
-                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="7YT-rs-24M">
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="7YT-rs-24M">
                             <rect key="frame" x="180" y="7" width="240" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <segments>
@@ -1258,6 +1329,7 @@
     </scenes>
     <resources>
         <image name="add_new.png" width="75" height="75"/>
+        <image name="backsplash.png" width="869" height="1749"/>
         <image name="filled_check.png" width="75" height="75"/>
         <image name="person.png" width="22" height="22"/>
         <image name="search.png" width="22" height="22"/>

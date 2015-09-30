@@ -25,13 +25,25 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self setupLogic];
     [self registerForNotifications];
+    
+    //[self setupSegmentedControl];
 }
 
 - (void) setupLogic
 {
     self.viewControllersCached = [[NSMutableDictionary alloc] init];
+}
+
+- (void) setupSegmentedControl
+{
+    [self.segmentControl setContentMode:UIViewContentModeScaleAspectFit];
+    
+    UIImage *myNewImage = [[UIImage imageNamed:@"bucket_detail_icon.png"] resizableImageWithCapInsets:UIEdgeInsetsZero];
+    
+    [self.segmentControl setImage:myNewImage forSegmentAtIndex:1];
 }
 
 - (void) registerForNotifications
@@ -93,6 +105,7 @@
                      }
      ];
 }
+
 
 
 
@@ -164,5 +177,8 @@
     }
     [self.navigationController pushViewController:[[notification userInfo] objectForKey:@"viewController"] animated:([[notification userInfo] objectForKey:@"animated"] ? [[[notification userInfo] objectForKey:@"animated"] boolValue] : YES)];
 }
+
+
+
 
 @end
