@@ -57,6 +57,21 @@
 {
     [super viewDidAppear:animated];
     [self loadIfNoChildController];
+    
+    //[self checkForPaywall];
+}
+
+- (void) checkForPaywall
+{
+    if (![[[LXSession thisSession] user] hasMembership]) {
+        //[self presentPaywall];
+    }
+}
+
+- (void) presentPaywall
+{
+    UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHPaywallViewController"];
+    [self.navigationController pushViewController:vc animated:NO];
 }
 
 - (void)didReceiveMemoryWarning

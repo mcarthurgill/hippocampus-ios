@@ -129,4 +129,14 @@
     [self saveRemote];
 }
 
+- (BOOL) hasMembership
+{
+    return [self membership] && [[self membership] length] > 0 && ![[self membership] isEqualToString:@"none"];
+}
+
+- (NSString*) membership
+{
+    return [self objectForKey:@"membership"] && NULL_TO_NIL([self objectForKey:@"membership"]) ? [self objectForKey:@"membership"] : nil;
+}
+
 @end

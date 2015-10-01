@@ -146,7 +146,7 @@
     if (!applicationDidBecomeActiveCount) {
         applicationDidBecomeActiveCount = [NSString stringWithFormat:@"0"];
     }
-    applicationDidBecomeActiveCount = [NSString stringWithFormat:@"%li", ([applicationDidBecomeActiveCount integerValue]+1)];
+    applicationDidBecomeActiveCount = [NSString stringWithFormat:@"%li", (long)([applicationDidBecomeActiveCount integerValue]+1)];
     [LXObjectManager assignLocal:applicationDidBecomeActiveCount WithLocalKey:@"applicationDidBecomeActiveCount" alsoToDisk:YES];
     
     NSLog(@"launch count: %@", applicationDidBecomeActiveCount);

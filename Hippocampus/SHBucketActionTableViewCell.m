@@ -58,6 +58,9 @@
     } else if ([self.action isEqualToString:@"delete"]) {
         [self.label setText:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] firstName]]];
         [self.imageView setImage:[UIImage imageNamed:@"action_icon_trash.png"]];
+    } else if ([self.action isEqualToString:@"leave"]) {
+        [self.label setText:[NSString stringWithFormat:@"Leave \"%@\"", [[self bucket] firstName]]];
+        [self.imageView setImage:nil];
     }
 }
 

@@ -70,7 +70,7 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     if ([[self bucket] belongsToCurrentUser]) {
         self.actions = [@[@"rename", @"delete"] mutableCopy];
     } else {
-        self.actions = [@[@"rename"] mutableCopy];
+        self.actions = [@[@"rename", @"leave"] mutableCopy];
     }
 }
 
@@ -240,6 +240,13 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
             } else {
                 [self showAlertWithTitle:@"Not yours!" andMessage:@"You can't delete a bucket you didn't create." andCancelButtonTitle:@"Okay" andOtherTitle:nil andTag:0 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:nil];
             }
+        } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"leave"]) {
+            //delete bucket user pair
+            [[self bucket] removeCollaboratorWithPhone:[[[LXSession thisSession] user] phone] success:^(id responseObject){
+                [NSMutableDictionary bucketKeysWithSuccess:nil failure:nil];
+            } failure:nil];
+            //gtfo
+            [self.navigationController popToRootViewControllerAnimated:YES];
         }
     }
 }

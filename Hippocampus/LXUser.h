@@ -26,4 +26,7 @@
 - (void) updateProfilePictureWithImage:(UIImage*)image;
 - (void) changeName:(NSString*)newName;
 
+- (BOOL) hasMembership;
+- (NSString*) membership;
+
 @end
