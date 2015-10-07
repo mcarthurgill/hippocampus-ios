@@ -7,8 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+@import StoreKit;
 
-@interface SHPaywallViewController : UIViewController
+@interface SHPaywallViewController : UIViewController <SKProductsRequestDelegate, SKPaymentTransactionObserver>
+{
+    MBProgressHUD* hud;
+}
+
+@property (strong, nonatomic) NSMutableArray* productIDs;
+@property (strong, nonatomic) NSMutableArray* productsArray;
 
 @property (strong, nonatomic) IBOutlet UIImageView *titleImage;
 @property (strong, nonatomic) IBOutlet UILabel *messageLabel;

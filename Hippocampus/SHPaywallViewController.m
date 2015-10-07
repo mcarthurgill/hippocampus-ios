@@ -14,6 +14,9 @@
 
 @implementation SHPaywallViewController
 
+@synthesize productIDs;
+@synthesize productsArray;
+
 @synthesize titleImage;
 @synthesize messageLabel;
 @synthesize actionButton;
@@ -25,6 +28,14 @@
     
     [self setupAppearance];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedObject:) name:@"refreshedObject" object:nil];
+    
+    self.productIDs = [[NSMutableArray alloc] init];
+    [self.productIDs addObject:@"1month"];
+    
+    self.productsArray = [[NSMutableArray alloc] init];
+    
+    [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
+    [self requestProductInfo];
 }
 
 - (void) setupAppearance
@@ -43,7 +54,7 @@
     [[self.actionButton titleLabel] setFont:[UIFont titleFontWithSize:16.0f]];
     [self.actionButton setBackgroundColor:[UIColor SHColorBlue]];
     [self.actionButton setTintColor:[UIColor whiteColor]];
-    [self.actionButton setTitle:@"$8/month" forState:UIControlStateNormal];
+    [self.actionButton setTitle:@"$7.99/month" forState:UIControlStateNormal];
     
     [[self.secondaryActionButton titleLabel] setFont:[UIFont secondaryFontWithSize:13.0f]];
     [self.secondaryActionButton setTintColor:[UIColor SHFontDarkGray]];
@@ -68,6 +79,66 @@
 
 
 
+
+# pragma mark payment delegate
+
+- (void) requestProductInfo
+{
+    if ([SKPaymentQueue canMakePayments]) {
+        NSSet* productIdentifiers = [[NSSet alloc] initWithArray:self.productIDs];
+        SKProductsRequest* productRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiers];
+        
+        [productRequest setDelegate:self];
+        [productRequest start];
+    } else {
+        NSLog(@"can't make payments!");
+    }
+}
+
+- (void) productsRequest:(SKProductsRequest *)request didReceiveResponse:(SKProductsResponse *)response
+{
+    if (response.products.count != 0) {
+        for (SKProduct* product in response.products) {
+            [self.productsArray addObject:product];
+            
+            NSLog(@"product: %@, %@", [product localizedTitle], [product localizedDescription]);
+        }
+        NSLog(@"productsArray: %@", self.productsArray);
+    } else {
+        NSLog(@"no products!");
+    }
+    if (response.invalidProductIdentifiers.count > 0) {
+        NSLog(@"invalid products: %@", response.invalidProductIdentifiers);
+    }
+}
+
+- (void) paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray<SKPaymentTransaction *> *)transactions
+{
+    for (SKPaymentTransaction* transaction in transactions) {
+        switch (transaction.transactionState) {
+            case SKPaymentTransactionStatePurchased:
+                NSLog(@"PURCHASED!");
+                [self hideHUD];
+                break;
+            case SKPaymentTransactionStateRestored:
+                NSLog(@"RESTORED!");
+                [self hideHUD];
+                break;
+            case SKPaymentTransactionStateFailed:
+                NSLog(@"FAILED!");
+                [self hideHUD];
+                break;
+            default:
+                NSLog(@"rawValue: %ld", (long)transaction.transactionState);
+                break;
+        }
+    }
+}
+
+
+
+# pragma mark helper actions
+
 - (void) dismissView
 {
     [self.navigationController popToRootViewControllerAnimated:NO];
@@ -78,7 +149,10 @@
 
 - (IBAction)action:(id)sender
 {
-    
+    if ([self.productsArray count] > 0) {
+        [self showHUDWithMessage:@"Loading"];
+        [[SKPaymentQueue defaultQueue] addPayment:[SKPayment paymentWithProduct:[self.productsArray firstObject]]];
+    }
 }
 
 - (IBAction)secondaryAction:(id)sender
@@ -94,6 +168,27 @@
 {
     return YES;
 }
+
+
+
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
+{
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = message;
+    hud.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
+    [hud show:YES];
+}
+
+- (void) hideHUD
+{
+    if (hud) {
+        [hud hide:YES];
+    }
+}
+
 
 
 @end
