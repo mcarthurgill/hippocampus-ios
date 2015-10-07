@@ -125,6 +125,8 @@
 }
 
 
+
+
 # pragma mark saving and syncing
 
 - (void) saveRemote
@@ -176,6 +178,9 @@
                                success:^(id responseObject) {
                                    //SAVE LOCALLY
                                    [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
+                                   if ([[responseObject mutableCopy] objectType] && [[[responseObject mutableCopy] objectType] isEqualToString:@"user"]) {
+                                       [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
+                                   }
                                    if (successCallback) {
                                        successCallback(responseObject);
                                    }

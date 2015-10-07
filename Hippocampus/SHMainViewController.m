@@ -58,20 +58,7 @@
     [super viewDidAppear:animated];
     [self loadIfNoChildController];
     
-    //[self checkForPaywall];
-}
-
-- (void) checkForPaywall
-{
-    if (![[[LXSession thisSession] user] hasMembership]) {
-        //[self presentPaywall];
-    }
-}
-
-- (void) presentPaywall
-{
-    UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHPaywallViewController"];
-    [self.navigationController pushViewController:vc animated:NO];
+    [self checkForPaywall];
 }
 
 - (void)didReceiveMemoryWarning
@@ -194,6 +181,22 @@
 }
 
 
+
+
+# pragma mark paywall
+
+- (void) checkForPaywall
+{
+    if (![[[LXSession thisSession] user] hasMembership]) {
+        [self presentPaywall];
+    }
+}
+
+- (void) presentPaywall
+{
+    UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHPaywallViewController"];
+    [self.navigationController pushViewController:vc animated:NO];
+}
 
 
 @end

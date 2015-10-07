@@ -12,6 +12,11 @@
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
+#define ITMS_PROD_VERIFY_RECEIPT_URL        @"https://buy.itunes.apple.com/verifyReceipt"
+#define ITMS_SANDBOX_VERIFY_RECEIPT_URL     @"https://sandbox.itunes.apple.com/verifyReceipt";
+#define KNOWN_TRANSACTIONS_KEY              @"knownIAPTransactions"
+#define ITC_CONTENT_PROVIDER_SHARED_SECRET  @"642a7d01b86c4b89b5fc498a0ff0b181"
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
