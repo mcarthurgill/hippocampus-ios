@@ -25,7 +25,7 @@
 
 - (void) prePermissionsDelegate:(NSString*)type message:(NSString*)message
 {
-    if ([[[LXSession thisSession] permissionsAsked] objectForKey:type])
+    if ([[[LXSession thisSession] permissionsAsked] objectForKey:type] || ![[self.navigationController topViewController] isKindOfClass:[self class]])
         return;
     
     PermissionScope* pscope = [[PermissionScope alloc] init];

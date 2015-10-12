@@ -7,9 +7,13 @@
 //
 
 #import "UIImageView+Addons.h"
+#import <objc/runtime.h>
+
 #define IMAGE_FADE_IN_TIME 0.4f
 
 @implementation UIImageView (Addons)
+
+@dynamic remoteURLString;
 
 - (void) drawImageAsync:(UIImage *)img
 {
@@ -29,6 +33,7 @@
 - (void) loadInImageWithRemoteURL:(NSString*)remoteURL localURL:(NSString*)localURL
 {
     //self.image = nil;
+    [self setRemoteURLString:remoteURL];
     
     if ([SGImageCache haveImageForURL:remoteURL]) {
         [self drawImageAsync:[SGImageCache imageForURL:remoteURL]];
@@ -51,18 +56,30 @@
         }
         [self setAlpha:1.0f];
         [SGImageCache getImageForURL:remoteURL].then(^(UIImage* img) {
-            if (img) {
-                float curAlpha = [self alpha];
-                [self setAlpha:0.0f];
-                [self drawImageAsync:img];
-                [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
-                    [self setAlpha:curAlpha];
-                    [self viewWithTag:1].alpha = 0.0;
-                    [[self viewWithTag:1] removeFromSuperview];
-                }];
+            if ([remoteURL isEqualToString:self.remoteURLString]) {
+                if (img) {
+                    float curAlpha = [self alpha];
+                    [self setAlpha:0.0f];
+                    [self drawImageAsync:img];
+                    [UIView animateWithDuration:IMAGE_FADE_IN_TIME animations:^(void){
+                        [self setAlpha:curAlpha];
+                        [self viewWithTag:1].alpha = 0.0;
+                        [[self viewWithTag:1] removeFromSuperview];
+                    }];
+                }
             }
         });
     }
+}
+
+
+- (void) setRemoteURLString:(NSString*) remoteURLString
+{
+    objc_setAssociatedObject(self, @selector(remoteURLString), remoteURLString, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+- (NSString*) remoteURLString
+{
+    return objc_getAssociatedObject(self, @selector(remoteURLString));
 }
 
 @end

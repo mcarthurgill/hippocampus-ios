@@ -28,5 +28,6 @@
 
 - (BOOL) hasMembership;
 - (NSString*) membership;
+- (void) updateToMembership:(NSString*)type success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 @end

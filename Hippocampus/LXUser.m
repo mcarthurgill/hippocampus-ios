@@ -139,4 +139,18 @@
     return [self objectForKey:@"membership"] && NULL_TO_NIL([self objectForKey:@"membership"]) ? [self objectForKey:@"membership"] : nil;
 }
 
+- (void) updateToMembership:(NSString*)type success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [self setObject:type forKey:@"membership"];
+    [self saveRemote:^(id responseObject) {
+        if (successCallback) {
+            successCallback(responseObject);
+        }
+    } failure:^(NSError* error) {
+        if (failureCallback) {
+            failureCallback(error);
+        }
+    }];
+}
+
 @end

@@ -10,6 +10,8 @@
 
 @interface UIImageView (Addons)
 
+@property (strong, nonatomic) NSString *remoteURLString;
+
 - (void) loadInImageWithRemoteURL:(NSString*)remoteURL localURL:(NSString*)localURL;
 - (void) drawImageAsync:(UIImage*)image;
 

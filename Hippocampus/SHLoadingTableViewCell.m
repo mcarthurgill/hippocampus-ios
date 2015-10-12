@@ -50,10 +50,12 @@
 - (void) refreshedObject:(NSNotification*)notification
 {
     //NSLog(@"%@|%@|", [[notification userInfo] objectForKey:@"local_key"], [self.responseObject localKey]);
-    if ([[notification userInfo] objectForKey:@"local_key"] && [self.responseObject localKey] && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:[self.responseObject localKey]]) {
-        //this is a hit, a currently displaying talbeivewcell. reload it.
-        if ([[self.responseObject objectForKey:@"vc"] respondsToSelector:@selector(tryToReload)]) {
-            [(SHMessagesViewController*)[self.responseObject objectForKey:@"vc"] tryToReload];
+    if ([[notification userInfo] objectForKey:@"local_key"] && NULL_TO_NIL([[notification userInfo] objectForKey:@"local_key"])) {
+        if ([[notification userInfo] objectForKey:@"local_key"] && [self.responseObject localKey] && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:[self.responseObject localKey]]) {
+            //this is a hit, a currently displaying talbeivewcell. reload it.
+            if ([[self.responseObject objectForKey:@"vc"] respondsToSelector:@selector(tryToReload)]) {
+                [(SHMessagesViewController*)[self.responseObject objectForKey:@"vc"] tryToReload];
+            }
         }
     }
 }

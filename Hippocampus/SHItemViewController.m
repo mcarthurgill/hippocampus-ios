@@ -128,7 +128,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 
 - (void) refreshedObject:(NSNotification*)notification
 {
-    if ([[notification userInfo] objectForKey:@"local_key"] && self.localKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.localKey]) {
+    if ([[notification userInfo] objectForKey:@"local_key"] && NULL_TO_NIL([[notification userInfo] objectForKey:@"local_key"]) && self.localKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.localKey]) {
         [self reloadScreen];
     }
 }
@@ -351,7 +351,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     [self.toolbarOptions addObject:@"bucket"];
     [self.toolbarOptions addObject:@"media"];
     //[self.toolbarOptions addObject:@"map"];
-    [self.toolbarOptions addObject:@"duplicate"];
+    [self.toolbarOptions addObject:@"share"];
     [self.toolbarOptions addObject:@"delete"];
     
     NSInteger index = 0;
@@ -376,6 +376,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
             [button setImage:[UIImage imageNamed:@"toolbar_location.png"] forState:UIControlStateNormal];
         } else if ([option isEqualToString:@"duplicate"]) {
             [button setImage:[UIImage imageNamed:@"toolbar_duplicate.png"] forState:UIControlStateNormal];
+        } else if ([option isEqualToString:@"share"]) {
+            [button setImage:[UIImage imageNamed:@"toolbar_share.png"] forState:UIControlStateNormal];
         } else if ([option isEqualToString:@"delete"]) {
             [button setImage:[UIImage imageNamed:@"toolbar_trash.png"] forState:UIControlStateNormal];
         }
@@ -441,6 +443,23 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Are you sure you want to delete this thought?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
         [av setTag:(sender.tag+100)];
         [av show];
+    } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"share"]) {
+        
+        NSMutableArray* activityItems = [[NSMutableArray alloc] init];
+        if ([[self item] hasMedia] && [[self item] hasMessage]) {
+            [activityItems addObject:[[self item] message]];
+            for (UIImage* image in [[self item] rawImages]) {
+                [activityItems addObject:image];
+            }
+        } else if ([[self item] hasMedia]) {
+            [activityItems addObjectsFromArray:[[self item] rawImages]];
+        } else if ([[self item] hasMessage]) {
+            [activityItems addObject:[[self item] message]];
+        }
+        
+        UIActivityViewController* avc = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:nil];
+        [self presentViewController:avc animated:YES completion:^(void){}];
+        
     } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"media"]) {
         UIActionSheet* as = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:@"Photo Library", ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera] ? @"Camera" : nil), nil];
         [as setTag:50];

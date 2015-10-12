@@ -58,11 +58,13 @@
 
 - (void) refreshedObject:(NSNotification*)notification
 {
-    if ([[notification userInfo] objectForKey:@"local_key"] && self.itemLocalKey && self.bucketLocalKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.itemLocalKey]) {
-        //this is a hit, a currently displaying talbeivewcell. reload it.
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshVCWithLocalKey" object:nil userInfo:@{@"local_key":self.bucketLocalKey}];
-    } else if ([[notification userInfo] objectForKey:@"local_key"] && self.itemLocalKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.itemLocalKey]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshBlankThoughtsVC" object:nil userInfo:nil];
+    if (NULL_TO_NIL([[notification userInfo] objectForKey:@"local_key"])) {
+        if ([[notification userInfo] objectForKey:@"local_key"] && self.itemLocalKey && self.bucketLocalKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.itemLocalKey]) {
+            //this is a hit, a currently displaying talbeivewcell. reload it.
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshVCWithLocalKey" object:nil userInfo:@{@"local_key":self.bucketLocalKey}];
+        } else if ([[notification userInfo] objectForKey:@"local_key"] && self.itemLocalKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.itemLocalKey]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshBlankThoughtsVC" object:nil userInfo:nil];
+        }
     }
 }
 
