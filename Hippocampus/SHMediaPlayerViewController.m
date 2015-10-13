@@ -64,6 +64,8 @@
 
 - (void) setupVideo
 {
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error: nil];
+    
     [self.view setBackgroundColor:[UIColor blackColor]];
     [self.imageView setHidden:YES];
     if (!self.player) {

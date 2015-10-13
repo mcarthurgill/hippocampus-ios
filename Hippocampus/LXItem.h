@@ -18,6 +18,10 @@
 
 - (BOOL) hasMedia;
 - (NSMutableArray*) media;
+- (BOOL) hasAudio;
+
+- (BOOL) hasEmailHTML;
+- (NSString*) emailHTML;
 
 - (BOOL) shouldShowAvatar;
 - (NSString*) avatarURLString;

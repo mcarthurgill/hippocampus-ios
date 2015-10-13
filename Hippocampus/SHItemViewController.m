@@ -12,11 +12,13 @@
 #import "HCReminderViewController.h"
 #import "SHEditItemViewController.h"
 #import "SHMediaPlayerViewController.h"
+#import "SHEmailViewController.h"
 
 #import "SHItemMessageTableViewCell.h"
 #import "SHItemAuthorTableViewCell.h"
 #import "SHMediaBoxTableViewCell.h"
 #import "SHAttachmentBoxTableViewCell.h"
+#import "SHAudioAttachmentTableViewCell.h"
 
 static NSString *messageCellIdentifier = @"SHItemMessageTableViewCell";
 static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
@@ -37,6 +39,9 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 @synthesize toolbarOptions;
 @synthesize trailingSpace;
 @synthesize outstandingLabel;
+@synthesize anAudioStreamer;
+@synthesize audioTimer;
+@synthesize audioTableViewCell;
 
 - (void)viewDidLoad
 {
@@ -165,6 +170,9 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     //if ([[self item] hasMessage] || [[self item] belongsToCurrentUser]) {
         [self.sections addObject:@"message"];
     //}
+    if ([[self item] hasEmailHTML]) {
+        [self.sections addObject:@"email"];
+    }
     if ([[self item] hasMedia]) {
         [self.sections addObject:@"media"];
     }
@@ -184,6 +192,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"message"]) {
         return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"email"]) {
+        return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
         return [[[self item] media] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
@@ -200,6 +210,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         return [self tableView:tV authorCellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         return [self tableView:tV messsageCellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"email"]) {
+        return [self tableView:tV attachmentCellForRowAtIndexPath:indexPath attachment:[self item] type:@"email"];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         return [self tableView:tV mediaBoxCellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"nudge"]) {
@@ -228,10 +240,18 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 
 - (UITableViewCell*) tableView:(UITableView *)tableView mediaBoxCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SHMediaBoxTableViewCell* cell = (SHMediaBoxTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:mediaBoxCellIdentifier];
-    [cell configureWithLocalKey:self.localKey medium:[[[self item] media] objectAtIndex:indexPath.row]];
-    [cell setDelegate:self];
-    return cell;
+    NSMutableDictionary* medium = [[[self item] media] objectAtIndex:indexPath.row];
+    if ([medium isAudio]) {
+        SHAttachmentBoxTableViewCell* cell = (SHAttachmentBoxTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:attachmentCellIdentifier];
+        [cell configureWithLocalKey:self.localKey attachment:medium type:@"audio"];
+        [cell setDelegate:self];
+        return cell;
+    } else {
+        SHMediaBoxTableViewCell* cell = (SHMediaBoxTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:mediaBoxCellIdentifier];
+        [cell configureWithLocalKey:self.localKey medium:medium];
+        [cell setDelegate:self];
+        return cell;
+    }
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tableView attachmentCellForRowAtIndexPath:(NSIndexPath *)indexPath attachment:(NSMutableDictionary*)attachment type:(NSString*)type
@@ -257,13 +277,42 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [self presentNudgeScreen];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         [self presentEditMessageScreen];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"email"]) {
+        [self presentEmailHTMLScreen];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
         [self setMediaInQuestion:[[[self item] media] objectAtIndex:indexPath.row]];
         
-        SHMediaPlayerViewController* vc = (SHMediaPlayerViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMediaPlayerViewController"];
-        [vc setMedium:self.mediaInQuestion];
-        [self presentViewController:vc animated:NO completion:^(void){}];
+        if ([self.mediaInQuestion isAudio]) {
+            [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
+            NSString *aSongURL = [NSString stringWithFormat:@"%@", [self.mediaInQuestion mediaURL]]; //@"https://res.cloudinary.com/hbztmvh3r/video/upload/v1444709448/RE525c84be9d21589d95e48ba107598624_rclsur.wav"];//,];
+             NSLog(@"Song URL : %@", aSongURL);
+            AVPlayerItem *aPlayerItem = [[AVPlayerItem alloc] initWithURL:[NSURL URLWithString:aSongURL]];
+            self.anAudioStreamer = [[AVPlayer alloc] initWithPlayerItem:aPlayerItem];
+            [self.anAudioStreamer setRate:1.0f];
+            [self.anAudioStreamer play];
+            
+            [self setAudioTableViewCell:[self.tableView cellForRowAtIndexPath:indexPath]];
+            //self.audioTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(updateAudioStream) userInfo:nil repeats:YES];
+        } else {
+            SHMediaPlayerViewController* vc = (SHMediaPlayerViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMediaPlayerViewController"];
+            [vc setMedium:self.mediaInQuestion];
+            [self presentViewController:vc animated:NO completion:^(void){}];
+        }
     }
+}
+
+- (void) updateAudioStream
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        NSTimeInterval aCurrentTime = CMTimeGetSeconds(self.anAudioStreamer.currentTime);
+        NSTimeInterval aDuration = CMTimeGetSeconds(self.anAudioStreamer.currentItem.asset.duration);
+        if (aCurrentTime >= aDuration) {
+            self.audioTimer = nil;
+        }
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            [self.audioTableViewCell updateBottomLabel:[NSString stringWithFormat:@"%f/%f", aCurrentTime, aDuration]];
+        });
+    });
 }
 
 - (void) longPressWithObject:(NSMutableDictionary*)object type:(NSString*)action
@@ -328,6 +377,13 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     if (as) {
         [as showInView:self.bottomToolbar];
     }
+}
+
+- (void) presentEmailHTMLScreen
+{
+    SHEmailViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHEmailViewController"];
+    [vc setEmailHTML:[[self item] emailHTML]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void) performDeletion

@@ -62,6 +62,32 @@
     return [@[] mutableCopy];
 }
 
+- (BOOL) hasAudio
+{
+    if ([self hasMedia]) {
+        for (NSDictionary* medium in [self media]) {
+            if ([medium isAudio]) {
+                return YES;
+            }
+        }
+    }
+    return NO;
+}
+
+
+
+- (BOOL) hasEmailHTML
+{
+    return [self emailHTML] && [[self emailHTML] length] > 0;
+}
+
+- (NSString*) emailHTML
+{
+    return [self objectForKey:@"message_html_cache"] && NULL_TO_NIL([self objectForKey:@"message_html_cache"]) ? [self objectForKey:@"message_html_cache"] : nil;
+}
+
+
+
 
 - (BOOL) shouldShowAvatar
 {

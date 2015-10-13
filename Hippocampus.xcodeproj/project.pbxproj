@@ -69,6 +69,11 @@
 		2882A80C1BCC36F50058D4C9 /* toolbar_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A80B1BCC36F50058D4C9 /* toolbar_share.png */; settings = {ASSET_TAGS = (); }; };
 		2882A8101BCC3BAD0058D4C9 /* toolbar_media.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A80E1BCC3BAD0058D4C9 /* toolbar_media.png */; settings = {ASSET_TAGS = (); }; };
 		2882A8121BCC3C190058D4C9 /* toolbar_bucket.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A8111BCC3C190058D4C9 /* toolbar_bucket.png */; settings = {ASSET_TAGS = (); }; };
+		2882A8161BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2882A8141BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.m */; settings = {ASSET_TAGS = (); }; };
+		2882A8171BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2882A8151BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.xib */; settings = {ASSET_TAGS = (); }; };
+		2882A8191BCC7E680058D4C9 /* audio_detail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A8181BCC7E680058D4C9 /* audio_detail_icon.png */; settings = {ASSET_TAGS = (); }; };
+		2882A81B1BCD86410058D4C9 /* audio_icon_shrink.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A81A1BCD86410058D4C9 /* audio_icon_shrink.png */; settings = {ASSET_TAGS = (); }; };
+		2882A81F1BCD98B00058D4C9 /* SHEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2882A81E1BCD98B00058D4C9 /* SHEmailViewController.m */; settings = {ASSET_TAGS = (); }; };
 		288A74591B75305100F6A618 /* person.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74561B75305100F6A618 /* person.png */; };
 		288A745A1B75305100F6A618 /* person@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74571B75305100F6A618 /* person@2x.png */; };
 		288A745B1B75305100F6A618 /* person@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74581B75305100F6A618 /* person@3x.png */; };
@@ -267,6 +272,13 @@
 		2882A80B1BCC36F50058D4C9 /* toolbar_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_share.png; sourceTree = "<group>"; };
 		2882A80E1BCC3BAD0058D4C9 /* toolbar_media.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_media.png; sourceTree = "<group>"; };
 		2882A8111BCC3C190058D4C9 /* toolbar_bucket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bucket.png; sourceTree = "<group>"; };
+		2882A8131BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAudioAttachmentTableViewCell.h; sourceTree = "<group>"; };
+		2882A8141BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAudioAttachmentTableViewCell.m; sourceTree = "<group>"; };
+		2882A8151BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHAudioAttachmentTableViewCell.xib; sourceTree = "<group>"; };
+		2882A8181BCC7E680058D4C9 /* audio_detail_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = audio_detail_icon.png; sourceTree = "<group>"; };
+		2882A81A1BCD86410058D4C9 /* audio_icon_shrink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = audio_icon_shrink.png; sourceTree = "<group>"; };
+		2882A81D1BCD98B00058D4C9 /* SHEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHEmailViewController.h; sourceTree = "<group>"; };
+		2882A81E1BCD98B00058D4C9 /* SHEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHEmailViewController.m; sourceTree = "<group>"; };
 		288A74561B75305100F6A618 /* person.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = person.png; sourceTree = "<group>"; };
 		288A74571B75305100F6A618 /* person@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person@2x.png"; sourceTree = "<group>"; };
 		288A74581B75305100F6A618 /* person@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person@3x.png"; sourceTree = "<group>"; };
@@ -522,6 +534,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2882A81C1BCD98990058D4C9 /* Email View */,
 				28491BAA1BBCAFD90014E4B2 /* Paywall */,
 				28F859AF1BBB564100F7738C /* Preview */,
 				28B8BB681BB244C5005131EB /* Profile */,
@@ -715,6 +728,15 @@
 				28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */,
 			);
 			name = Paywall;
+			sourceTree = "<group>";
+		};
+		2882A81C1BCD98990058D4C9 /* Email View */ = {
+			isa = PBXGroup;
+			children = (
+				2882A81D1BCD98B00058D4C9 /* SHEmailViewController.h */,
+				2882A81E1BCD98B00058D4C9 /* SHEmailViewController.m */,
+			);
+			name = "Email View";
 			sourceTree = "<group>";
 		};
 		288A745C1B75313500F6A618 /* Person */ = {
@@ -968,6 +990,9 @@
 				28ED41F91BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.h */,
 				28ED41FA1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.m */,
 				28ED41FB1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib */,
+				2882A8131BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.h */,
+				2882A8141BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.m */,
+				2882A8151BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -975,6 +1000,8 @@
 		28ED42001BA10241000292AE /* Item Detail Icons */ = {
 			isa = PBXGroup;
 			children = (
+				2882A81A1BCD86410058D4C9 /* audio_icon_shrink.png */,
+				2882A8181BCC7E680058D4C9 /* audio_detail_icon.png */,
 				28F859A81BBA075000F7738C /* bucket_detail_icon.png */,
 				28ED42201BA25245000292AE /* nudge_detail_icon.png */,
 			);
@@ -1173,10 +1200,12 @@
 				281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */,
 				288A74621B7531DD00F6A618 /* search@2x.png in Resources */,
 				28ED41FD1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib in Resources */,
+				2882A81B1BCD86410058D4C9 /* audio_icon_shrink.png in Resources */,
 				28ED42111BA210AE000292AE /* toolbar_location.png in Resources */,
 				28ED42511BA357F0000292AE /* compose_media@2x.png in Resources */,
 				28419A341BB20DAD00CF21A6 /* plus_swipe@3x.png in Resources */,
 				287423D31B059F7200A3242C /* email-screen.jpg in Resources */,
+				2882A8191BCC7E680058D4C9 /* audio_detail_icon.png in Resources */,
 				761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */,
 				288A74821B8A2FEB00F6A618 /* plus_icon_white_swipe.png in Resources */,
 				28ED41DA1B9E1CDE000292AE /* add_new.png in Resources */,
@@ -1215,6 +1244,7 @@
 				2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */,
 				289D2F8E1BAA60F0007F719B /* SHBucketActionTableViewCell.xib in Resources */,
 				288F123A1B752C240001E0B0 /* Roboto-Regular.ttf in Resources */,
+				2882A8171BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.xib in Resources */,
 				28431DE01A8D69BA00B12548 /* 78-stopwatch.png in Resources */,
 				289D2F891BAA51BF007F719B /* SHCollaboratorTableViewCell.xib in Resources */,
 				288A74591B75305100F6A618 /* person.png in Resources */,
@@ -1328,6 +1358,7 @@
 				28ED41FC1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.m in Sources */,
 				288F122A1B751B040001E0B0 /* LXItem.m in Sources */,
 				288F12241B73DFC90001E0B0 /* LXUser.m in Sources */,
+				2882A8161BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.m in Sources */,
 				28ED41D21B9CD641000292AE /* SHAssignBucketTableViewCell.m in Sources */,
 				288A746C1B77E6F600F6A618 /* LXObjectManager.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
@@ -1370,6 +1401,7 @@
 				284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */,
 				282FA8411B8F9C2E004ADA00 /* SHSearchViewController.m in Sources */,
 				282FA8441B909BD5004ADA00 /* SHSearch.m in Sources */,
+				2882A81F1BCD98B00058D4C9 /* SHEmailViewController.m in Sources */,
 				28ED41F71BA0BBA8000292AE /* SHMediaBoxTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

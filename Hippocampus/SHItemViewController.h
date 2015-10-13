@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SHAttachmentBoxTableViewCell.h"
+@import AVFoundation;
 
 @interface SHItemViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
@@ -15,6 +17,9 @@
 
 @property (strong, nonatomic) NSString* localKey;
 @property (strong, nonatomic) NSMutableDictionary* mediaInQuestion;
+@property (strong, nonatomic) AVPlayer *anAudioStreamer;
+@property (strong, nonatomic) NSTimer *audioTimer;
+@property (strong, nonatomic) SHAttachmentBoxTableViewCell *audioTableViewCell;
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *bottomToolbar;

@@ -24,6 +24,9 @@
 @property (strong, nonatomic) NSString* bucketLocalKey;
 @property (strong, nonatomic) NSMutableDictionary* item;
 
+@property (strong, nonatomic) IBOutlet UIImageView *audioImageView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *audioImageViewHeightConstraint;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *audioImageViewLabelMarginConstraint;
 @property (strong, nonatomic) NSMutableArray* mediaViews;
 @property (strong, nonatomic) NSMutableArray* mediaUsed;
 @property (strong, nonatomic) NSMutableArray* addedConstraints;

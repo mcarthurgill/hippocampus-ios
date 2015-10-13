@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+@import AVFoundation;
 
 @interface SHMediaBoxTableViewCell : UITableViewCell
 

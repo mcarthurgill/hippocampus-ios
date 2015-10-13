@@ -33,6 +33,7 @@
 @synthesize bucketButtonConstraints;
 @synthesize avatarView;
 @synthesize avatarHeightConstraint, avatarWidthConstraint;
+@synthesize audioImageView, audioImageViewHeightConstraint, audioImageViewLabelMarginConstraint;
 
 
 - (void)awakeFromNib
@@ -81,6 +82,10 @@
     [self.avatarView.layer setCornerRadius:(AVATAR_DIMENSION/2.0f)];
     [self.avatarView setClipsToBounds:YES];
     [self.avatarView setBackgroundColor:[UIColor SHLightGray]];
+    
+    [self.audioImageView.layer setCornerRadius:8.0f];
+    [self.audioImageView.layer setBorderColor:[UIColor SHBlue].CGColor];
+    [self.audioImageView.layer setBorderWidth:1.0f];
 }
 
 - (void) setSelected:(BOOL)selected animated:(BOOL)animated
@@ -180,6 +185,14 @@
     } else {
         self.avatarHeightConstraint.constant = 0.0f;
         [self.avatarView setHidden:YES];
+    }
+    
+    if ([self.item hasAudio]) {
+        self.audioImageViewHeightConstraint.constant = 45.0f;
+        self.audioImageViewLabelMarginConstraint.constant = 10.0f;
+    } else {
+        self.audioImageViewHeightConstraint.constant = 0.0f;
+        self.audioImageViewLabelMarginConstraint.constant = 0.0f;
     }
     
     [self handleMediaViews];

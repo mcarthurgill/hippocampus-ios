@@ -95,6 +95,11 @@
     return [self objectForKey:@"media_type"] && [[self objectForKey:@"media_type"] isEqualToString:@"video"];
 }
 
+- (BOOL) isAudio
+{
+    return [self objectForKey:@"media_type"] && [[self objectForKey:@"media_type"] isEqualToString:@"audio"];
+}
+
 
 //OLD
 

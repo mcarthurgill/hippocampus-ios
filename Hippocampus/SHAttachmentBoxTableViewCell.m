@@ -122,6 +122,10 @@
         [self configureForBucket];
     } else if ([self isNudgeType]) {
         [self configureForNudge];
+    } else if ([self isAudioType]) {
+        [self configureForAudio];
+    } else if ([self isEmailType]) {
+        [self configureForEmail];
     }
     
     [self setNeedsLayout];
@@ -186,6 +190,38 @@
     }
 }
 
+- (void) configureForAudio
+{
+    [self.leftImageView setImage:[UIImage imageNamed:@"audio_detail_icon.png"]];
+    
+    [self.centerLabel setHidden:NO];
+    [self.centerLabel setText:[NSString stringWithFormat:@"Tap to Play Audio File"]];
+    [self.centerLabel setFont:[UIFont secondaryFontWithSize:15.0f]];
+    self.centerLabelCenterY.constant = 0;
+    
+    //[self.bottomLabel setHidden:NO];
+    //[self.bottomLabel setText:@"loading..."];
+}
+
+- (void) configureForEmail
+{
+    [self.leftImageView setImage:[UIImage imageNamed:@"audio_detail_icon.png"]];
+    
+    [self.centerLabel setHidden:NO];
+    [self.centerLabel setText:[NSString stringWithFormat:@"View Original Email"]];
+    [self.centerLabel setFont:[UIFont secondaryFontWithSize:15.0f]];
+    self.centerLabelCenterY.constant = 0;
+    
+    //[self.bottomLabel setHidden:NO];
+    //[self.bottomLabel setText:@"loading..."];
+}
+
+- (void) updateBottomLabel:(NSString *)string
+{
+    [self.bottomLabel setText:string];
+}
+
+
 
 
 # pragma mark types
@@ -198,6 +234,16 @@
 - (BOOL) isNudgeType
 {
     return [self.attachmentType isEqualToString:@"nudge"];
+}
+
+- (BOOL) isAudioType
+{
+    return [self.attachmentType isEqualToString:@"audio"];
+}
+
+- (BOOL) isEmailType
+{
+    return [self.attachmentType isEqualToString:@"email"];
 }
 
 

@@ -35,5 +35,6 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *centerLabelCenterY;
 
 - (void) configureWithLocalKey:(NSString*)key attachment:(NSMutableDictionary*)attchmnt type:(NSString*)type;
+- (void) updateBottomLabel:(NSString*)string;
 
 @end

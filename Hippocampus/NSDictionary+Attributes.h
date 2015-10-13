@@ -27,6 +27,7 @@
 - (NSString*) avatarURLStringFromPhone;
 
 - (BOOL) isVideo;
+- (BOOL) isAudio;
 
 //OLD
 
