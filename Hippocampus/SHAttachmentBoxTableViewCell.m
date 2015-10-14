@@ -205,7 +205,7 @@
 
 - (void) configureForEmail
 {
-    [self.leftImageView setImage:[UIImage imageNamed:@"audio_detail_icon.png"]];
+    [self.leftImageView setImage:[UIImage imageNamed:@"mail_detail_icon.png"]];
     
     [self.centerLabel setHidden:NO];
     [self.centerLabel setText:[NSString stringWithFormat:@"View Original Email"]];

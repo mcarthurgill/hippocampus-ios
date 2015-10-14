@@ -74,6 +74,7 @@
 		2882A8191BCC7E680058D4C9 /* audio_detail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A8181BCC7E680058D4C9 /* audio_detail_icon.png */; settings = {ASSET_TAGS = (); }; };
 		2882A81B1BCD86410058D4C9 /* audio_icon_shrink.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A81A1BCD86410058D4C9 /* audio_icon_shrink.png */; settings = {ASSET_TAGS = (); }; };
 		2882A81F1BCD98B00058D4C9 /* SHEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2882A81E1BCD98B00058D4C9 /* SHEmailViewController.m */; settings = {ASSET_TAGS = (); }; };
+		2882A8211BCDA1E90058D4C9 /* mail_detail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A8201BCDA1E90058D4C9 /* mail_detail_icon.png */; settings = {ASSET_TAGS = (); }; };
 		288A74591B75305100F6A618 /* person.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74561B75305100F6A618 /* person.png */; };
 		288A745A1B75305100F6A618 /* person@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74571B75305100F6A618 /* person@2x.png */; };
 		288A745B1B75305100F6A618 /* person@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 288A74581B75305100F6A618 /* person@3x.png */; };
@@ -279,6 +280,7 @@
 		2882A81A1BCD86410058D4C9 /* audio_icon_shrink.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = audio_icon_shrink.png; sourceTree = "<group>"; };
 		2882A81D1BCD98B00058D4C9 /* SHEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHEmailViewController.h; sourceTree = "<group>"; };
 		2882A81E1BCD98B00058D4C9 /* SHEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHEmailViewController.m; sourceTree = "<group>"; };
+		2882A8201BCDA1E90058D4C9 /* mail_detail_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mail_detail_icon.png; sourceTree = "<group>"; };
 		288A74561B75305100F6A618 /* person.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = person.png; sourceTree = "<group>"; };
 		288A74571B75305100F6A618 /* person@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person@2x.png"; sourceTree = "<group>"; };
 		288A74581B75305100F6A618 /* person@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "person@3x.png"; sourceTree = "<group>"; };
@@ -1000,6 +1002,7 @@
 		28ED42001BA10241000292AE /* Item Detail Icons */ = {
 			isa = PBXGroup;
 			children = (
+				2882A8201BCDA1E90058D4C9 /* mail_detail_icon.png */,
 				2882A81A1BCD86410058D4C9 /* audio_icon_shrink.png */,
 				2882A8181BCC7E680058D4C9 /* audio_detail_icon.png */,
 				28F859A81BBA075000F7738C /* bucket_detail_icon.png */,
@@ -1244,6 +1247,7 @@
 				2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */,
 				289D2F8E1BAA60F0007F719B /* SHBucketActionTableViewCell.xib in Resources */,
 				288F123A1B752C240001E0B0 /* Roboto-Regular.ttf in Resources */,
+				2882A8211BCDA1E90058D4C9 /* mail_detail_icon.png in Resources */,
 				2882A8171BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.xib in Resources */,
 				28431DE01A8D69BA00B12548 /* 78-stopwatch.png in Resources */,
 				289D2F891BAA51BF007F719B /* SHCollaboratorTableViewCell.xib in Resources */,
