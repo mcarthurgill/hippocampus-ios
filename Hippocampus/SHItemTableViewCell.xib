@@ -57,7 +57,9 @@
                 <gestureRecognizers/>
                 <constraints>
                     <constraint firstItem="L0A-os-cFC" firstAttribute="leading" secondItem="HwY-Ox-JbQ" secondAttribute="leading" id="1yW-Dh-4y9"/>
+                    <constraint firstItem="d0h-i5-l5V" firstAttribute="top" secondItem="L0A-os-cFC" secondAttribute="top" constant="-1" id="4tj-LP-qWz"/>
                     <constraint firstItem="L0A-os-cFC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="10" id="7vn-rw-8fC"/>
+                    <constraint firstItem="L0A-os-cFC" firstAttribute="top" secondItem="tKm-nQ-HF7" secondAttribute="bottom" constant="10" id="8c8-Zk-8jD"/>
                     <constraint firstItem="L0A-os-cFC" firstAttribute="bottom" secondItem="HwY-Ox-JbQ" secondAttribute="bottom" id="EQ0-BK-UQy"/>
                     <constraint firstItem="Zxn-m7-UQY" firstAttribute="top" secondItem="d0h-i5-l5V" secondAttribute="top" constant="5" id="HOF-F9-DLF"/>
                     <constraint firstAttribute="trailingMargin" secondItem="HwY-Ox-JbQ" secondAttribute="trailing" constant="20" id="Jl4-j0-Yfx"/>
@@ -74,6 +76,9 @@
                 </constraints>
                 <variation key="default">
                     <mask key="constraints">
+                        <exclude reference="PhI-kH-hsP"/>
+                        <exclude reference="u09-Tq-5N1"/>
+                        <exclude reference="7vn-rw-8fC"/>
                         <exclude reference="EQ0-BK-UQy"/>
                         <exclude reference="kd3-Kq-G1d"/>
                     </mask>
