@@ -195,6 +195,35 @@
     }
 }
 
+- (void) saveRemoteWithNewAttributes:(NSDictionary*)newAttributes success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    for (NSString* key in newAttributes) {
+        [self setObject:[newAttributes objectForKey:key] forKey:key];
+    }
+    [self removeObjectForKey:@"updated_at"];
+    [LXObjectManager assignObject:self];
+    
+    //SEND TO SERVER
+    [[LXServer shared] requestPath:[self requestPath] withMethod:[self requestMethod] withParamaters:@{[self objectType]:newAttributes} authType:[self authTypeForRequest]
+                           success:^(id responseObject) {
+                               //SAVE LOCALLY
+                               [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
+                               if ([[responseObject mutableCopy] objectType] && [[[responseObject mutableCopy] objectType] isEqualToString:@"user"]) {
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshedObject" object:nil userInfo:responseObject];
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError* error) {
+                               
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
 - (void) destroyRemote
 {
     [self destroyRemote:nil failure:nil];

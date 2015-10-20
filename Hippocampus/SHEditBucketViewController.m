@@ -277,9 +277,7 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
         if ([alertView cancelButtonIndex] != buttonIndex && [alertView textFieldAtIndex:0].text.length > 0) {
             //action!
             NSMutableDictionary* bucketTemp = [self bucket];
-            [bucketTemp setObject:[alertView textFieldAtIndex:0].text forKey:@"first_name"];
-            [bucketTemp saveRemote];
-            [bucketTemp assignLocalVersionIfNeeded:YES];
+            [bucketTemp saveRemoteWithNewAttributes:@{@"first_name":[alertView textFieldAtIndex:0].text} success:nil failure:nil];
             [self reloadScreen];
         }
     } else if (alertView.tag == 2) {

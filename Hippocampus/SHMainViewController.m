@@ -21,6 +21,7 @@
 @synthesize segmentControl;
 @synthesize containerView;
 @synthesize viewControllersCached;
+@synthesize paywallController;
 
 - (void)viewDidLoad
 {
@@ -194,8 +195,8 @@
 
 - (void) presentPaywall
 {
-    UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHPaywallViewController"];
-    [self.navigationController pushViewController:vc animated:NO];
+    self.paywallController = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHPaywallViewController"];
+    [self.navigationController pushViewController:self.paywallController animated:NO];
 }
 
 

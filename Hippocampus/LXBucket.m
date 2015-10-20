@@ -253,7 +253,7 @@ static NSInteger maxRecentCount = 6;
 {
     if (newName && newName.length > 0) {
         [bup setObject:newName forKey:@"name"];
-        [bup saveRemote:^(id responseObject){
+        [bup saveRemoteWithNewAttributes:@{@"name":newName} success:^(id responseObject){
             if ([responseObject objectForKey:@"bucket"]) {
                 [LXObjectManager assignObject:[responseObject objectForKey:@"bucket"]];
             }

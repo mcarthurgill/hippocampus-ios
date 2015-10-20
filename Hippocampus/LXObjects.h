@@ -34,6 +34,7 @@
 - (void) saveRemote;
 - (void) delaySaveRemote;
 - (void) saveRemote:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (void) saveRemoteWithNewAttributes:(NSDictionary*)newAttributes success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 - (void) destroyRemote;
 - (void) destroyRemote:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
