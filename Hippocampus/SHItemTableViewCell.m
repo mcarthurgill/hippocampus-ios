@@ -167,14 +167,22 @@
         [self.nudgeImageView setHidden:YES];
     }
     
-    if ([self.item isOutstanding]) {
-        [outstandingDot setBackgroundColor:[UIColor SHBlue]];
+    if ([self.item hasID]) {
+        if ([self.item isOutstanding]) {
+            [outstandingDot setBackgroundColor:[UIColor SHBlue]];
+            [outstandingDot.layer setCornerRadius:4];
+            [outstandingDot setClipsToBounds:YES];
+            [outstandingDot setHidden:NO];
+            self.nudgeImageViewTrailingSpace.constant = 14.0f;
+        } else {
+            [outstandingDot setHidden:YES];
+        }
+    } else {
+        [outstandingDot setBackgroundColor:[UIColor SHLightGray]];
         [outstandingDot.layer setCornerRadius:4];
         [outstandingDot setClipsToBounds:YES];
         [outstandingDot setHidden:NO];
         self.nudgeImageViewTrailingSpace.constant = 14.0f;
-    } else {
-        [outstandingDot setHidden:YES];
     }
     
     if (![self.item belongsToCurrentUser] || ([self bucket] && [[self bucket] isCollaborativeThread])) {

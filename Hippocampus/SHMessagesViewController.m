@@ -268,11 +268,25 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     }
 }
 
+- (void) addItemsNotSavedToServer
+{
+    for (NSDictionary*q in [[LXObjectManager defaultManager] queries]) {
+        NSDictionary *obj = [q objectForKey:@"object"];
+        NSString *method = [q objectForKey:@"method"];
+        if (obj) {
+            NSMutableDictionary *i = [obj objectForKey:@"item"] ? [[obj objectForKey:@"item"] mutableCopy] : nil;
+            if (i && [method isEqualToString:@"POST"] && [i localKey]) {
+                if (![[[self bucket] itemKeys] containsObject:[i localKey]]) {
+                    [[[self bucket] itemKeys] insertObject:[i localKey] atIndex:0];
+                }
+            }
+        }
+    }
+}
+
 - (void) reloadScreen
 {
-//    NSLog(@"******************");
-//    NSLog(@"self.bucket = %@", [self bucket]);
-//    NSLog(@"******************");
+    [self addItemsNotSavedToServer];
     [self.tableView reloadData];
     [self setTitle:[[self bucket] firstName]];
 }

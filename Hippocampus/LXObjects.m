@@ -203,8 +203,11 @@
     [self removeObjectForKey:@"updated_at"];
     [LXObjectManager assignObject:self];
     
+    NSMutableDictionary* tempDict = [[NSMutableDictionary alloc] initWithDictionary:newAttributes];
+    [tempDict setObject:[self localKey] forKey:@"local_key"];
+    
     //SEND TO SERVER
-    [[LXServer shared] requestPath:[self requestPath] withMethod:[self requestMethod] withParamaters:@{[self objectType]:newAttributes} authType:[self authTypeForRequest]
+    [[LXServer shared] requestPath:[self requestPath] withMethod:@"PUT" withParamaters:@{[self objectType]:tempDict} authType:[self authTypeForRequest]
                            success:^(id responseObject) {
                                //SAVE LOCALLY
                                [[responseObject mutableCopy] assignLocalVersionIfNeeded:YES];
