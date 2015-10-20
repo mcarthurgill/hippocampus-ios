@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "00633A2F6A86E4D856D75852CA2B429E"
-               BuildableName = "libMGSwipeTableCell.a"
+               BlueprintIdentifier = "27E87E0C193BC1F906240C2E7A162EEC"
+               BuildableName = "MGSwipeTableCell.framework"
                BlueprintName = "MGSwipeTableCell"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -45,8 +45,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "00633A2F6A86E4D856D75852CA2B429E"
-            BuildableName = "libMGSwipeTableCell.a"
+            BlueprintIdentifier = "27E87E0C193BC1F906240C2E7A162EEC"
+            BuildableName = "MGSwipeTableCell.framework"
             BlueprintName = "MGSwipeTableCell"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
@@ -63,8 +63,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "00633A2F6A86E4D856D75852CA2B429E"
-            BuildableName = "libMGSwipeTableCell.a"
+            BlueprintIdentifier = "27E87E0C193BC1F906240C2E7A162EEC"
+            BuildableName = "MGSwipeTableCell.framework"
             BlueprintName = "MGSwipeTableCell"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>

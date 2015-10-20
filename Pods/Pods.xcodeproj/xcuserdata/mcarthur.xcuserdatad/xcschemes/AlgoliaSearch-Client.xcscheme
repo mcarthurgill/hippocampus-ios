@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "94327B2187367611BF419714AFD3E81B"
-               BuildableName = "libAlgoliaSearch-Client.a"
+               BlueprintIdentifier = "3C1C3C1D20E4CD60686E374E8A777246"
+               BuildableName = "AlgoliaSearch_Client.framework"
                BlueprintName = "AlgoliaSearch-Client"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -45,8 +45,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "94327B2187367611BF419714AFD3E81B"
-            BuildableName = "libAlgoliaSearch-Client.a"
+            BlueprintIdentifier = "3C1C3C1D20E4CD60686E374E8A777246"
+            BuildableName = "AlgoliaSearch_Client.framework"
             BlueprintName = "AlgoliaSearch-Client"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
@@ -63,8 +63,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "94327B2187367611BF419714AFD3E81B"
-            BuildableName = "libAlgoliaSearch-Client.a"
+            BlueprintIdentifier = "3C1C3C1D20E4CD60686E374E8A777246"
+            BuildableName = "AlgoliaSearch_Client.framework"
             BlueprintName = "AlgoliaSearch-Client"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>

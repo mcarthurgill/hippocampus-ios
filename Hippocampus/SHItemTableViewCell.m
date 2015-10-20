@@ -49,7 +49,6 @@
         [self getBlankBucketButtonAtIndex:i];
     }
     
-    
     [self setupAppearanceSettings];
     [self setupGestureRecognizers];
     [self setupSwipeButtons];

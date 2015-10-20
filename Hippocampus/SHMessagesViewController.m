@@ -274,6 +274,9 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (void) reloadScreen
 {
+//    NSLog(@"******************");
+//    NSLog(@"self.bucket = %@", [self bucket]);
+//    NSLog(@"******************");
     [self.tableView reloadData];
     [self setTitle:[[self bucket] firstName]];
 }
