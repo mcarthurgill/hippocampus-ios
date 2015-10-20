@@ -100,12 +100,51 @@
     return [self objectForKey:@"media_type"] && [[self objectForKey:@"media_type"] isEqualToString:@"audio"];
 }
 
+- (NSArray*) userIDsArray
+{
+    if ([self objectForKey:@"user_ids_array"] && NULL_TO_NIL([self objectForKey:@"user_ids_array"])) {
+        NSMutableArray* temp = [[NSMutableArray alloc] init];
+        for (id num in [self objectForKey:@"user_ids_array"]) {
+            [temp addObject:[NSString stringWithFormat:@"%@", num]];
+        }
+        return temp;
+    }
+    return @[];
+}
+
+- (NSArray*) authorizedUserIDs
+{
+    if ([self objectForKey:@"authorized_user_ids"] && NULL_TO_NIL([self objectForKey:@"authorized_user_ids"])) {
+        NSMutableArray* temp = [[NSMutableArray alloc] init];
+        for (id num in [self objectForKey:@"authorized_user_ids"]) {
+            [temp addObject:[NSString stringWithFormat:@"%@", num]];
+        }
+        return temp;
+    }
+    return @[];
+}
+
+- (BOOL) authorizedToSee
+{
+    if ([[self objectType] isEqualToString:@"item"]) {
+        return [[self userIDsArray] containsObject:[NSString stringWithFormat:@"%@", [[[LXSession thisSession] user] ID]]] || [self belongsToCurrentUser];
+    } else if ([[self objectType] isEqualToString:@"bucket"]) {
+        return [[self authorizedUserIDs] containsObject:[NSString stringWithFormat:@"%@", [[[LXSession thisSession] user] ID]]] || [self belongsToCurrentUser];
+    }
+    return YES;
+}
+
 
 //OLD
 
 - (NSString*) ID
 {
     return [self objectForKey:@"id"];
+}
+
+- (NSString*) objectType
+{
+    return [self objectForKey:@"object_type"];
 }
 
 - (NSString*) itemID

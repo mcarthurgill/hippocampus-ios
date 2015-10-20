@@ -29,6 +29,11 @@
 - (BOOL) isVideo;
 - (BOOL) isAudio;
 
+- (NSArray*) userIDsArray;
+- (NSArray*) authorizedUserIDs;
+
+- (BOOL) authorizedToSee;
+
 //OLD
 
 - (NSString*) ID;
