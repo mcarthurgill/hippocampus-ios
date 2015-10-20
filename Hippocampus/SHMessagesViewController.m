@@ -256,6 +256,10 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         //BUCKET MATCHES!
         //[self performSelectorOnMainThread:@selector(reloadIfDifferentCountOfKeys:) withObject:[[notification userInfo] objectForKey:@"oldItemKeys"] waitUntilDone:NO];
         [self reloadScreen];
+        
+        if (![[[notification userInfo] objectForKey:@"bucket"] isAllThoughtsBucket]) {
+            [self checkSecurity];
+        }
     }
 }
 
@@ -634,5 +638,16 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [picker dismissViewControllerAnimated:NO completion:^(void){}];
 }
 
+
+
+# pragma mark security check
+
+- (void) checkSecurity
+{
+    NSLog(@"bucket: %@", [self bucket]);
+    if (![[self bucket] authorizedToSee]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
 
 @end

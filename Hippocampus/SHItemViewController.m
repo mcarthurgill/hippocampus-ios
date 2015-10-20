@@ -19,11 +19,13 @@
 #import "SHMediaBoxTableViewCell.h"
 #import "SHAttachmentBoxTableViewCell.h"
 #import "SHAudioAttachmentTableViewCell.h"
+#import "SHBucketTableViewCell.h"
 
 static NSString *messageCellIdentifier = @"SHItemMessageTableViewCell";
 static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
 static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
 static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
+static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 
 @interface SHItemViewController ()
 
@@ -69,6 +71,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     [self.tableView registerNib:[UINib nibWithNibName:messageCellIdentifier bundle:nil] forCellReuseIdentifier:messageCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:mediaBoxCellIdentifier bundle:nil] forCellReuseIdentifier:mediaBoxCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:attachmentCellIdentifier bundle:nil] forCellReuseIdentifier:attachmentCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
     
     [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, 20.0f, self.tableView.contentInset.right)];
     
@@ -135,6 +138,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 {
     if ([[notification userInfo] objectForKey:@"local_key"] && NULL_TO_NIL([[notification userInfo] objectForKey:@"local_key"]) && self.localKey && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.localKey]) {
         [self reloadScreen];
+        [self checkSecurity];
     }
 }
 
@@ -218,6 +222,7 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         return [self tableView:tV attachmentCellForRowAtIndexPath:indexPath attachment:[self item] type:@"nudge"];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
         return [self tableView:tV attachmentCellForRowAtIndexPath:indexPath attachment:[[[self item] bucketsArray] objectAtIndex:indexPath.row] type:@"bucket"];
+        //return [self tableView:tV bucketCellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -262,6 +267,13 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
     return cell;
 }
 
+- (UITableViewCell*) tableView:(UITableView *)tV bucketCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHBucketTableViewCell* cell = (SHBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:bucketCellIdentifier];
+    [cell configureWithBucketLocalKey:[[[[self item] bucketsArray] objectAtIndex:indexPath.row] localKey]];
+    [cell layoutIfNeeded];
+    return cell;
+}
 
 
 # pragma mark actions
@@ -396,6 +408,8 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
         [av show];
     }
 }
+
+
 
 # pragma mark toolbar
 
@@ -638,6 +652,17 @@ static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 //        NSURL *url = info[UIImagePickerControllerMediaURL];
     }
     [picker dismissViewControllerAnimated:NO completion:^(void){}];
+}
+
+
+
+# pragma mark security check
+
+- (void) checkSecurity
+{
+    if (![[self item] authorizedToSee]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 
