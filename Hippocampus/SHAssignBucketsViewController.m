@@ -486,6 +486,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self.topView setHidden:YES];
     if ([self.searchBar isFirstResponder]) {
         [self.searchBar resignFirstResponder];
+        if (self.searchBar.text && self.searchBar.text.length > 0){
+            [self.bucketTextField setText:self.searchBar.text];
+        }
     }
     [self.topInputView setHidden:NO];
     [self.bucketTextField becomeFirstResponder];

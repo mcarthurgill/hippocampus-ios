@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1F7E4965261F59B99555266A1182716C"
-               BuildableName = "libSGHTTPRequest.a"
+               BlueprintIdentifier = "B193EADE22B9C9DF447A7CE02CD81258"
+               BuildableName = "SGHTTPRequest.framework"
                BlueprintName = "SGHTTPRequest"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -45,8 +45,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1F7E4965261F59B99555266A1182716C"
-            BuildableName = "libSGHTTPRequest.a"
+            BlueprintIdentifier = "B193EADE22B9C9DF447A7CE02CD81258"
+            BuildableName = "SGHTTPRequest.framework"
             BlueprintName = "SGHTTPRequest"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
@@ -63,8 +63,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "1F7E4965261F59B99555266A1182716C"
-            BuildableName = "libSGHTTPRequest.a"
+            BlueprintIdentifier = "B193EADE22B9C9DF447A7CE02CD81258"
+            BuildableName = "SGHTTPRequest.framework"
             BlueprintName = "SGHTTPRequest"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>

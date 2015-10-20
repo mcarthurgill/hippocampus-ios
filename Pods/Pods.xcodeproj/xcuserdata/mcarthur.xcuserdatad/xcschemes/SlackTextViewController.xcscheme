@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "424A050634FDF1C79B7710B6FADB4089"
-               BuildableName = "libSlackTextViewController.a"
+               BlueprintIdentifier = "2DE3AAAD29F843172D2D2510C4703B1F"
+               BuildableName = "SlackTextViewController.framework"
                BlueprintName = "SlackTextViewController"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -45,8 +45,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "424A050634FDF1C79B7710B6FADB4089"
-            BuildableName = "libSlackTextViewController.a"
+            BlueprintIdentifier = "2DE3AAAD29F843172D2D2510C4703B1F"
+            BuildableName = "SlackTextViewController.framework"
             BlueprintName = "SlackTextViewController"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
@@ -63,8 +63,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "424A050634FDF1C79B7710B6FADB4089"
-            BuildableName = "libSlackTextViewController.a"
+            BlueprintIdentifier = "2DE3AAAD29F843172D2D2510C4703B1F"
+            BuildableName = "SlackTextViewController.framework"
             BlueprintName = "SlackTextViewController"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>

@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4A39E65EE383C8C636F935E729652216"
-               BuildableName = "libSGImageCache.a"
+               BlueprintIdentifier = "7DF04BBA4625F23D9893C1BBA93D38BC"
+               BuildableName = "SGImageCache.framework"
                BlueprintName = "SGImageCache"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
@@ -45,8 +45,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4A39E65EE383C8C636F935E729652216"
-            BuildableName = "libSGImageCache.a"
+            BlueprintIdentifier = "7DF04BBA4625F23D9893C1BBA93D38BC"
+            BuildableName = "SGImageCache.framework"
             BlueprintName = "SGImageCache"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
@@ -63,8 +63,8 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4A39E65EE383C8C636F935E729652216"
-            BuildableName = "libSGImageCache.a"
+            BlueprintIdentifier = "7DF04BBA4625F23D9893C1BBA93D38BC"
+            BuildableName = "SGImageCache.framework"
             BlueprintName = "SGImageCache"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
