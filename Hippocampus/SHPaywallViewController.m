@@ -36,6 +36,8 @@
     self.productsArray = [[NSMutableArray alloc] init];
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
     [self requestProductInfo];
+    
+    //[self performSelector:@selector(test) withObject:nil afterDelay:8.0];
 }
 
 - (void) setupAppearance

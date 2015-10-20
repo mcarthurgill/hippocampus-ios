@@ -42,8 +42,7 @@
 - (void) updateTimeZone
 {
     NSLog(@"timeZone: %@", [[NSTimeZone localTimeZone] name]);
-    [self setObject:[[NSTimeZone localTimeZone] name] forKey:@"time_zone"];
-    [self saveRemote];
+    [self saveRemoteWithNewAttributes:@{@"time_zone":[[NSTimeZone localTimeZone] name]} success:nil failure:nil];
 }
 
 
@@ -124,9 +123,7 @@
 
 - (void) changeName:(NSString *)newName
 {
-    [self setObject:newName forKey:@"name"];
-    [self assignLocalVersionIfNeeded:YES];
-    [self saveRemote];
+    [self saveRemoteWithNewAttributes:@{@"name":newName} success:nil failure:nil];
 }
 
 - (BOOL) hasMembership
@@ -141,8 +138,7 @@
 
 - (void) updateToMembership:(NSString*)type success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
-    [self setObject:type forKey:@"membership"];
-    [self saveRemote:^(id responseObject) {
+    [self saveRemoteWithNewAttributes:@{@"membership":type} success:^(id responseObject) {
         if (successCallback) {
             successCallback(responseObject);
         }

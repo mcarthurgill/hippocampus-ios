@@ -13,6 +13,7 @@
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @property (strong, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) NSMutableDictionary* viewControllersCached;
+@property (strong, nonatomic) id paywallController;
 
 - (IBAction)segmentControlAction:(UISegmentedControl*)sender;
 - (IBAction)leftBarButtonAction:(id)sender;

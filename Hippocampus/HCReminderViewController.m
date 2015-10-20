@@ -381,12 +381,8 @@
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
         NSString* newDate = [dateFormat stringFromDate:self.currentlySelectedDate];
-        //NSLog(@"Nudge Date: %@", newDate);
-        [item setObject:newDate forKey:@"reminder_date"];
-        [item setObject:[self typeSelected] forKey:@"item_type"];
-        [item removeObjectForKey:@"updated_at"];
-        [LXObjectManager assignObject:item];
-        [item saveRemote];
+        
+        [item saveRemoteWithNewAttributes:@{@"reminder_date":newDate, @"item_type":[self typeSelected]} success:nil failure:nil];
     }
     [self dismissViewControllerAnimated:NO completion:^(void){}];
 }
