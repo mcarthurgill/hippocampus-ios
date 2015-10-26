@@ -660,6 +660,7 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 
 - (void) checkSecurity
 {
+    NSLog(@"item security: %@", [self item]);
     if (![[self item] authorizedToSee]) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }

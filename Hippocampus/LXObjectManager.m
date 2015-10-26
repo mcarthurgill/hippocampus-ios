@@ -120,8 +120,20 @@ static LXObjectManager* defaultManager = nil;
                      }
                  ];
             } else {
-                NSMutableDictionary* tempObj = [LXObjectManager objectWithLocalKey:[query localKey]];
-                [[LXServer shared] requestPath:([[query objectForKey:@"method"] isEqualToString:@"PUT"] && ![[query objectForKey:@"path"] isEqualToString:@"/items/update_buckets"] ? [tempObj requestPath] : [query objectForKey:@"path"]) withMethod:[query objectForKey:@"method"] withParamaters:obj authType:@"repeat"
+                NSMutableDictionary* tempObj;
+                if ([query localKey] && [LXObjectManager objectWithLocalKey:[query localKey]]) {
+                    tempObj = [LXObjectManager objectWithLocalKey:[query localKey]];
+                } else {
+                    tempObj = obj;
+                }
+                NSString* tempPath;
+                if ([tempObj ID] && [tempObj objectType] && [[query objectForKey:@"method"] isEqualToString:@"PUT"] && ![[query objectForKey:@"path"] isEqualToString:@"/items/update_buckets"]) {
+                    tempPath = [tempObj requestPath];
+                } else {
+                    tempPath = [query objectForKey:@"path"];
+                }
+                NSLog(@"%@, %@", tempPath, tempObj);
+                [[LXServer shared] requestPath:tempPath withMethod:[query objectForKey:@"method"] withParamaters:tempObj authType:@"repeat"
                                        success:^(id responseObject){
                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"successfulQueryDelayed" object:nil userInfo:@{@"query":query}];//,@"responseObject":responseObject
                                            [self removeQuery:query];
