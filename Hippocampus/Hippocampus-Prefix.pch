@@ -40,6 +40,7 @@
     #import "LXObjects.h"
     #import "LXObjectManager.h"
     #import "LXUser.h"
+    #import "LXTag.h"
     #import "LXBucket.h"
     #import "LXItem.h"
     #import "UIColor+HCColors.h"

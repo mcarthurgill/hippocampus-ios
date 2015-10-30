@@ -268,6 +268,26 @@ static NSInteger maxRecentCount = 6;
     }
 }
 
+- (NSMutableArray*) tagsArray
+{
+    return [self objectForKey:@"tags_array"] && NULL_TO_NIL([self objectForKey:@"tags_array"]) ? [self objectForKey:@"tags_array"] : [@[] mutableCopy];
+}
+
+- (BOOL) hasTags
+{
+    if ([[self tagsArray] count] < 1) {
+        return NO;
+    }
+    for (NSDictionary* tag in [self tagsArray]) {
+        if ([tag belongsToCurrentUser]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+
+
 - (BOOL) isAllThoughtsBucket
 {
     return [self localKey] && [[self localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]];

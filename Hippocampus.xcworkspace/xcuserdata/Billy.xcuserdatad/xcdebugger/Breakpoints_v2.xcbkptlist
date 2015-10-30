@@ -2305,7 +2305,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "467863203.751925"
+            timestampString = "467901866.65602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "525"
@@ -2321,7 +2321,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "467863203.751925"
+            timestampString = "467901866.65602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "538"
@@ -2337,7 +2337,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "467863203.751925"
+            timestampString = "467901866.65602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "207"
@@ -2353,7 +2353,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "467863203.751925"
+            timestampString = "467901866.65602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "216"
@@ -2481,11 +2481,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHBucketTableViewCell.m"
-            timestampString = "464657803.632848"
+            timestampString = "467904866.477254"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "128"
-            endingLineNumber = "128"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
             landmarkName = "-configureCollaborativeView"
             landmarkType = "5">
          </BreakpointContent>
@@ -2497,11 +2497,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHBucketTableViewCell.m"
-            timestampString = "464657803.632848"
+            timestampString = "467904866.477254"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "-configureCollaborativeView"
             landmarkType = "5">
          </BreakpointContent>
@@ -2625,7 +2625,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "467863203.751925"
+            timestampString = "467901866.65602"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "395"
@@ -2935,6 +2935,22 @@
             startingLineNumber = "147"
             endingLineNumber = "147"
             landmarkName = "-runQueries"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hippocampus/SHBucketTableViewCell.m"
+            timestampString = "467904866.477254"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "211"
+            endingLineNumber = "211"
+            landmarkName = "-handleTagButtons"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

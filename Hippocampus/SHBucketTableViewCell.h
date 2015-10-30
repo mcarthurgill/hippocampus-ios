@@ -21,5 +21,10 @@
 
 @property (strong, nonatomic) IBOutlet UIView *collaborativeView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *collaborativeViewHeightConstraint;
+@property (strong, nonatomic) IBOutlet UIView *tagsView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *tagsViewHeightConstraint;
+
+@property (strong, nonatomic) NSMutableArray* tagButtons;
+@property (strong, nonatomic) NSMutableArray* tagButtonConstraints;
 
 @end

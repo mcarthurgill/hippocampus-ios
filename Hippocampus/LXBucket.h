@@ -40,6 +40,9 @@
 - (NSString*) relationLevel;
 - (UIColor*) bucketColor;
 
+- (NSMutableArray*) tagsArray;
+- (BOOL) hasTags;
+
 - (BOOL) isAllThoughtsBucket;
 
 - (BOOL) hasAuthorizedUserID:(NSString*)uID;

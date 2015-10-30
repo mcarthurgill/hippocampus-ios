@@ -11,6 +11,7 @@
 
 #define COLLABORATOR_HEIGHT 48.0f
 #define COLLABORATOR_IMAGE_HEIGHT 32.0f
+#define TAG_HEIGHT 32.0f
 
 @implementation SHBucketTableViewCell
 
@@ -19,8 +20,14 @@
 @synthesize collaboratorImages;
 @synthesize bucketName;
 @synthesize bucketItemMessage;
+
 @synthesize collaborativeView;
 @synthesize collaborativeViewHeightConstraint;
+
+@synthesize tagsView;
+@synthesize tagsViewHeightConstraint;
+@synthesize tagButtons;
+@synthesize tagButtonConstraints;
 
 
 
@@ -29,6 +36,7 @@
     [self setupAppearanceSettings];
     
     self.collaboratorImages = [[NSMutableArray alloc] init];
+    self.tagButtons = [[NSMutableArray alloc] init];
 }
 
 
@@ -52,6 +60,13 @@
     [self.collaborativeView.layer addSublayer:TopBorder];
 
     [self.collaborativeView setBackgroundColor:[UIColor clearColor]];
+    
+    CALayer *TopBorder2 = [CALayer layer];
+    TopBorder2.frame = CGRectMake(0.0f, 0.0f, self.contentView.bounds.size.width*3, 1.0f);
+    TopBorder2.backgroundColor = [UIColor SHLightGray].CGColor;
+    [self.tagsView.layer addSublayer:TopBorder2];
+    
+    [self.tagsView setBackgroundColor:[UIColor clearColor]];
     
     [bucketName setFont:[UIFont titleFontWithSize:16.0f]];
     
@@ -116,6 +131,8 @@
     
     [self configureCollaborativeView];
     
+    [self configureTagsView];
+    [self handleTagButtons];
 }
 
 - (void) configureCollaborativeView
@@ -123,7 +140,6 @@
     for (UIView* v in self.collaboratorImages) {
         [v setHidden:YES];
     }
-    //NSLog(@"%@", [self bucket]);
     if ([[self bucket] isCollaborativeThread]) {
         self.collaborativeViewHeightConstraint.constant = COLLABORATOR_HEIGHT;
         [self.collaborativeView setHidden:NO];
@@ -137,6 +153,25 @@
     } else {
         self.collaborativeViewHeightConstraint.constant = 0.0f;
         [self.collaborativeView setHidden:YES];
+    }
+}
+
+- (void) configureTagsView
+{
+    //for (UIView* v in self.collaboratorImages) {
+    //    [v setHidden:YES];
+    //}
+    if ([[self bucket] hasTags]) {
+        self.tagsViewHeightConstraint.constant = COLLABORATOR_HEIGHT;
+        [self.tagsView setHidden:NO];
+//        NSInteger index = 0;
+//        for (NSDictionary* tag in [[self bucket] tagsArray]) {
+//            
+//            ++index;
+//        }
+    } else {
+        self.tagsViewHeightConstraint.constant = 0.0f;
+        [self.tagsView setHidden:YES];
     }
 }
 
@@ -164,5 +199,106 @@
     return iv;
 }
 
+
+
+
+# pragma mark tag buttons
+
+- (void) handleTagButtons
+{
+    [self hideTagButtons];
+    if ([self bucket] && [[self bucket] hasTags]) {
+        [self createTagButtons];
+    }
+}
+
+- (void) createTagButtons
+{
+    self.tagButtonConstraints = [[NSMutableArray alloc] init];
+    
+    NSInteger count = 0;
+    for (NSMutableDictionary* tag in [[self bucket] tagsArray]) {
+        if ([tag belongsToCurrentUser]) {
+            UIButton* button = [self buttonForTag:tag atIndex:count];
+            [button setTag:count];
+            [button setHidden:NO];
+        }
+        ++count;
+    }
+    //[self layoutButtons];
+}
+
+- (UIButton*) buttonForTag:(NSMutableDictionary*)tag atIndex:(NSInteger)index
+{
+    //tag = [LXObjectManager objectWithLocalKey:[tag localKey]];
+    
+    UIButton* button = [self getBlankTagButtonAtIndex:index];
+    
+    [button setTitle:[NSString stringWithFormat:@"   %@   ", [tag tagName]] forState:UIControlStateNormal];
+    
+    return button;
+}
+
+- (UIButton*) getBlankTagButtonAtIndex:(NSInteger)index
+{
+    if (index < [self.tagButtons count])
+        return [self.tagButtons objectAtIndex:index];
+    
+    UIButton* button = [[UIButton alloc] init];
+    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    [button setBackgroundColor:[UIColor slightBackgroundColor]];
+    [[button titleLabel] setFont:[UIFont secondaryFontWithSize:13.0f]];
+    [[button titleLabel] setTextColor:[UIColor SHFontDarkGray]];
+    [button setTitleColor:[UIColor SHFontDarkGray] forState:UIControlStateNormal];
+    [button.layer setCornerRadius:5];
+    [button setClipsToBounds:YES];
+    [button setShowsTouchWhenHighlighted:YES];
+    [button.layer setBorderColor:[[UIColor SHGreen] colorWithAlphaComponent:0.2f].CGColor];
+    [button.layer setBorderWidth:0.8f];
+    
+    [button addTarget:self action:@selector(buttonTapped:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.tagButtons addObject:button];
+    [self.tagsView addSubview:button];
+    
+    [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:TAG_HEIGHT] toView:button];
+    [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.tagsView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0] toView:self.tagsView];
+    if (index == 0) {
+        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.tagsView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:10.0] toView:self.tagsView];
+    } else {
+        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:[self.tagButtons objectAtIndex:(index-1)] attribute:NSLayoutAttributeRight multiplier:1.0 constant:10.0] toView:self.tagsView];
+    }
+    [button invalidateIntrinsicContentSize];
+    
+    return button;
+}
+
+- (void) hideTagButtons
+{
+    for (UIView* button in self.tagButtons) {
+        [button setHidden:YES];
+    }
+    
+    for (NSLayoutConstraint* constraint in self.tagButtonConstraints) {
+        [self.contentView removeConstraint:constraint];
+    }
+    self.tagButtonConstraints = nil;
+}
+
+- (void) addButtonConstraint:(NSLayoutConstraint *)constraint toView:(UIView*)view
+{
+    [view addConstraint:constraint];
+    [self.tagButtonConstraints addObject:constraint];
+}
+
+
+
+# pragma mark actions
+
+- (void) buttonTapped:(UIButton*)sender
+{
+    
+}
 
 @end

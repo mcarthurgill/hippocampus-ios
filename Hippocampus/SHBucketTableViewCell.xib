@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mR-qO-5vm">
@@ -37,17 +37,28 @@
                                     <constraint firstAttribute="height" id="UY8-Fg-XMj"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eIF-tO-rDw">
+                                <rect key="frame" x="0.0" y="90" width="304" height="0.0"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="Jff-0b-3xY"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="tWa-vl-g9a" firstAttribute="top" secondItem="1mR-qO-5vm" secondAttribute="top" constant="10" id="01A-8H-gHZ"/>
                             <constraint firstItem="aVj-uW-fXh" firstAttribute="top" secondItem="4oB-pF-rmG" secondAttribute="bottom" constant="14" id="2En-WC-ue4"/>
                             <constraint firstAttribute="bottom" secondItem="aVj-uW-fXh" secondAttribute="bottom" id="4GS-5R-VWd"/>
+                            <constraint firstAttribute="trailing" secondItem="eIF-tO-rDw" secondAttribute="trailing" id="8wH-Mj-TGG"/>
+                            <constraint firstAttribute="bottom" secondItem="eIF-tO-rDw" secondAttribute="bottom" id="B1U-Cm-yDO"/>
                             <constraint firstAttribute="trailing" secondItem="aVj-uW-fXh" secondAttribute="trailing" id="CFx-A5-EuR"/>
                             <constraint firstAttribute="trailing" secondItem="tWa-vl-g9a" secondAttribute="trailing" constant="12" id="KyZ-XI-mqa"/>
                             <constraint firstAttribute="trailing" secondItem="4oB-pF-rmG" secondAttribute="trailing" constant="12" id="QzV-yl-IUg"/>
+                            <constraint firstItem="eIF-tO-rDw" firstAttribute="leading" secondItem="1mR-qO-5vm" secondAttribute="leading" id="RAn-4w-nro"/>
                             <constraint firstAttribute="bottom" secondItem="4oB-pF-rmG" secondAttribute="bottom" constant="14" id="SFR-o5-quV"/>
                             <constraint firstItem="4oB-pF-rmG" firstAttribute="top" secondItem="tWa-vl-g9a" secondAttribute="bottom" constant="6" id="VnX-ag-JDR"/>
+                            <constraint firstItem="eIF-tO-rDw" firstAttribute="top" secondItem="aVj-uW-fXh" secondAttribute="bottom" id="YbS-CC-SzK"/>
                             <constraint firstItem="tWa-vl-g9a" firstAttribute="leading" secondItem="1mR-qO-5vm" secondAttribute="leading" constant="12" id="j9Q-P1-fvR"/>
                             <constraint firstItem="aVj-uW-fXh" firstAttribute="leading" secondItem="1mR-qO-5vm" secondAttribute="leading" id="sC4-dC-LWL"/>
                             <constraint firstItem="4oB-pF-rmG" firstAttribute="leading" secondItem="1mR-qO-5vm" secondAttribute="leading" constant="12" id="zSw-CL-W7k"/>
@@ -55,6 +66,7 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="SFR-o5-quV"/>
+                                <exclude reference="4GS-5R-VWd"/>
                             </mask>
                         </variation>
                     </view>
@@ -72,6 +84,8 @@
                 <outlet property="card" destination="1mR-qO-5vm" id="mKb-wr-sbf"/>
                 <outlet property="collaborativeView" destination="aVj-uW-fXh" id="YUp-Zp-ZGY"/>
                 <outlet property="collaborativeViewHeightConstraint" destination="UY8-Fg-XMj" id="dIk-bw-Elv"/>
+                <outlet property="tagsView" destination="eIF-tO-rDw" id="ZNU-Pt-PyJ"/>
+                <outlet property="tagsViewHeightConstraint" destination="Jff-0b-3xY" id="hz9-CG-Jbb"/>
             </connections>
             <point key="canvasLocation" x="563" y="386"/>
         </tableViewCell>

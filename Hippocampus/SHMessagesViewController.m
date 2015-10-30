@@ -70,7 +70,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 {
     [super viewDidAppear:animated];
     
-    NSLog(@"bucket: %@", [self bucket]);
+    NSLog(@"%@", [self bucket]);
 }
 
 - (void) viewWillDisappear:(BOOL)animated
