@@ -70,19 +70,28 @@ static LXObjectManager* defaultManager = nil;
 
 - (void) runQueries
 {
-    if ([self.queries count] > 0 && !runningQueries) {
+    NSLog(@"queries: %@", self.queries);
+    if ([self.queries count] > 0) { //&& !runningQueries) {
         runningQueries = YES;
         NSMutableDictionary* query = [self.queries firstObject];
         
-        NSMutableDictionary* obj = [query objectForKey:@"object"] ? [[query objectForKey:@"object"] mutableCopy] : ([LXObjectManager objectWithLocalKey:[query objectForKey:@"local_key"]] ? [[[LXObjectManager objectWithLocalKey:[query objectForKey:@"local_key"] ] parameterReady] mutableCopy] : nil);
-        if (!obj || ![query objectForKey:@"path"] || ![query objectForKey:@"method"]) {
+        NSMutableDictionary* obj = [query objectForKey:@"object"];
+        NSMutableDictionary* underlyingObj = [obj objectForKey:[[obj allKeys] firstObject]];
+        if (!obj || ![query objectForKey:@"path"] || ![query objectForKey:@"method"] || ![underlyingObj respondsToSelector:@selector(objectType)] || ![underlyingObj objectType]) {
             [self removeQuery:query];
             [self saveQueries];
+            runningQueries = NO;
             [self runQueries];
         } else {
             if ([obj objectForKey:@"item"] && [[obj objectForKey:@"item"] hasUnsavedMedia]) {
+                NSString* tempPath;
+                if (![underlyingObj ID] && [[query objectForKey:@"method"] isEqualToString:@"PUT"] && ![[query objectForKey:@"path"] isEqualToString:@"/items/update_buckets"] && ![[query objectForKey:@"path"] isEqualToString:@"/buckets/update_tags"] && [LXObjectManager objectWithLocalKey:[obj localKey]]) {
+                    tempPath = [[LXObjectManager objectWithLocalKey:[obj localKey]] requestPath];
+                } else {
+                    tempPath = [query objectForKey:@"path"];
+                }
                 //SEND TO SERVER WITH MEDIA
-                [[LXServer shared] requestPath:[query objectForKey:@"path"] withMethod:[query objectForKey:@"method"] withParamaters:obj authType:@"repeat"
+                [[LXServer shared] requestPath:tempPath withMethod:[query objectForKey:@"method"] withParamaters:obj authType:@"repeat"
                      constructingBodyWithBlock:^(id <AFMultipartFormData>formData) {
                          NSInteger i = 0;
                          for (NSMutableDictionary* medium in [[obj objectForKey:@"item"] media]) {
@@ -120,20 +129,14 @@ static LXObjectManager* defaultManager = nil;
                      }
                  ];
             } else {
-                NSMutableDictionary* tempObj;
-                if ([query localKey] && [LXObjectManager objectWithLocalKey:[query localKey]]) {
-                    tempObj = [LXObjectManager objectWithLocalKey:[query localKey]];
-                } else {
-                    tempObj = obj;
-                }
                 NSString* tempPath;
-                if ([tempObj ID] && [tempObj objectType] && [[query objectForKey:@"method"] isEqualToString:@"PUT"] && ![[query objectForKey:@"path"] isEqualToString:@"/items/update_buckets"]) {
-                    tempPath = [tempObj requestPath];
+                if (![underlyingObj ID] && [[query objectForKey:@"method"] isEqualToString:@"PUT"] && ![[query objectForKey:@"path"] isEqualToString:@"/items/update_buckets"] && ![[query objectForKey:@"path"] isEqualToString:@"/buckets/update_tags"] && [LXObjectManager objectWithLocalKey:[obj localKey]]) {
+                    tempPath = [[LXObjectManager objectWithLocalKey:[obj localKey]] requestPath];
                 } else {
                     tempPath = [query objectForKey:@"path"];
                 }
-                NSLog(@"%@, %@", tempPath, tempObj);
-                [[LXServer shared] requestPath:tempPath withMethod:[query objectForKey:@"method"] withParamaters:tempObj authType:@"repeat"
+                NSLog(@"%@", tempPath);
+                [[LXServer shared] requestPath:tempPath withMethod:[query objectForKey:@"method"] withParamaters:obj authType:@"repeat"
                                        success:^(id responseObject){
                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"successfulQueryDelayed" object:nil userInfo:@{@"query":query}];//,@"responseObject":responseObject
                                            [self removeQuery:query];

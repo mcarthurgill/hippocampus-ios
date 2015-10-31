@@ -445,13 +445,23 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) searchBar:(UISearchBar *)bar textDidChange:(NSString *)searchText
 {
-    [[SHSearch defaultManager] localBucketSearchWithTerm:[bar text]
-                                      success:^(id responseObject) {
-                                          [self reloadScreen];
-                                      }
-                                      failure:^(NSError* error) {
-                                      }
-     ];
+    if ([LXServer hasInternetConnection]) {
+        [[SHSearch defaultManager] remoteBucketSearchWithTerm:[bar text] hitsPerPage:16
+                                                      success:^(id responseObject) {
+                                                          [self reloadScreen];
+                                                      }
+                                                      failure:^(NSError* error) {
+                                                      }
+         ];
+    } else {
+        [[SHSearch defaultManager] localBucketSearchWithTerm:[bar text]
+                                                     success:^(id responseObject) {
+                                                         [self reloadScreen];
+                                                     }
+                                                     failure:^(NSError* error) {
+                                                     }
+         ];
+    }
     [[SHSearch defaultManager] contactsSearchWithTerm:[bar text]
                                                  success:^(id responseObject) {
                                                      [self reloadScreen];

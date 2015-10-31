@@ -150,7 +150,7 @@ static SHSearch* defaultManager = nil;
                                });
                            }
          ];
-        [self remoteBucketSearchWithTerm:term
+        [self remoteBucketSearchWithTerm:term hitsPerPage:4
                            success:^(id responseObject){
                                dispatch_async(dispatch_get_main_queue(), ^{
                                    if (successCallback) {
@@ -209,19 +209,24 @@ static SHSearch* defaultManager = nil;
      ];
 }
 
-- (void) remoteBucketSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+- (void) remoteBucketSearchWithTerm:(NSString*)term hitsPerPage:(NSInteger)hits success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"FVGQB7HR19" apiKey:@"ddecc3b35feb56ab0a9d2570ac964a82"];
     ASRemoteIndex *index = [apiClient getIndex:@"Bucket"];
     ASQuery* query = [ASQuery queryWithFullTextQuery:term];
     query.numericFilters = [NSString stringWithFormat:@"authorized_user_ids=%@", [[[LXSession thisSession] user] ID]];
-    query.hitsPerPage = 4;
+    query.hitsPerPage = hits;
     [index search:query
           success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
               [self.cachedBucketObjects setObject:[[NSMutableArray alloc] initWithArray:[answer objectForKey:@"hits"]] forKey:[[query fullTextQuery] lowercaseString]];
+              NSMutableArray* tempKeys = [[NSMutableArray alloc] init];
               for (NSDictionary* tempDict in [answer objectForKey:@"hits"]) {
                   [[tempDict mutableCopy] assignLocalVersionIfNeeded:NO];
+                  if ([tempDict objectForKey:@"local_key"]) {
+                      [tempKeys addObject:[tempDict objectForKey:@"local_key"]];
+                  }
               }
+              [self.cachedBuckets setObject:tempKeys forKey:[[query fullTextQuery] lowercaseString]];
               if (successCallback) {
                   successCallback(answer);
               }

@@ -292,7 +292,9 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (void) reloadScreen
 {
-    [self addItemsNotSavedToServer];
+    if ([[self bucket] isAllThoughtsBucket]) {
+        [self addItemsNotSavedToServer];
+    }
     [self.tableView reloadData];
     [self setTitle:[[self bucket] firstName]];
 }

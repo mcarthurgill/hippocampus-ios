@@ -22,6 +22,8 @@
 
 + (BOOL) errorBecauseOfBadConnection:(NSInteger)code;
 
++ (BOOL) hasInternetConnection;
+
 //specific requests
 - (void) updateDeviceToken:(NSData *)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 

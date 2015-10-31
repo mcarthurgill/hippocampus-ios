@@ -9,6 +9,7 @@
 #import "LXServer.h"
 #import "LXAppDelegate.h"
 #import "NSString+SHAEncryption.h"
+@import SystemConfiguration;
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
@@ -138,7 +139,18 @@
     return NO;
 }
 
-
++ (BOOL) hasInternetConnection
+{
+    SCNetworkReachabilityFlags flags;
+    SCNetworkReachabilityRef address;
+    address = SCNetworkReachabilityCreateWithName(NULL, "http://www.google.com");
+    Boolean success = SCNetworkReachabilityGetFlags(address, &flags);
+    CFRelease(address);
+    bool canReach = success
+    && !(flags & kSCNetworkReachabilityFlagsConnectionRequired)
+    && (flags & kSCNetworkReachabilityFlagsReachable);
+    return canReach;
+}
 
 
 # pragma mark specific callbacks
