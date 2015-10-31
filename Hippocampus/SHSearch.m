@@ -13,6 +13,7 @@ static SHSearch* defaultManager = nil;
 @implementation SHSearch
 
 @synthesize cachedBuckets;
+@synthesize cachedBucketObjects;
 @synthesize cachedItems;
 @synthesize cachedContacts;
 @synthesize cachedTags;
@@ -52,6 +53,7 @@ static SHSearch* defaultManager = nil;
 {
     self.cachedItems = [[NSMutableDictionary alloc] init];
     self.cachedBuckets = [[NSMutableDictionary alloc] init];
+    self.cachedBucketObjects = [[NSMutableDictionary alloc] init];
     self.cachedContacts = [[NSMutableDictionary alloc] init];
     self.cachedTags = [[NSMutableDictionary alloc] init];
 }
@@ -71,6 +73,8 @@ static SHSearch* defaultManager = nil;
         return [self.cachedItems objectForKey:foundTerm];
     } else if (foundTerm && [type isEqualToString:@"bucketKeys"]) {
         return [self.cachedBuckets objectForKey:foundTerm];
+    } else if (foundTerm && [type isEqualToString:@"buckets"]) {
+        return [self.cachedBucketObjects objectForKey:foundTerm];
     } else if (foundTerm && [type isEqualToString:@"contacts"]) {
         return [self.cachedContacts objectForKey:foundTerm];
     } else if (foundTerm && [type isEqualToString:@"tagKeys"]) {
@@ -92,6 +96,13 @@ static SHSearch* defaultManager = nil;
     } else if ([type isEqualToString:@"bucketKeys"]) {
         while ([term length] > 0) {
             if ([self.cachedBuckets objectForKey:term])
+                return term;
+            term = [term substringToIndex:(term.length-1)];
+        }
+        return nil;
+    } else if ([type isEqualToString:@"buckets"]) {
+        while ([term length] > 0) {
+            if ([self.cachedBucketObjects objectForKey:term])
                 return term;
             term = [term substringToIndex:(term.length-1)];
         }
@@ -139,6 +150,22 @@ static SHSearch* defaultManager = nil;
                                });
                            }
          ];
+        [self remoteBucketSearchWithTerm:term
+                           success:^(id responseObject){
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   if (successCallback) {
+                                       successCallback(responseObject);
+                                   }
+                               });
+                           }
+                           failure:^(NSError* error){
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   if (failureCallback) {
+                                       failureCallback(error);
+                                   }
+                               });
+                           }
+         ];
 //        [self localBucketSearchWithTerm:term
 //                                success:^(id responseObject){
 //                                    dispatch_async(dispatch_get_main_queue(), ^{
@@ -167,6 +194,31 @@ static SHSearch* defaultManager = nil;
     [index search:query
           success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
               [self.cachedItems setObject:[[NSMutableArray alloc] initWithArray:[answer objectForKey:@"hits"]] forKey:[[query fullTextQuery] lowercaseString]];
+              for (NSDictionary* tempDict in [answer objectForKey:@"hits"]) {
+                  [[tempDict mutableCopy] assignLocalVersionIfNeeded:NO];
+              }
+              if (successCallback) {
+                  successCallback(answer);
+              }
+          } failure:^(ASRemoteIndex* index, ASQuery* query, NSString* errorMessage){
+              NSLog(@"Query failure! ERROR: %@", errorMessage);
+              if (failureCallback) {
+                  failureCallback(nil);
+              }
+          }
+     ];
+}
+
+- (void) remoteBucketSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    ASAPIClient *apiClient = [ASAPIClient apiClientWithApplicationID:@"FVGQB7HR19" apiKey:@"ddecc3b35feb56ab0a9d2570ac964a82"];
+    ASRemoteIndex *index = [apiClient getIndex:@"Bucket"];
+    ASQuery* query = [ASQuery queryWithFullTextQuery:term];
+    query.numericFilters = [NSString stringWithFormat:@"authorized_user_ids=%@", [[[LXSession thisSession] user] ID]];
+    query.hitsPerPage = 4;
+    [index search:query
+          success:^(ASRemoteIndex *index, ASQuery *query, NSDictionary *answer) {
+              [self.cachedBucketObjects setObject:[[NSMutableArray alloc] initWithArray:[answer objectForKey:@"hits"]] forKey:[[query fullTextQuery] lowercaseString]];
               for (NSDictionary* tempDict in [answer objectForKey:@"hits"]) {
                   [[tempDict mutableCopy] assignLocalVersionIfNeeded:NO];
               }

@@ -18,5 +18,6 @@
 
 @property (strong, nonatomic) NSMutableArray* searchResults;
 @property (strong, nonatomic) NSMutableArray* bucketResultKeys;
+@property (strong, nonatomic) NSMutableArray* bucketResults;
 
 @end

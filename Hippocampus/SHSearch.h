@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) NSMutableDictionary* cachedItems;
 @property (strong, nonatomic) NSMutableDictionary* cachedBuckets;
+@property (strong, nonatomic) NSMutableDictionary* cachedBucketObjects;
 @property (strong, nonatomic) NSMutableDictionary* cachedContacts;
 @property (strong, nonatomic) NSMutableDictionary* cachedTags;
 

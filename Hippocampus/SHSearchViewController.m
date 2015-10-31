@@ -30,6 +30,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 @synthesize sections;
 @synthesize searchResults;
 @synthesize bucketResultKeys;
+@synthesize bucketResults;
 
 - (void)viewDidLoad
 {
@@ -132,9 +133,10 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 {
     self.sections = [[NSMutableArray alloc] init];
     self.searchResults = [[SHSearch defaultManager] getCachedObjects:@"items" withTerm:[self.searchBar text]];
-    self.bucketResultKeys = [[SHSearch defaultManager] getCachedObjects:@"bucketKeys" withTerm:[self.searchBar text]];
+    //self.bucketResultKeys = [[SHSearch defaultManager] getCachedObjects:@"bucketKeys" withTerm:[self.searchBar text]];
+    self.bucketResults = [[SHSearch defaultManager] getCachedObjects:@"buckets" withTerm:[self.searchBar text]];
     
-    if (self.bucketResultKeys && [self.bucketResultKeys count] > 0 && [self.searchBar text] && [[self.searchBar text] length] > 0) {
+    if (self.bucketResults && [self.bucketResults count] > 0 && [self.searchBar text] && [[self.searchBar text] length] > 0) {
         [self.sections addObject:@"buckets"];
     }
     if (self.searchResults && [self.searchBar text] && [[self.searchBar text] length] > 0) {
@@ -154,7 +156,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"results"]) {
         return [self.searchResults count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
-        return [self.bucketResultKeys count];
+        return [self.bucketResults count];
     }
     return 0;
 }
@@ -189,7 +191,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (UITableViewCell*) tableView:(UITableView *)tV bucketCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHBucketTableViewCell* cell = (SHBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:bucketCellIdentifier];
-    [cell configureWithBucketLocalKey:[self.bucketResultKeys objectAtIndex:indexPath.row]];
+    [cell configureWithBucketLocalKey:[[self.bucketResults objectAtIndex:indexPath.row] localKey]];
     [cell layoutIfNeeded];
     return cell;
 }
@@ -200,7 +202,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
         [self dismissView];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
         SHMessagesViewController* vc = (SHMessagesViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
-        [vc setLocalKey:[self.bucketResultKeys objectAtIndex:indexPath.row]];
+        [vc setLocalKey:[[self.bucketResults objectAtIndex:indexPath.row] localKey]];
         [self.navigationController pushViewController:vc animated:YES];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"results"]) {
         UIViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:itemViewControllerIdentifier];

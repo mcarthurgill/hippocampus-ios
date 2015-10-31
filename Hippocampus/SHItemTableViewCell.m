@@ -414,7 +414,7 @@
 - (void) buttonTapped:(UIButton*)sender
 {
     if ([sender tag] < [[[self item] bucketsArray] count]) {
-        NSMutableDictionary* bucket = [[[self item] bucketsArray] objectAtIndex:[sender tag]];
+        NSMutableDictionary* bucket = [[[self item] bucketsArrayExcludingLocalKey:self.bucketLocalKey] objectAtIndex:[sender tag]];
         [[NSNotificationCenter defaultCenter] postNotificationName:([self bucket] ? @"pushBucketViewController" : @"searchPushBucketViewController") object:nil userInfo:@{@"bucket":bucket}];
     }
 }
