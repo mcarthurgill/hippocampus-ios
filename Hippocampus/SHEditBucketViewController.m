@@ -11,6 +11,7 @@
 #import "SHCollaboratorTableViewCell.h"
 #import "SHBucketActionTableViewCell.h"
 #import "SHCollaboratorsViewController.h"
+#import "SHAssignTagsViewController.h"
 
 static NSString *collaboratorCellIdentifier = @"SHCollaboratorTableViewCell";
 static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
@@ -108,6 +109,7 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
 {
     self.sections = [[NSMutableArray alloc] init];
     [self.sections addObject:@"collaborators"];
+    [self.sections addObject:@"tags"];
     if ([self.actions count] > 0) {
         [self.sections addObject:@"actions"];
     }
@@ -120,6 +122,8 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
         return ([[self bucket] authorizedUsers] ? [[[self bucket] authorizedUsers] count] : 0) + 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return [self.actions count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"tags"]) {
+        return [[[self bucket] tagsArray] count] + 1;
     }
     return 0;
 }
@@ -130,6 +134,12 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
         return [self tableView:tV collaboratorCellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         return [self tableView:tV actionCellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"tags"]) {
+        if (indexPath.row < [[[self bucket] tagsArray] count]) {
+            return [self tableView:tV tagCellForRowAtIndexPath:indexPath];
+        } else {
+            return [self tableView:tV editTagsCellForRowAtIndexPath:indexPath];
+        }
     }
     return nil;
 }
@@ -155,11 +165,29 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     return cell;
 }
 
+- (UITableViewCell*) tableView:(UITableView *)tV tagCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHBucketActionTableViewCell* cell = (SHBucketActionTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:actionCellIdentifier];
+    [cell configureWithLocalKey:self.localKey delegate:self tag:[[[self bucket] tagsArray] objectAtIndex:indexPath.row]];
+    [cell layoutIfNeeded];
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tV editTagsCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHBucketActionTableViewCell* cell = (SHBucketActionTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:actionCellIdentifier];
+    [cell configureWithLocalKey:self.localKey delegate:self tag:nil];
+    [cell layoutIfNeeded];
+    return cell;
+}
+
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"collaborators"]) {
         return 60.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
+        return 60.0f;
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"tags"]) {
         return 60.0f;
     }
     return 44.0f;
@@ -176,6 +204,8 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
         return @"Collaborators";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"tags"]) {
+        return @"Tags";
     }
     return nil;
 }
@@ -248,6 +278,11 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
             //gtfo
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"tags"]) {
+        UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignTagsViewController"];
+        SHAssignTagsViewController* vc = [[nc viewControllers] firstObject];
+        [vc setLocalKey:[[self bucket] localKey]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc}];
     }
 }
 

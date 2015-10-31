@@ -18,5 +18,6 @@
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
 
 - (void) configureWithLocalKey:(NSString*)lk delegate:(id)d action:(NSString*)a;
+- (void) configureWithLocalKey:(NSString*)lk delegate:(id)d tag:(NSMutableDictionary*)tag;
 
 @end
