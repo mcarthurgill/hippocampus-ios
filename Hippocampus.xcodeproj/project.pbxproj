@@ -108,6 +108,13 @@
 		289D2F8E1BAA60F0007F719B /* SHBucketActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289D2F8C1BAA60F0007F719B /* SHBucketActionTableViewCell.xib */; };
 		289D2F931BAA6892007F719B /* action_icon_trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 289D2F911BAA6892007F719B /* action_icon_trash.png */; };
 		289FFF151BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289FFF141BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib */; };
+		289FFF1A1BE469A700CFD5C5 /* navBucket.png in Resources */ = {isa = PBXBuildFile; fileRef = 289FFF171BE469A700CFD5C5 /* navBucket.png */; };
+		289FFF1B1BE469A700CFD5C5 /* navBucket@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 289FFF181BE469A700CFD5C5 /* navBucket@2x.png */; };
+		289FFF1C1BE469A700CFD5C5 /* navBucket@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 289FFF191BE469A700CFD5C5 /* navBucket@3x.png */; };
+		289FFF201BE46B0600CFD5C5 /* navFlag.png in Resources */ = {isa = PBXBuildFile; fileRef = 289FFF1D1BE46B0600CFD5C5 /* navFlag.png */; };
+		289FFF211BE46B0600CFD5C5 /* navFlag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 289FFF1E1BE46B0600CFD5C5 /* navFlag@2x.png */; };
+		289FFF221BE46B0600CFD5C5 /* navFlag@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 289FFF1F1BE46B0600CFD5C5 /* navFlag@3x.png */; };
+		289FFF251BE46D1900CFD5C5 /* SHEditTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289FFF241BE46D1900CFD5C5 /* SHEditTagViewController.m */; };
 		28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A0857B1A700CB200BA1368 /* LXString+NSString.m */; };
 		28AC96721BC487A700A5C1E9 /* 60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28AC96701BC487A700A5C1E9 /* 60x60@2x.png */; };
 		28AC96731BC487A700A5C1E9 /* 60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28AC96711BC487A700A5C1E9 /* 60x60@3x.png */; };
@@ -337,6 +344,14 @@
 		289D2F8C1BAA60F0007F719B /* SHBucketActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHBucketActionTableViewCell.xib; sourceTree = "<group>"; };
 		289D2F911BAA6892007F719B /* action_icon_trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = action_icon_trash.png; sourceTree = "<group>"; };
 		289FFF141BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHAssignTagTableViewCell.xib; sourceTree = "<group>"; };
+		289FFF171BE469A700CFD5C5 /* navBucket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navBucket.png; sourceTree = "<group>"; };
+		289FFF181BE469A700CFD5C5 /* navBucket@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navBucket@2x.png"; sourceTree = "<group>"; };
+		289FFF191BE469A700CFD5C5 /* navBucket@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navBucket@3x.png"; sourceTree = "<group>"; };
+		289FFF1D1BE46B0600CFD5C5 /* navFlag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = navFlag.png; sourceTree = "<group>"; };
+		289FFF1E1BE46B0600CFD5C5 /* navFlag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navFlag@2x.png"; sourceTree = "<group>"; };
+		289FFF1F1BE46B0600CFD5C5 /* navFlag@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navFlag@3x.png"; sourceTree = "<group>"; };
+		289FFF231BE46D1900CFD5C5 /* SHEditTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHEditTagViewController.h; sourceTree = "<group>"; };
+		289FFF241BE46D1900CFD5C5 /* SHEditTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHEditTagViewController.m; sourceTree = "<group>"; };
 		28A0857A1A700CB200BA1368 /* LXString+NSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LXString+NSString.h"; sourceTree = "<group>"; };
 		28A0857B1A700CB200BA1368 /* LXString+NSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LXString+NSString.m"; sourceTree = "<group>"; };
 		28AC96701BC487A700A5C1E9 /* 60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "60x60@2x.png"; sourceTree = "<group>"; };
@@ -477,6 +492,8 @@
 				2810B9B81BE3CB99003D20F8 /* SHTagDetailViewController.m */,
 				2810B9BA1BE3D54F003D20F8 /* SHAssignTagsViewController.h */,
 				2810B9BB1BE3D54F003D20F8 /* SHAssignTagsViewController.m */,
+				289FFF231BE46D1900CFD5C5 /* SHEditTagViewController.h */,
+				289FFF241BE46D1900CFD5C5 /* SHEditTagViewController.m */,
 			);
 			name = Tags;
 			sourceTree = "<group>";
@@ -599,6 +616,7 @@
 		281CA9041951EC9700E6BE96 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				289FFF161BE4699000CFD5C5 /* NavigationBarIcons */,
 				28F859AA1BBB53C500F7738C /* Tutorial */,
 				288F123D1B752EC90001E0B0 /* Seahorse */,
 				288F12381B752A400001E0B0 /* Fonts */,
@@ -925,6 +943,19 @@
 				289D2F911BAA6892007F719B /* action_icon_trash.png */,
 			);
 			name = Actions;
+			sourceTree = "<group>";
+		};
+		289FFF161BE4699000CFD5C5 /* NavigationBarIcons */ = {
+			isa = PBXGroup;
+			children = (
+				289FFF1D1BE46B0600CFD5C5 /* navFlag.png */,
+				289FFF1E1BE46B0600CFD5C5 /* navFlag@2x.png */,
+				289FFF1F1BE46B0600CFD5C5 /* navFlag@3x.png */,
+				289FFF171BE469A700CFD5C5 /* navBucket.png */,
+				289FFF181BE469A700CFD5C5 /* navBucket@2x.png */,
+				289FFF191BE469A700CFD5C5 /* navBucket@3x.png */,
+			);
+			name = NavigationBarIcons;
 			sourceTree = "<group>";
 		};
 		28AC966F1BC4879100A5C1E9 /* Logos */ = {
@@ -1278,7 +1309,10 @@
 				28F859A91BBA075000F7738C /* bucket_detail_icon.png in Resources */,
 				28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */,
 				28ED41EE1BA09882000292AE /* SHItemMessageTableViewCell.xib in Resources */,
+				289FFF221BE46B0600CFD5C5 /* navFlag@3x.png in Resources */,
+				289FFF201BE46B0600CFD5C5 /* navFlag.png in Resources */,
 				283700901A6F366E00C16E87 /* 122-stats.png in Resources */,
+				289FFF1B1BE469A700CFD5C5 /* navBucket@2x.png in Resources */,
 				28431DDC1A8D692E00B12548 /* 11-clock.png in Resources */,
 				28CD3FBC1AEA0D9900B3ABB6 /* all-screen.jpg in Resources */,
 				2837008D1A6F34F000C16E87 /* 06-magnify@2x.png in Resources */,
@@ -1289,6 +1323,7 @@
 				28ED41DC1B9FFA13000292AE /* avatar.png in Resources */,
 				288A74631B7531DD00F6A618 /* search@3x.png in Resources */,
 				288F122C1B7520DB0001E0B0 /* Seahorse.storyboard in Resources */,
+				289FFF1C1BE469A700CFD5C5 /* navBucket@3x.png in Resources */,
 				2837008C1A6F34F000C16E87 /* 06-magnify.png in Resources */,
 				289D2F8E1BAA60F0007F719B /* SHBucketActionTableViewCell.xib in Resources */,
 				288F123A1B752C240001E0B0 /* Roboto-Regular.ttf in Resources */,
@@ -1310,6 +1345,7 @@
 				28ACA3A21B8B7CF900D7B215 /* SHBucketTableViewCell.xib in Resources */,
 				28419A2C1BB20AC900CF21A6 /* nudge_swipe@2x.png in Resources */,
 				28ED41FF1BA0F637000292AE /* Roboto-Medium.ttf in Resources */,
+				289FFF211BE46B0600CFD5C5 /* navFlag@2x.png in Resources */,
 				28ED42521BA357F0000292AE /* compose_media@3x.png in Resources */,
 				28ED42211BA25245000292AE /* nudge_detail_icon.png in Resources */,
 				28CD3FC41AEADC1A00B3ABB6 /* permission-screen.jpg in Resources */,
@@ -1323,6 +1359,7 @@
 				281CA922196C29F800E6BE96 /* 179-notepad.png in Resources */,
 				28ED41F31BA0A3EF000292AE /* SHItemAuthorTableViewCell.xib in Resources */,
 				288A74751B7859F600F6A618 /* SHItemTableViewCell.xib in Resources */,
+				289FFF1A1BE469A700CFD5C5 /* navBucket.png in Resources */,
 				2837E7FE1ABD082C0089FA33 /* Photo-100-blue.png in Resources */,
 				288A747C1B7985DA00F6A618 /* trash_icon_white_swipe.png in Resources */,
 			);
@@ -1418,6 +1455,7 @@
 				289D2F881BAA51BF007F719B /* SHCollaboratorTableViewCell.m in Sources */,
 				28ED41E31BA089AC000292AE /* SHItemViewController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,
+				289FFF251BE46D1900CFD5C5 /* SHEditTagViewController.m in Sources */,
 				2837E8061AC11D2A0089FA33 /* HCInitialViewController.m in Sources */,
 				288F12371B7527AF0001E0B0 /* UIColor+HCColors.m in Sources */,
 				2837E8031AC0A8DC0089FA33 /* UIPickerView+CustomPicker.m in Sources */,

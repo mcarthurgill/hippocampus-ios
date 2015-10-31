@@ -125,7 +125,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, self.tableView.contentInset.bottom+20.0f, self.tableView.contentInset.right)];
     
     if (![self.localKey isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
-        UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear.png"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemAction:)];
+        UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navBucket.png"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemAction:)];
         [self.navigationItem setRightBarButtonItem:item];
     }
     

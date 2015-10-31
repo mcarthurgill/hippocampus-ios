@@ -41,7 +41,9 @@
 - (UIColor*) bucketColor;
 
 - (NSMutableArray*) tagsArray;
+- (NSMutableArray*) tagsArrayExcludingKey:(NSString*)key;
 - (BOOL) hasTags;
+- (BOOL) hasTagsExcludingKey:(NSString*)key;
 
 - (BOOL) isAllThoughtsBucket;
 

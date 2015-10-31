@@ -10,6 +10,7 @@
 #import "SHBucketTableViewCell.h"
 #import "SHMessagesViewController.h"
 #import "SHLoadingTableViewCell.h"
+#import "SHEditTagViewController.h"
 
 static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
@@ -54,6 +55,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     //[self.tableView setContentInset:UIEdgeInsetsMake(64.0f, 0, 0, 0)];
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
+    
+    UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navFlag.png"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemAction:)];
+    [self.navigationItem setRightBarButtonItem:item];
 }
 
 - (void) setTitle
@@ -78,6 +82,13 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     // Dispose of any resources that can be recreated.
 }
 
+- (void) rightBarButtonItemAction:(UIBarButtonItem*)button
+{
+    SHEditTagViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHEditTagViewController"];
+    [vc setLocalKey:self.localKey];
+    [self setTitle:nil];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 
 
@@ -149,7 +160,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     SHBucketTableViewCell* cell = (SHBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:bucketCellIdentifier];
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
-        [cell configureWithBucketLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
+        [cell configureWithBucketLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row] tagLocalKey:self.localKey];
     }
     [cell layoutIfNeeded];
     return cell;

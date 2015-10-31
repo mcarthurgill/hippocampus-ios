@@ -58,6 +58,12 @@
     } else if ([self.action isEqualToString:@"delete"]) {
         [self.label setText:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] firstName]]];
         [self.imageView setImage:[UIImage imageNamed:@"action_icon_trash.png"]];
+    }if ([self.action isEqualToString:@"renameTag"]) {
+        [self.label setText:@"Rename Tag"];
+        [self.imageView setImage:[UIImage imageNamed:@"navFlag.png"]];
+    } else if ([self.action isEqualToString:@"deleteTag"]) {
+        [self.label setText:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] tagName]]];
+        [self.imageView setImage:[UIImage imageNamed:@"action_icon_trash.png"]];
     } else if ([self.action isEqualToString:@"leave"]) {
         [self.label setText:[NSString stringWithFormat:@"Leave \"%@\"", [[self bucket] firstName]]];
         [self.imageView setImage:nil];

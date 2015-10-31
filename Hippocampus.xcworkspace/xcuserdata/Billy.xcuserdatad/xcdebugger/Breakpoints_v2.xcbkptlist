@@ -2481,11 +2481,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHBucketTableViewCell.m"
-            timestampString = "467913933.33389"
+            timestampString = "467942987.953135"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "-configureCollaborativeView"
             landmarkType = "5">
          </BreakpointContent>
@@ -2497,11 +2497,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHBucketTableViewCell.m"
-            timestampString = "467913933.33389"
+            timestampString = "467942987.953135"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "156"
-            endingLineNumber = "156"
+            startingLineNumber = "163"
+            endingLineNumber = "163"
             landmarkName = "-configureCollaborativeView"
             landmarkType = "5">
          </BreakpointContent>
@@ -2945,11 +2945,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHBucketTableViewCell.m"
-            timestampString = "467913933.33389"
+            timestampString = "467942987.953135"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "218"
-            endingLineNumber = "218"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "-handleTagButtons"
             landmarkType = "5">
          </BreakpointContent>

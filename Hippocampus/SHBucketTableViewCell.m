@@ -18,6 +18,7 @@
 @implementation SHBucketTableViewCell
 
 @synthesize bucketLocalKey;
+@synthesize tagLocalKey;
 
 @synthesize longPress;
 
@@ -115,7 +116,13 @@
 
 - (void) configureWithBucketLocalKey:(NSString*)key
 {
+    [self configureWithBucketLocalKey:key tagLocalKey:nil];
+}
+
+- (void) configureWithBucketLocalKey:(NSString*)key tagLocalKey:(NSString*)tlk
+{
     [self setBucketLocalKey:key];
+    [self setTagLocalKey:tlk];
     
     NSMutableDictionary* bucket = [LXObjectManager objectWithLocalKey:self.bucketLocalKey];
     
@@ -168,7 +175,7 @@
     //for (UIView* v in self.collaboratorImages) {
     //    [v setHidden:YES];
     //}
-    if ([[self bucket] hasTags]) {
+    if ([[self bucket] hasTagsExcludingKey:self.tagLocalKey]) {
         self.tagsViewHeightConstraint.constant = TAG_VIEW_HEIGHT;
         [self.tagsView setHidden:NO];
 //        NSInteger index = 0;
@@ -214,7 +221,7 @@
 - (void) handleTagButtons
 {
     [self hideTagButtons];
-    if ([self bucket] && [[self bucket] hasTags]) {
+    if ([self bucket] && [[self bucket] hasTagsExcludingKey:self.tagLocalKey]) {
         [self createTagButtons];
     }
 }
@@ -224,7 +231,7 @@
     self.tagButtonConstraints = [[NSMutableArray alloc] init];
     
     NSInteger count = 0;
-    for (NSMutableDictionary* tag in [[self bucket] tagsArray]) {
+    for (NSMutableDictionary* tag in [[self bucket] tagsArrayExcludingKey:self.tagLocalKey]) {
         if ([tag belongsToCurrentUser]) {
             UIButton* button = [self buttonForTag:tag atIndex:count];
             [button setTag:count];

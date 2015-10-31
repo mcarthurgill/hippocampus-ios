@@ -282,9 +282,31 @@ static NSInteger maxRecentCount = 6;
     return [[NSMutableArray alloc] init];
 }
 
+- (NSMutableArray*) tagsArrayExcludingKey:(NSString*)key
+{
+    if (!key) {
+        return [self tagsArray];
+    }
+    if ([self objectForKey:@"tags_array"] && NULL_TO_NIL([self objectForKey:@"tags_array"])) {
+        NSMutableArray* temp = [[NSMutableArray alloc] init];
+        for (NSDictionary* tag in [self objectForKey:@"tags_array"]) {
+            if ([tag belongsToCurrentUser] && ![[tag objectForKey:@"local_key"] isEqualToString:key]) {
+                [temp addObject:tag];
+            }
+        }
+        return temp;
+    }
+    return [[NSMutableArray alloc] init];
+}
+
 - (BOOL) hasTags
 {
     return [[self tagsArray] count] > 0;
+}
+
+- (BOOL) hasTagsExcludingKey:(NSString*)key
+{
+    return [[self tagsArrayExcludingKey:key] count] > 0;
 }
 
 

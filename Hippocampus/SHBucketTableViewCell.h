@@ -11,7 +11,10 @@
 @interface SHBucketTableViewCell : UITableViewCell
 
 @property (strong, nonatomic) NSString* bucketLocalKey;
+@property (strong, nonatomic) NSString* tagLocalKey;
+
 - (void) configureWithBucketLocalKey:(NSString*)key;
+- (void) configureWithBucketLocalKey:(NSString*)key tagLocalKey:(NSString*)tlk;
 
 @property (strong, nonatomic) NSMutableArray* collaboratorImages;
 

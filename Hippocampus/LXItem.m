@@ -124,6 +124,27 @@
     return temp;
 }
 
+- (NSMutableArray*) bucketsArrayExcludingLocalKey:(NSString*)key
+{
+    if (!key) {
+        return [self bucketsArray];
+    }
+    NSMutableArray* temp = [[NSMutableArray alloc] init];
+    if ([self objectForKey:@"buckets_array"] && [[self objectForKey:@"buckets_array"] count] > 0) {
+        for (NSMutableDictionary* bucket in [self objectForKey:@"buckets_array"]) {
+            if ([bucket hasAuthorizedUserID:[[[LXSession thisSession] user] ID]] && ![[bucket localKey] isEqualToString:key]) {
+                [temp addObject:bucket];
+            }
+        }
+    }
+    return temp;
+}
+
+- (BOOL) hasBucketsArrayExcludingLocalKey:(NSString*)key
+{
+    return [[self bucketsArrayExcludingLocalKey:key] count] > 0;
+}
+
 
 - (void) updateBucketsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {

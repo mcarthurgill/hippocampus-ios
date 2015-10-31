@@ -319,10 +319,15 @@
     }
 }
 
+- (NSArray*) drawFromBucketsArray
+{
+    return (![self bucket] || [[self bucket] isAllThoughtsBucket]) ? ([self.item bucketsArray] ? [self.item bucketsArray] : @[]) : [self.item bucketsArrayExcludingLocalKey:[[self bucket] localKey]];
+}
+
 - (void) handleBucketButtons
 {
     [self deleteBucketButtons];
-    if ((![self bucket] || [[self bucket] isAllThoughtsBucket]) && [self.item bucketsArray]) {
+    if ([self drawFromBucketsArray]) {
         [self createBucketButtons];
     }
 }
@@ -332,7 +337,7 @@
     self.bucketButtonConstraints = [[NSMutableArray alloc] init];
     
     NSInteger count = 0;
-    for (NSMutableDictionary* bucketStub in [self.item bucketsArray]) {
+    for (NSMutableDictionary* bucketStub in [self drawFromBucketsArray]) {
         if ([bucketStub hasAuthorizedUserID:[[[LXSession thisSession] user] ID]]) {
             UIButton* button = [self buttonForBucket:bucketStub atIndex:count];
             [button setTag:count];

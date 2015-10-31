@@ -30,6 +30,8 @@
 - (NSString*) authorName;
 
 - (NSMutableArray*) bucketsArray;
+- (NSMutableArray*) bucketsArrayExcludingLocalKey:(NSString*)key;
+- (BOOL) hasBucketsArrayExcludingLocalKey:(NSString*)key;
 
 - (void) updateBucketsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
