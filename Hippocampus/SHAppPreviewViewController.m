@@ -41,7 +41,12 @@
 - (void) setupAppearance
 {
     [[self.topRightButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
-    [self.topRightButton setTintColor:[UIColor SHColorBlue]];
+    [self.topRightButton setTintColor:[UIColor whiteColor]];
+    [self.topRightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [[self.topRightButton titleLabel] setTextColor:[UIColor whiteColor]];
+    [self.topRightButton.layer setCornerRadius:4.0f];
+    [self.topRightButton setClipsToBounds:YES];
+    [self.topRightButton setBackgroundColor:[UIColor SHBlue]];
 }
 
 - (void) setupVideo
