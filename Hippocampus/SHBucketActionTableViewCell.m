@@ -54,6 +54,7 @@
     
     [self.label setFont:[UIFont titleFontWithSize:14.0f]];
     [self.label setTextColor:[UIColor SHBlue]];
+    [self.imageView setHidden:NO];
     
     if ([self.action isEqualToString:@"rename"]) {
         [self.label setText:@"Rename Bucket"];
@@ -83,11 +84,12 @@
     
     [self.label setFont:[UIFont secondaryFontWithSize:18.0f]];
     [self.label setTextColor:[UIColor SHFontDarkGray]];
+    [self.imageView setHidden:NO];
     
     if (!tag) {
         [self.label setText:@"+ Add Tag"];
         [self.label setTextColor:[UIColor SHBlue]];
-        [self.imageView setImage:[UIImage imageNamed:@"navFlag.png"]];
+        [self.imageView setHidden:YES];
     } else {
         [self.label setText:[tag tagName]];
         [self.imageView setImage:[UIImage imageNamed:@"navFlag.png"]];

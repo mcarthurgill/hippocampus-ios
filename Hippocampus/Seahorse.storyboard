@@ -1533,7 +1533,7 @@
                                 </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsMultipleSelection="YES" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="kI6-2V-uFn">
-                                <rect key="frame" x="4" y="164" width="592" height="436"/>
+                                <rect key="frame" x="4" y="166" width="592" height="434"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="EWx-6i-Dmn" id="e01-U2-oyQ"/>
@@ -1657,7 +1657,7 @@
                             <constraint firstItem="E3T-xN-MMm" firstAttribute="centerX" secondItem="xKf-hM-B02" secondAttribute="centerX" id="akC-IS-qqL"/>
                             <constraint firstItem="kI6-2V-uFn" firstAttribute="top" secondItem="vIU-KV-axb" secondAttribute="top" constant="44" id="bb9-ap-8IB"/>
                             <constraint firstItem="E3T-xN-MMm" firstAttribute="height" secondItem="xKf-hM-B02" secondAttribute="height" id="dJd-rC-axf"/>
-                            <constraint firstItem="kI6-2V-uFn" firstAttribute="top" secondItem="vIU-KV-axb" secondAttribute="bottom" constant="-2" id="hVy-Vl-ks9"/>
+                            <constraint firstItem="kI6-2V-uFn" firstAttribute="top" secondItem="vIU-KV-axb" secondAttribute="bottom" id="hVy-Vl-ks9"/>
                             <constraint firstItem="vIU-KV-axb" firstAttribute="leading" secondItem="8xQ-7k-vak" secondAttribute="leadingMargin" constant="-16" id="naX-Dt-J76"/>
                             <constraint firstItem="xKf-hM-B02" firstAttribute="top" secondItem="LaA-4Q-7Qs" secondAttribute="bottom" constant="2" id="o4h-0k-CqC"/>
                             <constraint firstItem="kI6-2V-uFn" firstAttribute="leading" secondItem="vIU-KV-axb" secondAttribute="leading" id="sz9-dJ-sqv"/>
