@@ -324,6 +324,13 @@
             [[[channelEvent data] mutableCopy] refreshFromServerWithSuccess:^(id responseObject){} failure:nil];
         }
     }];
+    [channel bindToEventNamed:@"tag-save" handleWithBlock:^(PTPusherEvent *channelEvent) {
+        // channelEvent.data is a NSDictionary of the JSON object received
+        if ([[channelEvent data] objectType] && [[[channelEvent data] objectType] isEqualToString:@"tag"]) {
+            [LXObjectManager assignObject:[channelEvent data]];
+            [[LXObjectManager defaultManager] refreshObjectWithKey:[[[channelEvent data] mutableCopy] localKey] success:nil failure:nil];
+        }
+    }];
 }
 
 

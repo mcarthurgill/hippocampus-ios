@@ -21,6 +21,7 @@
 
 @synthesize segmentControl;
 @synthesize containerView;
+@synthesize currentPresentedViewController;
 @synthesize viewControllersCached;
 @synthesize paywallController;
 
@@ -84,10 +85,19 @@
 
 - (IBAction)segmentControlAction:(UISegmentedControl*)sender
 {
-    if ([sender selectedSegmentIndex] == 0) {
+    NSString* currentTitle = [sender titleForSegmentAtIndex:[sender selectedSegmentIndex]];
+    if ([sender selectedSegmentIndex] == 0 && ![currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
         [self switchContainerToView:@"thoughtsViewController" fromView:@"bucketsViewController"];
-    } else if ([sender selectedSegmentIndex] == 1) {
-        [self switchContainerToView:@"bucketsViewController" fromView:@"thoughtsViewController"];
+    } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
+        if ([currentTitle isEqualToString:@"Buckets"]) {
+            [self switchContainerToView:@"bucketsViewController" fromView:@"thoughtsViewController"];
+        } else if ([currentTitle isEqualToString:@"Tags"]) {
+            [self switchContainerToView:@"tagsViewController" fromView:@"thoughtsViewController"];
+        }
+    } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"bucketsViewController"]) {
+        [self switchContainerToView:@"tagsViewController" fromView:@"bucketsViewController"];
+    } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"tagsViewController"]) {
+        [self switchContainerToView:@"bucketsViewController" fromView:@"tagsViewController"];
     }
 }
 
@@ -140,10 +150,20 @@
         [self setTitle:@"Thoughts"];
     } else if ([toName isEqualToString:@"bucketsViewController"]) {
         [self setTitle:@"Buckets"];
+        [self.segmentControl setTitle:@"Buckets" forSegmentAtIndex:1];
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [[(SHBucketsViewController*)vc tableView] reloadData];
         });
+    } else if ([toName isEqualToString:@"tagsViewController"]) {
+        [self setTitle:@"Tags"];
+        [self.segmentControl setTitle:@"Tags" forSegmentAtIndex:1];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            //ATTENTION!
+            //[[(SHBucketsViewController*)vc tableView] reloadData];
+        });
     }
+    
+    [self setCurrentPresentedViewController:toName];
 }
 
 - (UIViewController*) loadViewController:(NSString*)viewControllerName

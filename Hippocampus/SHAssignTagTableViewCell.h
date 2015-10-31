@@ -12,7 +12,9 @@
 
 @property (strong, nonatomic) NSString* localKey;
 
+@property (strong, nonatomic) IBOutlet UIView *card;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *secondaryLabel;
 
 - (void) configureWithTagLocalKey:(NSString*)lk;
 

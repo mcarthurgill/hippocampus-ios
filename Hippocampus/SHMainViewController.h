@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @property (strong, nonatomic) IBOutlet UIView *containerView;
+@property (strong, nonatomic) NSString* currentPresentedViewController;
 @property (strong, nonatomic) NSMutableDictionary* viewControllersCached;
 @property (strong, nonatomic) id paywallController;
 
