@@ -71,6 +71,12 @@
                                                  failure:^(NSError* error){
                                                  }
      ];
+    [[LXObjectManager defaultManager] refreshObjectTypes:@"tags" withAboveUpdatedAt:nil
+                                                 success:^(id responseObject){
+                                                 }
+                                                 failure:^(NSError* error){
+                                                 }
+     ];
 }
 
 - (BOOL) shouldPresentIntroductionViews
