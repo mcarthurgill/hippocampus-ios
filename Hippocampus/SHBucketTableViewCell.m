@@ -7,15 +7,20 @@
 //
 
 #import "SHBucketTableViewCell.h"
+#import "SHAssignTagsViewController.h"
 @import QuartzCore;
 
 #define COLLABORATOR_HEIGHT 48.0f
 #define COLLABORATOR_IMAGE_HEIGHT 32.0f
-#define TAG_HEIGHT 32.0f
+#define TAG_VIEW_HEIGHT 30.0f
+#define TAG_HEIGHT 24.0f
 
 @implementation SHBucketTableViewCell
 
 @synthesize bucketLocalKey;
+
+@synthesize longPress;
+
 @synthesize card;
 @synthesize collaboratorImages;
 @synthesize bucketName;
@@ -34,6 +39,8 @@
 - (void)awakeFromNib
 {
     [self setupAppearanceSettings];
+    
+    [self setupGestureRecognizers];
     
     self.collaboratorImages = [[NSMutableArray alloc] init];
     self.tagButtons = [[NSMutableArray alloc] init];
@@ -64,7 +71,7 @@
     CALayer *TopBorder2 = [CALayer layer];
     TopBorder2.frame = CGRectMake(0.0f, 0.0f, self.contentView.bounds.size.width*3, 1.0f);
     TopBorder2.backgroundColor = [UIColor SHLightGray].CGColor;
-    [self.tagsView.layer addSublayer:TopBorder2];
+    //[self.tagsView.layer addSublayer:TopBorder2];
     
     [self.tagsView setBackgroundColor:[UIColor clearColor]];
     
@@ -162,7 +169,7 @@
     //    [v setHidden:YES];
     //}
     if ([[self bucket] hasTags]) {
-        self.tagsViewHeightConstraint.constant = COLLABORATOR_HEIGHT;
+        self.tagsViewHeightConstraint.constant = TAG_VIEW_HEIGHT;
         [self.tagsView setHidden:NO];
 //        NSInteger index = 0;
 //        for (NSDictionary* tag in [[self bucket] tagsArray]) {
@@ -263,7 +270,7 @@
     [self.tagsView addSubview:button];
     
     [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:TAG_HEIGHT] toView:button];
-    [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.tagsView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0.0] toView:self.tagsView];
+    [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.tagsView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:-6.0] toView:self.tagsView];
     if (index == 0) {
         [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.tagsView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:10.0] toView:self.tagsView];
     } else {
@@ -298,7 +305,33 @@
 
 - (void) buttonTapped:(UIButton*)sender
 {
-    
+    if ([sender tag] < [[[self bucket] tagsArray] count]) {
+        NSMutableDictionary* tag = [[[self bucket] tagsArray] objectAtIndex:[sender tag]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:([self bucket] ? @"pushTagViewController" : @"searchPushTagViewController") object:nil userInfo:@{@"tag":tag}];
+    }
+}
+
+
+
+# pragma mark long press
+
+- (void) setupGestureRecognizers
+{
+    if (!self.longPress) {
+        self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressAction:)];
+        [self addGestureRecognizer:longPress];
+    }
+}
+
+
+- (IBAction)longPressAction:(UILongPressGestureRecognizer*)sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan){
+        UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignTagsViewController"];
+        SHAssignTagsViewController* vc = [[nc viewControllers] firstObject];
+        [vc setLocalKey:[[self bucket] localKey]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc}];
+    }
 }
 
 @end

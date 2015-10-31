@@ -15,6 +15,7 @@ static SHSearch* defaultManager = nil;
 @synthesize cachedBuckets;
 @synthesize cachedItems;
 @synthesize cachedContacts;
+@synthesize cachedTags;
 
 
 //constructor
@@ -52,6 +53,7 @@ static SHSearch* defaultManager = nil;
     self.cachedItems = [[NSMutableDictionary alloc] init];
     self.cachedBuckets = [[NSMutableDictionary alloc] init];
     self.cachedContacts = [[NSMutableDictionary alloc] init];
+    self.cachedTags = [[NSMutableDictionary alloc] init];
 }
 
 
@@ -71,6 +73,8 @@ static SHSearch* defaultManager = nil;
         return [self.cachedBuckets objectForKey:foundTerm];
     } else if (foundTerm && [type isEqualToString:@"contacts"]) {
         return [self.cachedContacts objectForKey:foundTerm];
+    } else if (foundTerm && [type isEqualToString:@"tagKeys"]) {
+        return [self.cachedTags objectForKey:foundTerm];
     }
     return nil;
 }
@@ -95,6 +99,13 @@ static SHSearch* defaultManager = nil;
     } else if ([type isEqualToString:@"contacts"]) {
         while ([term length] > 0) {
             if ([self.cachedContacts objectForKey:term])
+                return term;
+            term = [term substringToIndex:(term.length-1)];
+        }
+        return nil;
+    } else if ([type isEqualToString:@"tagKeys"]) {
+        while ([term length] > 0) {
+            if ([self.cachedTags objectForKey:term])
                 return term;
             term = [term substringToIndex:(term.length-1)];
         }
@@ -128,22 +139,22 @@ static SHSearch* defaultManager = nil;
                                });
                            }
          ];
-        [self localBucketSearchWithTerm:term
-                                success:^(id responseObject){
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        if (successCallback) {
-                                            successCallback(responseObject);
-                                        }
-                                    });
-                                }
-                                failure:^(NSError* error){
-                                    dispatch_async(dispatch_get_main_queue(), ^{
-                                        if (failureCallback) {
-                                            failureCallback(error);
-                                        }
-                                    });
-                                }
-         ];
+//        [self localBucketSearchWithTerm:term
+//                                success:^(id responseObject){
+//                                    dispatch_async(dispatch_get_main_queue(), ^{
+//                                        if (successCallback) {
+//                                            successCallback(responseObject);
+//                                        }
+//                                    });
+//                                }
+//                                failure:^(NSError* error){
+//                                    dispatch_async(dispatch_get_main_queue(), ^{
+//                                        if (failureCallback) {
+//                                            failureCallback(error);
+//                                        }
+//                                    });
+//                                }
+//         ];
     });
 }
 
@@ -230,6 +241,35 @@ static SHSearch* defaultManager = nil;
     return [[LXAddressBook thisBook] contactsForAssignment];
 }
 
+- (void) localTagSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    term = [term lowercaseString];
+    
+    NSArray* searchWithTagKeysArray = [self pullFromTagKeysArray:term];
+    NSMutableArray* newTagKeys = [[NSMutableArray alloc] init];
+    NSLog(@"array: %@", searchWithTagKeysArray);
+    for (NSString* localKey in searchWithTagKeysArray) {
+        NSMutableDictionary* tag = [LXObjectManager objectWithLocalKey:localKey];
+        if (tag && [tag tagName] && [[[tag tagName] lowercaseString] rangeOfString:term].location != NSNotFound) {
+            [newTagKeys addObject:[tag localKey]];
+        }
+    }
+    [self.cachedTags setObject:newTagKeys forKey:term];
+    if (successCallback) {
+        successCallback(newTagKeys);
+    }
+}
+
+- (NSArray*) pullFromTagKeysArray:(NSString*)key
+{
+    while (key && [key length] > 1) {
+        key = [key substringToIndex:([key length]-1)];
+        if ([self.cachedTags objectForKey:key]) {
+            return [self.cachedTags objectForKey:key];
+        }
+    }
+    return [LXObjectManager objectWithLocalKey:@"tagLocalKeys"];
+}
 
 
 

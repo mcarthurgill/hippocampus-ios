@@ -11,5 +11,8 @@
 @interface NSMutableDictionary (LXTag)
 
 - (NSString*) tagName;
+- (NSArray*) bucketKeys;
+
++ (void) tagKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 @end

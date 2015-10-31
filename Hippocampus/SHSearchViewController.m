@@ -12,6 +12,7 @@
 #import "SHSearch.h"
 #import "SHMessagesViewController.h"
 #import "SHItemViewController.h"
+#import "SHTagDetailViewController.h"
 
 static NSString *itemCellIdentifier = @"SHItemTableViewCell";
 static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
@@ -36,6 +37,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     [self setupSettings];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushBucketViewController:) name:@"searchPushBucketViewController" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushTagViewController:) name:@"searchPushTagViewController" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentViewController:) name:@"presentViewController" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBlankThoughtsVC:) name:@"refreshBlankThoughtsVC" object:nil];
 }
@@ -285,6 +287,13 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 {
     SHMessagesViewController* vc = (SHMessagesViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
     [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void) pushTagViewController:(NSNotification*)notification
+{
+    SHTagDetailViewController* vc = (SHTagDetailViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHTagDetailViewController"];
+    [vc setLocalKey:[[[notification userInfo] objectForKey:@"tag"] localKey]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

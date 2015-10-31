@@ -15,6 +15,8 @@
 
 @property (strong, nonatomic) NSMutableArray* collaboratorImages;
 
+@property (strong, nonatomic) UILongPressGestureRecognizer* longPress;
+
 @property (strong, nonatomic) IBOutlet UIView *card;
 @property (strong, nonatomic) IBOutlet UILabel *bucketName;
 @property (strong, nonatomic) IBOutlet UILabel *bucketItemMessage;

@@ -20,8 +20,7 @@
     inverted = NO;
     
     if (!inverted) {
-        self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
-        inverted = YES;
+        [self invert];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedObject:) name:@"refreshedObject" object:nil];
@@ -72,6 +71,19 @@
         return (UITableView *)self.superview.superview.superview;
     else
         return nil;
+}
+
+- (void) invertIfUpsideDown
+{
+    if (inverted) {
+        [self invert];
+    }
+}
+
+- (void) invert
+{
+    self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+    inverted = !inverted;
 }
 
 @end

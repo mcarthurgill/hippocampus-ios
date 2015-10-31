@@ -270,20 +270,21 @@ static NSInteger maxRecentCount = 6;
 
 - (NSMutableArray*) tagsArray
 {
-    return [self objectForKey:@"tags_array"] && NULL_TO_NIL([self objectForKey:@"tags_array"]) ? [self objectForKey:@"tags_array"] : [@[] mutableCopy];
+    if ([self objectForKey:@"tags_array"] && NULL_TO_NIL([self objectForKey:@"tags_array"])) {
+        NSMutableArray* temp = [[NSMutableArray alloc] init];
+        for (NSDictionary* tag in [self objectForKey:@"tags_array"]) {
+            if ([tag belongsToCurrentUser]) {
+                [temp addObject:tag];
+            }
+        }
+        return temp;
+    }
+    return [[NSMutableArray alloc] init];
 }
 
 - (BOOL) hasTags
 {
-    if ([[self tagsArray] count] < 1) {
-        return NO;
-    }
-    for (NSDictionary* tag in [self tagsArray]) {
-        if ([tag belongsToCurrentUser]) {
-            return YES;
-        }
-    }
-    return NO;
+    return [[self tagsArray] count] > 0;
 }
 
 
@@ -298,5 +299,99 @@ static NSInteger maxRecentCount = 6;
     return ([self objectForKey:@"authorized_user_ids"] && [[self objectForKey:@"authorized_user_ids"] containsObject:[[[LXSession thisSession] user] ID]]) || ([self objectForKey:@"authorized_user_ids"] && [[self objectForKey:@"authorized_user_ids"] containsObject:[NSString stringWithFormat:@"%@",[[[LXSession thisSession] user] ID]]]);
 }
 
+
+
+
+# pragma mark tags
+
+- (void) updateTagsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    //OLD TAG KEYS
+    NSMutableArray* oldTagKeys = [[NSMutableArray alloc] init];
+    if ([self tagsArray]) {
+        for (NSMutableDictionary* tag in [self tagsArray]) {
+            [oldTagKeys addObject:[tag localKey]];
+        }
+    }
+    //CREATE NEW TAGS ARRAY
+    NSMutableArray* newTagsArray = [[NSMutableArray alloc] init];
+    NSMutableArray* unsavedNewTagsArray = [[NSMutableArray alloc] init];
+    for (NSString* key in newLocalKeys) {
+        NSMutableDictionary* tempTag = [LXObjectManager objectWithLocalKey:key];
+        if (tempTag) {
+            [newTagsArray addObject:tempTag];
+            if (![tempTag ID]) {
+                [unsavedNewTagsArray addObject:tempTag];
+            }
+        }
+        if ([oldTagKeys containsObject:key]) {
+            [oldTagKeys removeObject:key];
+        }
+    }
+    
+    //SAVE THIS ITEM
+    [self setObject:newTagsArray forKey:@"tags_array"];
+    [self removeObjectForKey:@"updated_at"];
+    [LXObjectManager assignObject:self];
+    
+    if ([unsavedNewTagsArray count] == 0) {
+        //save now
+        [self sendUpdateTagsWithLocalKeys:newLocalKeys
+                                     success:^(id responseObject){
+                                         if (successCallback) {
+                                             successCallback(responseObject);
+                                         }
+                                     }
+                                     failure:^(NSError* error){
+                                         if (failureCallback) {
+                                             failureCallback(error);
+                                         }
+                                     }
+         ];
+    } else {
+        __block NSInteger currentNumberSaved = 0;
+        for (NSMutableDictionary* tag in unsavedNewTagsArray) {
+            [tag saveRemote:^(id responseObject){
+                ++currentNumberSaved;
+                if (currentNumberSaved == [unsavedNewTagsArray count]) {
+                    [NSMutableDictionary tagKeysWithSuccess:nil failure:nil];
+                    //save now
+                    [self sendUpdateTagsWithLocalKeys:newLocalKeys
+                                                 success:^(id responseObject){
+                                                     if (successCallback) {
+                                                         successCallback(responseObject);
+                                                     }
+                                                 }
+                                                 failure:^(NSError* error){
+                                                     if (failureCallback) {
+                                                         failureCallback(error);
+                                                     }
+                                                 }
+                     ];
+                }
+            } failure:^(NSError* error){}];
+        }
+    }
+    
+}
+
+- (void) sendUpdateTagsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    //SEND TO SERVER
+    [[LXServer shared] requestPath:@"/buckets/update_tags" withMethod:@"PUT" withParamaters:@{@"local_key":[self localKey],@"local_keys":newLocalKeys} authType:@"user"
+                           success:^(id responseObject) {
+                               //SAVE LOCALLY
+                               [LXObjectManager assignObject:responseObject];
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           }
+                           failure:^(NSError* error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
 
 @end

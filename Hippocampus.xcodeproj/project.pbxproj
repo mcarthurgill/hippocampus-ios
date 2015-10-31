@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		2810B9B21BE3233F003D20F8 /* LXTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810B9B11BE3233F003D20F8 /* LXTag.m */; };
+		2810B9B61BE3CB8B003D20F8 /* SHTagsIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810B9B51BE3CB8B003D20F8 /* SHTagsIndexViewController.m */; };
+		2810B9B91BE3CB99003D20F8 /* SHTagDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810B9B81BE3CB99003D20F8 /* SHTagDetailViewController.m */; };
+		2810B9BC1BE3D54F003D20F8 /* SHAssignTagsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810B9BB1BE3D54F003D20F8 /* SHAssignTagsViewController.m */; };
+		2810B9C01BE3D747003D20F8 /* SHAssignTagTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810B9BF1BE3D747003D20F8 /* SHAssignTagTableViewCell.m */; };
 		281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CB1951EC7E00E6BE96 /* Foundation.framework */; };
 		281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */; };
 		281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CF1951EC7E00E6BE96 /* UIKit.framework */; };
@@ -103,6 +107,7 @@
 		289D2F8D1BAA60F0007F719B /* SHBucketActionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 289D2F8B1BAA60F0007F719B /* SHBucketActionTableViewCell.m */; };
 		289D2F8E1BAA60F0007F719B /* SHBucketActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289D2F8C1BAA60F0007F719B /* SHBucketActionTableViewCell.xib */; };
 		289D2F931BAA6892007F719B /* action_icon_trash.png in Resources */ = {isa = PBXBuildFile; fileRef = 289D2F911BAA6892007F719B /* action_icon_trash.png */; };
+		289FFF151BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289FFF141BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib */; };
 		28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A0857B1A700CB200BA1368 /* LXString+NSString.m */; };
 		28AC96721BC487A700A5C1E9 /* 60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28AC96701BC487A700A5C1E9 /* 60x60@2x.png */; };
 		28AC96731BC487A700A5C1E9 /* 60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28AC96711BC487A700A5C1E9 /* 60x60@3x.png */; };
@@ -190,6 +195,14 @@
 /* Begin PBXFileReference section */
 		2810B9B01BE3233F003D20F8 /* LXTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXTag.h; sourceTree = "<group>"; };
 		2810B9B11BE3233F003D20F8 /* LXTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXTag.m; sourceTree = "<group>"; };
+		2810B9B41BE3CB8B003D20F8 /* SHTagsIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTagsIndexViewController.h; sourceTree = "<group>"; };
+		2810B9B51BE3CB8B003D20F8 /* SHTagsIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTagsIndexViewController.m; sourceTree = "<group>"; };
+		2810B9B71BE3CB99003D20F8 /* SHTagDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTagDetailViewController.h; sourceTree = "<group>"; };
+		2810B9B81BE3CB99003D20F8 /* SHTagDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHTagDetailViewController.m; sourceTree = "<group>"; };
+		2810B9BA1BE3D54F003D20F8 /* SHAssignTagsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAssignTagsViewController.h; sourceTree = "<group>"; };
+		2810B9BB1BE3D54F003D20F8 /* SHAssignTagsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAssignTagsViewController.m; sourceTree = "<group>"; };
+		2810B9BE1BE3D747003D20F8 /* SHAssignTagTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAssignTagTableViewCell.h; sourceTree = "<group>"; };
+		2810B9BF1BE3D747003D20F8 /* SHAssignTagTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAssignTagTableViewCell.m; sourceTree = "<group>"; };
 		281CA8C81951EC7E00E6BE96 /* Hippocampus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hippocampus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		281CA8CB1951EC7E00E6BE96 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -323,6 +336,7 @@
 		289D2F8B1BAA60F0007F719B /* SHBucketActionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHBucketActionTableViewCell.m; sourceTree = "<group>"; };
 		289D2F8C1BAA60F0007F719B /* SHBucketActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHBucketActionTableViewCell.xib; sourceTree = "<group>"; };
 		289D2F911BAA6892007F719B /* action_icon_trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = action_icon_trash.png; sourceTree = "<group>"; };
+		289FFF141BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHAssignTagTableViewCell.xib; sourceTree = "<group>"; };
 		28A0857A1A700CB200BA1368 /* LXString+NSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LXString+NSString.h"; sourceTree = "<group>"; };
 		28A0857B1A700CB200BA1368 /* LXString+NSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LXString+NSString.m"; sourceTree = "<group>"; };
 		28AC96701BC487A700A5C1E9 /* 60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "60x60@2x.png"; sourceTree = "<group>"; };
@@ -453,6 +467,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2810B9B31BE3CB67003D20F8 /* Tags */ = {
+			isa = PBXGroup;
+			children = (
+				2810B9BD1BE3D730003D20F8 /* Table View Cells */,
+				2810B9B41BE3CB8B003D20F8 /* SHTagsIndexViewController.h */,
+				2810B9B51BE3CB8B003D20F8 /* SHTagsIndexViewController.m */,
+				2810B9B71BE3CB99003D20F8 /* SHTagDetailViewController.h */,
+				2810B9B81BE3CB99003D20F8 /* SHTagDetailViewController.m */,
+				2810B9BA1BE3D54F003D20F8 /* SHAssignTagsViewController.h */,
+				2810B9BB1BE3D54F003D20F8 /* SHAssignTagsViewController.m */,
+			);
+			name = Tags;
+			sourceTree = "<group>";
+		};
+		2810B9BD1BE3D730003D20F8 /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				2810B9BE1BE3D747003D20F8 /* SHAssignTagTableViewCell.h */,
+				2810B9BF1BE3D747003D20F8 /* SHAssignTagTableViewCell.m */,
+				289FFF141BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib */,
+			);
+			name = "Table View Cells";
+			sourceTree = "<group>";
+		};
 		281CA8BF1951EC7E00E6BE96 = {
 			isa = PBXGroup;
 			children = (
@@ -539,6 +577,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2810B9B31BE3CB67003D20F8 /* Tags */,
 				2882A81C1BCD98990058D4C9 /* Email View */,
 				28491BAA1BBCAFD90014E4B2 /* Paywall */,
 				28F859AF1BBB564100F7738C /* Preview */,
@@ -1192,6 +1231,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				289FFF151BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib in Resources */,
 				28CD3FBE1AEA0F8700B3ABB6 /* item-screen.jpg in Resources */,
 				28D8E56C1BAA47BF00AEEEBC /* gear.png in Resources */,
 				2882A80C1BCC36F50058D4C9 /* toolbar_share.png in Resources */,
@@ -1365,6 +1405,7 @@
 				288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */,
 				28ED42351BA2B866000292AE /* SHEditItemViewController.m in Sources */,
 				28ED41FC1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.m in Sources */,
+				2810B9C01BE3D747003D20F8 /* SHAssignTagTableViewCell.m in Sources */,
 				288F122A1B751B040001E0B0 /* LXItem.m in Sources */,
 				288F12241B73DFC90001E0B0 /* LXUser.m in Sources */,
 				2882A8161BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.m in Sources */,
@@ -1394,6 +1435,7 @@
 				2837E8091AC11D400089FA33 /* HCOnboardingPageViewController.m in Sources */,
 				76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */,
 				281CA8D81951EC7E00E6BE96 /* main.m in Sources */,
+				2810B9BC1BE3D54F003D20F8 /* SHAssignTagsViewController.m in Sources */,
 				28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */,
 				2826C6131ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m in Sources */,
 				288A74691B75346800F6A618 /* SHBucketsViewController.m in Sources */,
@@ -1404,6 +1446,7 @@
 				28F5B8AB1ACC46BE00C7F5BC /* NSNumber+Helpers.m in Sources */,
 				28ED41F21BA0A3EF000292AE /* SHItemAuthorTableViewCell.m in Sources */,
 				28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */,
+				2810B9B61BE3CB8B003D20F8 /* SHTagsIndexViewController.m in Sources */,
 				76906E6D1BADAEF9005BF124 /* UIAlertView+Addons.m in Sources */,
 				28ED41ED1BA09882000292AE /* SHItemMessageTableViewCell.m in Sources */,
 				28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */,
@@ -1413,6 +1456,7 @@
 				282FA8441B909BD5004ADA00 /* SHSearch.m in Sources */,
 				2882A81F1BCD98B00058D4C9 /* SHEmailViewController.m in Sources */,
 				28ED41F71BA0BBA8000292AE /* SHMediaBoxTableViewCell.m in Sources */,
+				2810B9B91BE3CB99003D20F8 /* SHTagDetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

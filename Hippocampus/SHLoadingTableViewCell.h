@@ -18,4 +18,7 @@
 
 - (void) configureWithResponseObject:(NSMutableDictionary*)rO;
 
+- (void) invertIfUpsideDown;
+- (void) invert;
+
 @end

@@ -9,6 +9,7 @@
 #import "SHMainViewController.h"
 #import "SHBucketsViewController.h"
 #import "SHMessagesViewController.h"
+#import "SHTagDetailViewController.h"
 #import "SHSearchViewController.h"
 #import "SHProfileViewController.h"
 
@@ -50,6 +51,7 @@
 - (void) registerForNotifications
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushBucketViewController:) name:@"pushBucketViewController" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushTagViewController:) name:@"pushTagViewController" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentViewController:) name:@"presentViewController" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushViewController:) name:@"pushViewController" object:nil];
 }
@@ -163,6 +165,13 @@
 {
     SHMessagesViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
     [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void) pushTagViewController:(NSNotification*)notification
+{
+    SHTagDetailViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHTagDetailViewController"];
+    [vc setLocalKey:[[[notification userInfo] objectForKey:@"tag"] localKey]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

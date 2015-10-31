@@ -15,4 +15,28 @@
     return [self objectForKey:@"tag_name"] && NULL_TO_NIL([self objectForKey:@"tag_name"]) ? [self objectForKey:@"tag_name"] : @"";
 }
 
+- (NSArray*) bucketKeys
+{
+    return [self objectForKey:@"bucket_keys"] && NULL_TO_NIL([self objectForKey:@"bucket_keys"]) ? [self objectForKey:@"bucket_keys"] : @[];
+}
+
++ (void) tagKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:@"/tags/keys" withMethod:@"GET" withParamaters:nil authType:@"user"
+                           success:^(id responseObject){
+                               if ([responseObject respondsToSelector:@selector(count)]) {
+                                   [LXObjectManager assignLocal:responseObject WithLocalKey:@"tagLocalKeys" alsoToDisk:YES];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedTagLocalKeys" object:nil userInfo:nil];
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           } failure:^(NSError* error){
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
 @end

@@ -15,6 +15,7 @@
 @property (strong, nonatomic) NSMutableDictionary* cachedItems;
 @property (strong, nonatomic) NSMutableDictionary* cachedBuckets;
 @property (strong, nonatomic) NSMutableDictionary* cachedContacts;
+@property (strong, nonatomic) NSMutableDictionary* cachedTags;
 
 - (NSMutableArray*) getCachedObjects:(NSString*)type withTerm:(NSString*)term;
 - (NSString*) getCachedResultsTermWithType:(NSString*)type withTerm:(NSString*)term;
@@ -23,5 +24,6 @@
 - (void) remoteSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) localBucketSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) contactsSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (void) localTagSearchWithTerm:(NSString*)term success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 @end

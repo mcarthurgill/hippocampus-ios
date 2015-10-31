@@ -51,5 +51,7 @@
 - (void) removeCollaboratorWithPhone:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 - (void) changeNameInBucketWithBucketUserPair:(NSMutableDictionary *)bup andNewName:(NSString*)newName success:(void (^)(id))successCallback failure:(void (^)(NSError *))failureCallback;
 
+- (void) updateTagsWithLocalKeys:(NSMutableArray*)newLocalKeys success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+
 @end
 

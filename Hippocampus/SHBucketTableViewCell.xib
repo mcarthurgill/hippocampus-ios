@@ -12,7 +12,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="99"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mR-qO-5vm">
@@ -30,18 +30,18 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVj-uW-fXh">
-                                <rect key="frame" x="0.0" y="90" width="304" height="0.0"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" id="UY8-Fg-XMj"/>
-                                </constraints>
-                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eIF-tO-rDw">
                                 <rect key="frame" x="0.0" y="90" width="304" height="0.0"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" id="Jff-0b-3xY"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aVj-uW-fXh">
+                                <rect key="frame" x="0.0" y="90" width="304" height="0.0"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="UY8-Fg-XMj"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -51,6 +51,7 @@
                             <constraint firstItem="aVj-uW-fXh" firstAttribute="top" secondItem="4oB-pF-rmG" secondAttribute="bottom" constant="14" id="2En-WC-ue4"/>
                             <constraint firstAttribute="bottom" secondItem="aVj-uW-fXh" secondAttribute="bottom" id="4GS-5R-VWd"/>
                             <constraint firstAttribute="trailing" secondItem="eIF-tO-rDw" secondAttribute="trailing" id="8wH-Mj-TGG"/>
+                            <constraint firstItem="eIF-tO-rDw" firstAttribute="bottom" secondItem="aVj-uW-fXh" secondAttribute="top" id="Ag5-iL-Mhk"/>
                             <constraint firstAttribute="bottom" secondItem="eIF-tO-rDw" secondAttribute="bottom" id="B1U-Cm-yDO"/>
                             <constraint firstAttribute="trailing" secondItem="aVj-uW-fXh" secondAttribute="trailing" id="CFx-A5-EuR"/>
                             <constraint firstAttribute="trailing" secondItem="tWa-vl-g9a" secondAttribute="trailing" constant="12" id="KyZ-XI-mqa"/>
@@ -61,12 +62,17 @@
                             <constraint firstItem="eIF-tO-rDw" firstAttribute="top" secondItem="aVj-uW-fXh" secondAttribute="bottom" id="YbS-CC-SzK"/>
                             <constraint firstItem="tWa-vl-g9a" firstAttribute="leading" secondItem="1mR-qO-5vm" secondAttribute="leading" constant="12" id="j9Q-P1-fvR"/>
                             <constraint firstItem="aVj-uW-fXh" firstAttribute="leading" secondItem="1mR-qO-5vm" secondAttribute="leading" id="sC4-dC-LWL"/>
+                            <constraint firstItem="eIF-tO-rDw" firstAttribute="top" secondItem="4oB-pF-rmG" secondAttribute="bottom" constant="14" id="sHF-6b-qaT"/>
+                            <constraint firstAttribute="bottom" secondItem="aVj-uW-fXh" secondAttribute="bottom" id="xhI-EW-8lm"/>
                             <constraint firstItem="4oB-pF-rmG" firstAttribute="leading" secondItem="1mR-qO-5vm" secondAttribute="leading" constant="12" id="zSw-CL-W7k"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="SFR-o5-quV"/>
+                                <exclude reference="2En-WC-ue4"/>
                                 <exclude reference="4GS-5R-VWd"/>
+                                <exclude reference="B1U-Cm-yDO"/>
+                                <exclude reference="YbS-CC-SzK"/>
                             </mask>
                         </variation>
                     </view>
