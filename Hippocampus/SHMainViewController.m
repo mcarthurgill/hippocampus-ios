@@ -87,17 +87,17 @@
 {
     NSString* currentTitle = [sender titleForSegmentAtIndex:[sender selectedSegmentIndex]];
     if ([sender selectedSegmentIndex] == 0 && ![currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
-        [self switchContainerToView:@"thoughtsViewController" fromView:@"bucketsViewController"];
+        [self switchContainerToView:@"thoughtsViewController" fromView:currentPresentedViewController];
     } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
         if ([currentTitle isEqualToString:@"Buckets"]) {
-            [self switchContainerToView:@"bucketsViewController" fromView:@"thoughtsViewController"];
+            [self switchContainerToView:@"bucketsViewController" fromView:currentPresentedViewController];
         } else if ([currentTitle isEqualToString:@"Tags"]) {
-            [self switchContainerToView:@"tagsViewController" fromView:@"thoughtsViewController"];
+            [self switchContainerToView:@"tagsViewController" fromView:currentPresentedViewController];
         }
     } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"bucketsViewController"]) {
-        [self switchContainerToView:@"tagsViewController" fromView:@"bucketsViewController"];
+        [self switchContainerToView:@"tagsViewController" fromView:currentPresentedViewController];
     } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"tagsViewController"]) {
-        [self switchContainerToView:@"bucketsViewController" fromView:@"tagsViewController"];
+        [self switchContainerToView:@"bucketsViewController" fromView:currentPresentedViewController];
     }
 }
 
