@@ -12,9 +12,11 @@
 #import "SHBucketActionTableViewCell.h"
 #import "SHCollaboratorsViewController.h"
 #import "SHAssignTagsViewController.h"
+#import "SHAssignTagTableViewCell.h"
 
 static NSString *collaboratorCellIdentifier = @"SHCollaboratorTableViewCell";
 static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
+static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
 
 @interface SHEditBucketViewController ()
 
@@ -64,6 +66,7 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     
     [self.tableView registerNib:[UINib nibWithNibName:collaboratorCellIdentifier bundle:nil] forCellReuseIdentifier:collaboratorCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:actionCellIdentifier bundle:nil] forCellReuseIdentifier:actionCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:assignCellIdentifier bundle:nil] forCellReuseIdentifier:assignCellIdentifier];
 }
 
 - (void) setupActions
@@ -167,9 +170,10 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
 
 - (UITableViewCell*) tableView:(UITableView *)tV tagCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SHBucketActionTableViewCell* cell = (SHBucketActionTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:actionCellIdentifier];
-    [cell configureWithLocalKey:self.localKey delegate:self tag:[[[self bucket] tagsArray] objectAtIndex:indexPath.row]];
+    SHAssignTagTableViewCell* cell = (SHAssignTagTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:assignCellIdentifier];
+    [cell configureWithTagLocalKey:[[[[self bucket] tagsArray] objectAtIndex:indexPath.row] localKey]];
     [cell layoutIfNeeded];
+    cell.separatorInset = UIEdgeInsetsMake(0.f, 0.f, 0.f, 2000);
     return cell;
 }
 
@@ -279,10 +283,15 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
             [self.navigationController popToRootViewControllerAnimated:YES];
         }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"tags"]) {
-        UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignTagsViewController"];
-        SHAssignTagsViewController* vc = [[nc viewControllers] firstObject];
-        [vc setLocalKey:[[self bucket] localKey]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc}];
+        if (indexPath.row < [[[self bucket] tagsArray] count]) {
+            NSMutableDictionary* tag = [LXObjectManager objectWithLocalKey:[[[[self bucket] tagsArray] objectAtIndex:indexPath.row] localKey]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"pushTagViewController" object:nil userInfo:@{@"tag":tag}];
+        } else {
+            UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignTagsViewController"];
+            SHAssignTagsViewController* vc = [[nc viewControllers] firstObject];
+            [vc setLocalKey:[[self bucket] localKey]];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc}];
+        }
     }
 }
 
