@@ -85,7 +85,7 @@
 {
     if (NULL_TO_NIL([self objectForKey:@"number_buckets"]))
         return [self objectForKey:@"number_buckets"];
-    return nil;
+    return [NSNumber numberWithInt:0];
 }
 
 - (NSNumber*) setupCompletion

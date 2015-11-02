@@ -94,7 +94,7 @@
         } else if ([currentTitle isEqualToString:@"Tags"]) {
             [self switchContainerToView:@"tagsViewController" fromView:currentPresentedViewController];
         }
-    } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"bucketsViewController"]) {
+    } else if ([NSMutableDictionary userHasTags] && [sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"bucketsViewController"]) {
         [self switchContainerToView:@"tagsViewController" fromView:currentPresentedViewController];
     } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"tagsViewController"]) {
         [self switchContainerToView:@"bucketsViewController" fromView:currentPresentedViewController];

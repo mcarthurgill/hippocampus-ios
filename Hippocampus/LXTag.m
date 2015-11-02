@@ -10,6 +10,11 @@
 
 @implementation NSMutableDictionary (LXTag)
 
++ (BOOL) userHasTags
+{
+    return [LXObjectManager objectWithLocalKey:@"tagLocalKeys"] && [[LXObjectManager objectWithLocalKey:@"tagLocalKeys"] respondsToSelector:@selector(count)] && [[LXObjectManager objectWithLocalKey:@"tagLocalKeys"] count] > 0;
+}
+
 - (NSString*) tagName
 {
     return [self objectForKey:@"tag_name"] && NULL_TO_NIL([self objectForKey:@"tag_name"]) ? [self objectForKey:@"tag_name"] : @"";

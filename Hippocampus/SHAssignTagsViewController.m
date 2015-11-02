@@ -58,9 +58,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatedTagLocalKeys:) name:@"updatedTagLocalKeys" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadScreen) name:@"refreshTagsViewController" object:nil];
     
-//    if ([self shouldOpenOnSearchKeyboard]) {
-//        [self.searchBar performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.01];
-//    }
+    if ([self shouldOpenOnSearchKeyboard]) {
+        [self.searchBar performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.01];
+    }
     
     [NSMutableDictionary tagKeysWithSuccess:nil failure:nil];
 }

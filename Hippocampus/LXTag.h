@@ -10,6 +10,8 @@
 
 @interface NSMutableDictionary (LXTag)
 
++ (BOOL) userHasTags;
+
 - (NSString*) tagName;
 - (NSArray*) bucketKeys;
 
