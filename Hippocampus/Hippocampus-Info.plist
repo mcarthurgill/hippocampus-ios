@@ -25,7 +25,7 @@
 	<key>CFBundleVersion</key>
 	<string>2.1.1</string>
 	<key>ENVIRONMENT</key>
-	<string>production</string>
+	<string>development</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
