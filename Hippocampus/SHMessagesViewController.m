@@ -69,8 +69,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
-    NSLog(@"%@", [self bucket]);
+    //[self addTapActionIfNeeded];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -141,6 +140,16 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.textView setScrollsToTop:NO];
 }
 
+- (void) addTapActionIfNeeded
+{
+    if (![[self bucket] isAllThoughtsBucket]) {
+        UITapGestureRecognizer *navSingleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(navSingleTap)];
+        [navSingleTap setNumberOfTapsRequired:1];
+        [[self.navigationController.navigationBar.subviews objectAtIndex:1] setUserInteractionEnabled:YES];
+        [[self.navigationController.navigationBar.subviews objectAtIndex:1] addGestureRecognizer:navSingleTap];
+    }
+}
+
 - (void) beginningActions
 {
     [[self bucket] refreshFromServerWithSuccess:^(id responseObject){} failure:^(NSError* error){}];
@@ -156,7 +165,10 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 
 
-# pragma mark herlps
+
+
+
+# pragma mark helpers
 
 - (NSMutableDictionary*) bucket
 {
@@ -168,6 +180,10 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         return [@{} mutableCopy];
     }
 }
+
+
+
+
 
 # pragma mark action helpers
 
@@ -182,6 +198,9 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         [self tryToReload];
     }
 }
+
+
+
 
 
 
@@ -247,6 +266,10 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         self.shouldReload = NO;
     }
 }
+
+
+
+
 
 
 
@@ -377,6 +400,8 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 
 
+
+
 # pragma mark toolbar delegate
 
 - (IBAction)rightButtonAction:(id)sender
@@ -438,6 +463,8 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 {
     return (self.textView.text && self.textView.text.length > 0) || [self.blankItem hasUnsavedMedia];
 }
+
+
 
 
 
@@ -522,6 +549,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         }
     });
 }
+
 
 
 
@@ -620,6 +648,9 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 }
 
 
+
+
+
 # pragma mark uiimagepicker delegate
 
 - (void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
@@ -669,6 +700,14 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     if (![[self bucket] authorizedToSee]) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
+}
+
+
+# pragma mark navigation bar actions
+
+- (void) navSingleTap
+{
+    NSLog(@"TAP!!");
 }
 
 @end

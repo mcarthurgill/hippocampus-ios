@@ -732,7 +732,7 @@
                             <searchBar contentMode="redraw" placeholder="Filter buckets..." translatesAutoresizingMaskIntoConstraints="NO" id="VBv-EO-qlC">
                                 <rect key="frame" x="4" y="122" width="592" height="44"/>
                                 <color key="barTintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                 <connections>
                                     <outlet property="delegate" destination="fIX-IA-Yux" id="v6h-a3-tSD"/>
                                 </connections>
@@ -1539,7 +1539,7 @@
                             <searchBar contentMode="redraw" placeholder="Filter tags..." translatesAutoresizingMaskIntoConstraints="NO" id="vIU-KV-axb">
                                 <rect key="frame" x="4" y="122" width="592" height="44"/>
                                 <color key="barTintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
                                 <connections>
                                     <outlet property="delegate" destination="EWx-6i-Dmn" id="PTN-h8-rP4"/>
                                 </connections>
@@ -1677,8 +1677,8 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="3Mg-hi-Hac"/>
-                                <exclude reference="8xm-by-Ag7"/>
                                 <exclude reference="1bp-8D-78k"/>
+                                <exclude reference="8xm-by-Ag7"/>
                                 <exclude reference="0r0-wC-nW9"/>
                                 <exclude reference="bb9-ap-8IB"/>
                             </mask>
@@ -1761,8 +1761,8 @@
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
-                                <exclude reference="gL8-o1-5Kl"/>
                                 <exclude reference="61b-I6-Dpx"/>
+                                <exclude reference="gL8-o1-5Kl"/>
                                 <exclude reference="3Lv-D0-8Zm"/>
                             </mask>
                         </variation>
