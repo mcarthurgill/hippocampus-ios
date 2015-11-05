@@ -232,7 +232,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     //NSLog(@"scrollOffset = %f", scrollOffset);
     if ((NSInteger)scrollOffset == (NSInteger)-64 && [self recent] && [[self recent] count] > 0) {
         // then we are at the top
-        //[self.searchBar becomeFirstResponder];
+        [self.searchBar becomeFirstResponder];
     }
     else if (scrollOffset + scrollViewHeight == scrollContentSizeHeight) {
         // then we are at the end

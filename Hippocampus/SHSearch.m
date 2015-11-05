@@ -150,7 +150,7 @@ static SHSearch* defaultManager = nil;
                                });
                            }
          ];
-        [self remoteBucketSearchWithTerm:term hitsPerPage:4
+        [self remoteBucketSearchWithTerm:term hitsPerPage:2
                            success:^(id responseObject){
                                dispatch_async(dispatch_get_main_queue(), ^{
                                    if (successCallback) {
@@ -166,22 +166,6 @@ static SHSearch* defaultManager = nil;
                                });
                            }
          ];
-//        [self localBucketSearchWithTerm:term
-//                                success:^(id responseObject){
-//                                    dispatch_async(dispatch_get_main_queue(), ^{
-//                                        if (successCallback) {
-//                                            successCallback(responseObject);
-//                                        }
-//                                    });
-//                                }
-//                                failure:^(NSError* error){
-//                                    dispatch_async(dispatch_get_main_queue(), ^{
-//                                        if (failureCallback) {
-//                                            failureCallback(error);
-//                                        }
-//                                    });
-//                                }
-//         ];
     });
 }
 

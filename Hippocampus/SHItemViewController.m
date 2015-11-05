@@ -20,12 +20,14 @@
 #import "SHAttachmentBoxTableViewCell.h"
 #import "SHAudioAttachmentTableViewCell.h"
 #import "SHBucketTableViewCell.h"
+#import "SHLinkMetadataTableViewCell.h"
 
 static NSString *messageCellIdentifier = @"SHItemMessageTableViewCell";
 static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
 static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
 static NSString *attachmentCellIdentifier = @"SHAttachmentBoxTableViewCell";
 static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
+static NSString *linkMetadataCellIdentifier = @"SHLinkMetadataTableViewCell";
 
 @interface SHItemViewController ()
 
@@ -72,6 +74,7 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
     [self.tableView registerNib:[UINib nibWithNibName:mediaBoxCellIdentifier bundle:nil] forCellReuseIdentifier:mediaBoxCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:attachmentCellIdentifier bundle:nil] forCellReuseIdentifier:attachmentCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
+    [self.tableView registerNib:[UINib nibWithNibName:linkMetadataCellIdentifier bundle:nil] forCellReuseIdentifier:linkMetadataCellIdentifier];
     
     [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, 20.0f, self.tableView.contentInset.right)];
     
@@ -174,14 +177,17 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
     //if ([[self item] hasMessage] || [[self item] belongsToCurrentUser]) {
         [self.sections addObject:@"message"];
     //}
-    if ([[self item] hasEmailHTML]) {
-        [self.sections addObject:@"email"];
+    if ([[self item] hasLinks]) {
+        [self.sections addObject:@"linkMetadata"];
     }
     if ([[self item] hasMedia]) {
         [self.sections addObject:@"media"];
     }
     if ([[self item] hasReminder]) {
         [self.sections addObject:@"nudge"];
+    }
+    if ([[self item] hasEmailHTML]) {
+        [self.sections addObject:@"email"];
     }
     if ([[self item] hasBuckets]) {
         [self.sections addObject:@"buckets"];
@@ -196,6 +202,8 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"message"]) {
         return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"linkMetadata"]) {
+        return [[[self item] links] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"email"]) {
         return 1;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"media"]) {
@@ -214,6 +222,8 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
         return [self tableView:tV authorCellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"message"]) {
         return [self tableView:tV messsageCellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"linkMetadata"]) {
+        return [self tableView:tV linkMetadataCellForRowAtIndexPath:indexPath];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"email"]) {
         return [self tableView:tV attachmentCellForRowAtIndexPath:indexPath attachment:[self item] type:@"email"];
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"media"]) {
@@ -239,6 +249,14 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 {
     SHItemMessageTableViewCell* cell = (SHItemMessageTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:messageCellIdentifier];
     [cell configureWithLocalKey:self.localKey];
+    [cell layoutIfNeeded];
+    return cell;
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tableView linkMetadataCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHLinkMetadataTableViewCell* cell = (SHLinkMetadataTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:linkMetadataCellIdentifier];
+    [cell configureWithLinkURLString:[[[self item] links] objectAtIndex:indexPath.row] delegate:self];
     [cell layoutIfNeeded];
     return cell;
 }
@@ -310,6 +328,8 @@ static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
             [vc setMedium:self.mediaInQuestion];
             [self presentViewController:vc animated:NO completion:^(void){}];
         }
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"linkMetadata"]) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[[self item] links] objectAtIndex:indexPath.row]]];
     }
 }
 

@@ -65,6 +65,7 @@
 		28431DE01A8D69BA00B12548 /* 78-stopwatch.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDE1A8D69BA00B12548 /* 78-stopwatch.png */; };
 		28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28431DDF1A8D69BA00B12548 /* 78-stopwatch@2x.png */; };
 		28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 28431DE31A93914200B12548 /* NSDictionary+Attributes.m */; };
+		28432D781BEA736900E9B552 /* LXLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 28432D771BEA736900E9B552 /* LXLink.m */; };
 		284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */; };
 		28491BAD1BBCAFE90014E4B2 /* SHPaywallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
@@ -101,6 +102,8 @@
 		288F12341B7526AD0001E0B0 /* SHMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 288F12331B7526AD0001E0B0 /* SHMainViewController.m */; };
 		288F12371B7527AF0001E0B0 /* UIColor+HCColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 288F12361B7527AF0001E0B0 /* UIColor+HCColors.m */; };
 		288F123A1B752C240001E0B0 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 288F12391B752A6A0001E0B0 /* Roboto-Regular.ttf */; };
+		289CFCCE1BEA670800651B53 /* SHLinkMetadataTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 289CFCCC1BEA670800651B53 /* SHLinkMetadataTableViewCell.m */; };
+		289CFCCF1BEA670800651B53 /* SHLinkMetadataTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289CFCCD1BEA670800651B53 /* SHLinkMetadataTableViewCell.xib */; };
 		289D2F831BAA4867007F719B /* SHEditBucketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289D2F821BAA4867007F719B /* SHEditBucketViewController.m */; };
 		289D2F881BAA51BF007F719B /* SHCollaboratorTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 289D2F861BAA51BF007F719B /* SHCollaboratorTableViewCell.m */; };
 		289D2F891BAA51BF007F719B /* SHCollaboratorTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 289D2F871BAA51BF007F719B /* SHCollaboratorTableViewCell.xib */; };
@@ -284,6 +287,8 @@
 		28431DDF1A8D69BA00B12548 /* 78-stopwatch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "78-stopwatch@2x.png"; sourceTree = "<group>"; };
 		28431DE21A93914200B12548 /* NSDictionary+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Attributes.h"; sourceTree = "<group>"; };
 		28431DE31A93914200B12548 /* NSDictionary+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Attributes.m"; sourceTree = "<group>"; };
+		28432D761BEA736900E9B552 /* LXLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXLink.h; sourceTree = "<group>"; };
+		28432D771BEA736900E9B552 /* LXLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXLink.m; sourceTree = "<group>"; };
 		284861F11BB5CED000CF4EE7 /* UIViewController+Permissions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Permissions.h"; sourceTree = "<group>"; };
 		284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Permissions.m"; sourceTree = "<group>"; };
 		28491BAB1BBCAFE90014E4B2 /* SHPaywallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPaywallViewController.h; sourceTree = "<group>"; };
@@ -335,6 +340,9 @@
 		288F12351B7527AF0001E0B0 /* UIColor+HCColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HCColors.h"; sourceTree = "<group>"; };
 		288F12361B7527AF0001E0B0 /* UIColor+HCColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HCColors.m"; sourceTree = "<group>"; };
 		288F12391B752A6A0001E0B0 /* Roboto-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Roboto-Regular.ttf"; sourceTree = "<group>"; };
+		289CFCCB1BEA670800651B53 /* SHLinkMetadataTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHLinkMetadataTableViewCell.h; sourceTree = "<group>"; };
+		289CFCCC1BEA670800651B53 /* SHLinkMetadataTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHLinkMetadataTableViewCell.m; sourceTree = "<group>"; };
+		289CFCCD1BEA670800651B53 /* SHLinkMetadataTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHLinkMetadataTableViewCell.xib; sourceTree = "<group>"; };
 		289D2F811BAA4867007F719B /* SHEditBucketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHEditBucketViewController.h; sourceTree = "<group>"; };
 		289D2F821BAA4867007F719B /* SHEditBucketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHEditBucketViewController.m; sourceTree = "<group>"; };
 		289D2F851BAA51BF007F719B /* SHCollaboratorTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollaboratorTableViewCell.h; sourceTree = "<group>"; };
@@ -646,6 +654,8 @@
 				288F12261B751AF30001E0B0 /* LXBucket.m */,
 				288F12281B751B040001E0B0 /* LXItem.h */,
 				288F12291B751B040001E0B0 /* LXItem.m */,
+				28432D761BEA736900E9B552 /* LXLink.h */,
+				28432D771BEA736900E9B552 /* LXLink.m */,
 				282FA8421B909BD5004ADA00 /* SHSearch.h */,
 				282FA8431B909BD5004ADA00 /* SHSearch.m */,
 			);
@@ -1075,6 +1085,9 @@
 				2882A8131BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.h */,
 				2882A8141BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.m */,
 				2882A8151BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.xib */,
+				289CFCCB1BEA670800651B53 /* SHLinkMetadataTableViewCell.h */,
+				289CFCCC1BEA670800651B53 /* SHLinkMetadataTableViewCell.m */,
+				289CFCCD1BEA670800651B53 /* SHLinkMetadataTableViewCell.xib */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -1267,6 +1280,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				289CFCCF1BEA670800651B53 /* SHLinkMetadataTableViewCell.xib in Resources */,
 				289FFF151BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib in Resources */,
 				28CD3FBE1AEA0F8700B3ABB6 /* item-screen.jpg in Resources */,
 				28D8E56C1BAA47BF00AEEEBC /* gear.png in Resources */,
@@ -1442,6 +1456,7 @@
 				288F12341B7526AD0001E0B0 /* SHMainViewController.m in Sources */,
 				28ACA39C1B8B73E800D7B215 /* SHLoadingTableViewCell.m in Sources */,
 				289D2F831BAA4867007F719B /* SHEditBucketViewController.m in Sources */,
+				289CFCCE1BEA670800651B53 /* SHLinkMetadataTableViewCell.m in Sources */,
 				761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */,
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
 				76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */,
@@ -1479,6 +1494,7 @@
 				2837E8091AC11D400089FA33 /* HCOnboardingPageViewController.m in Sources */,
 				76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */,
 				281CA8D81951EC7E00E6BE96 /* main.m in Sources */,
+				28432D781BEA736900E9B552 /* LXLink.m in Sources */,
 				2810B9BC1BE3D54F003D20F8 /* SHAssignTagsViewController.m in Sources */,
 				28431DE41A93914200B12548 /* NSDictionary+Attributes.m in Sources */,
 				2826C6131ADDA684008DC533 /* FBVerifyPhoneNumberViewController.m in Sources */,
