@@ -305,7 +305,9 @@
         [[LXObjectManager defaultManager] refreshObjectWithKey:[[[[self item] links] firstObject] linkLocalKeyFromURLString]
                                                        success:^(id responseObject) {
                                                            NSLog(@"Successfully got link!");
-                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshVCWithLocalKey" object:nil userInfo:@{@"local_key":self.bucketLocalKey}];
+                                                           if (self.bucketLocalKey) {
+                                                               [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshVCWithLocalKey" object:nil userInfo:@{@"local_key":self.bucketLocalKey}];
+                                                           }
                                                        }
                                                        failure:^(NSError* error){
                                                            NSLog(@"Failed to get link!");
