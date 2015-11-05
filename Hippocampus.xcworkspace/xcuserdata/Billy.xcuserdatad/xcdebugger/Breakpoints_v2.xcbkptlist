@@ -1412,11 +1412,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemTableViewCell.m"
-            timestampString = "466453626.726007"
+            timestampString = "468423570.644033"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
             landmarkName = "-awakeFromNib"
             landmarkType = "5">
          </BreakpointContent>
@@ -1714,11 +1714,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemTableViewCell.m"
-            timestampString = "466453837.650883"
+            timestampString = "468424260.177706"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "167"
-            endingLineNumber = "167"
+            startingLineNumber = "202"
+            endingLineNumber = "202"
             landmarkName = "-configureWithItem:bucketLocalKey:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1730,11 +1730,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemTableViewCell.m"
-            timestampString = "466453837.650883"
+            timestampString = "468424260.177706"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "174"
-            endingLineNumber = "174"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
             landmarkName = "-configureWithItem:bucketLocalKey:"
             landmarkType = "5">
          </BreakpointContent>

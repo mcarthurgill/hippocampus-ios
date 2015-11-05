@@ -24,6 +24,17 @@
 @property (strong, nonatomic) NSString* bucketLocalKey;
 @property (strong, nonatomic) NSMutableDictionary* item;
 
+@property (strong, nonatomic) IBOutlet UIView *linkMetadataView;
+@property (strong, nonatomic) IBOutlet UIImageView *linkMetadataImage;
+@property (strong, nonatomic) IBOutlet UILabel *linkMetadataTopLabel;
+@property (strong, nonatomic) IBOutlet UILabel *linkMetadataMiddleLabel;
+@property (strong, nonatomic) IBOutlet UILabel *linkMetadataBottomLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *linkMetadataImageWidth;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *linkMetadataImageHeight;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *linkMetadataImageTopSpace;
+@property (strong, nonatomic) IBOutlet UILabel *linkMetadataLeftLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *linkMetadataLabelBottomSpace;
+
 @property (strong, nonatomic) IBOutlet UIImageView *audioImageView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *audioImageViewHeightConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *audioImageViewLabelMarginConstraint;

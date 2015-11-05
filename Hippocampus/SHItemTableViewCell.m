@@ -23,6 +23,18 @@
 @synthesize bucketLocalKey;
 @synthesize item;
 @synthesize message;
+
+@synthesize linkMetadataView;
+@synthesize linkMetadataBottomLabel;
+@synthesize linkMetadataImage;
+@synthesize linkMetadataMiddleLabel;
+@synthesize linkMetadataTopLabel;
+@synthesize linkMetadataImageHeight;
+@synthesize linkMetadataImageWidth;
+@synthesize linkMetadataImageTopSpace;
+@synthesize linkMetadataLabelBottomSpace;
+@synthesize linkMetadataLeftLabel;
+
 @synthesize nudgeImageView, nudgeImageViewTrailingSpace;
 @synthesize messageTrailingSpace;
 @synthesize outstandingDot, outstandingDotTopToImage, outstandingDotTrailingSpace;
@@ -85,6 +97,27 @@
     [self.audioImageView.layer setCornerRadius:8.0f];
     [self.audioImageView.layer setBorderColor:[UIColor SHBlue].CGColor];
     [self.audioImageView.layer setBorderWidth:1.0f];
+    
+    [self.linkMetadataImage setClipsToBounds:YES];
+    [self.linkMetadataImage.layer setBorderColor:[UIColor SHLighterGray].CGColor];
+    [self.linkMetadataImage.layer setCornerRadius:4.0f];
+    [self.linkMetadataImage.layer setBorderWidth:1.0f];
+    [self.linkMetadataImage setBackgroundColor:[UIColor SHLighterGray]];
+    
+    [self.linkMetadataTopLabel setFont:[UIFont titleFontWithSize:14.0f]];
+    [self.linkMetadataTopLabel setTextColor:[UIColor SHBlue]];
+    
+    [self.linkMetadataMiddleLabel setFont:[UIFont titleFontWithSize:14.0f]];
+    [self.linkMetadataMiddleLabel setTextColor:[UIColor SHFontDarkGray]];
+    
+    [self.linkMetadataBottomLabel setFont:[UIFont secondaryFontWithSize:13.0f]];
+    [self.linkMetadataBottomLabel setTextColor:[UIColor SHFontLightGray]];
+    
+    [self.linkMetadataView setBackgroundColor:[UIColor slightBackgroundColor]];
+    
+    [self.linkMetadataLeftLabel setBackgroundColor:[UIColor SHFontLightGray]];
+    [self.linkMetadataLeftLabel.layer setCornerRadius:1.0f];
+    [self.linkMetadataLeftLabel setClipsToBounds:YES];
 }
 
 - (void) setSelected:(BOOL)selected animated:(BOOL)animated
@@ -146,6 +179,8 @@
     [self setItemLocalKey:[self.item localKey]];
     [self setBucketLocalKey:bucketKey];
     
+    [self getLinkFromServerIfNeeded];
+    
     //NSLog(@"item: %@", [self.item ID]);
     //NSLog(@"item: %@", self.item);
     
@@ -205,7 +240,70 @@
     [self handleMediaViews];
     [self handleBucketButtons];
     
+    if ([self hasLink]) {
+        [self setLinkMetadataBox];
+    } else {
+        [self hideLinkMetadataBox];
+    }
+    
     [self setNeedsLayout];
+}
+
+- (void) setLinkMetadataBox
+{
+    NSMutableDictionary* link = [LXObjectManager objectWithLocalKey:[[[[self item] links] firstObject] linkLocalKeyFromURLString]];
+    
+    self.linkMetadataImageTopSpace.constant = 15.0f;
+    self.linkMetadataLabelBottomSpace.constant = 15.0f;
+    
+    if ([link bestImage]) {
+        [self.linkMetadataImage loadInImageWithRemoteURL:[link objectForKey:@"best_image"] localURL:nil];
+        [self.linkMetadataImage setHidden:NO];
+        self.linkMetadataImageWidth.constant = 50.0f;
+        self.linkMetadataImageHeight.constant = 50.0f;
+    } else {
+        [self.linkMetadataImage setImage:nil];
+        [self.linkMetadataImage setHidden:YES];
+        self.linkMetadataImageWidth.constant = 0.0f;
+        self.linkMetadataImageHeight.constant = 0.0f;
+    }
+    
+    [self.linkMetadataTopLabel setText:[link URLString]];
+    
+    [self.linkMetadataMiddleLabel setText:[link bestTitle]];
+    
+    //[self.bottomLabel setText:[NSString stringWithFormat:@"%@",[[self link] bestDescription]]];
+    [self.linkMetadataBottomLabel setText:[link bestDescription]];
+}
+
+- (void) hideLinkMetadataBox
+{
+    [self.linkMetadataTopLabel setText:nil];
+    [self.linkMetadataMiddleLabel setText:nil];
+    [self.linkMetadataBottomLabel setText:nil];
+    
+    self.linkMetadataImageTopSpace.constant = 0.0f;
+    self.linkMetadataLabelBottomSpace.constant = 0.0f;
+    
+    self.linkMetadataImageWidth.constant = 0.0f;
+    self.linkMetadataImageHeight.constant = 0.0f;
+    
+    [self.linkMetadataImage setHidden:YES];
+}
+
+- (void) getLinkFromServerIfNeeded
+{
+    if ([[self item] hasLinks] && ![LXObjectManager objectWithLocalKey:[[[[self item] links] firstObject] linkLocalKeyFromURLString]]) {
+        [[LXObjectManager defaultManager] refreshObjectWithKey:[[[[self item] links] firstObject] linkLocalKeyFromURLString]
+                                                       success:^(id responseObject) {
+                                                           NSLog(@"Successfully got link!");
+                                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshVCWithLocalKey" object:nil userInfo:@{@"local_key":self.bucketLocalKey}];
+                                                       }
+                                                       failure:^(NSError* error){
+                                                           NSLog(@"Failed to get link!");
+                                                       }
+         ];
+    }
 }
 
 - (void) setMessageText
@@ -256,6 +354,10 @@
     [iv loadInImageWithRemoteURL:croppedMediaURL localURL:[medium objectForKey:@"local_file_name"]];
 }
 
+- (BOOL) hasLink
+{
+    return [[self item] hasLinks] && [LXObjectManager objectWithLocalKey:[[[[self item] links] firstObject] linkLocalKeyFromURLString]];
+}
 
 
 
@@ -302,6 +404,13 @@
 
 
 # pragma mark constrains
+
+- (UIView*) bottomContentView
+{
+    if ([self hasLink])
+        return self.linkMetadataView;
+    return self.message;
+}
 
 - (void) removeMessageTrailingSpaceConstraint
 {
@@ -392,13 +501,13 @@
         UIButton* button = [self.bucketButtons objectAtIndex:index];
         //left align
         if (index == 0) {
-            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
+            [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:[self bottomContentView] attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
         } else {
             [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:[self.bucketButtons objectAtIndex:(index-1)] attribute:NSLayoutAttributeTrailing multiplier:1 constant:6] toView:self.contentView];
         }
         
         //top align
-        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:self.message attribute:NSLayoutAttributeBottom multiplier:1 constant:10] toView:self.contentView];
+        [self addButtonConstraint:[NSLayoutConstraint constraintWithItem:button attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationGreaterThanOrEqual toItem:[self bottomContentView] attribute:NSLayoutAttributeBottom multiplier:1 constant:10] toView:self.contentView];
         if ([self.mediaUsed count] > 0 && [self.mediaUsed count]-1 < [self.mediaViews count]) {
             UIView* bottommostImage = [self.mediaViews objectAtIndex:([self.mediaUsed count]-1)];
             if (bottommostImage && [bottommostImage.superview isEqual:[button superview]]) {
@@ -507,7 +616,7 @@
             //ratio
             [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:iv attribute:NSLayoutAttributeWidth multiplier:(1.0/[medium mediaSizeRatio]) constant:0] toView:self.contentView];
             //top
-            [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeTop multiplier:1 constant:0] toView:self.contentView];
+            [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:[self bottomContentView] attribute:NSLayoutAttributeTop multiplier:1 constant:0] toView:self.contentView];
             //right
             [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeRight multiplier:1 constant:0] toView:self.contentView];
             //left
@@ -537,7 +646,7 @@
                         //leftmost image
                         
                         //top
-                        [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:(count > 0 ? [self.mediaViews objectAtIndex:(count-1)] : self.message) attribute:(count == 0 && ![self.item hasMessage] ? NSLayoutAttributeTop : NSLayoutAttributeBottom) multiplier:1 constant:6] toView:self.contentView];
+                        [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:(count > 0 ? [self.mediaViews objectAtIndex:(count-1)] : [self bottomContentView]) attribute:(count == 0 && ![self.item hasMessage] ? NSLayoutAttributeTop : NSLayoutAttributeBottom) multiplier:1 constant:6] toView:self.contentView];
                         //left
                         [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
                         //bottom
@@ -585,7 +694,7 @@
                         //leftmost image
                         
                         //top
-                        [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:(count > 0 ? [self.mediaViews objectAtIndex:(count-1)] : self.message) attribute:(count == 0 && ![self.item hasMessage] ? NSLayoutAttributeTop : NSLayoutAttributeBottom) multiplier:1 constant:6] toView:self.contentView];
+                        [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:(count > 0 ? [self.mediaViews objectAtIndex:(count-1)] : [self bottomContentView]) attribute:(count == 0 && ![self.item hasMessage] ? NSLayoutAttributeTop : NSLayoutAttributeBottom) multiplier:1 constant:6] toView:self.contentView];
                         //left
                         [self addConstraint:[NSLayoutConstraint constraintWithItem:iv attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.message attribute:NSLayoutAttributeLeft multiplier:1 constant:0] toView:self.contentView];
                         //bottom
