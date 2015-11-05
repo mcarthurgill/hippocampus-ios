@@ -34,6 +34,8 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *linkMetadataImageTopSpace;
 @property (strong, nonatomic) IBOutlet UILabel *linkMetadataLeftLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *linkMetadataLabelBottomSpace;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *linkMetadataLabelSpace1;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *linkMetadataLabelSpace2;
 
 @property (strong, nonatomic) IBOutlet UIImageView *audioImageView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *audioImageViewHeightConstraint;

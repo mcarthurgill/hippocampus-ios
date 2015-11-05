@@ -168,6 +168,8 @@
                 <outlet property="linkMetadataImageTopSpace" destination="lJQ-s1-fQw" id="gyE-sh-5tg"/>
                 <outlet property="linkMetadataImageWidth" destination="BMD-lX-kIp" id="vaY-9q-8uc"/>
                 <outlet property="linkMetadataLabelBottomSpace" destination="b71-pR-J8S" id="Biu-P3-msJ"/>
+                <outlet property="linkMetadataLabelSpace1" destination="uvP-gf-QMd" id="sN4-7E-kgQ"/>
+                <outlet property="linkMetadataLabelSpace2" destination="YwF-bh-NJO" id="4eF-a3-Wgx"/>
                 <outlet property="linkMetadataLeftLabel" destination="fZV-aa-ONN" id="CnI-dm-Wlk"/>
                 <outlet property="linkMetadataMiddleLabel" destination="oka-Nm-0wV" id="Qe4-VK-QGH"/>
                 <outlet property="linkMetadataTopLabel" destination="nYc-ai-aqN" id="f0m-ub-pOF"/>

@@ -34,6 +34,8 @@
 @synthesize linkMetadataImageTopSpace;
 @synthesize linkMetadataLabelBottomSpace;
 @synthesize linkMetadataLeftLabel;
+@synthesize linkMetadataLabelSpace1;
+@synthesize linkMetadataLabelSpace2;
 
 @synthesize nudgeImageView, nudgeImageViewTrailingSpace;
 @synthesize messageTrailingSpace;
@@ -104,13 +106,13 @@
     [self.linkMetadataImage.layer setBorderWidth:1.0f];
     [self.linkMetadataImage setBackgroundColor:[UIColor SHLighterGray]];
     
-    [self.linkMetadataTopLabel setFont:[UIFont titleFontWithSize:14.0f]];
+    [self.linkMetadataTopLabel setFont:[UIFont titleFontWithSize:13.0f]];
     [self.linkMetadataTopLabel setTextColor:[UIColor SHBlue]];
     
-    [self.linkMetadataMiddleLabel setFont:[UIFont titleFontWithSize:14.0f]];
+    [self.linkMetadataMiddleLabel setFont:[UIFont titleFontWithSize:13.0f]];
     [self.linkMetadataMiddleLabel setTextColor:[UIColor SHFontDarkGray]];
     
-    [self.linkMetadataBottomLabel setFont:[UIFont secondaryFontWithSize:13.0f]];
+    [self.linkMetadataBottomLabel setFont:[UIFont secondaryFontWithSize:12.0f]];
     [self.linkMetadataBottomLabel setTextColor:[UIColor SHFontLightGray]];
     
     [self.linkMetadataView setBackgroundColor:[UIColor slightBackgroundColor]];
@@ -256,6 +258,9 @@
     self.linkMetadataImageTopSpace.constant = 15.0f;
     self.linkMetadataLabelBottomSpace.constant = 15.0f;
     
+    self.linkMetadataLabelSpace1.constant = 3.0f;
+    self.linkMetadataLabelSpace2.constant = 3.0f;
+    
     if ([link bestImage]) {
         [self.linkMetadataImage loadInImageWithRemoteURL:[link objectForKey:@"best_image"] localURL:nil];
         [self.linkMetadataImage setHidden:NO];
@@ -284,6 +289,9 @@
     
     self.linkMetadataImageTopSpace.constant = 0.0f;
     self.linkMetadataLabelBottomSpace.constant = 0.0f;
+    
+    self.linkMetadataLabelSpace1.constant = 0.0f;
+    self.linkMetadataLabelSpace2.constant = 0.0f;
     
     self.linkMetadataImageWidth.constant = 0.0f;
     self.linkMetadataImageHeight.constant = 0.0f;

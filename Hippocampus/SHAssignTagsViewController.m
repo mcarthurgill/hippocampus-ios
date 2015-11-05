@@ -67,7 +67,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (BOOL) shouldOpenOnSearchKeyboard
 {
-    return YES;
+    return NO;
 }
 
 - (void) viewDidAppear:(BOOL)animated
