@@ -31,4 +31,6 @@
 
 - (NSString*) userIDFromLocalKey;
 
+- (NSString*) linkLocalKeyFromURLString;
+
 @end

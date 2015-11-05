@@ -43,6 +43,7 @@
     #import "LXTag.h"
     #import "LXBucket.h"
     #import "LXItem.h"
+    #import "LXLink.h"
     #import "UIColor+HCColors.h"
     #import "UIImageView+Addons.h"
     #import "UIAlertView+Addons.h"

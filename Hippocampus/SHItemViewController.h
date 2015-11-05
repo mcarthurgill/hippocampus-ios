@@ -30,6 +30,8 @@
 @property (strong, nonatomic) NSMutableArray* toolbarOptions;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *trailingSpace;
 
+- (void) reloadScreen;
+
 - (void) longPressWithObject:(NSMutableDictionary*)object type:(NSString*)action;
 
 @end

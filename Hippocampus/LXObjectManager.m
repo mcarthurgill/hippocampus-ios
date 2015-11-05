@@ -225,7 +225,13 @@ static LXObjectManager* defaultManager = nil;
 {
     //UNTESTED
     //parse the local key
-    NSMutableDictionary* tempObject = [@{@"object_type":[localKey objectTypeFromLocalKey], @"device_timestamp":[localKey deviceTimestampFromLocalKey], @"user_id":[localKey userIDFromLocalKey], @"local_key":localKey} mutableCopy];
+    NSMutableDictionary* tempObject = [@{@"object_type":[localKey objectTypeFromLocalKey], @"local_key":localKey} mutableCopy];
+    if ([localKey deviceTimestampFromLocalKey]) {
+        [tempObject setObject:[localKey deviceTimestampFromLocalKey] forKey:@"device_timestamp"];
+    }
+    if ([localKey userIDFromLocalKey]) {
+        [tempObject setObject:[localKey userIDFromLocalKey] forKey:@"user_id"];
+    }
     //setup query
     [[LXServer shared] requestPath:@"/key" withMethod:@"GET" withParamaters:tempObject authType:@"user"
                            success:^(id responseObject) {

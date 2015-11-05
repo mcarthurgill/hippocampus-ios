@@ -7,6 +7,7 @@
 //
 
 #import "LXString+NSString.h"
+#import "NSString+SHAEncryption.h"
 
 @implementation NSString (LXString)
 
@@ -86,6 +87,12 @@
     if ([secondHalf rangeOfString:@"-"].location == NSNotFound)
         return nil;
     return [secondHalf substringFromIndex:([secondHalf rangeOfString:@"-"].location+1)];
+}
+
+- (NSString*) linkLocalKeyFromURLString
+{
+    NSLog(@"string:|%@|", self);
+    return [NSString stringWithFormat:@"link--%@", [self shaEncrypted]];
 }
 
 @end
