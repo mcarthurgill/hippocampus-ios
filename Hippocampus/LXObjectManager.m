@@ -350,6 +350,7 @@ static LXObjectManager* defaultManager = nil;
 
 + (void) saveToDisk:(id)object WithLocalKey:(NSString*)key
 {
+    NSArray* temp = @[object];
     dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.savetodiskqueue", 0);
     dispatch_async(backgroundQueue, ^{
         if (object) {
@@ -358,9 +359,9 @@ static LXObjectManager* defaultManager = nil;
             NSString *documentsDirectory = [paths objectAtIndex:0];
             NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
             
-            NSArray* temp = @[object, filePath];
             
-            [NSKeyedArchiver archiveRootObject:[temp firstObject] toFile:[temp lastObject]];
+            
+            [NSKeyedArchiver archiveRootObject:[temp firstObject] toFile:filePath];
         }
     });
 }
