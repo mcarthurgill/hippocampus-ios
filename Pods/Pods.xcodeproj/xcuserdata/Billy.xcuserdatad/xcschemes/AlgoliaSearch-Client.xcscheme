@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4CBE4F78E1253779FD2A56B7"
+               BlueprintIdentifier = "A0FA11331BABE734256CC570"
                BuildableName = "AlgoliaSearch_Client.framework"
                BlueprintName = "AlgoliaSearch-Client"
                ReferencedContainer = "container:Pods.xcodeproj">

@@ -752,6 +752,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
     self.selectionStyle = _previusSelectionStyle;
     NSArray * selectedRows = self.parentTable.indexPathsForSelectedRows;
     if ([selectedRows containsObject:[self.parentTable indexPathForCell:self]]) {
+        self.selected = NO; //Hack: in some iOS versions setting the selected property to YES own isn't enough to force the cell to redraw the chosen selectionStyle
         self.selected = YES;
     }
     [self setAccesoryViewsHidden:NO];
@@ -1230,7 +1231,7 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
             #pragma clang diagnostic ignored "-Wdeprecated-declarations"
             _allowSwipeLeftToRight = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionLeftToRight];
             _allowSwipeRightToLeft = [_delegate swipeTableCell:self canSwipe:MGSwipeDirectionRightToLeft];
-            #pragma clang diagnastic pop
+            #pragma clang diagnostic pop
         }
         else {
             [self fetchButtonsIfNeeded];
@@ -1250,6 +1251,13 @@ static inline CGFloat mgEaseInOutBounce(CGFloat t, CGFloat b, CGFloat c) {
 -(BOOL) isSwipeGestureActive
 {
     return _panRecognizer.state == UIGestureRecognizerStateBegan || _panRecognizer.state == UIGestureRecognizerStateChanged;
+}
+
+-(void)setSwipeBackgroundColor:(UIColor *)swipeBackgroundColor {
+    _swipeBackgroundColor = swipeBackgroundColor;
+    if (_swipeOverlay) {
+        _swipeOverlay.backgroundColor = swipeBackgroundColor;
+    }
 }
 
 @end
