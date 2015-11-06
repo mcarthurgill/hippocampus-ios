@@ -36,6 +36,14 @@
                         [self sendItemWithMessage:self.textView.text url:urlString media:nil];
                     }
          ];
+    } else if ([iP hasItemConformingToTypeIdentifier:(NSString *)kUTTypeImage]) {
+        [iP loadItemForTypeIdentifier:(NSString *)kUTTypeImage options:nil completionHandler:^(UIImage *image, NSError *error) {
+            if(image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self sendItemWithMessage:self.textView.text url:nil media:@[image]];
+                });
+            }
+        }];
     } else {
         [self sendItemWithMessage:self.textView.text url:nil media:nil];
     }
@@ -60,12 +68,28 @@
     }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"item":temp, @"auth":@""};
-    [manager POST:@"https://hippocampus-app.herokuapp.com/items.json" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-    }];
+    NSMutableDictionary *parameters = [@{@"item":temp, @"auth":@""} mutableCopy];
+    
+    if (media && [media count] > 0) {
+        [manager POST:@"https://hippocampus-app.herokuapp.com/items.json" parameters:parameters constructingBodyWithBlock:^(id <AFMultipartFormData>formData) {
+            NSInteger i = 0;
+            for (UIImage* image in  media) {
+                NSData *data = UIImageJPEGRepresentation(image, 0.99);
+                [formData appendPartWithFileData:data name:[NSString stringWithFormat:@"media[]"] fileName:@"tempfile.jpg" mimeType:@"image/jpeg"];
+                ++i;
+            }
+        } success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+    } else {
+        [manager POST:@"https://hippocampus-app.herokuapp.com/items.json" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"JSON: %@", responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"Error: %@", error);
+        }];
+    }
     
     // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
     [self.extensionContext completeRequestReturningItems:@[] completionHandler:nil];
