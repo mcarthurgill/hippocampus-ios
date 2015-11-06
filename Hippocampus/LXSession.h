@@ -28,6 +28,8 @@
 @property (strong, nonatomic) CLLocationManager* locationManager;
 @property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 
+@property (nonatomic) BOOL searchActivated;
+
 - (void) setVariables;
 
 - (NSString*) documentsPathForFileName:(NSString*) name;

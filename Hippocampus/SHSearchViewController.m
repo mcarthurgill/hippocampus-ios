@@ -59,6 +59,8 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 {
     [super viewDidAppear:animated];
     [self.searchBar becomeFirstResponder];
+    
+    [[LXSession thisSession] setSearchActivated:YES];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -282,6 +284,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) dismissView
 {
     [self dismissViewControllerAnimated:NO completion:^(void){
+        [[LXSession thisSession] setSearchActivated:NO];
     }];
 }
 

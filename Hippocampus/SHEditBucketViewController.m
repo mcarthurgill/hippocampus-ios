@@ -25,7 +25,6 @@ static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
 @implementation SHEditBucketViewController
 
 @synthesize localKey;
-@synthesize onSearchViewController;
 @synthesize sections;
 @synthesize actions;
 @synthesize tableView;
@@ -33,8 +32,6 @@ static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.onSearchViewController = NO;
     
     [self setupSettings];
     [self setupActions];
@@ -288,7 +285,7 @@ static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"tags"]) {
         if (indexPath.row < [[[self bucket] tagsArray] count]) {
             NSMutableDictionary* tag = [LXObjectManager objectWithLocalKey:[[[[self bucket] tagsArray] objectAtIndex:indexPath.row] localKey]];
-            [[NSNotificationCenter defaultCenter] postNotificationName:(!onSearchViewController ? @"pushTagViewController" : @"searchPushTagViewController") object:nil userInfo:@{@"tag":tag}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:(![[LXSession thisSession] searchActivated] ? @"pushTagViewController" : @"searchPushTagViewController") object:nil userInfo:@{@"tag":tag}];
         } else {
             UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignTagsViewController"];
             SHAssignTagsViewController* vc = [[nc viewControllers] firstObject];
