@@ -11,6 +11,7 @@
 @interface SHEditBucketViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @property (strong, nonatomic) NSString* localKey;
+@property (nonatomic) BOOL onSearchViewController;
 @property (strong, nonatomic) NSMutableArray* sections;
 @property (strong, nonatomic) NSMutableArray* actions;
 

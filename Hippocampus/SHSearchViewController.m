@@ -191,7 +191,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (UITableViewCell*) tableView:(UITableView *)tV bucketCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHBucketTableViewCell* cell = (SHBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:bucketCellIdentifier];
-    [cell configureWithBucketLocalKey:[[self.bucketResults objectAtIndex:indexPath.row] localKey]];
+    [cell configureWithBucketLocalKey:[[self.bucketResults objectAtIndex:indexPath.row] localKey] onSearch:YES];
     [cell layoutIfNeeded];
     return cell;
 }

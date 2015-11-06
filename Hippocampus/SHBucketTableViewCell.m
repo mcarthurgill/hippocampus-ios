@@ -45,6 +45,8 @@
     
     self.collaboratorImages = [[NSMutableArray alloc] init];
     self.tagButtons = [[NSMutableArray alloc] init];
+    
+    onSearchViewController = NO;
 }
 
 
@@ -114,6 +116,12 @@
 
 # pragma mark configure
 
+- (void) configureWithBucketLocalKey:(NSString*)key onSearch:(BOOL)onSearch
+{
+    [self configureWithBucketLocalKey:key];
+    onSearchViewController = YES;
+}
+
 - (void) configureWithBucketLocalKey:(NSString*)key
 {
     [self configureWithBucketLocalKey:key tagLocalKey:nil];
@@ -123,6 +131,7 @@
 {
     [self setBucketLocalKey:key];
     [self setTagLocalKey:tlk];
+    onSearchViewController = NO;
     
     NSMutableDictionary* bucket = [LXObjectManager objectWithLocalKey:self.bucketLocalKey];
     
@@ -314,7 +323,7 @@
 {
     if ([sender tag] < [[[self bucket] tagsArray] count]) {
         NSMutableDictionary* tag = [[[self bucket] tagsArray] objectAtIndex:[sender tag]];
-        [[NSNotificationCenter defaultCenter] postNotificationName:([self bucket] ? @"pushTagViewController" : @"searchPushTagViewController") object:nil userInfo:@{@"tag":tag}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:(!onSearchViewController ? @"pushTagViewController" : @"searchPushTagViewController") object:nil userInfo:@{@"tag":tag}];
     }
 }
 
