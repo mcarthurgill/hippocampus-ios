@@ -59,6 +59,8 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 {
     [super viewDidAppear:animated];
     [self.searchBar becomeFirstResponder];
+    
+    [[LXSession thisSession] setSearchActivated:YES];
 }
 
 - (void) viewWillDisappear:(BOOL)animated
@@ -191,7 +193,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (UITableViewCell*) tableView:(UITableView *)tV bucketCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHBucketTableViewCell* cell = (SHBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:bucketCellIdentifier];
-    [cell configureWithBucketLocalKey:[[self.bucketResults objectAtIndex:indexPath.row] localKey]];
+    [cell configureWithBucketLocalKey:[[self.bucketResults objectAtIndex:indexPath.row] localKey] onSearch:YES];
     [cell layoutIfNeeded];
     return cell;
 }
@@ -282,6 +284,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) dismissView
 {
     [self dismissViewControllerAnimated:NO completion:^(void){
+        [[LXSession thisSession] setSearchActivated:NO];
     }];
 }
 

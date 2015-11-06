@@ -184,16 +184,24 @@
 
 - (void) pushBucketViewController:(NSNotification*)notification
 {
-    SHMessagesViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
-    [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([[LXSession thisSession] searchActivated]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"searchPushBucketViewController" object:nil userInfo:[notification userInfo]];
+    } else {
+        SHMessagesViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+        [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void) pushTagViewController:(NSNotification*)notification
 {
-    SHTagDetailViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHTagDetailViewController"];
-    [vc setLocalKey:[[[notification userInfo] objectForKey:@"tag"] localKey]];
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([[LXSession thisSession] searchActivated]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"searchPushTagViewController" object:nil userInfo:[notification userInfo]];
+    } else {
+        SHTagDetailViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHTagDetailViewController"];
+        [vc setLocalKey:[[[notification userInfo] objectForKey:@"tag"] localKey]];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void) presentViewController:(NSNotification*)notification

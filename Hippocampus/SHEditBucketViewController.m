@@ -285,7 +285,7 @@ static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"tags"]) {
         if (indexPath.row < [[[self bucket] tagsArray] count]) {
             NSMutableDictionary* tag = [LXObjectManager objectWithLocalKey:[[[[self bucket] tagsArray] objectAtIndex:indexPath.row] localKey]];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"pushTagViewController" object:nil userInfo:@{@"tag":tag}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:(![[LXSession thisSession] searchActivated] ? @"pushTagViewController" : @"searchPushTagViewController") object:nil userInfo:@{@"tag":tag}];
         } else {
             UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignTagsViewController"];
             SHAssignTagsViewController* vc = [[nc viewControllers] firstObject];

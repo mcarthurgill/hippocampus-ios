@@ -9,12 +9,16 @@
 #import <UIKit/UIKit.h>
 
 @interface SHBucketTableViewCell : UITableViewCell
+{
+    BOOL onSearchViewController;
+}
 
 @property (strong, nonatomic) NSString* bucketLocalKey;
 @property (strong, nonatomic) NSString* tagLocalKey;
 
 - (void) configureWithBucketLocalKey:(NSString*)key;
 - (void) configureWithBucketLocalKey:(NSString*)key tagLocalKey:(NSString*)tlk;
+- (void) configureWithBucketLocalKey:(NSString*)key onSearch:(BOOL)onSearch;
 
 @property (strong, nonatomic) NSMutableArray* collaboratorImages;
 

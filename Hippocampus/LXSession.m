@@ -25,6 +25,8 @@ static LXSession* thisSession = nil;
 
 @synthesize locationManager;
 
+@synthesize searchActivated;
+
 //constructor
 -(id) init
 {
@@ -58,6 +60,7 @@ static LXSession* thisSession = nil;
 - (void) setVariables
 {
     self.permissionsAsked = [[NSMutableDictionary alloc] init];
+    self.searchActivated = NO;
 }
 
 - (NSMutableDictionary*) user

@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2808B6171BEC01F6009784F4 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2808B6161BEC01F6009784F4 /* ShareViewController.m */; };
+		2808B61A1BEC01F6009784F4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2808B6181BEC01F6009784F4 /* MainInterface.storyboard */; };
+		2808B61E1BEC01F6009784F4 /* HippoShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2808B6131BEC01F6009784F4 /* HippoShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2810B9B21BE3233F003D20F8 /* LXTag.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810B9B11BE3233F003D20F8 /* LXTag.m */; };
 		2810B9B61BE3CB8B003D20F8 /* SHTagsIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810B9B51BE3CB8B003D20F8 /* SHTagsIndexViewController.m */; };
 		2810B9B91BE3CB99003D20F8 /* SHTagDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2810B9B81BE3CB99003D20F8 /* SHTagDetailViewController.m */; };
@@ -194,6 +197,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2808B61C1BEC01F6009784F4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 281CA8C01951EC7E00E6BE96 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2808B6121BEC01F6009784F4;
+			remoteInfo = HippoShare;
+		};
 		281CA8F11951EC7E00E6BE96 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 281CA8C01951EC7E00E6BE96 /* Project object */;
@@ -203,7 +213,28 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		2808B6221BEC01F6009784F4 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				2808B61E1BEC01F6009784F4 /* HippoShare.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		2808B6131BEC01F6009784F4 /* HippoShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HippoShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2808B6151BEC01F6009784F4 /* ShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
+		2808B6161BEC01F6009784F4 /* ShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
+		2808B6191BEC01F6009784F4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		2808B61B1BEC01F6009784F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2808B6231BEC020A009784F4 /* HippoShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HippoShare.entitlements; sourceTree = "<group>"; };
+		2808B6241BEC0214009784F4 /* Hippocampus.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Hippocampus.entitlements; sourceTree = "<group>"; };
 		2810B9B01BE3233F003D20F8 /* LXTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXTag.h; sourceTree = "<group>"; };
 		2810B9B11BE3233F003D20F8 /* LXTag.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXTag.m; sourceTree = "<group>"; };
 		2810B9B41BE3CB8B003D20F8 /* SHTagsIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHTagsIndexViewController.h; sourceTree = "<group>"; };
@@ -465,6 +496,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2808B6101BEC01F6009784F4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		281CA8C51951EC7E00E6BE96 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -493,6 +531,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2808B6141BEC01F6009784F4 /* HippoShare */ = {
+			isa = PBXGroup;
+			children = (
+				2808B6231BEC020A009784F4 /* HippoShare.entitlements */,
+				2808B6151BEC01F6009784F4 /* ShareViewController.h */,
+				2808B6161BEC01F6009784F4 /* ShareViewController.m */,
+				2808B6181BEC01F6009784F4 /* MainInterface.storyboard */,
+				2808B61B1BEC01F6009784F4 /* Info.plist */,
+			);
+			path = HippoShare;
+			sourceTree = "<group>";
+		};
 		2810B9B31BE3CB67003D20F8 /* Tags */ = {
 			isa = PBXGroup;
 			children = (
@@ -524,6 +574,7 @@
 			children = (
 				281CA8D11951EC7E00E6BE96 /* Hippocampus */,
 				281CA8F31951EC7E00E6BE96 /* HippocampusTests */,
+				2808B6141BEC01F6009784F4 /* HippoShare */,
 				281CA8CA1951EC7E00E6BE96 /* Frameworks */,
 				281CA8C91951EC7E00E6BE96 /* Products */,
 				AF8CDA90D5D1600B0FA06D8F /* Pods */,
@@ -535,6 +586,7 @@
 			children = (
 				281CA8C81951EC7E00E6BE96 /* Hippocampus.app */,
 				281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */,
+				2808B6131BEC01F6009784F4 /* HippoShare.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -558,6 +610,7 @@
 		281CA8D11951EC7E00E6BE96 /* Hippocampus */ = {
 			isa = PBXGroup;
 			children = (
+				2808B6241BEC0214009784F4 /* Hippocampus.entitlements */,
 				288F122B1B7520DB0001E0B0 /* Seahorse.storyboard */,
 				281CA924196C2B9100E6BE96 /* Login.storyboard */,
 				281CA8DA1951EC7E00E6BE96 /* LXAppDelegate.h */,
@@ -1192,6 +1245,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2808B6121BEC01F6009784F4 /* HippoShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2808B6211BEC01F6009784F4 /* Build configuration list for PBXNativeTarget "HippoShare" */;
+			buildPhases = (
+				2808B60F1BEC01F6009784F4 /* Sources */,
+				2808B6101BEC01F6009784F4 /* Frameworks */,
+				2808B6111BEC01F6009784F4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = HippoShare;
+			productName = HippoShare;
+			productReference = 2808B6131BEC01F6009784F4 /* HippoShare.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		281CA8C71951EC7E00E6BE96 /* Hippocampus */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 281CA8FD1951EC7E00E6BE96 /* Build configuration list for PBXNativeTarget "Hippocampus" */;
@@ -1202,10 +1272,12 @@
 				281CA8C61951EC7E00E6BE96 /* Resources */,
 				D8CB7745B36648E88B33C586 /* Copy Pods Resources */,
 				563C40DBB9003AE41E07174F /* Embed Pods Frameworks */,
+				2808B6221BEC01F6009784F4 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				2808B61D1BEC01F6009784F4 /* PBXTargetDependency */,
 			);
 			name = Hippocampus;
 			productName = Hippocampus;
@@ -1240,9 +1312,21 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = LXV;
 				TargetAttributes = {
+					2808B6121BEC01F6009784F4 = {
+						CreatedOnToolsVersion = 7.1;
+						DevelopmentTeam = B28RCHZM6D;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 					281CA8C71951EC7E00E6BE96 = {
 						DevelopmentTeam = B28RCHZM6D;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
@@ -1271,11 +1355,20 @@
 			targets = (
 				281CA8C71951EC7E00E6BE96 /* Hippocampus */,
 				281CA8EB1951EC7E00E6BE96 /* HippocampusTests */,
+				2808B6121BEC01F6009784F4 /* HippoShare */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2808B6111BEC01F6009784F4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2808B61A1BEC01F6009784F4 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		281CA8C61951EC7E00E6BE96 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1443,6 +1536,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2808B60F1BEC01F6009784F4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2808B6171BEC01F6009784F4 /* ShareViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		281CA8C41951EC7E00E6BE96 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1531,6 +1632,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2808B61D1BEC01F6009784F4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2808B6121BEC01F6009784F4 /* HippoShare */;
+			targetProxy = 2808B61C1BEC01F6009784F4 /* PBXContainerItemProxy */;
+		};
 		281CA8F21951EC7E00E6BE96 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 281CA8C71951EC7E00E6BE96 /* Hippocampus */;
@@ -1539,6 +1645,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		2808B6181BEC01F6009784F4 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2808B6191BEC01F6009784F4 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		281CA8D41951EC7E00E6BE96 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1558,6 +1672,53 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2808B61F1BEC01F6009784F4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = HippoShare/HippoShare.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = HippoShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.busproductions.Hippocampus.HippoShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2808B6201BEC01F6009784F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_ENTITLEMENTS = HippoShare/HippoShare.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = HippoShare/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.busproductions.Hippocampus.HippoShare;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 		281CA8FB1951EC7E00E6BE96 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */;
@@ -1635,8 +1796,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Hippocampus/Hippocampus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -1656,8 +1819,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 48B234900A21648A78B84A3E /* Pods.release.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = Hippocampus/Hippocampus.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -1720,6 +1885,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2808B6211BEC01F6009784F4 /* Build configuration list for PBXNativeTarget "HippoShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2808B61F1BEC01F6009784F4 /* Debug */,
+				2808B6201BEC01F6009784F4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		281CA8C31951EC7E00E6BE96 /* Build configuration list for PBXProject "Hippocampus" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
