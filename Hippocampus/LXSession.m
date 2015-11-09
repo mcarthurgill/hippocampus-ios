@@ -68,6 +68,8 @@ static LXSession* thisSession = nil;
     NSMutableDictionary* temp = [LXObjectManager objectWithLocalKey:[LXObjectManager objectWithLocalKey:@"localUserKey"]];
     if (temp && ![[temp localKey] isEqualToString:[LXObjectManager objectWithLocalKey:@"localUserKey"]]) {
         [LXObjectManager assignLocal:[temp localKey] WithLocalKey:@"localUserKey" alsoToDisk:YES];
+    } else if (temp) {
+        [[[NSUserDefaults alloc] initWithSuiteName: @"group.busproductions.HippocampusSharingDefaults"] setObject:temp forKey:@"user"];
     }
     return temp;
     if (self.cachedUser) {
