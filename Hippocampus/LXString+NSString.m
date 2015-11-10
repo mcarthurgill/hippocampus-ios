@@ -91,7 +91,6 @@
 
 - (NSString*) linkLocalKeyFromURLString
 {
-    NSLog(@"string:|%@|", self);
     return [NSString stringWithFormat:@"link--%@", [self shaEncrypted]];
 }
 

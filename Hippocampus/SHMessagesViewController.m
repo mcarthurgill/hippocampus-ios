@@ -696,7 +696,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (void) checkSecurity
 {
-    NSLog(@"bucket: %@", [self bucket]);
     if (![[self bucket] authorizedToSee]) {
         [self.navigationController popToRootViewControllerAnimated:YES];
     }

@@ -71,6 +71,7 @@
 		28432D781BEA736900E9B552 /* LXLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 28432D771BEA736900E9B552 /* LXLink.m */; };
 		284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */; };
 		28491BAD1BBCAFE90014E4B2 /* SHPaywallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */; };
+		2856C7B11BF16BA0009728CB /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B01BF16BA0009728CB /* AFNetworking.framework */; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
@@ -324,6 +325,8 @@
 		284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Permissions.m"; sourceTree = "<group>"; };
 		28491BAB1BBCAFE90014E4B2 /* SHPaywallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPaywallViewController.h; sourceTree = "<group>"; };
 		28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHPaywallViewController.m; sourceTree = "<group>"; };
+		2856C7B01BF16BA0009728CB /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Release-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
 		286F434F1A9F71DB0086AAC9 /* UIFont+HCFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+HCFonts.h"; sourceTree = "<group>"; };
 		286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+HCFonts.m"; sourceTree = "<group>"; };
 		286F43521A9F7C290086AAC9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -500,6 +503,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2856C7B11BF16BA0009728CB /* AFNetworking.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -594,6 +598,8 @@
 		281CA8CA1951EC7E00E6BE96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */,
+				2856C7B01BF16BA0009728CB /* AFNetworking.framework */,
 				28AC96811BC4AC4100A5C1E9 /* StoreKit.framework */,
 				766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */,
 				286F43521A9F7C290086AAC9 /* CoreLocation.framework */,
@@ -1684,6 +1690,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = HippoShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1708,6 +1719,11 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = HippoShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
