@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6252DE047E3E514B09F57C11"
-               BuildableName = "libPods-HippoShare.a"
+               BlueprintIdentifier = "6A114B97ACE02426EFC7C036"
+               BuildableName = "Pods_HippoShare.framework"
                BlueprintName = "Pods-HippoShare"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
