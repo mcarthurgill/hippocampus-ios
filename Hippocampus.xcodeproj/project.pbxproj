@@ -187,8 +187,8 @@
 		28F859AD1BBB53DA00F7738C /* backsplash.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AB1BBB53DA00F7738C /* backsplash.png */; };
 		28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */; };
 		28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */; };
-		586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		657F51D5464630ACF49D4C6A /* Pods_HippoShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5353064F5F051C0FE8C8BBF6 /* Pods_HippoShare.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
+		657F51D5464630ACF49D4C6A /* Pods_HippoShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5353064F5F051C0FE8C8BBF6 /* Pods_HippoShare.framework */; };
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; };
@@ -1268,6 +1268,7 @@
 				2808B6101BEC01F6009784F4 /* Frameworks */,
 				2808B6111BEC01F6009784F4 /* Resources */,
 				E4FC8B5C134C51B13137D19E /* Copy Pods Resources */,
+				BD21823F1D66FAFED82CC486 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1517,6 +1518,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BD21823F1D66FAFED82CC486 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D8CB7745B36648E88B33C586 /* Copy Pods Resources */ = {
