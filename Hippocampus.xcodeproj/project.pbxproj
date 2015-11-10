@@ -1916,7 +1916,7 @@
 				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1936,7 +1936,7 @@
 				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
