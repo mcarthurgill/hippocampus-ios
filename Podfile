@@ -1,4 +1,5 @@
 platform :ios, '8.0'
+use_frameworks!
 
 target :Hippocampus do
         pod 'SGImageCache'
@@ -8,7 +9,6 @@ target :Hippocampus do
 	pod 'MGSwipeTableCell', :head
 	pod 'SlackTextViewController'
 	pod 'libPusher', '~> 1.6.1'
-	use_frameworks!
 	pod 'PermissionScope', '~> 1.0'
 end
 
