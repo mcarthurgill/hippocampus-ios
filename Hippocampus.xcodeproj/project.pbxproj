@@ -22,7 +22,6 @@
 		281CA8D81951EC7E00E6BE96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8D71951EC7E00E6BE96 /* main.m */; };
 		281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */; };
 		281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8E61951EC7E00E6BE96 /* Images.xcassets */; };
-		281CA8EE1951EC7E00E6BE96 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8ED1951EC7E00E6BE96 /* XCTest.framework */; };
 		281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CB1951EC7E00E6BE96 /* Foundation.framework */; };
 		281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CF1951EC7E00E6BE96 /* UIKit.framework */; };
 		281CA8F81951EC7E00E6BE96 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */; };
@@ -72,6 +71,8 @@
 		284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */; };
 		28491BAD1BBCAFE90014E4B2 /* SHPaywallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */; };
 		2856C7B11BF16BA0009728CB /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B01BF16BA0009728CB /* AFNetworking.framework */; };
+		2856C7B41BF17AD2009728CB /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */; };
+		2856C7B51BF17AD6009728CB /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B01BF16BA0009728CB /* AFNetworking.framework */; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
@@ -260,7 +261,6 @@
 		281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LXAppDelegate.m; sourceTree = "<group>"; };
 		281CA8E61951EC7E00E6BE96 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HippocampusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		281CA8ED1951EC7E00E6BE96 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		281CA8F51951EC7E00E6BE96 /* HippocampusTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HippocampusTests-Info.plist"; sourceTree = "<group>"; };
 		281CA8F71951EC7E00E6BE96 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HippocampusTests.m; sourceTree = "<group>"; };
@@ -498,7 +498,6 @@
 		76B029751AC20247003539B4 /* UILabel+Bold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Bold.h"; sourceTree = "<group>"; };
 		76B029761AC20247003539B4 /* UILabel+Bold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Bold.m"; sourceTree = "<group>"; };
 		B9D9B6AA3020C8131DCFCCC7 /* Pods-Hippocampus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hippocampus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus.release.xcconfig"; sourceTree = "<group>"; };
-		E1BDB1382146DDED14F47F5D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFA522816ADD529C01E9E9C /* Pods-Hippocampus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hippocampus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus.debug.xcconfig"; sourceTree = "<group>"; };
 		F60CCE3AD6C425F912A2E5AA /* Pods-HippoShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -518,11 +517,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */,
+				2856C7B51BF17AD6009728CB /* AFNetworking.framework in Frameworks */,
 				286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */,
 				281CA90E1951F34A00E6BE96 /* CoreData.framework in Frameworks */,
 				28AC96821BC4AC4100A5C1E9 /* StoreKit.framework in Frameworks */,
 				281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */,
 				281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
+				2856C7B41BF17AD2009728CB /* AlgoliaSearch_Client.framework in Frameworks */,
 				281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
 				586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */,
 			);
@@ -532,7 +533,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				281CA8EE1951EC7E00E6BE96 /* XCTest.framework in Frameworks */,
 				281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
 				281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
 			);
@@ -613,8 +613,6 @@
 				281CA8CB1951EC7E00E6BE96 /* Foundation.framework */,
 				281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */,
 				281CA8CF1951EC7E00E6BE96 /* UIKit.framework */,
-				281CA8ED1951EC7E00E6BE96 /* XCTest.framework */,
-				E1BDB1382146DDED14F47F5D /* Pods.framework */,
 				3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */,
 				5353064F5F051C0FE8C8BBF6 /* Pods_HippoShare.framework */,
 			);
@@ -1863,6 +1861,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
@@ -1886,6 +1889,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
@@ -1916,7 +1924,7 @@
 				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1936,7 +1944,7 @@
 				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = NO;
+				SKIP_INSTALL = YES;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
