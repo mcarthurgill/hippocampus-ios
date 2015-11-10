@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		002357321C1902FA78F5503C /* libPods-HippoShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 047E1F5C5F08CF2B7EDB5842 /* libPods-HippoShare.a */; };
 		2808B6171BEC01F6009784F4 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2808B6161BEC01F6009784F4 /* ShareViewController.m */; };
 		2808B61A1BEC01F6009784F4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2808B6181BEC01F6009784F4 /* MainInterface.storyboard */; };
 		2808B61E1BEC01F6009784F4 /* HippoShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2808B6131BEC01F6009784F4 /* HippoShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -188,7 +189,6 @@
 		28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */; };
 		28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */; };
 		586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
-		657F51D5464630ACF49D4C6A /* Pods_HippoShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5353064F5F051C0FE8C8BBF6 /* Pods_HippoShare.framework */; };
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; };
@@ -231,6 +231,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		047E1F5C5F08CF2B7EDB5842 /* libPods-HippoShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HippoShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B3ED452DA467FEB67CC37E4 /* Pods-HippoShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare.release.xcconfig"; sourceTree = "<group>"; };
 		2808B6131BEC01F6009784F4 /* HippoShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HippoShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2808B6151BEC01F6009784F4 /* ShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
@@ -482,7 +483,6 @@
 		28F859B01BBB564F00F7738C /* SHAppPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppPreviewViewController.h; sourceTree = "<group>"; };
 		28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppPreviewViewController.m; sourceTree = "<group>"; };
 		3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hippocampus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5353064F5F051C0FE8C8BBF6 /* Pods_HippoShare.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HippoShare.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		761CACDA1BAC88CC00B5C682 /* SHCollaboratorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollaboratorsViewController.h; sourceTree = "<group>"; };
 		761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCollaboratorsViewController.m; sourceTree = "<group>"; };
 		761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHContactTableViewCell.xib; sourceTree = "<group>"; };
@@ -508,7 +508,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2856C7B11BF16BA0009728CB /* AFNetworking.framework in Frameworks */,
-				657F51D5464630ACF49D4C6A /* Pods_HippoShare.framework in Frameworks */,
+				002357321C1902FA78F5503C /* libPods-HippoShare.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -614,7 +614,7 @@
 				281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */,
 				281CA8CF1951EC7E00E6BE96 /* UIKit.framework */,
 				3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */,
-				5353064F5F051C0FE8C8BBF6 /* Pods_HippoShare.framework */,
+				047E1F5C5F08CF2B7EDB5842 /* libPods-HippoShare.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1269,6 +1269,7 @@
 				2808B6111BEC01F6009784F4 /* Resources */,
 				E4FC8B5C134C51B13137D19E /* Copy Pods Resources */,
 				BD21823F1D66FAFED82CC486 /* Embed Pods Frameworks */,
+				2856C7B61BF180DB009728CB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1505,6 +1506,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2856C7B61BF180DB009728CB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\nif [[ -d \"Frameworks\" ]]; then\nrm -fr Frameworks\nfi";
+		};
 		563C40DBB9003AE41E07174F /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
