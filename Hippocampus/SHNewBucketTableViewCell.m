@@ -24,8 +24,12 @@
 - (void)setupTableViewCell
 {
     [self.titleLabel setFont:[UIFont titleFontWithSize:15.0f]];
-    [self.titleLabel setTextColor:[UIColor SHFontDarkGray]];
+    [self.titleLabel setTextColor:[UIColor SHFontLightGray]];
     [self.titleLabel setText:@"New Bucket"];
+    
+    [self.bucketNameTextField setText:@""];
+    [self.bucketNameTextField setDelegate:self];
+    self.bucketNameTextField.returnKeyType = UIReturnKeyDone;
     
     [self.defaultView setBackgroundColor:[UIColor slightBackgroundColor]];
     [self.contentView setBackgroundColor:[UIColor clearColor]];
@@ -65,6 +69,7 @@
 
 - (void) toggleNewBucket
 {
+    [self.bucketNameTextField setText:@""]; 
     [self.defaultView setHidden:!self.defaultView.isHidden];
     [self.typingView setHidden:!self.typingView.isHidden];
     if (![self inDefaultMode]) {
@@ -87,6 +92,13 @@
 - (BOOL) inDefaultMode
 {
     return [self.typingView isHidden];
+}
+
+# pragma mark UITextField Delegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [self addBucketWithText:self.bucketNameTextField.text];
+    return YES;
 }
 
 @end

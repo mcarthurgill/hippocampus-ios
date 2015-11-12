@@ -186,8 +186,6 @@
 		28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */; };
 		28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */; };
 		586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
-		760842791BF5094300C37CF7 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 760842781BF5094300C37CF7 /* AFNetworking.framework */; };
-		7608427A1BF50A1600C37CF7 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
 		7608427B1BF50A1600C37CF7 /* Pods_Hippocampus.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
@@ -494,12 +492,6 @@
 		28F859B01BBB564F00F7738C /* SHAppPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppPreviewViewController.h; sourceTree = "<group>"; };
 		28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppPreviewViewController.m; sourceTree = "<group>"; };
 		3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hippocampus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7608426E1BF4FA9D00C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
-		760842701BF505F700C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
-		760842721BF5063400C37CF7 /* AFNetworking */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AFNetworking; path = Pods/AFNetworking; sourceTree = "<group>"; };
-		760842741BF5067100C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
-		760842761BF5092900C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
-		760842781BF5094300C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
 		761CACDA1BAC88CC00B5C682 /* SHCollaboratorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollaboratorsViewController.h; sourceTree = "<group>"; };
 		761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCollaboratorsViewController.m; sourceTree = "<group>"; };
 		761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHContactTableViewCell.xib; sourceTree = "<group>"; };
@@ -535,13 +527,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				760842791BF5094300C37CF7 /* AFNetworking.framework in Frameworks */,
 				766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */,
 				286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */,
 				281CA90E1951F34A00E6BE96 /* CoreData.framework in Frameworks */,
 				28AC96821BC4AC4100A5C1E9 /* StoreKit.framework in Frameworks */,
 				281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */,
-				7608427A1BF50A1600C37CF7 /* Pods_Hippocampus.framework in Frameworks */,
 				281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
 				281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
 				586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */,
@@ -623,12 +613,6 @@
 		281CA8CA1951EC7E00E6BE96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				760842781BF5094300C37CF7 /* AFNetworking.framework */,
-				760842761BF5092900C37CF7 /* AFNetworking.framework */,
-				760842741BF5067100C37CF7 /* AFNetworking.framework */,
-				760842721BF5063400C37CF7 /* AFNetworking */,
-				760842701BF505F700C37CF7 /* AFNetworking.framework */,
-				7608426E1BF4FA9D00C37CF7 /* AFNetworking.framework */,
 				28AC96811BC4AC4100A5C1E9 /* StoreKit.framework */,
 				766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */,
 				286F43521A9F7C290086AAC9 /* CoreLocation.framework */,
@@ -1780,13 +1764,8 @@
 				CODE_SIGN_ENTITLEMENTS = HippoShare/HippoShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-					"$(PROJECT_DIR)/build/Release-iphoneos",
-				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = HippoShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1812,11 +1791,6 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-					"$(PROJECT_DIR)/build/Release-iphoneos",
-				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = HippoShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1845,7 +1819,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_TESTABILITY = YES;
@@ -1887,7 +1861,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -1918,11 +1892,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Release-iphoneos",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
@@ -1947,11 +1916,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/build/Release-iphoneos",
-					"$(PROJECT_DIR)/build/Debug-iphoneos",
-				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";

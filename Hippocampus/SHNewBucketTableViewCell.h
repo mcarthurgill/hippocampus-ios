@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SHNewBucketTableViewCell : UITableViewCell
+@interface SHNewBucketTableViewCell : UITableViewCell <UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 @property (weak, nonatomic) IBOutlet UIView *typingView;
