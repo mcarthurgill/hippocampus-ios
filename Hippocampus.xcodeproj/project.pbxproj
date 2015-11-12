@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		002357321C1902FA78F5503C /* libPods-HippoShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 047E1F5C5F08CF2B7EDB5842 /* libPods-HippoShare.a */; };
 		2808B6171BEC01F6009784F4 /* ShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2808B6161BEC01F6009784F4 /* ShareViewController.m */; };
 		2808B61A1BEC01F6009784F4 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2808B6181BEC01F6009784F4 /* MainInterface.storyboard */; };
 		2808B61E1BEC01F6009784F4 /* HippoShare.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2808B6131BEC01F6009784F4 /* HippoShare.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -22,7 +23,6 @@
 		281CA8D81951EC7E00E6BE96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8D71951EC7E00E6BE96 /* main.m */; };
 		281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */; };
 		281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8E61951EC7E00E6BE96 /* Images.xcassets */; };
-		281CA8EE1951EC7E00E6BE96 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8ED1951EC7E00E6BE96 /* XCTest.framework */; };
 		281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CB1951EC7E00E6BE96 /* Foundation.framework */; };
 		281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CF1951EC7E00E6BE96 /* UIKit.framework */; };
 		281CA8F81951EC7E00E6BE96 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */; };
@@ -71,6 +71,9 @@
 		28432D781BEA736900E9B552 /* LXLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 28432D771BEA736900E9B552 /* LXLink.m */; };
 		284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */; };
 		28491BAD1BBCAFE90014E4B2 /* SHPaywallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */; };
+		2856C7B11BF16BA0009728CB /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B01BF16BA0009728CB /* AFNetworking.framework */; };
+		2856C7B41BF17AD2009728CB /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */; };
+		2856C7B51BF17AD6009728CB /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B01BF16BA0009728CB /* AFNetworking.framework */; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
@@ -185,6 +188,7 @@
 		28F859AD1BBB53DA00F7738C /* backsplash.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AB1BBB53DA00F7738C /* backsplash.png */; };
 		28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */; };
 		28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */; };
+		586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; };
@@ -195,7 +199,6 @@
 		76906E6D1BADAEF9005BF124 /* UIAlertView+Addons.m in Sources */ = {isa = PBXBuildFile; fileRef = 76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */; };
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
 		76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029761AC20247003539B4 /* UILabel+Bold.m */; };
-		907670E079B90E8CDEFCCDCF /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1BDB1382146DDED14F47F5D /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -230,6 +233,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		047E1F5C5F08CF2B7EDB5842 /* libPods-HippoShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HippoShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0B3ED452DA467FEB67CC37E4 /* Pods-HippoShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare.release.xcconfig"; sourceTree = "<group>"; };
 		2808B6131BEC01F6009784F4 /* HippoShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HippoShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2808B6151BEC01F6009784F4 /* ShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
 		2808B6161BEC01F6009784F4 /* ShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
@@ -259,7 +264,6 @@
 		281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LXAppDelegate.m; sourceTree = "<group>"; };
 		281CA8E61951EC7E00E6BE96 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HippocampusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		281CA8ED1951EC7E00E6BE96 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		281CA8F51951EC7E00E6BE96 /* HippocampusTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HippocampusTests-Info.plist"; sourceTree = "<group>"; };
 		281CA8F71951EC7E00E6BE96 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HippocampusTests.m; sourceTree = "<group>"; };
@@ -326,6 +330,8 @@
 		284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Permissions.m"; sourceTree = "<group>"; };
 		28491BAB1BBCAFE90014E4B2 /* SHPaywallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPaywallViewController.h; sourceTree = "<group>"; };
 		28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHPaywallViewController.m; sourceTree = "<group>"; };
+		2856C7B01BF16BA0009728CB /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Release-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
 		286F434F1A9F71DB0086AAC9 /* UIFont+HCFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+HCFonts.h"; sourceTree = "<group>"; };
 		286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+HCFonts.m"; sourceTree = "<group>"; };
 		286F43521A9F7C290086AAC9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -478,7 +484,7 @@
 		28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HippoPreview.mp4; sourceTree = "<group>"; };
 		28F859B01BBB564F00F7738C /* SHAppPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppPreviewViewController.h; sourceTree = "<group>"; };
 		28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppPreviewViewController.m; sourceTree = "<group>"; };
-		48B234900A21648A78B84A3E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hippocampus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		761CACDA1BAC88CC00B5C682 /* SHCollaboratorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollaboratorsViewController.h; sourceTree = "<group>"; };
 		761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCollaboratorsViewController.m; sourceTree = "<group>"; };
 		761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHContactTableViewCell.xib; sourceTree = "<group>"; };
@@ -496,8 +502,9 @@
 		76B029701AC1AF99003539B4 /* LXAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXAddressBook.m; sourceTree = "<group>"; };
 		76B029751AC20247003539B4 /* UILabel+Bold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Bold.h"; sourceTree = "<group>"; };
 		76B029761AC20247003539B4 /* UILabel+Bold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Bold.m"; sourceTree = "<group>"; };
-		9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		E1BDB1382146DDED14F47F5D /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9D9B6AA3020C8131DCFCCC7 /* Pods-Hippocampus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hippocampus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus.release.xcconfig"; sourceTree = "<group>"; };
+		EDFA522816ADD529C01E9E9C /* Pods-Hippocampus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hippocampus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus.debug.xcconfig"; sourceTree = "<group>"; };
+		F60CCE3AD6C425F912A2E5AA /* Pods-HippoShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -505,6 +512,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2856C7B11BF16BA0009728CB /* AFNetworking.framework in Frameworks */,
+				002357321C1902FA78F5503C /* libPods-HippoShare.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,13 +522,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */,
+				2856C7B51BF17AD6009728CB /* AFNetworking.framework in Frameworks */,
 				286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */,
 				281CA90E1951F34A00E6BE96 /* CoreData.framework in Frameworks */,
 				28AC96821BC4AC4100A5C1E9 /* StoreKit.framework in Frameworks */,
 				281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */,
 				281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
+				2856C7B41BF17AD2009728CB /* AlgoliaSearch_Client.framework in Frameworks */,
 				281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
-				907670E079B90E8CDEFCCDCF /* Pods.framework in Frameworks */,
+				586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,7 +538,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				281CA8EE1951EC7E00E6BE96 /* XCTest.framework in Frameworks */,
 				281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
 				281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
 			);
@@ -599,6 +609,8 @@
 		281CA8CA1951EC7E00E6BE96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */,
+				2856C7B01BF16BA0009728CB /* AFNetworking.framework */,
 				28AC96811BC4AC4100A5C1E9 /* StoreKit.framework */,
 				766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */,
 				286F43521A9F7C290086AAC9 /* CoreLocation.framework */,
@@ -606,8 +618,8 @@
 				281CA8CB1951EC7E00E6BE96 /* Foundation.framework */,
 				281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */,
 				281CA8CF1951EC7E00E6BE96 /* UIKit.framework */,
-				281CA8ED1951EC7E00E6BE96 /* XCTest.framework */,
-				E1BDB1382146DDED14F47F5D /* Pods.framework */,
+				3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */,
+				047E1F5C5F08CF2B7EDB5842 /* libPods-HippoShare.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1252,8 +1264,10 @@
 		AF8CDA90D5D1600B0FA06D8F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */,
-				48B234900A21648A78B84A3E /* Pods.release.xcconfig */,
+				F60CCE3AD6C425F912A2E5AA /* Pods-HippoShare.debug.xcconfig */,
+				0B3ED452DA467FEB67CC37E4 /* Pods-HippoShare.release.xcconfig */,
+				EDFA522816ADD529C01E9E9C /* Pods-Hippocampus.debug.xcconfig */,
+				B9D9B6AA3020C8131DCFCCC7 /* Pods-Hippocampus.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1265,9 +1279,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2808B6211BEC01F6009784F4 /* Build configuration list for PBXNativeTarget "HippoShare" */;
 			buildPhases = (
+				F23A65A6166C507347DB5EF5 /* Check Pods Manifest.lock */,
 				2808B60F1BEC01F6009784F4 /* Sources */,
 				2808B6101BEC01F6009784F4 /* Frameworks */,
 				2808B6111BEC01F6009784F4 /* Resources */,
+				E4FC8B5C134C51B13137D19E /* Copy Pods Resources */,
+				BD21823F1D66FAFED82CC486 /* Embed Pods Frameworks */,
+				2856C7B61BF180DB009728CB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1505,6 +1523,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		2856C7B61BF180DB009728CB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\nif [[ -d \"Frameworks\" ]]; then\nrm -fr Frameworks\nfi";
+		};
 		563C40DBB9003AE41E07174F /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1517,7 +1548,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BD21823F1D66FAFED82CC486 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D8CB7745B36648E88B33C586 /* Copy Pods Resources */ = {
@@ -1532,7 +1578,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E4FC8B5C134C51B13137D19E /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F23A65A6166C507347DB5EF5 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		F9B47DB1943142BBA8425D85 /* Check Pods Manifest.lock */ = {
@@ -1692,6 +1768,7 @@
 /* Begin XCBuildConfiguration section */
 		2808B61F1BEC01F6009784F4 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F60CCE3AD6C425F912A2E5AA /* Pods-HippoShare.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1702,6 +1779,11 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = HippoShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1715,6 +1797,7 @@
 		};
 		2808B6201BEC01F6009784F4 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0B3ED452DA467FEB67CC37E4 /* Pods-HippoShare.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1726,6 +1809,11 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = HippoShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -1739,7 +1827,6 @@
 		};
 		281CA8FB1951EC7E00E6BE96 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1774,12 +1861,12 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
 			};
 			name = Debug;
 		};
 		281CA8FC1951EC7E00E6BE96 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48B234900A21648A78B84A3E /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1806,13 +1893,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = NO;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
 		281CA8FE1951EC7E00E6BE96 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */;
+			baseConfigurationReference = EDFA522816ADD529C01E9E9C /* Pods-Hippocampus.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1821,6 +1909,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
@@ -1835,7 +1928,7 @@
 		};
 		281CA8FF1951EC7E00E6BE96 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48B234900A21648A78B84A3E /* Pods.release.xcconfig */;
+			baseConfigurationReference = B9D9B6AA3020C8131DCFCCC7 /* Pods-Hippocampus.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1844,6 +1937,11 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
@@ -1858,7 +1956,6 @@
 		};
 		281CA9011951EC7E00E6BE96 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A8630C0B2C871A275E84E6E /* Pods.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1875,6 +1972,7 @@
 				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -1882,7 +1980,6 @@
 		};
 		281CA9021951EC7E00E6BE96 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 48B234900A21648A78B84A3E /* Pods.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1895,6 +1992,7 @@
 				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

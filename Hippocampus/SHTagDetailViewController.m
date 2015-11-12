@@ -39,8 +39,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) refreshedObject:(NSNotification*)notification
 {
-    NSLog(@"object: %@", [[notification userInfo] objectForKey:@"local_key"]);
-    NSLog(@"local_key: %@", self.localKey);
     if ([[notification userInfo] objectForKey:@"local_key"] && [[[notification userInfo] objectForKey:@"local_key"] isEqualToString:self.localKey]) {
         [self reloadScreen];
     }
