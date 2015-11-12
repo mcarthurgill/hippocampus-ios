@@ -46,6 +46,11 @@
 -(instancetype) copyWithZone:(NSZone*)zone;
 
 /**
+ *  Search for entries around a given latitude/longitude with an automatic radius
+ */
+-(ASQuery*) searchAroundLatitude:(float)latitude longitude:(float)longitude;
+
+/**
  *  Search for entries around a given latitude/longitude.
  *
  *  @param maxDist set the maximum distance in meters.
@@ -61,6 +66,11 @@
  *  Note: at indexing, geoloc of an object should be set with _geoloc attribute containing lat and lng attributes (for example {"_geoloc":{"lat":48.853409, "lng":2.348800}})
  */
 -(ASQuery*) searchAroundLatitude:(float)latitude longitude:(float)longitude maxDist:(NSUInteger)maxDist precision:(NSUInteger)precision;
+
+/**
+ *  Search for entries around a given latitude/longitude (using IP geolocation) with an automatic radius
+ */
+-(ASQuery*) searchAroundLatitudeLongitudeViaIP;
 
 /**
  *  Search for entries around a given latitude/longitude (using IP geolocation)
@@ -81,10 +91,20 @@
 
 
 /**
- *  Search for entries inside a given area defined by the two extreme points of a rectangle.
- *    At indexing, geoloc of an object should be set with _geoloc attribute containing lat and lng attributes (for example {"_geoloc":{"lat":48.853409, "lng":2.348800}})
+ * Search for entries inside a given area defined by the two extreme points of a rectangle.
+ * At indexing, you should specify geoloc of an object with the _geoloc attribute (in the form "_geoloc":{"lat":48.853409, "lng":2.348800} or 
+ * "_geoloc":[{"lat":48.853409, "lng":2.348800},{"lat":48.547456, "lng":2.972075}] if you have several geo-locations in your record).
+ * 
+ * You can use several bounding boxes (OR) by calling this method several times.
  */
 -(ASQuery*) searchInsideBoundingBoxWithLatitudeP1:(float)latitudeP1 longitudeP1:(float)longitudeP1 latitudeP2:(float)latitudeP2 longitudeP2:(float)longitudeP2;
+
+/**
+ * Add a point to the polygon of geo-search (requires a minimum of three points to define a valid polygon)
+ * At indexing, you should specify geoloc of an object with the _geoloc attribute (in the form "_geoloc":{"lat":48.853409, "lng":2.348800} or 
+ * "_geoloc":[{"lat":48.853409, "lng":2.348800},{"lat":48.547456, "lng":2.972075}] if you have several geo-locations in your record).
+ */
+-(ASQuery*) addInsidePolygon:(float)latitude longitude:(float)longitude;
 
 /**
  * Return the final query string used in URL.
@@ -98,6 +118,11 @@
  * "prefixNone": no query word is interpreted as a prefix. This option is not recommended.
  */
 @property (nonatomic) NSString            *queryType;
+
+/**
+ * Set full text search of similar query (like this)
+ */
+@property (nonatomic) NSString            *similarQuery;
 
 /**
  * Select the strategy to avoid having an empty result page.
@@ -119,6 +144,12 @@
  * By default indexed attributes are highlighted.
  */
 @property (nonatomic) NSArray             *attributesToHighlight;
+
+/**
+ * Specify the List of attributes on which you want to disable typo tolerance (must be a subset of the attributesToIndex index setting).
+ * By default this list is empty
+ */
+@property (nonatomic) NSArray             *disableTypoToleranceOnAttributes;
 
 /**
  * Specify the list of attributes to snippet alongside the number of words to return 
@@ -231,6 +262,19 @@
 @property (nonatomic) NSUInteger           optionalWordsMinimumMatched;
 
 /**
+ * Filter the query with numeric, facet or/and tag filters. The syntax is a SQL like syntax, you can use the OR and AND keywords.
+ * The syntax for the underlying numeric, facet and tag filters is the same than in the other filters:
+ * available=1 AND (category:Book OR NOT category:Ebook) AND public
+ * date: 1441745506 TO 1441755506 AND inStock > 0 AND author:"John Doe"
+ * The list of keywords is:
+ * OR: create a disjunctive filter between two filters.
+ * AND: create a conjunctive filter between two filters.
+ * TO: used to specify a range for a numeric filter.
+ * NOT: used to negate a filter. The syntax with the ‘-‘ isn’t allowed.
+ */
+@property (nonatomic) NSString             *filters;
+
+/**
  * Filter the query by a list of facets. Each facet is encoded as `attributeName:value`. For example: ["category:Book","author:John%20Doe"].
  */
 @property (nonatomic) NSArray             *facetFilters;
@@ -271,9 +315,24 @@
 @property (nonatomic) NSString            *insideBoundingBox;
 
 /**
+ * Contains insidePolygon query (you should use addInsidePolygon selector to set it)
+ */
+@property (nonatomic) NSString            *insidePolygon;
+
+/**
  * Contains aroundLatLong query (you should use searchAroundLatitude:longitude:maxDist selector to set it)
  */
 @property (nonatomic) NSString            *aroundLatLong;
+
+/**
+ * Change the radius or around latitude/longitude query
+ */
+@property (nonatomic) NSUInteger           aroundRadius;
+
+/**
+ * Change the precision or around latitude/longitude query
+ */
+@property (nonatomic) NSUInteger           aroundPrecision;
 
 /**
  * Tags can be used in the Analytics to analyze a subset of searches only. Comma-separated string list like @[@"ios", @"web"]
@@ -284,5 +343,25 @@
  * If set to YES use geolocation via client IP instead of passing a latitude/longitude manually
  */
 @property BOOL                             aroundLatLongViaIP;
+
+/**
+ * If set to YES,  the advanced query syntax will be availabel. Default to false.
+ */
+@property BOOL                             advancedSyntax;
+
+/**
+ * If set to YES, enable removal of stop words
+ */
+@property BOOL                             removeStopWords;
+
+/**
+ *
+ */
+@property (nonatomic) NSString             *userToken;
+
+/**
+ *
+ */
+@property (nonatomic) NSString             *referers;
 
 @end

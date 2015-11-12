@@ -71,9 +71,6 @@
 		28432D781BEA736900E9B552 /* LXLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 28432D771BEA736900E9B552 /* LXLink.m */; };
 		284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */; };
 		28491BAD1BBCAFE90014E4B2 /* SHPaywallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */; };
-		2856C7B11BF16BA0009728CB /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B01BF16BA0009728CB /* AFNetworking.framework */; };
-		2856C7B41BF17AD2009728CB /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */; };
-		2856C7B51BF17AD6009728CB /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B01BF16BA0009728CB /* AFNetworking.framework */; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
@@ -189,6 +186,9 @@
 		28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */; };
 		28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */; };
 		586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
+		760842791BF5094300C37CF7 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 760842781BF5094300C37CF7 /* AFNetworking.framework */; };
+		7608427A1BF50A1600C37CF7 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
+		7608427B1BF50A1600C37CF7 /* Pods_Hippocampus.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; };
@@ -228,6 +228,17 @@
 				2808B61E1BEC01F6009784F4 /* HippoShare.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7608427C1BF50A1700C37CF7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7608427B1BF50A1600C37CF7 /* Pods_Hippocampus.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -330,8 +341,6 @@
 		284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Permissions.m"; sourceTree = "<group>"; };
 		28491BAB1BBCAFE90014E4B2 /* SHPaywallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPaywallViewController.h; sourceTree = "<group>"; };
 		28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHPaywallViewController.m; sourceTree = "<group>"; };
-		2856C7B01BF16BA0009728CB /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
-		2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Release-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
 		286F434F1A9F71DB0086AAC9 /* UIFont+HCFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+HCFonts.h"; sourceTree = "<group>"; };
 		286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+HCFonts.m"; sourceTree = "<group>"; };
 		286F43521A9F7C290086AAC9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -485,6 +494,12 @@
 		28F859B01BBB564F00F7738C /* SHAppPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppPreviewViewController.h; sourceTree = "<group>"; };
 		28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppPreviewViewController.m; sourceTree = "<group>"; };
 		3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hippocampus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7608426E1BF4FA9D00C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		760842701BF505F700C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		760842721BF5063400C37CF7 /* AFNetworking */ = {isa = PBXFileReference; lastKnownFileType = folder; name = AFNetworking; path = Pods/AFNetworking; sourceTree = "<group>"; };
+		760842741BF5067100C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		760842761BF5092900C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		760842781BF5094300C37CF7 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
 		761CACDA1BAC88CC00B5C682 /* SHCollaboratorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollaboratorsViewController.h; sourceTree = "<group>"; };
 		761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCollaboratorsViewController.m; sourceTree = "<group>"; };
 		761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHContactTableViewCell.xib; sourceTree = "<group>"; };
@@ -512,7 +527,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2856C7B11BF16BA0009728CB /* AFNetworking.framework in Frameworks */,
 				002357321C1902FA78F5503C /* libPods-HippoShare.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -521,14 +535,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				760842791BF5094300C37CF7 /* AFNetworking.framework in Frameworks */,
 				766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */,
-				2856C7B51BF17AD6009728CB /* AFNetworking.framework in Frameworks */,
 				286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */,
 				281CA90E1951F34A00E6BE96 /* CoreData.framework in Frameworks */,
 				28AC96821BC4AC4100A5C1E9 /* StoreKit.framework in Frameworks */,
 				281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */,
+				7608427A1BF50A1600C37CF7 /* Pods_Hippocampus.framework in Frameworks */,
 				281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
-				2856C7B41BF17AD2009728CB /* AlgoliaSearch_Client.framework in Frameworks */,
 				281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
 				586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */,
 			);
@@ -609,8 +623,12 @@
 		281CA8CA1951EC7E00E6BE96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */,
-				2856C7B01BF16BA0009728CB /* AFNetworking.framework */,
+				760842781BF5094300C37CF7 /* AFNetworking.framework */,
+				760842761BF5092900C37CF7 /* AFNetworking.framework */,
+				760842741BF5067100C37CF7 /* AFNetworking.framework */,
+				760842721BF5063400C37CF7 /* AFNetworking */,
+				760842701BF505F700C37CF7 /* AFNetworking.framework */,
+				7608426E1BF4FA9D00C37CF7 /* AFNetworking.framework */,
 				28AC96811BC4AC4100A5C1E9 /* StoreKit.framework */,
 				766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */,
 				286F43521A9F7C290086AAC9 /* CoreLocation.framework */,
@@ -1284,7 +1302,6 @@
 				2808B6101BEC01F6009784F4 /* Frameworks */,
 				2808B6111BEC01F6009784F4 /* Resources */,
 				E4FC8B5C134C51B13137D19E /* Copy Pods Resources */,
-				BD21823F1D66FAFED82CC486 /* Embed Pods Frameworks */,
 				2856C7B61BF180DB009728CB /* ShellScript */,
 			);
 			buildRules = (
@@ -1307,6 +1324,7 @@
 				D8CB7745B36648E88B33C586 /* Copy Pods Resources */,
 				563C40DBB9003AE41E07174F /* Embed Pods Frameworks */,
 				2808B6221BEC01F6009784F4 /* Embed App Extensions */,
+				7608427C1BF50A1700C37CF7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1549,21 +1567,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BD21823F1D66FAFED82CC486 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D8CB7745B36648E88B33C586 /* Copy Pods Resources */ = {
@@ -1827,6 +1830,7 @@
 		};
 		281CA8FB1951EC7E00E6BE96 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EDFA522816ADD529C01E9E9C /* Pods-Hippocampus.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1841,6 +1845,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_TESTABILITY = YES;
@@ -1867,6 +1872,7 @@
 		};
 		281CA8FC1951EC7E00E6BE96 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B9D9B6AA3020C8131DCFCCC7 /* Pods-Hippocampus.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -1881,9 +1887,11 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1892,6 +1900,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				VALIDATE_PRODUCT = YES;
@@ -1918,6 +1927,7 @@
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1946,6 +1956,7 @@
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
