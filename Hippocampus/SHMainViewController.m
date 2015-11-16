@@ -160,7 +160,7 @@
         [self.segmentControl setTitle:@"Tags" forSegmentAtIndex:1];
         dispatch_async(dispatch_get_main_queue(), ^(void){
             //ATTENTION!
-            //[[(SHBucketsViewController*)vc tableView] reloadData];
+//            [[(SHBucketsViewController*)vc tableView] reloadData];
         });
     }
     

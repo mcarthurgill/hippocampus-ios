@@ -397,4 +397,15 @@
     [self cancelAction:sender];
 }
 
+- (IBAction)removeAction:(id)sender
+{
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    [comps setDay:1];
+    [comps setMonth:1];
+    [comps setYear:1970];
+    self.currentlySelectedDate = [[NSCalendar currentCalendar] dateFromComponents:comps];
+    [self.typeSegmentedControl setSelectedSegmentIndex:0]; 
+    [self saveAction:sender];
+}
+
 @end
