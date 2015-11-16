@@ -190,7 +190,11 @@
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; };
+		762E4D881BFA88200087CFAB /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
+		762E4D891BFA88200087CFAB /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
 		76450E541AEA8509004D7FAD /* HCPermissionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76450E531AEA8509004D7FAD /* HCPermissionViewController.m */; };
+		76530EB01BFA795A0086832A /* SHIntroBucketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76530EAF1BFA795A0086832A /* SHIntroBucketViewController.m */; };
+		76530EB31BFA79900086832A /* SHIntroThoughtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76530EB21BFA79900086832A /* SHIntroThoughtViewController.m */; };
 		766B3AB41BF4C9400017E9B2 /* SHNewBucketTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 766B3AB31BF4C9400017E9B2 /* SHNewBucketTableViewCell.m */; };
 		766B3AB61BF4C9C70017E9B2 /* SHNewBucketTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 766B3AB51BF4C9C70017E9B2 /* SHNewBucketTableViewCell.xib */; };
 		766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */; };
@@ -499,6 +503,10 @@
 		761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHContactTableViewCell.m; sourceTree = "<group>"; };
 		76450E521AEA8509004D7FAD /* HCPermissionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCPermissionViewController.h; sourceTree = "<group>"; };
 		76450E531AEA8509004D7FAD /* HCPermissionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCPermissionViewController.m; sourceTree = "<group>"; };
+		76530EAE1BFA795A0086832A /* SHIntroBucketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHIntroBucketViewController.h; sourceTree = "<group>"; };
+		76530EAF1BFA795A0086832A /* SHIntroBucketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHIntroBucketViewController.m; sourceTree = "<group>"; };
+		76530EB11BFA79900086832A /* SHIntroThoughtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHIntroThoughtViewController.h; sourceTree = "<group>"; };
+		76530EB21BFA79900086832A /* SHIntroThoughtViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHIntroThoughtViewController.m; sourceTree = "<group>"; };
 		766B3AB21BF4C9400017E9B2 /* SHNewBucketTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHNewBucketTableViewCell.h; sourceTree = "<group>"; };
 		766B3AB31BF4C9400017E9B2 /* SHNewBucketTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHNewBucketTableViewCell.m; sourceTree = "<group>"; };
 		766B3AB51BF4C9C70017E9B2 /* SHNewBucketTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHNewBucketTableViewCell.xib; sourceTree = "<group>"; };
@@ -519,6 +527,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				762E4D891BFA88200087CFAB /* Pods_Hippocampus.framework in Frameworks */,
 				002357321C1902FA78F5503C /* libPods-HippoShare.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -543,6 +552,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
+				762E4D881BFA88200087CFAB /* Pods_Hippocampus.framework in Frameworks */,
 				281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -677,6 +687,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				76530EAD1BFA79370086832A /* Introduction */,
 				288A74701B7859D400F6A618 /* Table View Cells */,
 				2810B9B31BE3CB67003D20F8 /* Tags */,
 				2882A81C1BCD98990058D4C9 /* Email View */,
@@ -963,7 +974,7 @@
 				288A74681B75346800F6A618 /* SHBucketsViewController.m */,
 				28419A1F1BAC57E100CF21A6 /* SHMessagesViewController.h */,
 				28419A201BAC57E100CF21A6 /* SHMessagesViewController.m */,
-				766B3AB71BF4CA320017E9B2 /* Cells */,
+				766B3AB71BF4CA320017E9B2 /* Table View Cells */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -1242,14 +1253,25 @@
 			name = "Add Collaborators";
 			sourceTree = "<group>";
 		};
-		766B3AB71BF4CA320017E9B2 /* Cells */ = {
+		76530EAD1BFA79370086832A /* Introduction */ = {
+			isa = PBXGroup;
+			children = (
+				76530EAE1BFA795A0086832A /* SHIntroBucketViewController.h */,
+				76530EAF1BFA795A0086832A /* SHIntroBucketViewController.m */,
+				76530EB11BFA79900086832A /* SHIntroThoughtViewController.h */,
+				76530EB21BFA79900086832A /* SHIntroThoughtViewController.m */,
+			);
+			name = Introduction;
+			sourceTree = "<group>";
+		};
+		766B3AB71BF4CA320017E9B2 /* Table View Cells */ = {
 			isa = PBXGroup;
 			children = (
 				766B3AB21BF4C9400017E9B2 /* SHNewBucketTableViewCell.h */,
 				766B3AB31BF4C9400017E9B2 /* SHNewBucketTableViewCell.m */,
 				766B3AB51BF4C9C70017E9B2 /* SHNewBucketTableViewCell.xib */,
 			);
-			name = Cells;
+			name = "Table View Cells";
 			sourceTree = "<group>";
 		};
 		76CA904B1AE1572800C6E400 /* Permissions */ = {
@@ -1555,7 +1577,7 @@
 		};
 		D8CB7745B36648E88B33C586 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -1563,7 +1585,7 @@
 			name = "Copy Pods Resources";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus-resources.sh\"\n";
 			showEnvVarsInLog = 0;
@@ -1636,10 +1658,12 @@
 				28491BAD1BBCAFE90014E4B2 /* SHPaywallViewController.m in Sources */,
 				288F12341B7526AD0001E0B0 /* SHMainViewController.m in Sources */,
 				28ACA39C1B8B73E800D7B215 /* SHLoadingTableViewCell.m in Sources */,
+				76530EB31BFA79900086832A /* SHIntroThoughtViewController.m in Sources */,
 				289D2F831BAA4867007F719B /* SHEditBucketViewController.m in Sources */,
 				289CFCCE1BEA670800651B53 /* SHLinkMetadataTableViewCell.m in Sources */,
 				761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */,
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
+				76530EB01BFA795A0086832A /* SHIntroBucketViewController.m in Sources */,
 				76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */,
 				288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */,
 				28ED42351BA2B866000292AE /* SHEditItemViewController.m in Sources */,
@@ -1766,10 +1790,15 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"<Multiple",
+					"values>/**",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/**";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = HippoShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.busproductions.Hippocampus.HippoShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1791,10 +1820,15 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"<Multiple",
+					"values>/**",
+				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/**";
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = HippoShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.busproductions.Hippocampus.HippoShare;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1806,7 +1840,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = EDFA522816ADD529C01E9E9C /* Pods-Hippocampus.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1823,6 +1857,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1841,6 +1876,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 			};
 			name = Debug;
 		};
@@ -1848,7 +1885,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B9D9B6AA3020C8131DCFCCC7 /* Pods-Hippocampus.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
+				ALWAYS_SEARCH_USER_PATHS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -1866,6 +1903,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_TESTABILITY = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/**";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1877,6 +1915,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/**";
+				"USER_HEADER_SEARCH_PATHS[arch=*]" = "";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1892,6 +1932,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
@@ -1916,6 +1957,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "Hippocampus/Hippocampus-Info.plist";
@@ -1933,11 +1975,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1957,11 +1995,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECTS_DIR)/**";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
 				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
