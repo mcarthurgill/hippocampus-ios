@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		03930BDB65D26903B847339A1A0E0C82 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F91EDBAAFC504584D4C397D080ACB5B9 /* Foundation.framework */; };
 		0394E0342EFD47311ACF039D500293A0 /* SGCache.m in Sources */ = {isa = PBXBuildFile; fileRef = AE34AA7E96B231ACAC56817945B73FF0 /* SGCache.m */; };
 		042912C142F94C8B2AF44151B968C3B2 /* PTPusherEventDispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = 13103B041AE42758C1C9A6E49E0265E2 /* PTPusherEventDispatcher.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		05E578B9F69CFB2BE424D2AF9F23C9BF /* SLKTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09E8D134B895AAF6C62B2F8D3181C528 /* SLKTextViewController.m */; };
@@ -39,7 +40,6 @@
 		2EF7D6A617991580A0153E456DA4CF7F /* SLKUIConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 99E1890E1AA0C65D765B36BAD278F5AD /* SLKUIConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2F69AAB81BB0DB97FDFD4B7ED9594B94 /* PTPusherMockConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 2536A9D6660841FDFA9850DFDCD47E1A /* PTPusherMockConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		30BB7F23F9DB484389AB13039F5BACF1 /* SLKTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 845CCDD6D2B1CBC1E5A0161DFE353B3A /* SLKTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		31108D8DF8C2F7118E23CB7D5999DE76 /* Pods-HippoShare-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EBBD104684648B118AA5532A29BB /* Pods-HippoShare-dummy.m */; };
 		31D6CAAE7001C5461D5F529E19CE68AA /* MGWeakHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = EDFFF9A93814F163CA85DECB19FF299B /* MGWeakHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		324807EFC3342D533E86DB3C3F75EB79 /* ASExpiringCache.h in Headers */ = {isa = PBXBuildFile; fileRef = F15DD39A9EBF6926038FD9DA753345EF /* ASExpiringCache.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		32BE0FB08D9ECD2974197D862E320E36 /* UIWebView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = C5D31CF50FB55E57D148150A41F508CF /* UIWebView+AFNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -50,6 +50,7 @@
 		3501EA9E3E0FFAA95BB7DCCC658F0418 /* MGEvents-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C471B6D0AB6F26317BEDAB55E49E3BD /* MGEvents-dummy.m */; };
 		351D7AEB6A0C1AAB2267AD1216CE8B63 /* PermissionScope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85382D0DA186A915087B431C7A959A84 /* PermissionScope.swift */; };
 		36FE6309A61A1D622F6FDFC0810F6C83 /* SGCacheTaskPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E6AF024204F688B5937867B50687965 /* SGCacheTaskPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3867EA34D4745EEA00956B61E103E148 /* Pods-HippoShare-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D75EBBD104684648B118AA5532A29BB /* Pods-HippoShare-dummy.m */; };
 		398B9ABD0DA7590B7AA18CD65784885B /* PTBlockEventListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 1CA83D8209BD22D02C42F40136E1B495 /* PTBlockEventListener.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		3A7FE81FF3C97DDFA9F5D7B692369683 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CA58240480DCAA8F63622AD9E185C87 /* SystemConfiguration.framework */; };
 		3AF905B9FCC25B4AC72D8A2EE7004EB8 /* PTURLRequestOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 943734903B3BB6FC8602CD17040AE110 /* PTURLRequestOperation.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -201,7 +202,6 @@
 		DF4112FFA156222BF7053EF22A8827B9 /* AFHTTPRequestOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = FC2140ABE57095EF9A6DC8ADA3AD1804 /* AFHTTPRequestOperation.m */; };
 		DF6874C21ABF22F70B29F8609DE8D6A5 /* SGImageCache-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BEADDD7CDA20146721BFF5C48CFDF0EF /* SGImageCache-dummy.m */; };
 		DFC29AA19504EF95C8902348017273A8 /* AFURLSessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = F3878132945C890B83FFEFBC1AB35D46 /* AFURLSessionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E0C26B51D3F1C3DF420B6B70F9F7DD81 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F91EDBAAFC504584D4C397D080ACB5B9 /* Foundation.framework */; };
 		E13B595DBD5150D4B49772197400C99F /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F319EE162343BA09CDCF28F007B2D878 /* MobileCoreServices.framework */; };
 		E2D55FFF57656F1E9908CD47A7EA9124 /* SLKTypingIndicatorProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ED210BA6710C1250C1A311F2A86A332 /* SLKTypingIndicatorProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E32A2A6611948B5EF5FC4136E5BF6198 /* PMKPromise.m in Sources */ = {isa = PBXBuildFile; fileRef = 34DC8CC6F9E6E3358FA10C10F894BC1F /* PMKPromise.m */; };
@@ -241,6 +241,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = C55E46AC6A1E70A6AA25E306AE545375;
 			remoteInfo = PermissionScope;
+		};
+		21C072DF04B78D4DAE7365BF9D3DB413 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4878C70B21CA37D7CB8A476BF986741B;
+			remoteInfo = AFNetworking;
 		};
 		30B5E9F4656446DFDCFD5D9F7A24560C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -305,6 +312,13 @@
 			remoteGlobalIDString = 96C4C0EDEAD003340953DF9256BD80A7;
 			remoteInfo = SocketRocket;
 		};
+		7E8F33149D73CF8B5C840A37BCA57FB0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 68C2CC34B364F239C5FA621E4B017473;
+			remoteInfo = libPusher;
+		};
 		875D61C3C35C83B23ECF479463E37B9E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
@@ -325,6 +339,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 4878C70B21CA37D7CB8A476BF986741B;
 			remoteInfo = AFNetworking;
+		};
+		A041C7E5CB304860D2BE24E3D317DD79 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 96C4C0EDEAD003340953DF9256BD80A7;
+			remoteInfo = SocketRocket;
 		};
 		A3DE9004C5AAF7A596BFE093569A4D23 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -367,13 +388,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 54F5A67FC697A76B1B5BCA6258512F06;
 			remoteInfo = SGHTTPRequest;
-		};
-		E1508103C6AA8ADA2A1C617C3DC4A537 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 4878C70B21CA37D7CB8A476BF986741B;
-			remoteInfo = AFNetworking;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -663,14 +677,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		07AFDBF1761DAE7D65D289EE0BB81D72 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E0C26B51D3F1C3DF420B6B70F9F7DD81 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		0BE8E5A88654A5DBFAC7283C8853125C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -684,6 +690,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				C8E93BE8FDEBC57B718AAD8414F787BD /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		36B06A93C56615CBAE91C884A3DD48DF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03930BDB65D26903B847339A1A0E0C82 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1784,23 +1798,6 @@
 			productReference = 93FACFE84C6769B6D92FB0E661EB7BBB /* SocketRocket.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		993A5BC077F3B95CCF8EFF02A479F1D5 /* Pods-HippoShare */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0D9EE7C271A794F9EAA174B87874C194 /* Build configuration list for PBXNativeTarget "Pods-HippoShare" */;
-			buildPhases = (
-				EC4943C63A844B8B3CEE6B379824B33B /* Sources */,
-				07AFDBF1761DAE7D65D289EE0BB81D72 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				F3C63D7FB9B0CA8EE7914E238ACF3811 /* PBXTargetDependency */,
-			);
-			name = "Pods-HippoShare";
-			productName = "Pods-HippoShare";
-			productReference = AFCE6050F92151B2A426C9DC3DE7E1E2 /* libPods-HippoShare.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		AABADE360198390ED90AAC9862100F4A /* AlgoliaSearch-Client */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6085D17863F326591C3BBC28B534498D /* Build configuration list for PBXNativeTarget "AlgoliaSearch-Client" */;
@@ -1882,6 +1879,25 @@
 			productReference = A0B072B435F2FCE4B6608CC5DD04829F /* MBProgressHUD.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		F32E5C3727D5B8F4C45B1EDAA2C47D15 /* Pods-HippoShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 984A7AB4455613BEEA7B18FD61B48363 /* Build configuration list for PBXNativeTarget "Pods-HippoShare" */;
+			buildPhases = (
+				72F462FD80EE6C1777E5DF979CCEDF59 /* Sources */,
+				36B06A93C56615CBAE91C884A3DD48DF /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5BAC83313A5F4A54ECEDAAF8AEA76DE1 /* PBXTargetDependency */,
+				23EC898D543C3A957B69D4BE72B31845 /* PBXTargetDependency */,
+				FDD3F7A3F66AF772C6107481433792A7 /* PBXTargetDependency */,
+			);
+			name = "Pods-HippoShare";
+			productName = "Pods-HippoShare";
+			productReference = AFCE6050F92151B2A426C9DC3DE7E1E2 /* libPods-HippoShare.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1911,7 +1927,7 @@
 				4E1263BFF45F6446CF3DE29AE234C893 /* MGSwipeTableCell */,
 				C55E46AC6A1E70A6AA25E306AE545375 /* PermissionScope */,
 				E430F654C8745894438B7AA76D24E23E /* Pods-Hippocampus */,
-				993A5BC077F3B95CCF8EFF02A479F1D5 /* Pods-HippoShare */,
+				F32E5C3727D5B8F4C45B1EDAA2C47D15 /* Pods-HippoShare */,
 				61EE2DAE7B82CDF5925D367A72CE401F /* PromiseKit */,
 				54F5A67FC697A76B1B5BCA6258512F06 /* SGHTTPRequest */,
 				095628B9DA8CC4C5A980D73376AB08DF /* SGImageCache */,
@@ -1995,6 +2011,14 @@
 				10988724FBAC2C597DE6E8158244570A /* SGHTTPRequest-dummy.m in Sources */,
 				3BDC8C7841D9822440CBC484EFE2C09E /* SGHTTPRequest.m in Sources */,
 				BFADBBB2CFD772BA8B62CC4DB0976497 /* SGHTTPRequestDebug.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		72F462FD80EE6C1777E5DF979CCEDF59 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3867EA34D4745EEA00956B61E103E148 /* Pods-HippoShare-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2103,17 +2127,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EC4943C63A844B8B3CEE6B379824B33B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				31108D8DF8C2F7118E23CB7D5999DE76 /* Pods-HippoShare-dummy.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		23EC898D543C3A957B69D4BE72B31845 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SocketRocket;
+			target = 96C4C0EDEAD003340953DF9256BD80A7 /* SocketRocket */;
+			targetProxy = A041C7E5CB304860D2BE24E3D317DD79 /* PBXContainerItemProxy */;
+		};
 		2B484652736378A4BC2A1F3FFC510583 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MGEvents;
@@ -2131,6 +2153,12 @@
 			name = libPusher;
 			target = 68C2CC34B364F239C5FA621E4B017473 /* libPusher */;
 			targetProxy = 504B2C85DE892559CB2B58ADA28B27F0 /* PBXContainerItemProxy */;
+		};
+		5BAC83313A5F4A54ECEDAAF8AEA76DE1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AFNetworking;
+			target = 4878C70B21CA37D7CB8A476BF986741B /* AFNetworking */;
+			targetProxy = 21C072DF04B78D4DAE7365BF9D3DB413 /* PBXContainerItemProxy */;
 		};
 		630B986597E2B4C48EA3DFEB50BBB54D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2228,11 +2256,11 @@
 			target = 4878C70B21CA37D7CB8A476BF986741B /* AFNetworking */;
 			targetProxy = 875D61C3C35C83B23ECF479463E37B9E /* PBXContainerItemProxy */;
 		};
-		F3C63D7FB9B0CA8EE7914E238ACF3811 /* PBXTargetDependency */ = {
+		FDD3F7A3F66AF772C6107481433792A7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = AFNetworking;
-			target = 4878C70B21CA37D7CB8A476BF986741B /* AFNetworking */;
-			targetProxy = E1508103C6AA8ADA2A1C617C3DC4A537 /* PBXContainerItemProxy */;
+			name = libPusher;
+			target = 68C2CC34B364F239C5FA621E4B017473 /* libPusher */;
+			targetProxy = 7E8F33149D73CF8B5C840A37BCA57FB0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2264,24 +2292,6 @@
 			};
 			name = Release;
 		};
-		053300520A82F4DD0178A21178310D7F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 41C22FC7392569F9656519672BE9D26E /* Pods-HippoShare.release.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
 		07749F0DF1639790361929F83AF2EB9E /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0295DE80EC5A8A6400EEBA15050EECF7 /* PromiseKit.xcconfig */;
@@ -2308,6 +2318,24 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		0F556D717FEC76115571ED7D0739541D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8064C729D1B39FA41140D57C73F06DD1 /* Pods-HippoShare.debug.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
 		};
 		141E9F1626FE34EE75CDC2B7581B19F3 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2363,6 +2391,34 @@
 			};
 			name = Debug;
 		};
+		1852F5CFFC8DDF01179A19C670B39620 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DE287B92EB0D78DE9074318D2CC5F58 /* libPusher.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/libPusher/libPusher-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/libPusher/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/libPusher/libPusher.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = Pusher;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		242CD0E0E3B9343A0B544A66FB260566 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E52B7BA9280413D7FBCF9994BBB0A3C8 /* AFNetworking.xcconfig */;
@@ -2390,6 +2446,24 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
+		};
+		27231B0D9CCF6ED1B448EB42BEF85BEE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41C22FC7392569F9656519672BE9D26E /* Pods-HippoShare.release.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MACH_O_TYPE = staticlib;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
 		};
 		2BEB1C6AF9DA68EAA999EABF6E8A485B /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2502,10 +2576,11 @@
 			};
 			name = Release;
 		};
-		5C3126B2F4E3FB857570638F5C61A74E /* Debug */ = {
+		5D794E5FC89AFED0EC09F7EC497176A4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FB2E37ABA972885994E8355956EE4124 /* SocketRocket.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -2519,35 +2594,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/SocketRocket/SocketRocket.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = SocketRocket;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		64333CD9E7B54C9EF9A8AF19A1B64817 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9DE287B92EB0D78DE9074318D2CC5F58 /* libPusher.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/libPusher/libPusher-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/libPusher/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/libPusher/libPusher.modulemap";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = Pusher;
+				PRODUCT_NAME = SocketRocket;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2665,33 +2713,6 @@
 			};
 			name = Release;
 		};
-		9F300223F91F9EAF74218D9B993E04E8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9DE287B92EB0D78DE9074318D2CC5F58 /* libPusher.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/libPusher/libPusher-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/libPusher/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/libPusher/libPusher.modulemap";
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = Pusher;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		A70CDAD61F90AC503C7D04CC22DA2923 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2728,24 +2749,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
-			};
-			name = Debug;
-		};
-		AAEB8EA8F046784F4EA7011601D1E105 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8064C729D1B39FA41140D57C73F06DD1 /* Pods-HippoShare.debug.xcconfig */;
-			buildSettings = {
-				APPLICATION_EXTENSION_API_ONLY = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACH_O_TYPE = staticlib;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
 			};
 			name = Debug;
 		};
@@ -2802,33 +2805,6 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
-		};
-		C561322B9D7E59A3866004266F2781F6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB2E37ABA972885994E8355956EE4124 /* SocketRocket.xcconfig */;
-			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/SocketRocket/SocketRocket-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/SocketRocket/Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/SocketRocket/SocketRocket.modulemap";
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = SocketRocket;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
 		};
 		C6F91D8ED3C7819D588E12E9AA33051C /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2970,6 +2946,34 @@
 			};
 			name = Release;
 		};
+		ED8181805524D1A79CB04471A02574CA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9DE287B92EB0D78DE9074318D2CC5F58 /* libPusher.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/libPusher/libPusher-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/libPusher/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/libPusher/libPusher.modulemap";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = Pusher;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		EF9333AF1E81B83A4C56BE7DC73ABC82 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D7E839B2BE522E41FDDBC1A45886F26F /* MBProgressHUD.xcconfig */;
@@ -3058,18 +3062,37 @@
 			};
 			name = Release;
 		};
+		FFC4BCA9D44F3FA97A96AA9858B9AC79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = FB2E37ABA972885994E8355956EE4124 /* SocketRocket.xcconfig */;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/SocketRocket/SocketRocket-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/SocketRocket/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/SocketRocket/SocketRocket.modulemap";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = SocketRocket;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		0D9EE7C271A794F9EAA174B87874C194 /* Build configuration list for PBXNativeTarget "Pods-HippoShare" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				AAEB8EA8F046784F4EA7011601D1E105 /* Debug */,
-				053300520A82F4DD0178A21178310D7F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		0ECAD3CE95CA19E5AFE91894C857527C /* Build configuration list for PBXNativeTarget "MBProgressHUD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -3082,8 +3105,8 @@
 		1B948862EDAE1217EDCE989A2965DD0D /* Build configuration list for PBXNativeTarget "libPusher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9F300223F91F9EAF74218D9B993E04E8 /* Debug */,
-				64333CD9E7B54C9EF9A8AF19A1B64817 /* Release */,
+				1852F5CFFC8DDF01179A19C670B39620 /* Debug */,
+				ED8181805524D1A79CB04471A02574CA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3127,8 +3150,8 @@
 		53E268A260A8873B1F743E2DE92A91E7 /* Build configuration list for PBXNativeTarget "SocketRocket" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5C3126B2F4E3FB857570638F5C61A74E /* Debug */,
-				C561322B9D7E59A3866004266F2781F6 /* Release */,
+				FFC4BCA9D44F3FA97A96AA9858B9AC79 /* Debug */,
+				5D794E5FC89AFED0EC09F7EC497176A4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3147,6 +3170,15 @@
 			buildConfigurations = (
 				C52939A31F4AC8C24B3F0B3D3B7E934F /* Debug */,
 				01936BD68B2EE3D51A816D4CE6B343D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		984A7AB4455613BEEA7B18FD61B48363 /* Build configuration list for PBXNativeTarget "Pods-HippoShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0F556D717FEC76115571ED7D0739541D /* Debug */,
+				27231B0D9CCF6ED1B448EB42BEF85BEE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

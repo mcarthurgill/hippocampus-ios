@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'D342A2C7D95DA0CDEEC799D4'
+               BlueprintIdentifier = 'DC681A06420B43B834F2A683'
                BlueprintName = 'Pods-HippoShare'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'libPods-HippoShare.a'>

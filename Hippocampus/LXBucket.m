@@ -151,8 +151,12 @@ static NSInteger maxRecentCount = 6;
 
 - (NSString*) cachedItemMessage
 {
-    if ([self objectForKey:@"cached_item_message"] && NULL_TO_NIL([self objectForKey:@"cached_item_message"]))
+    if ([self objectForKey:@"cached_item_message"] && NULL_TO_NIL([self objectForKey:@"cached_item_message"])){
         return [[[self objectForKey:@"cached_item_message"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\uFFFC"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    } else {
+        return [NSString stringWithFormat:@"[Add thoughts to %@]", self.firstName];
+    }
+    
     return nil;
 }
 

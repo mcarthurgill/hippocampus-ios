@@ -26,6 +26,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *subtitleLabel;
 
 - (IBAction)typeAction:(id)sender;
+- (IBAction)removeAction:(id)sender;
 
 - (IBAction)saveAction:(id)sender;
 - (IBAction)cancelAction:(id)sender;
