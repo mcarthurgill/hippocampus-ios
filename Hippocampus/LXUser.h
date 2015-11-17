@@ -20,6 +20,8 @@
 - (NSNumber*) score;
 - (NSNumber*) numberItems;
 - (NSNumber*) numberBuckets;
+- (NSNumber*) numberBucketsAllowed;
+- (BOOL) overNumberBucketsAllowed;
 - (NSNumber*) setupCompletion;
 - (BOOL) completedSetup;
 
@@ -29,5 +31,7 @@
 - (BOOL) hasMembership;
 - (NSString*) membership;
 - (void) updateToMembership:(NSString*)type success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+
+- (BOOL) shouldShowPaywall;
 
 @end

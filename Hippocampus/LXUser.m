@@ -88,6 +88,20 @@
     return [NSNumber numberWithInt:0];
 }
 
+- (NSNumber*) numberBucketsAllowed
+{
+    //NSLog(@"number_allowed: %@", [self objectForKey:@"number_buckets_allowed"]);
+    if (NULL_TO_NIL([self objectForKey:@"number_buckets_allowed"]))
+        return [self objectForKey:@"number_buckets_allowed"];
+    return nil;
+}
+
+- (BOOL) overNumberBucketsAllowed
+{
+    //NSLog(@"OVER: %d", [[self numberBuckets] integerValue] > [[self numberBucketsAllowed] integerValue]);
+    return [self numberBucketsAllowed] && [[self numberBuckets] integerValue] > [[self numberBucketsAllowed] integerValue];
+}
+
 - (NSNumber*) setupCompletion
 {
     if (NULL_TO_NIL([self objectForKey:@"setupCompletion"]))
@@ -147,6 +161,11 @@
             failureCallback(error);
         }
     }];
+}
+
+- (BOOL) shouldShowPaywall
+{
+    return ![[[LXSession thisSession] user] hasMembership] && [[[LXSession thisSession] user] overNumberBucketsAllowed];
 }
 
 @end

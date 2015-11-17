@@ -226,7 +226,7 @@
 
 - (void) checkForPaywall
 {
-    if (![[[LXSession thisSession] user] hasMembership]) {
+    if ([[[LXSession thisSession] user] shouldShowPaywall]) {
         [self presentPaywall];
     }
 }

@@ -77,7 +77,7 @@
 {
     NSLog(@"refreshedObject on paywall: %@", [notification userInfo]);
     if ([[notification userInfo] objectForKey:@"object_type"] && [[[notification userInfo] objectForKey:@"object_type"] isEqualToString:@"user"]) {
-        if ([[[LXSession thisSession] user] hasMembership]) {
+        if (![[[LXSession thisSession] user] shouldShowPaywall]) {
             [self dismissView];
         }
     }

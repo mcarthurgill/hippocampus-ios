@@ -434,7 +434,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     
     [self.blankItem setObject:[[[[[self.textView attributedText] string] stringByReplacingOccurrencesOfString:@"\uFFFC" withString:@""] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\uFFFC"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] forKey:@"message"];
     
-    //NSLog(@"%@, %@, %i", [self bucket], [[self bucket] localKey], ![[[self bucket] localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]);
     if ([self bucket] && [[self bucket] localKey] && ![[[self bucket] localKey] isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
         [self.blankItem setObject:[[self bucket] localKey] forKey:@"bucket_local_key"];
         [self.blankItem setObject:@"assigned" forKey:@"status"];

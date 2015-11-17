@@ -69,6 +69,7 @@
     }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
     NSMutableDictionary *parameters = [@{@"item":temp, @"auth":[self authDictionary]} mutableCopy];
     
     if (media && [media count] > 0) {
