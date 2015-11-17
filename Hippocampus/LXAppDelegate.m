@@ -278,14 +278,14 @@
 
 - (void) presentTutorialIfShould
 {
-    if (YES) {
-    //if ([[[[LXSession thisSession] user] numberBuckets] integerValue] == 0) {
+    //if (YES) {
+    if ([[[[LXSession thisSession] user] numberBuckets] integerValue] == 0) {
         [self presentTutorial];
     }
 }
 
 - (void) presentTutorial
-{    
+{
     UIViewController* vc2 = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationIntroBucketViewController"];
     [self.window.rootViewController presentViewController:vc2 animated:NO completion:^(void){
     }];

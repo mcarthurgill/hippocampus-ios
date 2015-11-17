@@ -525,15 +525,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2AJ-Kz-3jg">
-                                <rect key="frame" x="50" y="95" width="500" height="21"/>
+                                <rect key="frame" x="50" y="60" width="500" height="21"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Be specific..." textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xJ8-LA-xbe">
-                                <rect key="frame" x="50" y="136" width="500" height="30"/>
+                                <rect key="frame" x="50" y="111" width="500" height="30"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="go"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -544,8 +544,8 @@
                             <constraint firstAttribute="trailingMargin" secondItem="2AJ-Kz-3jg" secondAttribute="trailing" id="hao-vR-vIp"/>
                             <constraint firstItem="2AJ-Kz-3jg" firstAttribute="leading" secondItem="xJ8-LA-xbe" secondAttribute="leading" id="iEq-oe-F65"/>
                             <constraint firstAttribute="leadingMargin" secondItem="2AJ-Kz-3jg" secondAttribute="leading" id="pSb-eX-nFa"/>
-                            <constraint firstItem="xJ8-LA-xbe" firstAttribute="top" secondItem="2AJ-Kz-3jg" secondAttribute="bottom" constant="20" id="r0o-Wo-uNa"/>
-                            <constraint firstItem="2AJ-Kz-3jg" firstAttribute="top" secondItem="qeW-nl-7vT" secondAttribute="bottom" constant="75" id="yAQ-JV-Ckk"/>
+                            <constraint firstItem="xJ8-LA-xbe" firstAttribute="top" secondItem="2AJ-Kz-3jg" secondAttribute="bottom" constant="30" id="r0o-Wo-uNa"/>
+                            <constraint firstItem="2AJ-Kz-3jg" firstAttribute="top" secondItem="qeW-nl-7vT" secondAttribute="bottom" constant="40" id="yAQ-JV-Ckk"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">

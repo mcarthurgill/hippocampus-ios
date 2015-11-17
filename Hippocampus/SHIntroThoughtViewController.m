@@ -39,10 +39,16 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     [self.navigationItem setHidesBackButton:YES animated:NO];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.thoughtEntryTextField becomeFirstResponder];
 }
 
 
@@ -52,7 +58,7 @@
 
 - (void) setupLabel
 {
-    [self.questionLabel setText:[NSString stringWithFormat:@"Awesome! What is something you would like to remember about %@?", [[self bucket] firstName]]];
+    [self.questionLabel setText:[NSString stringWithFormat:@"Cool. You just created your first Bucket!\n\nWhat is something you would like to add to the \"%@\" Bucket?", [[self bucket] firstName]]];
     [self.questionLabel setFont:[UIFont secondaryFontWithSize:18.0f]];
     [self.questionLabel setTextColor:[UIColor SHFontDarkGray]];
 }
@@ -61,7 +67,7 @@
 {
     self.thoughtEntryTextField.delegate = self;
     
-    [self.thoughtEntryTextField setPlaceholder:[NSString stringWithFormat:@"eg. %@ is from Chicago", [[self bucket] firstName]]];
+    [self.thoughtEntryTextField setPlaceholder:[NSString stringWithFormat:@"eg. %@ is from Chicago", [[[self bucket] firstName] firstWord]]];
     [self.thoughtEntryTextField setFont:[UIFont titleFontWithSize:15.0f]];
     [self.thoughtEntryTextField setTextColor:[UIColor SHFontDarkGray]];
 }
@@ -139,7 +145,7 @@
         [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] addItem:item atIndex:0];
         [bucket addItem:item atIndex:0];
         [item saveRemote];
-        [self showMainViewController];
+        [self next];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:[NSString stringWithFormat:@"You must enter details about %@!", [bucket firstName]] delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [alert show];
@@ -149,6 +155,12 @@
 - (void) showMainViewController
 {
     [self dismissViewControllerAnimated:YES completion:^(void){}];
+}
+
+- (void) next
+{
+    UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHAppPreviewViewController"];
+    [self.navigationController pushViewController:vc animated:YES];
 }
                                            
                                            

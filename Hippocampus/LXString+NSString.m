@@ -94,5 +94,10 @@
     return [NSString stringWithFormat:@"link--%@", [self shaEncrypted]];
 }
 
+- (NSString*) firstWord
+{
+    return [[self componentsSeparatedByString:@" "] objectAtIndex:0];
+}
+
 @end
 
