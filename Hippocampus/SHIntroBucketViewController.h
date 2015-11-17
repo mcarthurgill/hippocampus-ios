@@ -1,4 +1,4 @@
-//
+ //
 //  SHIntroBucketViewController.h
 //  Hippocampus
 //
@@ -10,8 +10,9 @@
 
 @interface SHIntroBucketViewController : UIViewController <UITextFieldDelegate>
 
+@property (strong, nonatomic) IBOutlet UILabel *descriptionLabel;
 @property (weak, nonatomic) IBOutlet UITextField *bucketNameField;
 
-- (IBAction)nextAction:(id)sender;
+- (IBAction) nextAction:(id)sender;
 
 @end

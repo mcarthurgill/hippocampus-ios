@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="M5v-e7-wJ1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="M5v-e7-wJ1">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -34,12 +34,12 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yAT-GS-yiK">
-                                <rect key="frame" x="268" y="20" width="64" height="26"/>
+                                <rect key="frame" x="236" y="20" width="128" height="26"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="64" id="VWd-bT-O2D"/>
+                                    <constraint firstAttribute="width" constant="128" id="VWd-bT-O2D"/>
                                     <constraint firstAttribute="height" constant="26" id="mqO-gC-Xiz"/>
                                 </constraints>
-                                <state key="normal" title="Got It"/>
+                                <state key="normal" title="Dismiss Tutorial"/>
                                 <connections>
                                     <action selector="topRightButtonAction:" destination="9rL-2P-hEZ" eventType="touchUpInside" id="hni-6U-HmJ"/>
                                 </connections>
@@ -441,7 +441,7 @@
         <!--Navigation Controller-->
         <scene sceneID="86c-Si-qIu">
             <objects>
-                <navigationController id="cmM-Y6-ejJ" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="navigationIntroBucketViewController" id="cmM-Y6-ejJ" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="VtW-Or-9kw">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -467,7 +467,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Who is someone you would like to remember details about?" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4rj-NM-4DY">
-                                <rect key="frame" x="20" y="139" width="560" height="21"/>
+                                <rect key="frame" x="50" y="139" width="500" height="21"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -480,16 +480,24 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="4rj-NM-4DY" firstAttribute="leading" secondItem="SIQ-PX-ZTs" secondAttribute="leading" id="GHO-SM-0cq"/>
                             <constraint firstAttribute="leadingMargin" secondItem="4rj-NM-4DY" secondAttribute="leading" id="J9H-Df-jHp"/>
                             <constraint firstItem="SIQ-PX-ZTs" firstAttribute="leading" secondItem="SL8-rI-k0i" secondAttribute="leadingMargin" constant="30" id="MdK-Zv-8cN"/>
                             <constraint firstAttribute="trailingMargin" secondItem="SIQ-PX-ZTs" secondAttribute="trailing" constant="30" id="NDd-vW-3ov"/>
                             <constraint firstItem="4rj-NM-4DY" firstAttribute="top" secondItem="Qug-BG-epO" secondAttribute="bottom" constant="75" id="taN-Ro-ahw"/>
+                            <constraint firstItem="4rj-NM-4DY" firstAttribute="trailing" secondItem="SIQ-PX-ZTs" secondAttribute="trailing" id="uez-qH-SEy"/>
                             <constraint firstItem="SIQ-PX-ZTs" firstAttribute="top" secondItem="4rj-NM-4DY" secondAttribute="bottom" constant="20" id="w61-qn-CoB"/>
                             <constraint firstAttribute="trailingMargin" secondItem="4rj-NM-4DY" secondAttribute="trailing" id="z3I-FG-Uys"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="J9H-Df-jHp"/>
+                                <exclude reference="z3I-FG-Uys"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" id="4SU-tB-oB7">
-                        <barButtonItem key="rightBarButtonItem" title="Save" id="s32-hf-dqZ">
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="s32-hf-dqZ">
                             <connections>
                                 <action selector="nextAction:" destination="bKC-Qs-kl6" id="Iue-UB-J0p"/>
                             </connections>
@@ -497,6 +505,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="bucketNameField" destination="SIQ-PX-ZTs" id="ZzG-Ge-kU8"/>
+                        <outlet property="descriptionLabel" destination="4rj-NM-4DY" id="hc2-2U-mfN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EF8-Rs-mDX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -516,7 +525,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2AJ-Kz-3jg">
-                                <rect key="frame" x="20" y="95" width="560" height="21"/>
+                                <rect key="frame" x="50" y="95" width="500" height="21"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -530,12 +539,20 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="xJ8-LA-xbe" secondAttribute="trailing" constant="30" id="GFj-rL-25E"/>
+                            <constraint firstItem="2AJ-Kz-3jg" firstAttribute="trailing" secondItem="xJ8-LA-xbe" secondAttribute="trailing" id="JJf-8d-laV"/>
                             <constraint firstAttribute="leadingMargin" secondItem="xJ8-LA-xbe" secondAttribute="leading" constant="-30" id="YL8-YI-Buv"/>
                             <constraint firstAttribute="trailingMargin" secondItem="2AJ-Kz-3jg" secondAttribute="trailing" id="hao-vR-vIp"/>
+                            <constraint firstItem="2AJ-Kz-3jg" firstAttribute="leading" secondItem="xJ8-LA-xbe" secondAttribute="leading" id="iEq-oe-F65"/>
                             <constraint firstAttribute="leadingMargin" secondItem="2AJ-Kz-3jg" secondAttribute="leading" id="pSb-eX-nFa"/>
                             <constraint firstItem="xJ8-LA-xbe" firstAttribute="top" secondItem="2AJ-Kz-3jg" secondAttribute="bottom" constant="20" id="r0o-Wo-uNa"/>
                             <constraint firstItem="2AJ-Kz-3jg" firstAttribute="top" secondItem="qeW-nl-7vT" secondAttribute="bottom" constant="75" id="yAQ-JV-Ckk"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="hao-vR-vIp"/>
+                                <exclude reference="pSb-eX-nFa"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="questionLabel" destination="2AJ-Kz-3jg" id="rFR-JA-auR"/>

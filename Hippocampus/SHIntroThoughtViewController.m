@@ -16,16 +16,25 @@
 
 @implementation SHIntroThoughtViewController
 
-- (void)viewDidLoad {
+@synthesize questionLabel;
+@synthesize thoughtEntryTextField;
+
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    [self configureView];
-    [self removeAbilityToGoBack];
-    [self setupGestureRecognizers];
+    
+    [self setTitle:@"Step 2 of 2"];
+    
+    [self setupLabel];
     [self setupTextField];
     [self setupRightBarButton];
+    
+    [self removeAbilityToGoBack];
+    [self setupGestureRecognizers];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -36,23 +45,31 @@
     [self.navigationItem setHidesBackButton:YES animated:NO];
 }
 
+
+
+
 # pragma mark - Setup
+
+- (void) setupLabel
+{
+    [self.questionLabel setText:[NSString stringWithFormat:@"Awesome! What is something you would like to remember about %@?", [[self bucket] firstName]]];
+    [self.questionLabel setFont:[UIFont secondaryFontWithSize:18.0f]];
+    [self.questionLabel setTextColor:[UIColor SHFontDarkGray]];
+}
+
 - (void) setupTextField
 {
     self.thoughtEntryTextField.delegate = self;
+    
+    [self.thoughtEntryTextField setPlaceholder:[NSString stringWithFormat:@"eg. %@ is from Chicago", [[self bucket] firstName]]];
+    [self.thoughtEntryTextField setFont:[UIFont titleFontWithSize:15.0f]];
+    [self.thoughtEntryTextField setTextColor:[UIColor SHFontDarkGray]];
 }
 
 - (void) setupRightBarButton
 {
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(saveAction)];
     self.navigationItem.rightBarButtonItem = rightBarButtonItem;
-}
-
-- (void) configureView
-{
-    NSMutableDictionary *bucket = [LXObjectManager objectWithLocalKey:self.bucketLocalKey];
-    [self.questionLabel setText:[NSString stringWithFormat:@"Awesome! What is something you would like to remember about %@?", [bucket firstName]]];
-    [self.thoughtEntryTextField setPlaceholder:@"Be specific..."];
 }
 
 - (void) removeAbilityToGoBack
@@ -62,6 +79,21 @@
     }
     self.navigationItem.hidesBackButton = YES;
 }
+
+
+
+
+# pragma mark helpers
+
+- (NSMutableDictionary*) bucket
+{
+    return [LXObjectManager objectWithLocalKey:self.bucketLocalKey];
+}
+
+
+
+
+
 
 # pragma mark - Gesture Recognizers
 
@@ -74,11 +106,17 @@
     [self.view addGestureRecognizer:tap];
 }
 
--(void)dismissKeyboard {
+-(void) dismissKeyboard
+{
     [self.thoughtEntryTextField resignFirstResponder];
 }
 
+
+
+
+
 # pragma mark - UITextField Delegate
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self saveAction];
@@ -86,11 +124,14 @@
     return YES;
 }
 
-                                           
+
+
+
 # pragma mark - Actions
+
 - (void) saveAction
 {
-    NSMutableDictionary *bucket = [LXObjectManager objectWithLocalKey:self.bucketLocalKey];
+    NSMutableDictionary *bucket = [self bucket];
     if (self.thoughtEntryTextField && self.thoughtEntryTextField.text.length > 0) {
         NSMutableDictionary *item = [NSMutableDictionary createItemWithMessage:self.thoughtEntryTextField.text];
         [item setObject:[bucket localKey] forKey:@"bucket_local_key"];
@@ -107,7 +148,7 @@
 
 - (void) showMainViewController
 {
-    
+    [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
                                            
                                            

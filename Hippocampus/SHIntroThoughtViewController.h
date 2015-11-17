@@ -12,6 +12,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *questionLabel;
 @property (weak, nonatomic) IBOutlet UITextField *thoughtEntryTextField;
+
 @property (strong, nonatomic) NSString *bucketLocalKey;
 
 @end
