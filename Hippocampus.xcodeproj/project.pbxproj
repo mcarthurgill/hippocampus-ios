@@ -122,6 +122,11 @@
 		289FFF221BE46B0600CFD5C5 /* navFlag@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 289FFF1F1BE46B0600CFD5C5 /* navFlag@3x.png */; };
 		289FFF251BE46D1900CFD5C5 /* SHEditTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 289FFF241BE46D1900CFD5C5 /* SHEditTagViewController.m */; };
 		289FFF281BE513D600CFD5C5 /* LXSegmentedControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 289FFF271BE513D600CFD5C5 /* LXSegmentedControl.m */; };
+		28A0165C1BFC119600C6ADDD /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A0165B1BFC119600C6ADDD /* AFNetworking.framework */; };
+		28A0165E1BFC11A100C6ADDD /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A0165D1BFC11A100C6ADDD /* AlgoliaSearch_Client.framework */; };
+		28A016601BFC11A700C6ADDD /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A0165F1BFC11A700C6ADDD /* Pods_Hippocampus.framework */; };
+		28A016621BFC11B200C6ADDD /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A016611BFC11B200C6ADDD /* AFNetworking.framework */; };
+		28A016641BFC129900C6ADDD /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28A016631BFC129900C6ADDD /* AlgoliaSearch_Client.framework */; };
 		28A0857C1A700CB200BA1368 /* LXString+NSString.m in Sources */ = {isa = PBXBuildFile; fileRef = 28A0857B1A700CB200BA1368 /* LXString+NSString.m */; };
 		28AC96721BC487A700A5C1E9 /* 60x60@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28AC96701BC487A700A5C1E9 /* 60x60@2x.png */; };
 		28AC96731BC487A700A5C1E9 /* 60x60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28AC96711BC487A700A5C1E9 /* 60x60@3x.png */; };
@@ -144,8 +149,6 @@
 		28D8E56C1BAA47BF00AEEEBC /* gear.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D8E5691BAA47BF00AEEEBC /* gear.png */; };
 		28D8E56D1BAA47BF00AEEEBC /* gear@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D8E56A1BAA47BF00AEEEBC /* gear@2x.png */; };
 		28D8E56E1BAA47BF00AEEEBC /* gear@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28D8E56B1BAA47BF00AEEEBC /* gear@3x.png */; };
-		28E057781BFC10B60017B6C5 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E057761BFC0DFC0017B6C5 /* Pods_Hippocampus.framework */; };
-		28E057791BFC10B60017B6C5 /* Pods_Hippocampus.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 28E057761BFC0DFC0017B6C5 /* Pods_Hippocampus.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		28ED41C71B9C96FA000292AE /* Abel-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 28ED41C61B9C96FA000292AE /* Abel-Regular.ttf */; };
 		28ED41CB1B9CB943000292AE /* SHAssignBucketsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41CA1B9CB943000292AE /* SHAssignBucketsViewController.m */; };
 		28ED41D21B9CD641000292AE /* SHAssignBucketTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 28ED41D01B9CD641000292AE /* SHAssignBucketTableViewCell.m */; };
@@ -229,17 +232,6 @@
 				2808B61E1BEC01F6009784F4 /* HippoShare.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		28E0577A1BFC10B70017B6C5 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				28E057791BFC10B60017B6C5 /* Pods_Hippocampus.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -412,6 +404,11 @@
 		289FFF241BE46D1900CFD5C5 /* SHEditTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHEditTagViewController.m; sourceTree = "<group>"; };
 		289FFF261BE513D600CFD5C5 /* LXSegmentedControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXSegmentedControl.h; sourceTree = "<group>"; };
 		289FFF271BE513D600CFD5C5 /* LXSegmentedControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXSegmentedControl.m; sourceTree = "<group>"; };
+		28A0165B1BFC119600C6ADDD /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		28A0165D1BFC11A100C6ADDD /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Debug-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
+		28A0165F1BFC11A700C6ADDD /* Pods_Hippocampus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_Hippocampus.framework; path = "Pods/../build/Debug-iphoneos/Pods_Hippocampus.framework"; sourceTree = "<group>"; };
+		28A016611BFC11B200C6ADDD /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		28A016631BFC129900C6ADDD /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Debug-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
 		28A0857A1A700CB200BA1368 /* LXString+NSString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LXString+NSString.h"; sourceTree = "<group>"; };
 		28A0857B1A700CB200BA1368 /* LXString+NSString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LXString+NSString.m"; sourceTree = "<group>"; };
 		28AC96701BC487A700A5C1E9 /* 60x60@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "60x60@2x.png"; sourceTree = "<group>"; };
@@ -527,6 +524,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28A016641BFC129900C6ADDD /* AlgoliaSearch_Client.framework in Frameworks */,
+				28A016621BFC11B200C6ADDD /* AFNetworking.framework in Frameworks */,
 				002357321C1902FA78F5503C /* libPods-HippoShare.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -535,10 +534,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28A016601BFC11A700C6ADDD /* Pods_Hippocampus.framework in Frameworks */,
+				28A0165E1BFC11A100C6ADDD /* AlgoliaSearch_Client.framework in Frameworks */,
+				28A0165C1BFC119600C6ADDD /* AFNetworking.framework in Frameworks */,
 				766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */,
 				286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */,
 				281CA90E1951F34A00E6BE96 /* CoreData.framework in Frameworks */,
-				28E057781BFC10B60017B6C5 /* Pods_Hippocampus.framework in Frameworks */,
 				28AC96821BC4AC4100A5C1E9 /* StoreKit.framework in Frameworks */,
 				281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */,
 				281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
@@ -622,6 +623,11 @@
 		281CA8CA1951EC7E00E6BE96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28A016631BFC129900C6ADDD /* AlgoliaSearch_Client.framework */,
+				28A016611BFC11B200C6ADDD /* AFNetworking.framework */,
+				28A0165F1BFC11A700C6ADDD /* Pods_Hippocampus.framework */,
+				28A0165D1BFC11A100C6ADDD /* AlgoliaSearch_Client.framework */,
+				28A0165B1BFC119600C6ADDD /* AFNetworking.framework */,
 				28E057761BFC0DFC0017B6C5 /* Pods_Hippocampus.framework */,
 				28AC96811BC4AC4100A5C1E9 /* StoreKit.framework */,
 				766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */,
@@ -1308,8 +1314,8 @@
 				2808B6101BEC01F6009784F4 /* Frameworks */,
 				2808B6111BEC01F6009784F4 /* Resources */,
 				E4FC8B5C134C51B13137D19E /* Copy Pods Resources */,
-				2856C7B61BF180DB009728CB /* ShellScript */,
 				1063A343B231D492A918FA39 /* Embed Pods Frameworks */,
+				2856C7B61BF180DB009728CB /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1331,7 +1337,6 @@
 				D8CB7745B36648E88B33C586 /* Copy Pods Resources */,
 				563C40DBB9003AE41E07174F /* Embed Pods Frameworks */,
 				2808B6221BEC01F6009784F4 /* Embed App Extensions */,
-				28E0577A1BFC10B70017B6C5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1809,6 +1814,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"<Multiple",
 					"values>/**",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/**";
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1839,6 +1845,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"<Multiple",
 					"values>/**",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/**";
 				GCC_NO_COMMON_BLOCKS = YES;

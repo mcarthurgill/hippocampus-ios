@@ -14,5 +14,4 @@ end
 
 target :HippoShare do
 	pod 'AFNetworking', '~> 2.2'
-    pod 'libPusher', '~> 1.6.1'
 end
