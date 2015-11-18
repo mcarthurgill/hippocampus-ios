@@ -128,7 +128,11 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void) reloadScreen
 {
-    [self.tableView reloadData];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self.tableView];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView performSelector:@selector(reloadData) withObject:nil afterDelay:0.1];
+        
+    });
 }
 
 - (NSInteger) numberOfSectionsInTableView:(UITableView *)tableView
@@ -222,22 +226,6 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     }
 }
 
-//- (CGFloat) tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"blank"]) {
-//        return 570.0f;
-//    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
-//        return 91.0f;
-//    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"results"]) {
-//        NSMutableDictionary* item = [LXObjectManager objectWithLocalKey:[[self.searchResults objectAtIndex:indexPath.row] localKey]];
-//        if (item) {
-//            return [item estimatedCellHeight] + (![item belongsToCurrentUser] ? 32.0f : 0.0f ) + ([item hasBuckets] ? 30.0f : 0.0f );
-//        } else {
-//            return 44.0f;
-//        }
-//    }
-//    return 100.0f;
-//}
 
 
 
@@ -255,7 +243,8 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     if ([[self.sections objectAtIndex:section] isEqualToString:@"results"])
         return [NSString stringWithFormat:@"\"%@\" in Thoughts  (%lu)", [[SHSearch defaultManager] getCachedResultsTermWithType:@"items" withTerm:[self.searchBar text]], (unsigned long)[self.searchResults count]];
     if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"])
-        return [NSString stringWithFormat:@"Buckets (%lu)", (unsigned long)[self.bucketResults count]];
+        return [NSString stringWithFormat:@"\"%@\" in Buckets  (%lu)", [[SHSearch defaultManager] getCachedResultsTermWithType:@"buckets" withTerm:[self.searchBar text]], (unsigned long)[self.searchResults count]];
+        //return [NSString stringWithFormat:@"Buckets (%lu)", (unsigned long)[self.bucketResults count]];
     return nil;
 }
 
