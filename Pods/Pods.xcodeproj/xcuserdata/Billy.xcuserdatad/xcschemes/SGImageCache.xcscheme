@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '6636C82B33DD62CF0F237486'
+               BlueprintIdentifier = 'B43C36F2BB8C2EE8EE0FBBD9'
                BlueprintName = 'SGImageCache'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'SGImageCache.framework'>
