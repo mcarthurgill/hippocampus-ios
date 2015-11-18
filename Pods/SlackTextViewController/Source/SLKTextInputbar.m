@@ -17,9 +17,14 @@
 #import "SLKTextInputbar.h"
 #import "SLKTextViewController.h"
 #import "SLKTextView.h"
+#import "SLKInputAccessoryView.h"
+
 #import "SLKTextView+SLKAdditions.h"
-#import "SLKUIConstants.h"
 #import "UIView+SLKAdditions.h"
+
+#import "SLKUIConstants.h"
+
+NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMoveNotification";
 
 @interface SLKTextInputbar ()
 
@@ -35,6 +40,8 @@
 @property (nonatomic, strong) NSArray *charCountLabelVCs;
 
 @property (nonatomic, strong) UILabel *charCountLabel;
+
+@property (nonatomic) CGPoint previousOrigin;
 
 @property (nonatomic, strong) Class textViewClass;
 
@@ -92,8 +99,9 @@
     
     [self slk_registerNotifications];
     
-    [self.leftButton.imageView addObserver:self forKeyPath:NSStringFromSelector(@selector(image)) options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
-    [self.rightButton.titleLabel addObserver:self forKeyPath:NSStringFromSelector(@selector(font)) options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:NULL];
+    [self slk_registerTo:self.layer forSelector:@selector(position)];
+    [self slk_registerTo:self.leftButton.imageView forSelector:@selector(image)];
+    [self slk_registerTo:self.rightButton.titleLabel forSelector:@selector(font)];
 }
 
 
@@ -101,7 +109,7 @@
 
 - (void)layoutIfNeeded
 {
-    if (self.constraints.count == 0) {
+    if (self.constraints.count == 0 || !self.window) {
         return;
     }
     
@@ -274,22 +282,6 @@
     return _charCountLabel;
 }
 
-- (BOOL)isViewVisible
-{
-    SEL selector = NSSelectorFromString(@"isViewVisible");
-    
-    if ([self.controller respondsToSelector:selector]) {
-        
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        BOOL visible = (BOOL)[self.controller performSelector:selector];
-#pragma clang diagnostic pop
-        
-        return visible;
-    }
-    return NO;
-}
-
 - (CGFloat)minimumInputbarHeight
 {
     CGFloat minimumTextViewHeight = self.textView.intrinsicContentSize.height;
@@ -329,7 +321,7 @@
     CGFloat height = self.textView.intrinsicContentSize.height;
     height -= self.textView.font.lineHeight;
     height += roundf(self.textView.font.lineHeight*numberOfLines);
-    height += self.contentInset.top+self.contentInset.bottom;
+    height += self.contentInset.top + self.contentInset.bottom;
     
     return height;
 }
@@ -346,15 +338,24 @@
 
 - (CGFloat)slk_appropriateRightButtonWidth
 {
-    NSString *title = [self.rightButton titleForState:UIControlStateNormal];
-    CGSize rigthButtonSize = [title sizeWithAttributes:@{NSFontAttributeName: self.rightButton.titleLabel.font}];
-    
     if (self.autoHideRightButton) {
         if (self.textView.text.length == 0) {
             return 0.0;
         }
     }
-    return rigthButtonSize.width+self.contentInset.right;
+
+    NSString *title = [self.rightButton titleForState:UIControlStateNormal];
+
+    CGSize rightButtonSize;
+    
+    if ([title length] == 0 && self.rightButton.imageView.image) {
+        rightButtonSize = self.rightButton.imageView.image.size;
+    }
+    else {
+        rightButtonSize = [title sizeWithAttributes:@{NSFontAttributeName: self.rightButton.titleLabel.font}];
+    }
+
+    return rightButtonSize.width + self.contentInset.right;
 }
 
 - (CGFloat)slk_appropriateRightButtonMargin
@@ -398,6 +399,8 @@
     _autoHideRightButton = hide;
     
     self.rightButtonWC.constant = [self slk_appropriateRightButtonWidth];
+    self.rightMarginWC.constant = [self slk_appropriateRightButtonMargin];
+
     [self layoutIfNeeded];
 }
 
@@ -500,6 +503,7 @@
     }
     
     self.editing = NO;
+    
     [self slk_updateConstraintConstants];
 }
 
@@ -563,7 +567,7 @@
         
         BOOL bounces = self.controller.bounces && [self.textView isFirstResponder];
         
-        if ([self isViewVisible]) {
+        if (self.window) {
             [self slk_animateLayoutIfNeededWithBounce:bounces
                                               options:UIViewAnimationOptionCurveEaseInOut|UIViewAnimationOptionBeginFromCurrentState
                                            animations:NULL];
@@ -678,19 +682,40 @@
 
 #pragma mark - Observers
 
+- (void)slk_registerTo:(id)object forSelector:(SEL)selector
+{
+    if (object) {
+        [object addObserver:self forKeyPath:NSStringFromSelector(selector) options:NSKeyValueObservingOptionNew context:NULL];
+    }
+}
+
+- (void)slk_unregisterFrom:(id)object forSelector:(SEL)selector
+{
+    if (object) {
+        [object removeObserver:self forKeyPath:NSStringFromSelector(selector)];
+    }
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([object isEqual:self.leftButton.imageView] && [keyPath isEqualToString:NSStringFromSelector(@selector(image))]) {
+    if ([object isEqual:self.layer] && [keyPath isEqualToString:NSStringFromSelector(@selector(position))]) {
+        
+        if (!CGPointEqualToPoint(self.previousOrigin, self.frame.origin)) {
+            self.previousOrigin = self.frame.origin;
+            [[NSNotificationCenter defaultCenter] postNotificationName:SLKTextInputbarDidMoveNotification object:self userInfo:@{@"origin": [NSValue valueWithCGPoint:self.previousOrigin]}];
+        }
+    }
+    else if ([object isEqual:self.leftButton.imageView] && [keyPath isEqualToString:NSStringFromSelector(@selector(image))]) {
+        
         UIImage *newImage = change[NSKeyValueChangeNewKey];
         UIImage *oldImage = change[NSKeyValueChangeOldKey];
         
-        if ([newImage isEqual:oldImage]) {
-            return;
+        if (![newImage isEqual:oldImage]) {
+            [self slk_updateConstraintConstants];
         }
-        
-        [self slk_updateConstraintConstants];
     }
     else if ([object isEqual:self.rightButton.titleLabel] && [keyPath isEqualToString:NSStringFromSelector(@selector(font))]) {
+        
         [self slk_updateConstraintConstants];
     }
     else {
@@ -724,12 +749,14 @@
 {
     [self slk_unregisterNotifications];
     
-    [_leftButton.imageView removeObserver:self forKeyPath:NSStringFromSelector(@selector(image))];
-    [_rightButton.titleLabel removeObserver:self forKeyPath:NSStringFromSelector(@selector(font))];
+    [self slk_unregisterFrom:self.layer forSelector:@selector(position)];
+    [self slk_unregisterFrom:self.leftButton.imageView forSelector:@selector(image)];
+    [self slk_unregisterFrom:self.rightButton.titleLabel forSelector:@selector(font)];
     
     _leftButton = nil;
     _rightButton = nil;
     
+    _inputAccessoryView = nil;
     _textView.delegate = nil;
     _textView = nil;
     

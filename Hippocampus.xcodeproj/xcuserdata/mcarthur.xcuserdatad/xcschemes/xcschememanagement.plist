@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>HippoShare.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>15</integer>
+		</dict>
 		<key>Hippocampus.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>2808B6121BEC01F6009784F4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>281CA8C71951EC7E00E6BE96</key>
 		<dict>
 			<key>primary</key>

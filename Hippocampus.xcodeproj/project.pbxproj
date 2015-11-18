@@ -23,10 +23,6 @@
 		281CA8D81951EC7E00E6BE96 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8D71951EC7E00E6BE96 /* main.m */; };
 		281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */; };
 		281CA8E71951EC7E00E6BE96 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8E61951EC7E00E6BE96 /* Images.xcassets */; };
-		281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CB1951EC7E00E6BE96 /* Foundation.framework */; };
-		281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA8CF1951EC7E00E6BE96 /* UIKit.framework */; };
-		281CA8F81951EC7E00E6BE96 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */; };
-		281CA8FA1951EC7E00E6BE96 /* HippocampusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */; };
 		281CA90B1951ECBA00E6BE96 /* LXServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA9081951ECBA00E6BE96 /* LXServer.m */; };
 		281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA90A1951ECBA00E6BE96 /* LXSession.m */; };
 		281CA90E1951F34A00E6BE96 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 281CA90D1951F34A00E6BE96 /* CoreData.framework */; };
@@ -211,13 +207,6 @@
 			remoteGlobalIDString = 2808B6121BEC01F6009784F4;
 			remoteInfo = HippoShare;
 		};
-		281CA8F11951EC7E00E6BE96 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 281CA8C01951EC7E00E6BE96 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 281CA8C71951EC7E00E6BE96;
-			remoteInfo = Hippocampus;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -265,10 +254,6 @@
 		281CA8DA1951EC7E00E6BE96 /* LXAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LXAppDelegate.h; sourceTree = "<group>"; };
 		281CA8DB1951EC7E00E6BE96 /* LXAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LXAppDelegate.m; sourceTree = "<group>"; };
 		281CA8E61951EC7E00E6BE96 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HippocampusTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		281CA8F51951EC7E00E6BE96 /* HippocampusTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HippocampusTests-Info.plist"; sourceTree = "<group>"; };
-		281CA8F71951EC7E00E6BE96 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HippocampusTests.m; sourceTree = "<group>"; };
 		281CA9071951ECBA00E6BE96 /* LXServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXServer.h; sourceTree = "<group>"; };
 		281CA9081951ECBA00E6BE96 /* LXServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXServer.m; sourceTree = "<group>"; };
 		281CA9091951ECBA00E6BE96 /* LXSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXSession.h; sourceTree = "<group>"; };
@@ -540,15 +525,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		281CA8E91951EC7E00E6BE96 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				281CA8F01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
-				281CA8EF1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -594,7 +570,6 @@
 			isa = PBXGroup;
 			children = (
 				281CA8D11951EC7E00E6BE96 /* Hippocampus */,
-				281CA8F31951EC7E00E6BE96 /* HippocampusTests */,
 				2808B6141BEC01F6009784F4 /* HippoShare */,
 				281CA8CA1951EC7E00E6BE96 /* Frameworks */,
 				281CA8C91951EC7E00E6BE96 /* Products */,
@@ -606,7 +581,6 @@
 			isa = PBXGroup;
 			children = (
 				281CA8C81951EC7E00E6BE96 /* Hippocampus.app */,
-				281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */,
 				2808B6131BEC01F6009784F4 /* HippoShare.appex */,
 			);
 			name = Products;
@@ -656,24 +630,6 @@
 				281CA8D41951EC7E00E6BE96 /* InfoPlist.strings */,
 				281CA8D71951EC7E00E6BE96 /* main.m */,
 				281CA8D91951EC7E00E6BE96 /* Hippocampus-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		281CA8F31951EC7E00E6BE96 /* HippocampusTests */ = {
-			isa = PBXGroup;
-			children = (
-				281CA8F91951EC7E00E6BE96 /* HippocampusTests.m */,
-				281CA8F41951EC7E00E6BE96 /* Supporting Files */,
-			);
-			path = HippocampusTests;
-			sourceTree = "<group>";
-		};
-		281CA8F41951EC7E00E6BE96 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				281CA8F51951EC7E00E6BE96 /* HippocampusTests-Info.plist */,
-				281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1294,8 +1250,8 @@
 				2808B6101BEC01F6009784F4 /* Frameworks */,
 				2808B6111BEC01F6009784F4 /* Resources */,
 				E4FC8B5C134C51B13137D19E /* Copy Pods Resources */,
-				BD21823F1D66FAFED82CC486 /* Embed Pods Frameworks */,
 				2856C7B61BF180DB009728CB /* ShellScript */,
+				4FDF7E88DD4DFBD70B0965D3 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1327,24 +1283,6 @@
 			productName = Hippocampus;
 			productReference = 281CA8C81951EC7E00E6BE96 /* Hippocampus.app */;
 			productType = "com.apple.product-type.application";
-		};
-		281CA8EB1951EC7E00E6BE96 /* HippocampusTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 281CA9001951EC7E00E6BE96 /* Build configuration list for PBXNativeTarget "HippocampusTests" */;
-			buildPhases = (
-				281CA8E81951EC7E00E6BE96 /* Sources */,
-				281CA8E91951EC7E00E6BE96 /* Frameworks */,
-				281CA8EA1951EC7E00E6BE96 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				281CA8F21951EC7E00E6BE96 /* PBXTargetDependency */,
-			);
-			name = HippocampusTests;
-			productName = HippocampusTests;
-			productReference = 281CA8EC1951EC7E00E6BE96 /* HippocampusTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -1379,9 +1317,6 @@
 							};
 						};
 					};
-					281CA8EB1951EC7E00E6BE96 = {
-						TestTargetID = 281CA8C71951EC7E00E6BE96;
-					};
 				};
 			};
 			buildConfigurationList = 281CA8C31951EC7E00E6BE96 /* Build configuration list for PBXProject "Hippocampus" */;
@@ -1398,7 +1333,6 @@
 			projectRoot = "";
 			targets = (
 				281CA8C71951EC7E00E6BE96 /* Hippocampus */,
-				281CA8EB1951EC7E00E6BE96 /* HippocampusTests */,
 				2808B6121BEC01F6009784F4 /* HippoShare */,
 			);
 		};
@@ -1522,14 +1456,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		281CA8EA1951EC7E00E6BE96 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				281CA8F81951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1546,6 +1472,21 @@
 			shellPath = /bin/sh;
 			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\nif [[ -d \"Frameworks\" ]]; then\nrm -fr Frameworks\nfi";
 		};
+		4FDF7E88DD4DFBD70B0965D3 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		563C40DBB9003AE41E07174F /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1559,21 +1500,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		BD21823F1D66FAFED82CC486 /* Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D8CB7745B36648E88B33C586 /* Copy Pods Resources */ = {
@@ -1727,14 +1653,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		281CA8E81951EC7E00E6BE96 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				281CA8FA1951EC7E00E6BE96 /* HippocampusTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1742,11 +1660,6 @@
 			isa = PBXTargetDependency;
 			target = 2808B6121BEC01F6009784F4 /* HippoShare */;
 			targetProxy = 2808B61C1BEC01F6009784F4 /* PBXContainerItemProxy */;
-		};
-		281CA8F21951EC7E00E6BE96 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 281CA8C71951EC7E00E6BE96 /* Hippocampus */;
-			targetProxy = 281CA8F11951EC7E00E6BE96 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1763,14 +1676,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				281CA8D51951EC7E00E6BE96 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		281CA8F61951EC7E00E6BE96 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				281CA8F71951EC7E00E6BE96 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1966,50 +1871,6 @@
 			};
 			name = Release;
 		};
-		281CA9011951EC7E00E6BE96 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		281CA9021951EC7E00E6BE96 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Hippocampus.app/Hippocampus";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Hippocampus/Hippocampus-Prefix.pch";
-				INFOPLIST_FILE = "HippocampusTests/HippocampusTests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.busproductions.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SKIP_INSTALL = YES;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2036,15 +1897,6 @@
 			buildConfigurations = (
 				281CA8FE1951EC7E00E6BE96 /* Debug */,
 				281CA8FF1951EC7E00E6BE96 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		281CA9001951EC7E00E6BE96 /* Build configuration list for PBXNativeTarget "HippocampusTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				281CA9011951EC7E00E6BE96 /* Debug */,
-				281CA9021951EC7E00E6BE96 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

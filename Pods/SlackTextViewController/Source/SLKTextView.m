@@ -15,7 +15,9 @@
 //
 
 #import "SLKTextView.h"
+
 #import "SLKTextView+SLKAdditions.h"
+
 #import "SLKUIConstants.h"
 
 NSString * const SLKTextViewTextWillChangeNotification =            @"SLKTextViewTextWillChangeNotification";
@@ -119,6 +121,15 @@ NSString * const SLKTextViewPastedItemData =                        @"SLKTextVie
     }
 }
 
+- (void)addGestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
+{
+    if ([gestureRecognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        [gestureRecognizer addTarget:self action:@selector(slk_gestureRecognized:)];
+    }
+    
+    [super addGestureRecognizer:gestureRecognizer];
+}
+
 
 #pragma mark - Getters
 
@@ -151,10 +162,26 @@ NSString * const SLKTextViewPastedItemData =                        @"SLKTextVie
 
 - (NSUInteger)numberOfLines
 {
-    CGFloat contentHeight = self.contentSize.height;
+    CGSize contentSize = self.contentSize;
+    
+    CGFloat contentHeight = contentSize.height;
     contentHeight -= self.textContainerInset.top + self.textContainerInset.bottom;
-
-    return fabs(contentHeight/self.font.lineHeight);
+    
+    NSUInteger lines = fabs(contentHeight/self.font.lineHeight);
+    
+    // This helps preventing the content's height to be larger that the bounds' height
+    // Avoiding this way to have unnecessary scrolling in the text view when there is only 1 line of content
+    if (lines == 1 && contentSize.height > self.bounds.size.height) {
+        contentSize.height = self.bounds.size.height;
+        self.contentSize = contentSize;
+    }
+    
+    // Let's fallback to the minimum line count
+    if (lines == 0) {
+        lines = 1;
+    }
+    
+    return lines;
 }
 
 - (NSUInteger)maxNumberOfLines
@@ -396,22 +423,13 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
 
 #pragma mark - UITextView Overrides
 
-- (NSArray *)gestureRecognizers
+- (void)layoutIfNeeded
 {
-    NSArray *gestureRecognizers = [super gestureRecognizers];
-    
-    // Adds an aditional action to a private gesture to detect when the magnifying glass becomes visible
-    for (UIGestureRecognizer *gesture in gestureRecognizers) {
-        if ([gesture isMemberOfClass:NSClassFromString(@"UIVariableDelayLoupeGesture")]) {
-            
-            NSArray *targets = [gesture valueForKeyPath:@"_targets"];
-            if (targets.count > 0) {
-                [gesture addTarget:self action:@selector(slk_willShowLoupe:)];
-            }
-        }
+    if (!self.window) {
+        return;
     }
     
-    return gestureRecognizers;
+    [super layoutIfNeeded];
 }
 
 - (void)setSelectedRange:(NSRange)selectedRange
@@ -442,6 +460,8 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     [self slk_prepareForUndo:@"Attributed Text Set"];
     
     [super setAttributedText:attributedText];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:UITextViewTextDidChangeNotification object:self];
 }
 
 - (void)setFont:(UIFont *)font
@@ -486,6 +506,31 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
     
     // Updates the placeholder text alignment too
     self.placeholderLabel.textAlignment = textAlignment;
+}
+
+
+#pragma mark - UITextInput Overrides
+
+- (void)beginFloatingCursorAtPoint:(CGPoint)point
+{
+    _trackpadEnabled = YES;
+}
+
+- (void)updateFloatingCursorAtPoint:(CGPoint)point
+{
+    // Do something
+}
+
+- (void)endFloatingCursor
+{
+    _trackpadEnabled = NO;
+    
+    // We still need to notify a selection change in the textview after the trackpad is disabled
+    if (self.delegate && [self.delegate respondsToSelector:@selector(textViewDidChangeSelection:)]) {
+        [self.delegate textViewDidChangeSelection:self];
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:SLKTextViewSelectedRangeDidChangeNotification object:self userInfo:nil];
 }
 
 
@@ -581,13 +626,23 @@ SLKPastableMediaType SLKPastableMediaTypeFromNSString(NSString *string)
 
 #pragma mark - Custom Actions
 
+- (void)slk_gestureRecognized:(UIGestureRecognizer *)gesture
+{
+    // In iOS 8 and earlier, the gesture recognizer responsible for the magnifying glass movement was 'UIVariableDelayLoupeGesture'
+    // Since iOS 9, that gesture is now called '_UITextSelectionForceGesture'
+    if ([gesture isMemberOfClass:NSClassFromString(@"UIVariableDelayLoupeGesture")] ||
+        [gesture isMemberOfClass:NSClassFromString(@"_UITextSelectionForceGesture")]) {
+        [self slk_willShowLoupe:gesture];
+    }
+}
+
 - (void)slk_willShowLoupe:(UIGestureRecognizer *)gesture
 {
-    if (gesture.state == UIGestureRecognizerStateChanged) {
-        self.loupeVisible = YES;
+    if (gesture.state == UIGestureRecognizerStateBegan || gesture.state == UIGestureRecognizerStateChanged) {
+        _loupeVisible = YES;
     }
     else {
-        self.loupeVisible = NO;
+        _loupeVisible = NO;
     }
     
     // We still need to notify a selection change in the textview after the magnifying class is dismissed

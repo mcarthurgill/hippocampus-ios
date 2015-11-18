@@ -37,6 +37,8 @@ UIKIT_EXTERN NSString *const SLKKeyboardDidShowNotification;
 UIKIT_EXTERN NSString *const SLKKeyboardWillHideNotification;
 UIKIT_EXTERN NSString *const SLKKeyboardDidHideNotification;
 
+UIKIT_EXTERN NSString *const SLKTextInputbarDidMoveNotification;
+
 typedef NS_ENUM(NSUInteger, SLKKeyboardStatus) {
     SLKKeyboardStatusDidHide,
     SLKKeyboardStatusWillShow,
@@ -316,7 +318,7 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
 /// @name Text Input Bar Adjustment
 ///------------------------------------------------
 
-/** YES if the text inputbar is visible. Default is YES. */
+/** YES if the text inputbar is hidden. Default is NO. */
 @property (nonatomic, getter=isTextInputbarHidden) BOOL textInputbarHidden;
 
 /**
@@ -327,22 +329,6 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
  @param animated Specify YES if you want the toolbar to be animated on or off the screen.
  */
 - (void)setTextInputbarHidden:(BOOL)hidden animated:(BOOL)animated;
-
-/**
- Verifies if the text input bar should still move up/down even if it is not first responder. Default is NO.
- You can override this method to perform additional tasks associated with presenting the view. You don't need call super since this method doesn't do anything.
- 
- @param responder The current first responder object.
- @return YES so the text input bar still move up/down.
- */
-- (BOOL)forceTextInputbarAdjustmentForResponder:(UIResponder *)responder;
-
-/**
- Verifies if the text input bar should still move up/down when it is first responder. Default is NO.
- This is very useful when presenting the view controller in a custom modal presentation, when there keyboard events are being handled externally to reframe the presented view.
- You don't need call super since this method doesn't do anything.
- */
-- (BOOL)ignoreTextInputbarAdjustment;
 
 
 #pragma mark - Text Edition
@@ -386,6 +372,9 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
 /** The table view used to display autocompletion results. */
 @property (nonatomic, readonly) UITableView *autoCompletionView;
 
+/** YES if the autocompletion mode is active. */
+@property (nonatomic, readonly, getter = isAutoCompleting) BOOL autoCompleting;
+
 /** The recently found prefix symbol used as prefix for autocompletion mode. */
 @property (nonatomic, readonly, copy) NSString *foundPrefix;
 
@@ -395,19 +384,36 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
 /** The recently found word at the text view's caret position. */
 @property (nonatomic, readonly, copy) NSString *foundWord;
 
-/** YES if the autocompletion mode is active. */
-@property (nonatomic, readonly, getter = isAutoCompleting) BOOL autoCompleting;
-
 /** An array containing all the registered prefix strings for autocompletion. */
 @property (nonatomic, readonly, copy) NSArray *registeredPrefixes;
 
 /**
  Registers any string prefix for autocompletion detection, useful for user mentions and/or hashtags autocompletion.
  The prefix must be valid NSString (i.e: '@', '#', '\', and so on). This also checks if no repeated prefix is inserted.
+ You can also use longer prefixes.
  
  @param prefixes An array of prefix strings.
  */
 - (void)registerPrefixesForAutoCompletion:(NSArray *)prefixes;
+
+/**
+ Notifies the view controller either the autocompletion prefix or word have changed.
+ Use this method to modify your data source or fetch data asynchronously from an HTTP resource.
+ Once your data source is ready, make sure to call -showAutoCompletionView: to display the view accordingly.
+ You don't need call super since this method doesn't do anything.
+
+ @param prefix The detected prefix.
+ @param word The derected word.
+ */
+- (void)didChangeAutoCompletionPrefix:(NSString *)prefix andWord:(NSString *)word;
+
+/**
+ Use this method to programatically show/hide the autocompletion view.
+ Right before the view is shown, -reloadData is called. So avoid calling it manually.
+ 
+ @param show YES if the autocompletion view should be shown.
+ */
+- (void)showAutoCompletionView:(BOOL)show;
 
 /**
  Verifies that the autocompletion view should be shown. Default is NO.
@@ -415,7 +421,7 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
  
  @return YES if the autocompletion view should be shown.
  */
-- (BOOL)canShowAutoCompletion;
+- (BOOL)canShowAutoCompletion DEPRECATED_MSG_ATTRIBUTE("Override -didChangeAutoCompletionPrefix:andWord: instead");
 
 /**
  Returns a custom height for the autocompletion view. Default is 0.0.
@@ -464,11 +470,11 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
  Returns the key to be associated with a given text to be cached. Default is nil.
  To enable text caching, you must override this method to return valid key.
  The text view will be populated automatically when the view controller is configured.
- You don't need call super since this method doesn't do anything.
+ You don't need to call super since this method doesn't do anything.
  
- @return The key for which to enable text caching.
+ @return The string key for which to enable text caching.
  */
-- (id)keyForTextCaching;
+- (NSString *)keyForTextCaching;
 
 /**
  Removes the current's vien controller cached text.
@@ -524,5 +530,23 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
 
 /** UIAlertViewDelegate */
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex NS_REQUIRES_SUPER;
+
+
+#pragma mark - Life Cycle Methods Requiring Super
+///------------------------------------------------
+/// @name Life Cycle Methods Requiring Super
+///------------------------------------------------
+
+/**
+ Configures view hierarchy and layout constraints. If you override these methods, make sure to call super.
+ */
+- (void)loadView NS_REQUIRES_SUPER;
+- (void)viewDidLoad NS_REQUIRES_SUPER;
+- (void)viewWillAppear:(BOOL)animated NS_REQUIRES_SUPER;
+- (void)viewDidAppear:(BOOL)animated NS_REQUIRES_SUPER;
+- (void)viewWillDisappear:(BOOL)animated NS_REQUIRES_SUPER;
+- (void)viewDidDisappear:(BOOL)animated NS_REQUIRES_SUPER;
+- (void)viewWillLayoutSubviews NS_REQUIRES_SUPER;
+- (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
 
 @end

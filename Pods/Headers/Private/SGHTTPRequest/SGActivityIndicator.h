@@ -1,1 +1,1 @@
-../../../SGHTTPRequest/SGActivityIndicator.h
+../../../SGHTTPRequest/UI/SGActivityIndicator.h
