@@ -91,7 +91,7 @@
     } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
         if ([currentTitle isEqualToString:@"Buckets"]) {
             [self switchContainerToView:@"bucketsViewController" fromView:currentPresentedViewController];
-        } else if ([currentTitle isEqualToString:@"Tags"]) {
+        } else if ([currentTitle isEqualToString:@"Groups"]) {
             [self switchContainerToView:@"tagsViewController" fromView:currentPresentedViewController];
         }
     } else if ([NSMutableDictionary userHasTags] && [sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"bucketsViewController"]) {
@@ -156,11 +156,11 @@
             [[(SHBucketsViewController*)vc tableView] reloadData];
         });
     } else if ([toName isEqualToString:@"tagsViewController"]) {
-        [self setTitle:@"Tags"];
-        [self.segmentControl setTitle:@"Tags" forSegmentAtIndex:1];
+        [self setTitle:@"Groups"];
+        [self.segmentControl setTitle:@"Groups" forSegmentAtIndex:1];
         dispatch_async(dispatch_get_main_queue(), ^(void){
             //ATTENTION!
-            //[[(SHBucketsViewController*)vc tableView] reloadData];
+//            [[(SHBucketsViewController*)vc tableView] reloadData];
         });
     }
     
@@ -226,7 +226,7 @@
 
 - (void) checkForPaywall
 {
-    if (![[[LXSession thisSession] user] hasMembership]) {
+    if ([[[LXSession thisSession] user] shouldShowPaywall]) {
         [self presentPaywall];
     }
 }

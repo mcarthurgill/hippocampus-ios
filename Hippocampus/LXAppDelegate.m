@@ -17,9 +17,7 @@
 @synthesize client;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(presentTutorial) name:@"presentTutorial" object:nil];
-    
+{    
     //flush images from SGImageCache
     [SGImageCache flushImagesOlderThan:([[[NSDate alloc] init] timeIntervalSinceNow]+64*24*60*60)];
     
@@ -90,6 +88,7 @@
     self.window.rootViewController = [storyboard instantiateInitialViewController];
     [self.window makeKeyAndVisible];
     if (([name isEqualToString:@"Seahorse"]) && [[LXSession thisSession] user]) {
+        [self presentTutorialIfShould];
         [[[LXSession thisSession] user] updateTimeZone];
         [self refreshObjects];
     }
@@ -277,10 +276,18 @@
     }
 }
 
+- (void) presentTutorialIfShould
+{
+    //if (YES) {
+    if ([[[[LXSession thisSession] user] numberBuckets] integerValue] == 0) {
+        [self presentTutorial];
+    }
+}
+
 - (void) presentTutorial
 {
-    UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHAppPreviewViewController"];
-    [self.window.rootViewController presentViewController:vc animated:NO completion:^(void){
+    UIViewController* vc2 = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationIntroBucketViewController"];
+    [self.window.rootViewController presentViewController:vc2 animated:NO completion:^(void){
     }];
 }
 

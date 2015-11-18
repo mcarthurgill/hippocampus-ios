@@ -322,7 +322,7 @@
 - (void) buttonTapped:(UIButton*)sender
 {
     if ([sender tag] < [[[self bucket] tagsArray] count]) {
-        NSMutableDictionary* tag = [[[self bucket] tagsArray] objectAtIndex:[sender tag]];
+        NSMutableDictionary* tag = [[[self bucket] tagsArrayExcludingKey:self.tagLocalKey] objectAtIndex:[sender tag]];
         [[NSNotificationCenter defaultCenter] postNotificationName:(!onSearchViewController ? @"pushTagViewController" : @"searchPushTagViewController") object:nil userInfo:@{@"tag":tag}];
     }
 }

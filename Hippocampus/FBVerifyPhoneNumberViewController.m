@@ -184,7 +184,6 @@
                     [self hideHUD];
                     if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"]) {
                         [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Seahorse"];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentTutorial" object:nil];
                         [[UIApplication sharedApplication] endBackgroundTask:_bgt];
                     } else {
                         [self performSelector:@selector(checkForLogin) withObject:nil afterDelay:1.0];

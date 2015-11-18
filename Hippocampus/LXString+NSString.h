@@ -33,4 +33,6 @@
 
 - (NSString*) linkLocalKeyFromURLString;
 
+- (NSString*) firstWord;
+
 @end

@@ -14,6 +14,7 @@
 @synthesize card;
 @synthesize titleLabel;
 @synthesize secondaryLabel;
+@synthesize leadingMarginConstraint;
 
 - (void)awakeFromNib
 {
@@ -53,13 +54,13 @@
 {
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
     if (selected) {
-        [self.card setBackgroundColor:[UIColor SHGreen]];
+        [self.titleLabel setBackgroundColor:[UIColor SHGreen]];
         [self.titleLabel setTextColor:[UIColor whiteColor]];
-        [self.secondaryLabel setTextColor:[UIColor whiteColor]];
+        //[self.secondaryLabel setTextColor:[UIColor whiteColor]];
     } else {
-        [self.card setBackgroundColor:[UIColor whiteColor]];
+        [self.titleLabel setBackgroundColor:[UIColor whiteColor]];
         [self.titleLabel setTextColor:[UIColor SHFontDarkGray]];
-        [self.secondaryLabel setTextColor:[UIColor SHFontLightGray]];
+        //[self.secondaryLabel setTextColor:[UIColor SHFontLightGray]];
     }
 }
 
@@ -67,19 +68,13 @@
 {
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
     
-    [self.card.layer setCornerRadius:5];
-    [self.card setClipsToBounds:YES];
-    [self.card.layer setBorderColor:[[UIColor SHGreen] colorWithAlphaComponent:0.2f].CGColor];
-    [self.card.layer setBorderWidth:0.8f];
-    [self.card setBackgroundColor:[UIColor whiteColor]];
-    
-    [self.titleLabel setFont:[UIFont titleFontWithSize:16.0f]];
     [self.titleLabel setTextColor:[UIColor SHFontDarkGray]];
-    [self.titleLabel setBackgroundColor:[UIColor clearColor]];
+    [self.titleLabel setBackgroundColor:[UIColor whiteColor]];
     
-    [self.secondaryLabel setFont:[UIFont secondaryFontWithSize:13.0f]];
-    [self.secondaryLabel setTextColor:[UIColor SHFontLightGray]];
-    [self.secondaryLabel setBackgroundColor:[UIColor clearColor]];
+    [self.titleLabel.layer setCornerRadius:5];
+    [self.titleLabel setClipsToBounds:YES];
+    [self.titleLabel.layer setBorderColor:[[UIColor SHFontDarkGray] colorWithAlphaComponent:0.2f].CGColor];
+    [self.titleLabel.layer setBorderWidth:0.8f];
 }
 
 
@@ -95,8 +90,15 @@
 {
     [self setLocalKey:lk];
     
-    [self.titleLabel setText:[NSString stringWithFormat:@"%@", [[self tagObject] tagName]]];
-    [self.secondaryLabel setText:[NSString stringWithFormat:@"%@ Buckets", [[self tagObject] numberBuckets]]];
+    //[self.titleLabel setText:[NSString stringWithFormat:@"    %@    ", [[self tagObject] tagName]]];
+    //[self.secondaryLabel setText:[NSString stringWithFormat:@"%@ Buckets", [[self tagObject] numberBuckets]]];
+    
+    NSMutableAttributedString* titleString;
+    titleString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"  %@ (%@)  ", [[self tagObject] tagName], [[self tagObject] numberBuckets]]];
+    [titleString addAttribute:NSFontAttributeName value:[UIFont secondaryFontWithSize:16.0f] range:NSMakeRange(0,[[self tagObject] tagName].length+2)];
+    [titleString addAttribute:NSFontAttributeName value:[UIFont secondaryFontWithSize:14.0f] range:NSMakeRange([[self tagObject] tagName].length+2,[titleString length]-([[self tagObject] tagName].length+2))];
+    
+    [self.titleLabel setAttributedText:titleString];
 }
 
 @end

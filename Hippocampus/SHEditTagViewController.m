@@ -189,10 +189,10 @@ static NSString *actionCellIdentifier = @"SHBucketActionTableViewCell";
     
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"renameTag"]) {
-            [self showAlertWithTitle:@"Rename Tag" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:1 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[self tagObject] tagName] andIndexPath:nil];
+            [self showAlertWithTitle:@"Rename Group" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:1 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[self tagObject] tagName] andIndexPath:nil];
         } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"deleteTag"]) {
             if ([[self tagObject] belongsToCurrentUser]) {
-                [self showAlertWithTitle:[NSString stringWithFormat:@"Delete \"%@\"", [[self tagObject] tagName]] andMessage:@"Are you sure you want to delete this tag?" andCancelButtonTitle:@"Cancel" andOtherTitle:@"Yes" andTag:2 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:nil];
+                [self showAlertWithTitle:[NSString stringWithFormat:@"Delete \"%@\"", [[self tagObject] tagName]] andMessage:@"Are you sure you want to delete this group?" andCancelButtonTitle:@"Cancel" andOtherTitle:@"Yes" andTag:2 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:nil];
             }
         }
     }

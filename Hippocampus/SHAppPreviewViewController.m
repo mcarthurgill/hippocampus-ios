@@ -32,10 +32,34 @@
     [self setupVideo];
 }
 
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self removeAbilityToGoBack];
+    [self removeTop];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+# pragma mark setup
+
+- (void) removeAbilityToGoBack
+{
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+    }
+    self.navigationItem.hidesBackButton = YES;
+}
+
+- (void) removeTop
+{
+    [self.navigationController setNavigationBarHidden:YES];
 }
 
 - (void) setupAppearance
@@ -79,6 +103,7 @@
     NSLog(@"playback finished!");
 }
 
+
 # pragma mark finished
 
 - (IBAction)topRightButtonAction:(id)sender
@@ -86,5 +111,13 @@
     [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
 
+
+
+# pragma mark status bar
+
+- (UIStatusBarStyle) preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
 
 @end

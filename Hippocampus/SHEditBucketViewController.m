@@ -192,7 +192,7 @@ static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         return 60.0f;
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"tags"]) {
-        return 60.0f;
+        return 44.0f;
     }
     return 44.0f;
 }
@@ -209,7 +209,7 @@ static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"tags"]) {
-        return @"Tags";
+        return @"Groups";
     }
     return nil;
 }

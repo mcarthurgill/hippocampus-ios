@@ -71,7 +71,6 @@
                   [self hideHUD];
                   if ([responseObject objectForKey:@"success"] && [[responseObject objectForKey:@"success"] isEqualToString:@"success"]) {
                       [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Seahorse"];
-                      [[NSNotificationCenter defaultCenter] postNotificationName:@"presentTutorial" object:nil];
                   } else {
                       [self showAlertViewWithTitle:@"Uh-oh" message:@"Token could not be verified. Try again!"];
                   }

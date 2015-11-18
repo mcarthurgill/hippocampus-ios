@@ -11,9 +11,11 @@
 #import "SHMessagesViewController.h"
 #import "SHLoadingTableViewCell.h"
 #import "SHSearch.h"
+#import "SHNewBucketTableViewCell.h"
 
 static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
+static NSString *newBucketCellIdentifier = @"SHNewBucketTableViewCell";
 
 @interface SHBucketsViewController ()
 
@@ -53,7 +55,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [self.tableView registerNib:[UINib nibWithNibName:bucketCellIdentifier bundle:nil] forCellReuseIdentifier:bucketCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:loadingCellIdentifier bundle:nil] forCellReuseIdentifier:loadingCellIdentifier];
-    
+    [self.tableView registerNib:[UINib nibWithNibName:newBucketCellIdentifier bundle:nil] forCellReuseIdentifier:newBucketCellIdentifier];
+
     [self.tableView setContentInset:UIEdgeInsetsMake(64.0f, 0, 0, 0)];
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     
@@ -135,7 +138,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     self.sections = [[NSMutableArray alloc] init];
     
-    if (![self searchActivated] && [self recent] && [[self recent] count] > 0) {
+    [self.sections addObject:@"newBucket"];
+    if (![self searchActivated] && [[[[LXSession thisSession] user] numberBuckets] integerValue] > 7 && [self recent] && [[self recent] count] > 0) {
         [self.sections addObject:@"recent"];
     }
     [self.sections addObject:@"buckets"];
@@ -145,7 +149,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([[self.sections objectAtIndex:section] isEqualToString:@"recent"]) {
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"newBucket"]) {
+        return 1;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"recent"]) {
         return [[self recent] count];
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
         return [[self bucketKeys] count];
@@ -155,7 +161,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (UITableViewCell*) tableView:(UITableView *)tV cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"newBucket"]) {
+        return [self tableView:tV newBucketCellForRowAtIndexPath:indexPath];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
         if ([LXObjectManager objectWithLocalKey:[[self recent] objectAtIndex:indexPath.row]]) {
             return [self tableView:tV bucketCellForRowAtIndexPath:indexPath];
         } else {
@@ -179,6 +187,12 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         }
     }
     return nil;
+}
+
+- (UITableViewCell*) tableView:(UITableView *)tV newBucketCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHNewBucketTableViewCell* cell = (SHNewBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:newBucketCellIdentifier];
+    return cell;
 }
 
 - (UITableViewCell*) tableView:(UITableView *)tV bucketCellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -225,6 +239,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if ([self.searchBar isFirstResponder]) {
         [self.searchBar resignFirstResponder];
     }
+
+    SHNewBucketTableViewCell *cell = [self getNewBucketCell];
+    if (![cell inDefaultMode]) {
+        [cell setViewBackToDefault];
+    }
     
     float scrollViewHeight = scrollView.frame.size.height;
     float scrollContentSizeHeight = scrollView.contentSize.height;
@@ -240,6 +259,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 }
 
 
+- (SHNewBucketTableViewCell*) getNewBucketCell
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@"newBucket"]];
+    return (SHNewBucketTableViewCell*)[self.tableView cellForRowAtIndexPath:indexPath];
+}
 
 
 
@@ -247,7 +271,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (NSString*) tableView:(UITableView *)tV titleForHeaderInSection:(NSInteger)section
 {
-    if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
+    if ([[self.sections objectAtIndex:section] isEqualToString:@"newBucket"]) {
+        return nil;
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
         return @"All Buckets";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"recent"]) {
         return @"Recent Buckets";
@@ -329,13 +355,19 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    SHMessagesViewController* vc = (SHMessagesViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
-    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
-        [(SHMessagesViewController*)vc setLocalKey:[[self recent] objectAtIndex:indexPath.row]];
-    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
-        [(SHMessagesViewController*)vc setLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
+    if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"newBucket"]) {
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    } else {
+        SHMessagesViewController* vc = (SHMessagesViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+
+        if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"recent"]) {
+            [(SHMessagesViewController*)vc setLocalKey:[[self recent] objectAtIndex:indexPath.row]];
+        } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"buckets"]) {
+            [(SHMessagesViewController*)vc setLocalKey:[[self bucketKeys] objectAtIndex:indexPath.row]];
+        }
+        [self.navigationController pushViewController:vc animated:YES];
+
     }
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

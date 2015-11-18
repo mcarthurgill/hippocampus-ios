@@ -78,6 +78,10 @@
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
 		28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 28793F001B28743900E2998F /* NSArray+Attributes.m */; };
+		2880B6131BFCC28200FC65CB /* SHIntroBucketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880B60D1BFCC28200FC65CB /* SHIntroBucketViewController.m */; };
+		2880B6141BFCC28200FC65CB /* SHIntroThoughtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880B60F1BFCC28200FC65CB /* SHIntroThoughtViewController.m */; };
+		2880B6151BFCC28200FC65CB /* SHNewBucketTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880B6111BFCC28200FC65CB /* SHNewBucketTableViewCell.m */; };
+		2880B6161BFCC28200FC65CB /* SHNewBucketTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2880B6121BFCC28200FC65CB /* SHNewBucketTableViewCell.xib */; };
 		2882A80C1BCC36F50058D4C9 /* toolbar_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A80B1BCC36F50058D4C9 /* toolbar_share.png */; };
 		2882A8101BCC3BAD0058D4C9 /* toolbar_media.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A80E1BCC3BAD0058D4C9 /* toolbar_media.png */; };
 		2882A8121BCC3C190058D4C9 /* toolbar_bucket.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A8111BCC3C190058D4C9 /* toolbar_bucket.png */; };
@@ -336,6 +340,13 @@
 		287423D21B059F7200A3242C /* email-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "email-screen.jpg"; sourceTree = "<group>"; };
 		28793EFF1B28743900E2998F /* NSArray+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Attributes.h"; sourceTree = "<group>"; };
 		28793F001B28743900E2998F /* NSArray+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Attributes.m"; sourceTree = "<group>"; };
+		2880B60C1BFCC28200FC65CB /* SHIntroBucketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHIntroBucketViewController.h; sourceTree = "<group>"; };
+		2880B60D1BFCC28200FC65CB /* SHIntroBucketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHIntroBucketViewController.m; sourceTree = "<group>"; };
+		2880B60E1BFCC28200FC65CB /* SHIntroThoughtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHIntroThoughtViewController.h; sourceTree = "<group>"; };
+		2880B60F1BFCC28200FC65CB /* SHIntroThoughtViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHIntroThoughtViewController.m; sourceTree = "<group>"; };
+		2880B6101BFCC28200FC65CB /* SHNewBucketTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHNewBucketTableViewCell.h; sourceTree = "<group>"; };
+		2880B6111BFCC28200FC65CB /* SHNewBucketTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHNewBucketTableViewCell.m; sourceTree = "<group>"; };
+		2880B6121BFCC28200FC65CB /* SHNewBucketTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHNewBucketTableViewCell.xib; sourceTree = "<group>"; };
 		2882A80B1BCC36F50058D4C9 /* toolbar_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_share.png; sourceTree = "<group>"; };
 		2882A80E1BCC3BAD0058D4C9 /* toolbar_media.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_media.png; sourceTree = "<group>"; };
 		2882A8111BCC3C190058D4C9 /* toolbar_bucket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bucket.png; sourceTree = "<group>"; };
@@ -670,6 +681,7 @@
 		281CA9031951EC8E00E6BE96 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2880B60B1BFCC26B00FC65CB /* New */,
 				288A74701B7859D400F6A618 /* Table View Cells */,
 				2810B9B31BE3CB67003D20F8 /* Tags */,
 				2882A81C1BCD98990058D4C9 /* Email View */,
@@ -872,6 +884,20 @@
 				28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */,
 			);
 			name = Paywall;
+			sourceTree = "<group>";
+		};
+		2880B60B1BFCC26B00FC65CB /* New */ = {
+			isa = PBXGroup;
+			children = (
+				2880B60C1BFCC28200FC65CB /* SHIntroBucketViewController.h */,
+				2880B60D1BFCC28200FC65CB /* SHIntroBucketViewController.m */,
+				2880B60E1BFCC28200FC65CB /* SHIntroThoughtViewController.h */,
+				2880B60F1BFCC28200FC65CB /* SHIntroThoughtViewController.m */,
+				2880B6101BFCC28200FC65CB /* SHNewBucketTableViewCell.h */,
+				2880B6111BFCC28200FC65CB /* SHNewBucketTableViewCell.m */,
+				2880B6121BFCC28200FC65CB /* SHNewBucketTableViewCell.xib */,
+			);
+			name = New;
 			sourceTree = "<group>";
 		};
 		2882A81C1BCD98990058D4C9 /* Email View */ = {
@@ -1412,6 +1438,7 @@
 				2882A81B1BCD86410058D4C9 /* audio_icon_shrink.png in Resources */,
 				28ED42111BA210AE000292AE /* toolbar_location.png in Resources */,
 				28ED42511BA357F0000292AE /* compose_media@2x.png in Resources */,
+				2880B6161BFCC28200FC65CB /* SHNewBucketTableViewCell.xib in Resources */,
 				28419A341BB20DAD00CF21A6 /* plus_swipe@3x.png in Resources */,
 				287423D31B059F7200A3242C /* email-screen.jpg in Resources */,
 				2882A8191BCC7E680058D4C9 /* audio_detail_icon.png in Resources */,
@@ -1634,8 +1661,10 @@
 				28ACA39C1B8B73E800D7B215 /* SHLoadingTableViewCell.m in Sources */,
 				289D2F831BAA4867007F719B /* SHEditBucketViewController.m in Sources */,
 				289CFCCE1BEA670800651B53 /* SHLinkMetadataTableViewCell.m in Sources */,
+				2880B6141BFCC28200FC65CB /* SHIntroThoughtViewController.m in Sources */,
 				761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */,
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
+				2880B6131BFCC28200FC65CB /* SHIntroBucketViewController.m in Sources */,
 				76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */,
 				288A74741B7859F600F6A618 /* SHItemTableViewCell.m in Sources */,
 				28ED42351BA2B866000292AE /* SHEditItemViewController.m in Sources */,
@@ -1689,6 +1718,7 @@
 				28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */,
 				28ED41E01BA00156000292AE /* HCReminderViewController.m in Sources */,
 				284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */,
+				2880B6151BFCC28200FC65CB /* SHNewBucketTableViewCell.m in Sources */,
 				282FA8411B8F9C2E004ADA00 /* SHSearchViewController.m in Sources */,
 				282FA8441B909BD5004ADA00 /* SHSearch.m in Sources */,
 				2882A81F1BCD98B00058D4C9 /* SHEmailViewController.m in Sources */,

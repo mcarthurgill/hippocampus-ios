@@ -15,6 +15,7 @@
 @property (strong, nonatomic) IBOutlet UIView *card;
 @property (strong, nonatomic) IBOutlet UILabel *titleLabel;
 @property (strong, nonatomic) IBOutlet UILabel *secondaryLabel;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *leadingMarginConstraint;
 
 - (void) configureWithTagLocalKey:(NSString*)lk;
 
