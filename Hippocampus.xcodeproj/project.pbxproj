@@ -73,7 +73,6 @@
 		2867794D1BFC1D4100B75A35 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2867794C1BFC1D4100B75A35 /* AFNetworking.framework */; };
 		2867794F1BFC1D6A00B75A35 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2867794E1BFC1D6A00B75A35 /* AFNetworking.framework */; };
 		286779511BFC1D6D00B75A35 /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286779501BFC1D6D00B75A35 /* AlgoliaSearch_Client.framework */; };
-		286779571BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286779561BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework */; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
@@ -337,7 +336,6 @@
 		2867794C1BFC1D4100B75A35 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
 		2867794E1BFC1D6A00B75A35 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
 		286779501BFC1D6D00B75A35 /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Debug-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
-		286779561BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Release-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
 		286F434F1A9F71DB0086AAC9 /* UIFont+HCFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+HCFonts.h"; sourceTree = "<group>"; };
 		286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+HCFonts.m"; sourceTree = "<group>"; };
 		286F43521A9F7C290086AAC9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -521,7 +519,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				286779571BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework in Frameworks */,
 				2867794D1BFC1D4100B75A35 /* AFNetworking.framework in Frameworks */,
 				6650BAD2EED2E63585651566 /* libPods-HippoShare.a in Frameworks */,
 			);
@@ -619,7 +616,6 @@
 		281CA8CA1951EC7E00E6BE96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				286779561BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework */,
 				286779501BFC1D6D00B75A35 /* AlgoliaSearch_Client.framework */,
 				2867794E1BFC1D6A00B75A35 /* AFNetworking.framework */,
 				2867794C1BFC1D4100B75A35 /* AFNetworking.framework */,
