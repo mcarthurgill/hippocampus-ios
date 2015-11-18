@@ -8,6 +8,8 @@
 
 #import "LXServer.h"
 #import "LXAppDelegate.h"
+#import "NSString+SHAEncryption.h"
+@import SystemConfiguration;
 
 #define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
 
@@ -26,164 +28,183 @@
     return sharedClient;
 }
 
-+ (id) getObjectFromModel:(NSString*)modelName primaryKeyName:(NSString*)primaryKeyName primaryKey:(NSString*)primaryKey
-{
-    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
-    NSEntityDescription *entityDescription = [NSEntityDescription
-                                              entityForName:modelName inManagedObjectContext:moc];
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:entityDescription];
-    [request setReturnsObjectsAsFaults:NO];
-    // Set example predicate and sort orderings...
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:[NSString stringWithFormat:@"(%@ == %@)", primaryKeyName, primaryKey]];
-    
-    [request setPredicate:predicate];
-    NSError* error;
-    NSMutableArray *array = [NSMutableArray arrayWithArray:[moc executeFetchRequest:request error:&error]];
-    if (array.count==0) {
-        //NO OBJECT FOUND
-        NSLog(@"NO %@ FOUND", modelName);
-        return nil;
-    } else {
-        NSLog(@"RETURNING A %@, out of %lu total.", modelName, (unsigned long)array.count);
-        return [array objectAtIndex:0];
-    }
-    return nil;
-}
-
-+ (id) addToDatabase:(NSString *)modelName object:(NSDictionary *)object primaryKeyName:(NSString *)primaryKeyName withMapping:(NSDictionary *)mapping
-{
-    
-    //NSLog(@"object: %@", object);
-    
-    if (!NULL_TO_NIL([object valueForKey:@"id"])) {
-        return nil;
-    }
-    
-    NSString* object_id = [NSString stringWithFormat:@"%@",[object valueForKey:@"id"]];
-    
-    id newObject = [LXServer getObjectFromModel:modelName primaryKeyName:primaryKeyName primaryKey:object_id];
-    
-    NSManagedObjectContext *moc = [[LXSession thisSession] managedObjectContext];
-    
-    NSLog(@"newObject: %@", newObject);
-    
-    if (!newObject) {
-        newObject = [NSEntityDescription
-                   insertNewObjectForEntityForName:modelName
-                   inManagedObjectContext:moc];
-    }
-    
-    NSArray* keys = [mapping allKeys];
-    for (int i = 0; i < keys.count; ++i) {
-        NSString* core_key = keys[i];
-        NSString* json_key = [mapping objectForKey:core_key];
-        if (NULL_TO_NIL([object valueForKey:json_key])) {
-            [newObject setValue:[NSString stringWithFormat:@"%@",[object valueForKey:json_key]] forKey:core_key];
-        }
-    }
-    
-    if ([modelName isEqualToString:@"HCBucket"]) {
-        [newObject setValue:[newObject titleString] forKey:@"name"];
-    }
-    
-    if ([newObject createdAt] && [[newObject createdAt] length] > 0) {
-        NSLog(@"lastCreatedAt: %f", [[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970]);
-        if ([modelName isEqualToString:@"HCItem"]) {
-            //update last item update
-            if ([[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970] > [[[[LXSession thisSession] user] lastItemUpdateTime] doubleValue]) {
-                [[[LXSession thisSession] user] setLastItemUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970]] ];
-            }
-        } else if ([modelName isEqualToString:@"HCBucket"]) {
-            //update last bucket update
-            if ([[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970] > [[[[LXSession thisSession] user] lastBucketUpdateTime] doubleValue]) {
-                [[[LXSession thisSession] user] setLastBucketUpdateTime:[NSNumber numberWithFloat:[[NSDate timeWithString:[newObject createdAt]] timeIntervalSince1970]] ];
-            }
-        }
-    }
-    
-    [[[LXSession thisSession] managedObjectContext] save:nil];
-    
-    return newObject;
-}
-
-+ (void) addArrayToDatabase:(NSString*)modelName array:(NSArray*)array primaryKeyName:(NSString *)primaryKey withMapping:(NSDictionary *)mapping
-{
-    for (int i = 0; i < array.count; ++i) {
-        [LXServer addToDatabase:modelName object:[array objectAtIndex:i] primaryKeyName:primaryKey withMapping:mapping];
-    }
-    [[[LXSession thisSession] managedObjectContext] save:nil];
-}
-
-+ (void) saveObject:(id)object withPath:(NSString*)path method:(NSString*)method mapping:(NSDictionary*)mapping success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
-{
-    NSMutableDictionary* parameters = [[NSMutableDictionary alloc] init];
-    NSArray* keys = [mapping allKeys];
-    NSLog(@"Keys: %@", mapping);
-    for (int i = 0; i < keys.count; ++i) {
-        NSString* core_key = keys[i];
-        NSString* json_key = [mapping objectForKey:core_key];
-        if ([object valueForKey:core_key] && ![core_key isEqualToString:@"createdAt"] && ![core_key isEqualToString:@"updatedAt"] && ![core_key isEqualToString:@"id"]) {
-            [parameters setValue:[object valueForKey:core_key] forKey:json_key];
-        }
-    }
-    NSDictionary* finalParameters = [[NSDictionary alloc] initWithObjectsAndKeys:parameters, [object serverObjectName], nil];
-    NSLog(@"finalParameters: %@", finalParameters);
-    [[LXServer shared] requestPath:path withMethod:method withParamaters:finalParameters
-                           success:^(id responseObject) {
-                               if (successCallback)
-                                   successCallback(responseObject);
-                           }
-                           failure:^(NSError *error) {
-                               if (failureCallback)
-                                   failureCallback(error);
-                           }
-     ];
-}
-
 - (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:params success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
+    [self requestPath:path withMethod:method withParamaters:params authType:nil constructingBodyWithBlock:nil success:successCallback failure:failureCallback];
+}
+
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:(NSDictionary*)params constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [self requestPath:path withMethod:method withParamaters:params authType:nil constructingBodyWithBlock:block success:successCallback failure:failureCallback];
+}
+
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:params authType:authType success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [self requestPath:path withMethod:method withParamaters:params authType:authType constructingBodyWithBlock:nil success:successCallback failure:failureCallback];
+}
+
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:(NSDictionary*)p authType:(NSString*)authType constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    UIBackgroundTaskIdentifier bgt = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void){
+    }];
+    
+    NSMutableDictionary* params = [[NSMutableDictionary alloc] initWithDictionary:p];
+    [params setObject:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] forKey:@"v"];
+    if ([[LXSession thisSession] user]) {
+        [params setObject:@{ @"uid":[[[LXSession thisSession] user] ID], @"token":[NSString userAuthToken] } forKey:@"auth"];
+    }
+    
     if ([method.uppercaseString isEqualToString:@"GET"]) {
+        if ([[LXObjectManager defaultManager] queries] && [[[LXObjectManager defaultManager] queries] count] > 0) {
+            [[LXObjectManager defaultManager] runQueries];
+        }
         [self GET:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
             //NSLog(@"%@", responseObject);
             if (successCallback)
                 successCallback(responseObject);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
             if (failureCallback)
                 failureCallback(error);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
         }];
     } else if ([method.uppercaseString isEqualToString:@"POST"]) {
-        [self POST:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
+        [self POST:path parameters:params constructingBodyWithBlock:block success:^(NSURLSessionDataTask* task, id responseObject) {
             //NSLog(@"%@", responseObject);
             if (successCallback)
                 successCallback(responseObject);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
+            if ([[LXSession thisSession] user] && ![authType isEqualToString:@"repeat"]) {
+                [[LXObjectManager defaultManager] addQuery:path withMethod:method withLocalKey:[self localStringForParams:p] withObject:p];
+            }
             if (failureCallback)
                 failureCallback(error);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
         }];
     } else if ([method.uppercaseString isEqualToString:@"PUT"]) {
         [self PUT:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
             //NSLog(@"%@", responseObject);
             if (successCallback)
                 successCallback(responseObject);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
+            if ([[LXSession thisSession] user] && ![authType isEqualToString:@"repeat"]) {
+                [[LXObjectManager defaultManager] addQuery:path withMethod:method withLocalKey:[self localStringForParams:p] withObject:p];
+            }
             if (failureCallback)
                 failureCallback(error);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
         }];
     } else if ([method.uppercaseString isEqualToString:@"DELETE"]) {
         [self DELETE:path parameters:params success:^(NSURLSessionDataTask* task, id responseObject) {
             //NSLog(@"%@", responseObject);
             if (successCallback)
                 successCallback(responseObject);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
         } failure:^(NSURLSessionDataTask* task, NSError* error) {
             NSLog(@"ERROR! %@", [error localizedDescription]);
+            if ([[LXSession thisSession] user] && ![authType isEqualToString:@"repeat"]) {
+                [[LXObjectManager defaultManager] addQuery:path withMethod:method.uppercaseString withLocalKey:[self localStringForParams:p] withObject:p];
+            }
             if (failureCallback)
                 failureCallback(error);
+            [[UIApplication sharedApplication] endBackgroundTask:bgt];
         }];
     }
 }
 
+- (NSString*) localStringForParams:(NSDictionary*)params
+{
+    if ([params objectForKey:@"local_key"]) {
+        return [params objectForKey:@"local_key"];
+    } else if ([params objectForKey:@"item"] && [[params objectForKey:@"item"] objectForKey:@"local_key"]) {
+        return [[params objectForKey:@"item"] objectForKey:@"local_key"];
+    } else if ([params objectForKey:@"bucket"] && [[params objectForKey:@"bucket"] objectForKey:@"local_key"]) {
+        return [[params objectForKey:@"bucket"] objectForKey:@"local_key"];
+    }
+    return nil;
+}
+
++ (BOOL) errorBecauseOfBadConnection:(NSInteger)code
+{
+    for (NSNumber* testAgainst in @[@-999,@-1000,@-1001,@-1002,@-1003,@-1004,@-1005,@-1006,@-1007,@-1008,@-1009,@-1018,@-1019,@-1020,@-1100,@-1102]) {
+        if ([testAgainst integerValue] == code) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
++ (BOOL) hasInternetConnection
+{
+    SCNetworkReachabilityFlags flags;
+    SCNetworkReachabilityRef address;
+    address = SCNetworkReachabilityCreateWithName(NULL, "http://www.google.com");
+    Boolean success = SCNetworkReachabilityGetFlags(address, &flags);
+    CFRelease(address);
+    bool canReach = success
+    && !(flags & kSCNetworkReachabilityFlagsConnectionRequired)
+    && (flags & kSCNetworkReachabilityFlagsReachable);
+    return canReach;
+}
+
+
+# pragma mark specific callbacks
+
+
+- (void) updateDeviceToken:(NSData *)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    NSString *tokenString = [[token description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    tokenString = [tokenString stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    [[LXServer shared] requestPath:@"/device_tokens" withMethod:@"POST" withParamaters:@{@"device_token": @{@"ios_device_token": tokenString, @"environment": [[NSBundle mainBundle] objectForInfoDictionaryKey:@"ENVIRONMENT"], @"user_id": [[[LXSession thisSession] user] ID]}} success:^(id responseObject) {
+                                if (successCallback) {
+                                    successCallback(responseObject);
+                                }
+                           } failure:^(NSError *error) {
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
+
+
 @end
+
+
+//int codes[] = {
+//    //kCFURLErrorUnknown,     //-998
+//    kCFURLErrorCancelled,   //-999
+//    kCFURLErrorBadURL,      //-1000
+//    kCFURLErrorTimedOut,    //-1001
+//    kCFURLErrorUnsupportedURL, //-1002
+//    kCFURLErrorCannotFindHost, //-1003
+//    kCFURLErrorCannotConnectToHost,     //-1004
+//    kCFURLErrorNetworkConnectionLost,   //-1005
+//    kCFURLErrorDNSLookupFailed,         //-1006
+//    kCFURLErrorHTTPTooManyRedirects,    //-1007
+//    kCFURLErrorResourceUnavailable,     //-1008
+//    kCFURLErrorNotConnectedToInternet,  //-1009
+//    //kCFURLErrorRedirectToNonExistentLocation,   //-1010
+//    kCFURLErrorBadServerResponse,               //-1011
+//    //kCFURLErrorUserCancelledAuthentication,     //-1012
+//    //kCFURLErrorUserAuthenticationRequired,      //-1013
+//    //kCFURLErrorZeroByteResource,        //-1014
+//    //kCFURLErrorCannotDecodeRawData,     //-1015
+//    //kCFURLErrorCannotDecodeContentData, //-1016
+//    //kCFURLErrorCannotParseResponse,     //-1017
+//    kCFURLErrorInternationalRoamingOff, //-1018
+//    kCFURLErrorCallIsActive,                //-1019
+//    kCFURLErrorDataNotAllowed,              //-1020
+//    //kCFURLErrorRequestBodyStreamExhausted,  //-1021
+//    kCFURLErrorFileDoesNotExist,            //-1100
+//    //kCFURLErrorFileIsDirectory,             //-1101
+//    kCFURLErrorNoPermissionsToReadFile,     //-1102
+//    //kCFURLErrorDataLengthExceedsMaximum,     //-1103
+//};

@@ -1,0 +1,8 @@
+EMBEDDED_CONTENT_CONTAINS_SWIFT = YES
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1 $(inherited) PMK_UNTIL=1 $(inherited) PMK_WHEN=1 kPTPusherClientLibraryVersion=@\"1.6\"
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+OTHER_CFLAGS = $(inherited) -iquote "$CONFIGURATION_BUILD_DIR/AFNetworking.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/AlgoliaSearch_Client.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/MBProgressHUD.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/MGEvents.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/MGSwipeTableCell.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/PermissionScope.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/PromiseKit.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/Pusher.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/SGHTTPRequest.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/SGImageCache.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/SlackTextViewController.framework/Headers" -iquote "$CONFIGURATION_BUILD_DIR/SocketRocket.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -framework "AFNetworking" -framework "AlgoliaSearch_Client" -framework "MBProgressHUD" -framework "MGEvents" -framework "MGSwipeTableCell" -framework "PermissionScope" -framework "PromiseKit" -framework "Pusher" -framework "SGHTTPRequest" -framework "SGImageCache" -framework "SlackTextViewController" -framework "SocketRocket"
+OTHER_SWIFT_FLAGS = $(inherited) "-D" "COCOAPODS"
+PODS_FRAMEWORK_BUILD_PATH = $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/Pods-Hippocampus
+PODS_ROOT = ${SRCROOT}/Pods

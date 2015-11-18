@@ -22,6 +22,17 @@
     return d;
 }
 
++ (NSString*) formattedDateFromString:(NSString*)string
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *d = [formatter dateFromString:string];
+    [formatter setDateFormat:@"EEE, dd MMM yyyy"];
+    return [formatter stringFromDate:d];
+}
+
+
+
 + (NSString*) timeAgoInWords:(double)relativeTimestamp
 {
     double currentTimestamp = [[NSDate date] timeIntervalSince1970];
@@ -66,6 +77,77 @@
     NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
     [dateFormat setDateFormat:@"MMMM d, yyyy"];
     return [dateFormat stringFromDate:date];
+}
+
++ (NSInteger) currentYearInteger
+{
+   return [[NSDate date] yearInteger];
+}
+
++ (NSInteger) currentMonthInteger
+{
+   return [[NSDate date] monthInteger];
+}
+
++ (NSInteger) currentDayInteger
+{
+   return [[NSDate date] dayInteger];
+}
+
+- (NSInteger) yearInteger
+{
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
+    
+    return [components year];
+}
+
+- (NSInteger) monthInteger
+{
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
+    
+    return [components month];
+}
+
+- (NSInteger) dayInteger
+{
+    NSCalendar* calendar = [NSCalendar currentCalendar];
+    NSDateComponents* components = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:self];
+    
+    return [components day];
+}
+
+- (NSInteger) yearIndex
+{
+    return [self yearInteger] < [NSDate currentYearInteger] ? 0 : ([self yearInteger] - [NSDate currentYearInteger]);
+}
+
+- (NSInteger) monthIndex
+{
+    return [self monthInteger]-1;
+}
+
+- (NSInteger) dayIndex
+{
+    return [self dayInteger]-1;
+}
+
+- (NSString*) dayOfWeek
+{
+    return [[NSArray daysOfWeek] objectAtIndex:[self dayOfWeekIndex]];
+}
+
+- (NSInteger) dayOfWeekIndex
+{
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *weekdayComponents =[gregorian components:NSCalendarUnitWeekday fromDate:self];
+    return [weekdayComponents weekday]-1;
+}
+
+- (int) daysInSelectedMonth
+{
+    return [NSArray daysInMonthAtIndex:(int)[self monthIndex] forYear:(int)[self yearInteger]];
 }
 
 

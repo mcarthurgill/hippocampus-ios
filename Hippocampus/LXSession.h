@@ -7,18 +7,50 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HCUser.h"
+#import <CoreLocation/CoreLocation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface LXSession : NSObject
+@interface LXSession : NSObject <CLLocationManagerDelegate>
 
-+(LXSession*) thisSession;
++ (LXSession*) thisSession;
 
-@property (strong, nonatomic) HCUser* user;
+- (NSMutableDictionary*) user;
+@property (strong, nonatomic) NSMutableDictionary* cachedUser;
+@property (strong, nonatomic) NSMutableDictionary* permissionsAsked;
+
+@property (strong, nonatomic) NSMutableArray* verifyingTokens;
 
 @property (strong, nonatomic) NSManagedObjectModel *managedObjectModel;
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
+@property (strong, nonatomic) CLLocationManager* locationManager;
+@property (nonatomic) UIBackgroundTaskIdentifier backgroundTask;
+
+@property (nonatomic) BOOL searchActivated;
+
 - (void) setVariables;
+
+- (NSString*) documentsPathForFileName:(NSString*) name;
+- (NSString*) writeImageToDocumentsFolder:(UIImage*)image;
+
+
++ (CLLocation*) currentLocation;
+- (BOOL) hasLocation;
+- (BOOL) locationPermissionDetermined;
+- (void) startLocationUpdates;
+
++ (BOOL) areNotificationsEnabled;
+
+
+- (void) addVerifyingToken:(NSString*)token;
+
+
+// logging in user
+
++ (void) loginUser:(NSString*)phone callingCode:(NSString*)callingCode success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
++ (void) tokenVerify:(NSString*)code phone:(NSString*)phone success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
++ (void) loginWithToken:(NSString*)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 @end

@@ -1,0 +1,1 @@
+../../../AlgoliaSearch-Client/src/ASAPIClient+Network.h

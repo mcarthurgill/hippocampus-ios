@@ -10,6 +10,13 @@
 #warning "This project uses features only available in iOS SDK 5.0 and later."
 #endif
 
+#define NULL_TO_NIL(obj) ({ __typeof__ (obj) __obj = (obj); __obj == [NSNull null] ? nil : obj; })
+
+#define ITMS_PROD_VERIFY_RECEIPT_URL        @"https://buy.itunes.apple.com/verifyReceipt"
+#define ITMS_SANDBOX_VERIFY_RECEIPT_URL     @"https://sandbox.itunes.apple.com/verifyReceipt";
+#define KNOWN_TRANSACTIONS_KEY              @"knownIAPTransactions"
+#define ITC_CONTENT_PROVIDER_SHARED_SECRET  @"642a7d01b86c4b89b5fc498a0ff0b181"
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
@@ -17,12 +24,28 @@
     #import "AFNetworking.h"
     #import "LXServer.h"
     #import <CoreData/CoreData.h>
-    #import "HCUser.h"
-    #import "HCBucket.h"
-    #import "HCItem.h"
     #import "LXDate+RailsTimeConverter.h"
     #import "MBProgressHUD.h"
     #import "NSArray+Alphabet.h"
     #import "LXString+NSString.h"
     #import "SGImageCache.h"
+    #import "NSDictionary+Attributes.h"
+    #import "UIFont+HCFonts.h"
+    #import "LXAddressBook.h"
+    #import "UILabel+Bold.h"
+    #import "NSNumber+Helpers.h"
+    #import "ASAPIClient.h"
+    #import "MGSwipeTableCell.h"
+    #import "MGSwipeButton.h"
+    #import "LXObjects.h"
+    #import "LXObjectManager.h"
+    #import "LXUser.h"
+    #import "LXTag.h"
+    #import "LXBucket.h"
+    #import "LXItem.h"
+    #import "LXLink.h"
+    #import "UIColor+HCColors.h"
+    #import "UIImageView+Addons.h"
+    #import "UIAlertView+Addons.h"
+    #import "UIViewController+Permissions.h"
 #endif

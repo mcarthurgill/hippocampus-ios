@@ -12,14 +12,19 @@
 
 + (LXServer *)shared;
 
-//objects
-+ (id) getObjectFromModel:(NSString*)modelName primaryKeyName:(NSString*)primaryKeyName primaryKey:(NSString*)primaryKey;
-+ (id) addToDatabase:(NSString*)modelName object:(NSDictionary*)object primaryKeyName:(NSString*)primaryKey withMapping:(NSDictionary*)mapping;
-+ (void) addArrayToDatabase:(NSString*)modelName array:(NSArray*)array primaryKeyName:(NSString*)primaryKey withMapping:(NSDictionary*)mapping;
-+ (void) saveObject:(id)object withPath:(NSString*)path method:(NSString*)method mapping:(NSDictionary*)mapping success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 //requests
 - (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:params success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:(NSDictionary*)params constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+    ///with auth
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:params authType:(NSString*)authType success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
+- (void) requestPath:(NSString*)path withMethod:(NSString*)method withParamaters:(NSDictionary*)params authType:(NSString*)authType constructingBodyWithBlock:(void (^)(id <AFMultipartFormData> formData))block success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
++ (BOOL) errorBecauseOfBadConnection:(NSInteger)code;
+
++ (BOOL) hasInternetConnection;
+
+//specific requests
+- (void) updateDeviceToken:(NSData *)token success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 @end

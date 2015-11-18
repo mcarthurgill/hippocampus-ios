@@ -1,0 +1,367 @@
+//
+//  Copyright (c) 2013 Algolia
+//  http://www.algolia.com/
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+//
+
+#import <Foundation/Foundation.h>
+
+/**
+ * Describes all parameters of search query.
+ */
+@interface ASQuery : NSObject <NSCopying>
+
+/**
+ * Initialize query with a full text query string
+ */
++(instancetype) queryWithFullTextQuery:(NSString*)fullTextQuery;
+
+/**
+ * Initialize an empty query
+ */
+-(instancetype) init;
+
+/**
+ * Initialize query with a full text query string
+ */
+-(instancetype) initWithFullTextQuery:(NSString*)fullTextQuery;
+
+-(instancetype) copyWithZone:(NSZone*)zone;
+
+/**
+ *  Search for entries around a given latitude/longitude with an automatic radius
+ */
+-(ASQuery*) searchAroundLatitude:(float)latitude longitude:(float)longitude;
+
+/**
+ *  Search for entries around a given latitude/longitude.
+ *
+ *  @param maxDist set the maximum distance in meters.
+ *  Note: at indexing, geoloc of an object should be set with _geoloc attribute containing lat and lng attributes (for example {"_geoloc":{"lat":48.853409, "lng":2.348800}})
+ */
+-(ASQuery*) searchAroundLatitude:(float)latitude longitude:(float)longitude maxDist:(NSUInteger)maxDist;
+
+/**
+ *  Search for entries around a given latitude/longitude.
+ *
+ *  @param maxDist set the maximum distance in meters.
+ *  @param precision set the precision for ranking (for example if you set precision=100, two objects that are distant of less than 100m will be considered as identical for "geo" ranking parameter).
+ *  Note: at indexing, geoloc of an object should be set with _geoloc attribute containing lat and lng attributes (for example {"_geoloc":{"lat":48.853409, "lng":2.348800}})
+ */
+-(ASQuery*) searchAroundLatitude:(float)latitude longitude:(float)longitude maxDist:(NSUInteger)maxDist precision:(NSUInteger)precision;
+
+/**
+ *  Search for entries around a given latitude/longitude (using IP geolocation) with an automatic radius
+ */
+-(ASQuery*) searchAroundLatitudeLongitudeViaIP;
+
+/**
+ *  Search for entries around a given latitude/longitude (using IP geolocation)
+ *
+ *  @param maxDist set the maximum distance in meters.
+ *  Note: at indexing, geoloc of an object should be set with _geoloc attribute containing lat and lng attributes (for example {"_geoloc":{"lat":48.853409, "lng":2.348800}})
+ */
+-(ASQuery*) searchAroundLatitudeLongitudeViaIP:(NSUInteger)maxDist;
+
+/**
+ *  Search for entries around a given latitude/longitude (using IP geolocation)
+ *
+ *  @param maxDist set the maximum distance in meters.
+ *  @param precision set the precision for ranking (for example if you set precision=100, two objects that are distant of less than 100m will be considered as identical for "geo" ranking parameter).
+ *  Note: at indexing, geoloc of an object should be set with _geoloc attribute containing lat and lng attributes (for example {"_geoloc":{"lat":48.853409, "lng":2.348800}})
+ */
+-(ASQuery*) searchAroundLatitudeLongitudeViaIP:(NSUInteger)maxDist precision:(NSUInteger)precision;
+
+
+/**
+ * Search for entries inside a given area defined by the two extreme points of a rectangle.
+ * At indexing, you should specify geoloc of an object with the _geoloc attribute (in the form "_geoloc":{"lat":48.853409, "lng":2.348800} or 
+ * "_geoloc":[{"lat":48.853409, "lng":2.348800},{"lat":48.547456, "lng":2.972075}] if you have several geo-locations in your record).
+ * 
+ * You can use several bounding boxes (OR) by calling this method several times.
+ */
+-(ASQuery*) searchInsideBoundingBoxWithLatitudeP1:(float)latitudeP1 longitudeP1:(float)longitudeP1 latitudeP2:(float)latitudeP2 longitudeP2:(float)longitudeP2;
+
+/**
+ * Add a point to the polygon of geo-search (requires a minimum of three points to define a valid polygon)
+ * At indexing, you should specify geoloc of an object with the _geoloc attribute (in the form "_geoloc":{"lat":48.853409, "lng":2.348800} or 
+ * "_geoloc":[{"lat":48.853409, "lng":2.348800},{"lat":48.547456, "lng":2.972075}] if you have several geo-locations in your record).
+ */
+-(ASQuery*) addInsidePolygon:(float)latitude longitude:(float)longitude;
+
+/**
+ * Return the final query string used in URL.
+ */
+-(NSString*) buildURL;
+
+/**
+ * Select how the query words are interpreted:
+ * "prefixAll": all query words are interpreted as prefixes,
+ * "prefixLast": only the last word is interpreted as a prefix (default behavior),
+ * "prefixNone": no query word is interpreted as a prefix. This option is not recommended.
+ */
+@property (nonatomic) NSString            *queryType;
+
+/**
+ * Set full text search of similar query (like this)
+ */
+@property (nonatomic) NSString            *similarQuery;
+
+/**
+ * Select the strategy to avoid having an empty result page.
+ * "None": No specific processing is done when a query does not return any result,
+ * "LastWords": when a query does not return any result, the final word will be removed until there is results,
+ * "FirstWords": when a query does not return any result, the first word will be removed until there is results.
+ * "allOptional": When a query does not return any result, a second trial will be made with all words as optional (which is equivalent to transforming the AND operand between query terms in a OR operand)
+ */
+@property (nonatomic) NSString            *removeWordsIfNoResult;
+
+/**
+ * Specify the list of attribute names to retrieve.
+ * By default all attributes are retrieved.
+ */
+@property (nonatomic) NSArray             *attributesToRetrieve;
+
+/**
+ * Specify the list of attribute names to highlight.
+ * By default indexed attributes are highlighted.
+ */
+@property (nonatomic) NSArray             *attributesToHighlight;
+
+/**
+ * Specify the List of attributes on which you want to disable typo tolerance (must be a subset of the attributesToIndex index setting).
+ * By default this list is empty
+ */
+@property (nonatomic) NSArray             *disableTypoToleranceOnAttributes;
+
+/**
+ * Specify the list of attributes to snippet alongside the number of words to return 
+ * (syntax is 'attributeName:nbWords'). 
+ * Attributes are separated by a comma (Example: "attributesToSnippet=name:10,content:10").
+ * By default no snippet is computed.
+*/
+@property (nonatomic) NSArray             *attributesToSnippet;
+
+/**
+ * Filter the query by a set of tags. You can AND tags by separating them by commas. To OR tags, you must add parentheses. For example tag1,(tag2,tag3) means tag1 AND (tag2 OR tag3).
+ * At indexing, tags should be added in the _tags attribute of objects (for example {"_tags":["tag1","tag2"]} )
+ */
+@property (nonatomic) NSString            *tagFilters;
+
+/**
+ * Add a list of numeric filters separated by a comma.
+ * The syntax of one filter is `attributeName` followed by `operand` followed by `value. Supported operands are `<`, `<=`, `=`, `>` and `>=`.
+ * You can have multiple conditions on one attribute like for example `numerics=price>100,price<1000`.
+ */
+@property (nonatomic) NSString            *numericFilters;
+
+/**
+ * Set the full text query.
+ */
+@property (nonatomic) NSString            *fullTextQuery;
+
+/**
+ * Specify the minimum number of characters in a query word to accept one typo in this word.
+ * Defaults to 3.
+ */
+@property (nonatomic) NSUInteger           minWordSizeForApprox1;
+
+/**
+ * Specify the minimum number of characters in a query word to accept two typos in this word.
+ * Defaults to 7.
+ */
+@property (nonatomic) NSUInteger           minWordSizeForApprox2;
+
+/**
+ * Set the page to retrieve (zero base). Defaults to 0.
+ */
+@property (nonatomic) NSUInteger           page;
+
+/**
+ *  Set the number of hits per page. Defaults to 10.
+ */
+@property (nonatomic) NSUInteger           hitsPerPage;
+
+/**
+ * Configure the precision of the proximity ranking criterion. By default, the minimum (and best) proximity value distance between 2 matching words is 1. Setting it to 2 (or 3) would allow 1 (or 2) words to be found between the matching words without degrading the proximity ranking value.
+ * Considering the query "javascript framework", if you set minProximity=2 the records "JavaScript framework" and "JavaScript charting framework" will get the same proximity score, even if the second one contains a word between the 2 matching words. Default to 1.
+ */
+@property (nonatomic) NSUInteger           minProximity;
+
+/**
+ * if set, the result hits will contain ranking information in _rankingInfo attribute.
+ */
+@property BOOL                             getRankingInfo;
+
+/**
+ * If set to YES, plural won't be considered as a typo (for example car/cars will be considered as equals). Default to NO.
+ */
+@property BOOL                             ignorePlural;
+
+/**
+ * This option allow to control the number of typo in the results set.
+ */
+@property (nonatomic) NSString            *typoTolerance;
+
+/**
+ *  If set to false, disable typo-tolerance on numeric tokens. Default to true.
+ */
+@property BOOL                             typosOnNumericTokens;
+
+/**
+ * If set to false, disable this query won't appear in the analytics. Default to true.
+ */
+@property BOOL                             analytics;
+
+/**
+ * If set to false, this query will not use synonyms defined in configuration. Default to true.
+ */
+@property BOOL                             synonyms;
+
+/**
+ * If set to false, words matched via synonyms expansion will not be replaced by the matched synonym in highlight result. Default to true.
+ */
+@property BOOL                             replaceSynonyms;
+
+/**
+ *
+ * Enable the distinct feature (disabled by default) if the attributeForDistinct index setting is set.
+ * This feature is similar to the SQL "distinct" keyword: when enabled in a query with the distinct=1 parameter,
+ * all hits containing a duplicate value for the attributeForDistinct attribute are removed from results.
+ * For example, if the chosen attribute is show_name and several hits have the same value for show_name,
+ * then only the best one is kept and others are removed.
+ * Specify the maximum number of hits to keep for each distinct value.
+ */
+@property (nonatomic) NSUInteger           distinct;
+
+/**
+  * Set the list of words that should be considered as optional when found in the query (array of NSString).
+  */
+@property (nonatomic) NSArray             *optionalWords;
+
+/**
+ *  Set the minimum number of optional words that need to match
+ */
+@property (nonatomic) NSUInteger           optionalWordsMinimumMatched;
+
+/**
+ * Filter the query with numeric, facet or/and tag filters. The syntax is a SQL like syntax, you can use the OR and AND keywords.
+ * The syntax for the underlying numeric, facet and tag filters is the same than in the other filters:
+ * available=1 AND (category:Book OR NOT category:Ebook) AND public
+ * date: 1441745506 TO 1441755506 AND inStock > 0 AND author:"John Doe"
+ * The list of keywords is:
+ * OR: create a disjunctive filter between two filters.
+ * AND: create a conjunctive filter between two filters.
+ * TO: used to specify a range for a numeric filter.
+ * NOT: used to negate a filter. The syntax with the ‘-‘ isn’t allowed.
+ */
+@property (nonatomic) NSString             *filters;
+
+/**
+ * Filter the query by a list of facets. Each facet is encoded as `attributeName:value`. For example: ["category:Book","author:John%20Doe"].
+ */
+@property (nonatomic) NSArray             *facetFilters;
+
+/**
+ * Filter the query by a list of facets encoded as one string by example "(category:Book,author:John)"
+ */
+@property (nonatomic) NSString            *facetFiltersRaw;
+
+/**
+ * List of object attributes that you want to use for faceting.
+ * Only attributes that have been added in **attributesForFaceting** index setting can be used in this parameter. 
+ * You can also use `*` to perform faceting on all attributes specified in **attributesForFaceting**.
+ */
+@property (nonatomic) NSArray             *facets;
+
+/**
+ * List of object attributes you want to use for textual search (must be a subset of the attributesToIndex 
+ * index setting). Attributes are separated with a comma (for example @"name,address").
+ * You can also use a JSON string array encoding (for example encodeURIComponent("[\"name\",\"address\"]")).
+ * By default, all attributes specified in attributesToIndex settings are used to search.
+ */
+@property (nonatomic) NSString            *restrictSearchableAttributes;
+
+/**
+ * Specify the string that is inserted before the highlighted parts in the query result (default to "<em>").
+ */
+@property (nonatomic) NSString            *highlightPreTag;
+
+/**
+ * Specify the string that is inserted after the highlighted parts in the query result (default to "</em>").
+ */
+@property (nonatomic) NSString            *highlightPostTag;
+
+/**
+ * Contains insideBoundingBox query (you should use searchInsideBoundingBox selector to set it)
+ */
+@property (nonatomic) NSString            *insideBoundingBox;
+
+/**
+ * Contains insidePolygon query (you should use addInsidePolygon selector to set it)
+ */
+@property (nonatomic) NSString            *insidePolygon;
+
+/**
+ * Contains aroundLatLong query (you should use searchAroundLatitude:longitude:maxDist selector to set it)
+ */
+@property (nonatomic) NSString            *aroundLatLong;
+
+/**
+ * Change the radius or around latitude/longitude query
+ */
+@property (nonatomic) NSUInteger           aroundRadius;
+
+/**
+ * Change the precision or around latitude/longitude query
+ */
+@property (nonatomic) NSUInteger           aroundPrecision;
+
+/**
+ * Tags can be used in the Analytics to analyze a subset of searches only. Comma-separated string list like @[@"ios", @"web"]
+ */
+@property (nonatomic) NSArray            *analyticsTags;
+
+/**
+ * If set to YES use geolocation via client IP instead of passing a latitude/longitude manually
+ */
+@property BOOL                             aroundLatLongViaIP;
+
+/**
+ * If set to YES,  the advanced query syntax will be availabel. Default to false.
+ */
+@property BOOL                             advancedSyntax;
+
+/**
+ * If set to YES, enable removal of stop words
+ */
+@property BOOL                             removeStopWords;
+
+/**
+ *
+ */
+@property (nonatomic) NSString             *userToken;
+
+/**
+ *
+ */
+@property (nonatomic) NSString             *referers;
+
+@end

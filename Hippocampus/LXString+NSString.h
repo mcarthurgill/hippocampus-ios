@@ -12,4 +12,27 @@
 
 - (NSString*) truncated:(int)length;
 
++ (NSString*) randomCongratulations;
+
+- (NSString*) croppedImageURLToScreenWidth;
+- (NSString*) croppedImageURLToWidth:(NSInteger)width;
+
+- (NSString*) fileExtension;
+
+- (BOOL) isImageUrl;
+
+- (NSString*) cloudinaryPublicID;
+
+- (CGFloat) heightForTextWithWidth:(CGFloat)width font:(UIFont*)font;
+
+- (NSString*) objectTypeFromLocalKey;
+
+- (NSString*) deviceTimestampFromLocalKey;
+
+- (NSString*) userIDFromLocalKey;
+
+- (NSString*) linkLocalKeyFromURLString;
+
+- (NSString*) firstWord;
+
 @end

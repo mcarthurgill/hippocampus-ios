@@ -1,47 +1,77 @@
 PODS:
-  - AFNetworking (2.3.1):
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
-  - AFNetworking/NSURLConnection (2.3.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.3.1):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.3.1)
-  - AFNetworking/Security (2.3.1)
-  - AFNetworking/Serialization (2.3.1)
-  - AFNetworking/UIKit (2.3.1):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-  - MBProgressHUD (0.8)
+  - AlgoliaSearch-Client (3.6.3):
+    - AFNetworking (~> 2.2)
+  - libPusher (1.6.1):
+    - libPusher/Core (= 1.6.1)
+  - libPusher/Core (1.6.1):
+    - SocketRocket (= 0.4.1)
+  - MBProgressHUD (0.9.1)
   - MGEvents (1.0.3)
-  - SGHTTPRequest (1.0.3):
-    - AFNetworking
-  - SGImageCache (1.2.0):
+  - MGSwipeTableCell (HEAD based on 1.5.3)
+  - PermissionScope (1.0.1)
+  - PromiseKit/base (1.5.3):
+    - PromiseKit/Promise
+    - PromiseKit/Until
+    - PromiseKit/When
+  - PromiseKit/Promise (1.5.3)
+  - PromiseKit/Until (1.5.3):
+    - PromiseKit/Promise
+    - PromiseKit/When
+  - PromiseKit/When (1.5.3):
+    - PromiseKit/Promise
+  - SGHTTPRequest (1.4.1):
+    - AFNetworking (~> 2.0)
+  - SGImageCache (2.2.0):
+    - AFNetworking (~> 2.0)
     - MGEvents
+    - PromiseKit/base (~> 1.5)
     - SGHTTPRequest
-    - SGImageCache/base
-  - SGImageCache/base (1.2.0):
-    - MGEvents
-    - SGHTTPRequest
+  - SlackTextViewController (1.7.2)
+  - SocketRocket (0.4.1)
 
 DEPENDENCIES:
   - AFNetworking (~> 2.2)
+  - AlgoliaSearch-Client (~> 3.0)
+  - libPusher (~> 1.6.1)
   - MBProgressHUD (~> 0.8)
+  - MGSwipeTableCell (HEAD)
+  - PermissionScope (~> 1.0)
   - SGImageCache
+  - SlackTextViewController
 
 SPEC CHECKSUMS:
-  AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
-  MBProgressHUD: c356980b0cd097f19acec959b49dca5eb8ec31be
-  MGEvents: e6254d7873bcb90b266801d171f9948194010927
-  SGHTTPRequest: 6c9c51babed3eebd182945e61f5543c66d5df46e
-  SGImageCache: e7f9b353bac495d1c9698f50581eb47fb2022216
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  AlgoliaSearch-Client: 62adfb408a0a94c4201157ab96c4eb335461587d
+  libPusher: 5ea58aeb83fa4ac1f5d8ef8543b1def6ace997b8
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  MGEvents: 739ea3e582a8df05bd1044500c7fb6d8f7aff5c8
+  MGSwipeTableCell: 5ae3b9a15efda26b201adc8676b24040febe6ff6
+  PermissionScope: 9767066cedefd211d90a8c4f92f6f1a987085ee8
+  PromiseKit: ecdccab1791b95b4752a9fac57223044f5a6c105
+  SGHTTPRequest: 6054b0d9915b391f0858abcbd50f5d5f2ad6365f
+  SGImageCache: 1e6603abf78144f593a82ebc7594f12c8adcb036
+  SlackTextViewController: 1f4e8f68c156ef93de73fd422db2b8d5d5b0f4e7
+  SocketRocket: ee0b5c34182d37bb4f1f8d628bbe737718126daa
 
-COCOAPODS: 0.34.2
+COCOAPODS: 0.39.0

@@ -2,7 +2,7 @@
 
 A lightweight [AFNetworking](https://github.com/AFNetworking/AFNetworking) wrapper
 for making HTTP requests with minimal code, and callback blocks for success,
-failure, and retry. Retry blocks are called when a failed request's network resource 
+failure, and retry. Retry blocks are called when a failed request's network resource
 becomes available again.
 
 ### CocoaPods Setup
@@ -94,6 +94,55 @@ The easiest way to implement this is to contain your request code in a method, a
     // start the request in the background
     [req start];
 }
+```
+
+### Response caching
+
+If your server uses ETag headers then you can cache the responses locally and avoid costly network traffic if the payload hasn't changed since the previous request.  Add the following code to your AppDelegate `didFinishLaunchingWithOptions` method:
+
+```objc
+[SGHTTPRequest setAllowCacheToDisk:YES];  // allow responses cached by ETag to persist between app sessions
+[SGHTTPRequest setMaxDiskCacheSize:30];   // maximum size of the local response cache in MB
+```
+
+If an HTTP response has been cached to disk, you can also access the cached copy to allow for viewing data offline or instantaneously:
+
+```objc
+NSURL *url = [NSURL URLWithString:@"http://example.com/things"];
+
+// create a GET request
+SGHTTPRequest *req = [SGHTTPRequest requestWithURL:url];
+
+__weak typeof(self) me = self;
+
+// option retry handler
+req.onNetworkReachable = ^{
+    [me requestThings];
+};
+
+NSDictionary *responseDict = req.cachedResponseJSON;
+
+if (responseDict[@"my_data_key"]) {
+    // If available you can update your UI
+    // immediately with the cached data
+}
+
+// optional success handler
+req.onSuccess = ^(SGHTTPRequest *_req) {
+    // You might want to update your UI with
+    // the fresh response data here
+};
+
+// start the request in the background
+[req start];
+```
+
+### NSNull Handling
+
+If you don't want your responses to include NSNull objects (they tend to crash if you try and use them - wheras calling methods on nil is safe and defined behavior) then you can ensure they are cleansed from the responses by putting the following code in your AppDelegate:
+
+```objc
+[SGHTTPRequest setAllowNSNull:NO];
 ```
 
 ### Other Options
