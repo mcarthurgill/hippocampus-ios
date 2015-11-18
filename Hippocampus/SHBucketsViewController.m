@@ -139,7 +139,7 @@ static NSString *newBucketCellIdentifier = @"SHNewBucketTableViewCell";
     self.sections = [[NSMutableArray alloc] init];
     
     [self.sections addObject:@"newBucket"];
-    if (![self searchActivated] && [self recent] && [[self recent] count] > 0) {
+    if (![self searchActivated] && [[[[LXSession thisSession] user] numberBuckets] integerValue] > 7 && [self recent] && [[self recent] count] > 0) {
         [self.sections addObject:@"recent"];
     }
     [self.sections addObject:@"buckets"];

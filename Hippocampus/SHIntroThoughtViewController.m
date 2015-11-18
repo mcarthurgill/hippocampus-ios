@@ -145,6 +145,11 @@
         [[LXObjectManager objectWithLocalKey:[NSMutableDictionary allThoughtsLocalKey]] addItem:item atIndex:0];
         [bucket addItem:item atIndex:0];
         [item saveRemote];
+        
+        NSMutableDictionary* u = [[LXSession thisSession] user];
+        [u setObject:@1 forKey:@"number_buckets"];
+        [u assignLocalVersionIfNeeded:YES];
+        
         [self next];
     } else {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Whoops!" message:[NSString stringWithFormat:@"You must enter details about %@!", [bucket firstName]] delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];

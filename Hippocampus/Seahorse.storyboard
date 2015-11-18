@@ -1755,7 +1755,7 @@
                                             <constraint firstAttribute="width" constant="25" id="qE3-RA-9p3"/>
                                         </constraints>
                                     </imageView>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Create new tag" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7b1-yi-YIg">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Create new group" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7b1-yi-YIg">
                                         <rect key="frame" x="51" y="15" width="466" height="26"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="26" id="46o-FB-Dc4"/>

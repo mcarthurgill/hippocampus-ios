@@ -225,7 +225,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if ([self.bucketSelectedKeys count] > 0) {
         [self.sections addObject:@"selected"];
     }
-    if ([self recent] && [[self recent] count] > 0 && ![self searchActivated]) {
+    if ([self recent] && [[[[LXSession thisSession] user] numberBuckets] integerValue] > 7 && [[self recent] count] > 0 && ![self searchActivated]) {
         [self.sections addObject:@"recent"];
     }
     if ([self bucketKeys] && [[self bucketKeys] count] > 0) {

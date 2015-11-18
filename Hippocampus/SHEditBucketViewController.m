@@ -209,7 +209,7 @@ static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"actions"]) {
         return @"Actions";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"tags"]) {
-        return @"Tags";
+        return @"Groups";
     }
     return nil;
 }

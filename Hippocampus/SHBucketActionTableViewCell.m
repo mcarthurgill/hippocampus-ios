@@ -64,7 +64,7 @@
         [self.label setText:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] firstName]]];
         [self.imageView setImage:[UIImage imageNamed:@"action_icon_trash.png"]];
     }if ([self.action isEqualToString:@"renameTag"]) {
-        [self.label setText:@"Rename Tag"];
+        [self.label setText:@"Rename Group"];
         [self.imageView setImage:[UIImage imageNamed:@"navFlag.png"]];
     } else if ([self.action isEqualToString:@"deleteTag"]) {
         [self.label setText:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] tagName]]];
@@ -73,7 +73,7 @@
         [self.label setText:[NSString stringWithFormat:@"Leave \"%@\"", [[self bucket] firstName]]];
         [self.imageView setImage:nil];
     } else if ([self.action isEqualToString:@"editTags"]) {
-        [self.label setText:@"Add Tags"];
+        [self.label setText:@"Add Groups"];
         [self.imageView setImage:nil];
     }
 }
@@ -83,7 +83,7 @@
     [self setLocalKey:lk];
     [self setDelegate:d];
     
-    [self.label setText:@"Edit Tags"];
+    [self.label setText:@"Edit Groups"];
     [self.imageView setImage:[UIImage imageNamed:@"navFlag.png"]];
     
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
@@ -95,7 +95,7 @@
     [self.imageView setHidden:NO];
     
     if (!tag) {
-        [self.label setText:@"+ Add Tag"];
+        [self.label setText:@"+ Add Group"];
         [self.label setTextColor:[UIColor SHBlue]];
         [self.imageView setHidden:YES];
     } else {

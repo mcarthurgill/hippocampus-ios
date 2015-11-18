@@ -77,7 +77,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) setTitle
 {
-    [self setTitle:[NSString stringWithFormat:@"Assign Tags%@", ([[self tagSelectedKeys] count] > 0 ? [NSString stringWithFormat:@" (%lu)", (unsigned long)[[self tagSelectedKeys] count]] : @"")]];
+    [self setTitle:[NSString stringWithFormat:@"Assign Groups%@", ([[self tagSelectedKeys] count] > 0 ? [NSString stringWithFormat:@" (%lu)", (unsigned long)[[self tagSelectedKeys] count]] : @"")]];
 }
 
 - (void) setupSettings
@@ -92,7 +92,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [self.topViewLabel setFont:[UIFont titleFontWithSize:15.0f]];
     [self.topViewLabel setTextColor:[UIColor SHFontDarkGray]];
-    [self.topViewLabel setText:@"New Tag"];
+    [self.topViewLabel setText:@"New Group"];
     
     [self.topView setBackgroundColor:[UIColor slightBackgroundColor]];
     
@@ -297,7 +297,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if ([[self.sections objectAtIndex:section] isEqualToString:@"selected"]) {
         return @"Assigned to:";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"other"]) {
-        return @"Tags";
+        return @"Groups";
     }
     return nil;
 }
