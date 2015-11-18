@@ -28,7 +28,7 @@ PODS:
     - SocketRocket (= 0.4.1)
   - MBProgressHUD (0.9.1)
   - MGEvents (1.0.3)
-  - MGSwipeTableCell (HEAD based on 1.5.1)
+  - MGSwipeTableCell (HEAD based on 1.5.3)
   - PermissionScope (1.0.1)
   - PromiseKit/base (1.5.3):
     - PromiseKit/Promise
@@ -66,7 +66,7 @@ SPEC CHECKSUMS:
   libPusher: 5ea58aeb83fa4ac1f5d8ef8543b1def6ace997b8
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MGEvents: 739ea3e582a8df05bd1044500c7fb6d8f7aff5c8
-  MGSwipeTableCell: a51fa670c01f0aa048f12af040acebf315223137
+  MGSwipeTableCell: 5ae3b9a15efda26b201adc8676b24040febe6ff6
   PermissionScope: 9767066cedefd211d90a8c4f92f6f1a987085ee8
   PromiseKit: ecdccab1791b95b4752a9fac57223044f5a6c105
   SGHTTPRequest: 7e535e01f9d4dfba8989773ad991b9afa9f11ed6
