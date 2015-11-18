@@ -1684,7 +1684,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" placeholder="Filter tags..." translatesAutoresizingMaskIntoConstraints="NO" id="vIU-KV-axb">
+                            <searchBar contentMode="redraw" placeholder="Filter groups..." translatesAutoresizingMaskIntoConstraints="NO" id="vIU-KV-axb">
                                 <rect key="frame" x="4" y="122" width="592" height="44"/>
                                 <color key="barTintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="words" returnKeyType="done"/>
@@ -1939,7 +1939,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="scrollIndicatorInsets" minX="0.0" minY="64" maxX="0.0" maxY="0.0"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Filter Tags" id="he7-bQ-2Dm">
+                                <searchBar key="tableHeaderView" contentMode="redraw" placeholder="Filter Groups" id="he7-bQ-2Dm">
                                     <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="barTintColor" red="0.94901960780000005" green="0.94901960780000005" blue="0.94901960780000005" alpha="1" colorSpace="calibratedRGB"/>
