@@ -184,7 +184,10 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     }
 }
 
-
+- (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"%f", cell.frame.size.height);
+}
 
 
 

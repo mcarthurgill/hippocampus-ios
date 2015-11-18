@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) IBOutlet UILabel *label;
 @property (strong, nonatomic) IBOutlet UIImageView *imageView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *labelLeadingConstraint;
 
 - (void) configureWithLocalKey:(NSString*)lk delegate:(id)d action:(NSString*)a;
 - (void) configureWithLocalKey:(NSString*)lk delegate:(id)d tag:(NSMutableDictionary*)tag;

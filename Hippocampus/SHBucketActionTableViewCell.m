@@ -16,6 +16,7 @@
 
 @synthesize label;
 @synthesize imageView;
+@synthesize labelLeadingConstraint;
 
 - (void)awakeFromNib
 {
@@ -76,6 +77,9 @@
         [self.label setText:@"Add Groups"];
         [self.imageView setImage:nil];
     }
+    
+    self.labelLeadingConstraint.constant = 4.0f;
+    
 }
 
 - (void) configureWithLocalKey:(NSString*)lk delegate:(id)d tag:(NSMutableDictionary*)tag
@@ -88,20 +92,7 @@
     
     [self setBackgroundColor:[UIColor slightBackgroundColor]];
 
-    return;
-    
-    [self.label setFont:[UIFont secondaryFontWithSize:18.0f]];
-    [self.label setTextColor:[UIColor SHFontDarkGray]];
-    [self.imageView setHidden:NO];
-    
-    if (!tag) {
-        [self.label setText:@"+ Add Group"];
-        [self.label setTextColor:[UIColor SHBlue]];
-        [self.imageView setHidden:YES];
-    } else {
-        [self.label setText:[tag tagName]];
-        [self.imageView setImage:[UIImage imageNamed:@"navFlag.png"]];
-    }
+    self.labelLeadingConstraint.constant = 10.0f;
     
 }
 
