@@ -70,6 +70,10 @@
 		28432D781BEA736900E9B552 /* LXLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 28432D771BEA736900E9B552 /* LXLink.m */; };
 		284861F31BB5CED000CF4EE7 /* UIViewController+Permissions.m in Sources */ = {isa = PBXBuildFile; fileRef = 284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */; };
 		28491BAD1BBCAFE90014E4B2 /* SHPaywallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */; };
+		2867794D1BFC1D4100B75A35 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2867794C1BFC1D4100B75A35 /* AFNetworking.framework */; };
+		2867794F1BFC1D6A00B75A35 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2867794E1BFC1D6A00B75A35 /* AFNetworking.framework */; };
+		286779511BFC1D6D00B75A35 /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286779501BFC1D6D00B75A35 /* AlgoliaSearch_Client.framework */; };
+		286779571BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286779561BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework */; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
@@ -184,6 +188,7 @@
 		28F859AD1BBB53DA00F7738C /* backsplash.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AB1BBB53DA00F7738C /* backsplash.png */; };
 		28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */; };
 		28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */; };
+		6650BAD2EED2E63585651566 /* libPods-HippoShare.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 047E1F5C5F08CF2B7EDB5842 /* libPods-HippoShare.a */; };
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; };
@@ -196,6 +201,7 @@
 		76906E6D1BADAEF9005BF124 /* UIAlertView+Addons.m in Sources */ = {isa = PBXBuildFile; fileRef = 76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */; };
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
 		76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029761AC20247003539B4 /* UILabel+Bold.m */; };
+		CB01D4F15A3E650364327ECA /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2537860EFA225782ADA36846 /* Pods_Hippocampus.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -232,6 +238,7 @@
 /* Begin PBXFileReference section */
 		047E1F5C5F08CF2B7EDB5842 /* libPods-HippoShare.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-HippoShare.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B3ED452DA467FEB67CC37E4 /* Pods-HippoShare.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoShare.release.xcconfig"; path = "Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare.release.xcconfig"; sourceTree = "<group>"; };
+		2537860EFA225782ADA36846 /* Pods_Hippocampus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hippocampus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2808B6131BEC01F6009784F4 /* HippoShare.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HippoShare.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2808B6151BEC01F6009784F4 /* ShareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShareViewController.h; sourceTree = "<group>"; };
 		2808B6161BEC01F6009784F4 /* ShareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShareViewController.m; sourceTree = "<group>"; };
@@ -327,6 +334,10 @@
 		284861F21BB5CED000CF4EE7 /* UIViewController+Permissions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Permissions.m"; sourceTree = "<group>"; };
 		28491BAB1BBCAFE90014E4B2 /* SHPaywallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHPaywallViewController.h; sourceTree = "<group>"; };
 		28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHPaywallViewController.m; sourceTree = "<group>"; };
+		2867794C1BFC1D4100B75A35 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		2867794E1BFC1D6A00B75A35 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		286779501BFC1D6D00B75A35 /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Debug-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
+		286779561BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Release-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
 		286F434F1A9F71DB0086AAC9 /* UIFont+HCFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+HCFonts.h"; sourceTree = "<group>"; };
 		286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+HCFonts.m"; sourceTree = "<group>"; };
 		286F43521A9F7C290086AAC9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -510,6 +521,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				286779571BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework in Frameworks */,
+				2867794D1BFC1D4100B75A35 /* AFNetworking.framework in Frameworks */,
+				6650BAD2EED2E63585651566 /* libPods-HippoShare.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +531,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				286779511BFC1D6D00B75A35 /* AlgoliaSearch_Client.framework in Frameworks */,
+				2867794F1BFC1D6A00B75A35 /* AFNetworking.framework in Frameworks */,
 				766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */,
 				286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */,
 				281CA90E1951F34A00E6BE96 /* CoreData.framework in Frameworks */,
@@ -524,6 +540,7 @@
 				281CA8CE1951EC7E00E6BE96 /* CoreGraphics.framework in Frameworks */,
 				281CA8D01951EC7E00E6BE96 /* UIKit.framework in Frameworks */,
 				281CA8CC1951EC7E00E6BE96 /* Foundation.framework in Frameworks */,
+				CB01D4F15A3E650364327ECA /* Pods_Hippocampus.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,6 +619,10 @@
 		281CA8CA1951EC7E00E6BE96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				286779561BFC1E5A00B75A35 /* AlgoliaSearch_Client.framework */,
+				286779501BFC1D6D00B75A35 /* AlgoliaSearch_Client.framework */,
+				2867794E1BFC1D6A00B75A35 /* AFNetworking.framework */,
+				2867794C1BFC1D4100B75A35 /* AFNetworking.framework */,
 				28AC96811BC4AC4100A5C1E9 /* StoreKit.framework */,
 				766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */,
 				286F43521A9F7C290086AAC9 /* CoreLocation.framework */,
@@ -610,6 +631,7 @@
 				281CA8CD1951EC7E00E6BE96 /* CoreGraphics.framework */,
 				281CA8CF1951EC7E00E6BE96 /* UIKit.framework */,
 				047E1F5C5F08CF2B7EDB5842 /* libPods-HippoShare.a */,
+				2537860EFA225782ADA36846 /* Pods_Hippocampus.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1782,11 +1804,13 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"<Multiple",
 					"values>/**",
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/**";
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1813,11 +1837,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"<Multiple",
 					"values>/**",
 					"$(PROJECT_DIR)/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/build/Release-iphoneos",
 				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(PROJECT_DIR)/**";
 				GCC_NO_COMMON_BLOCKS = YES;
