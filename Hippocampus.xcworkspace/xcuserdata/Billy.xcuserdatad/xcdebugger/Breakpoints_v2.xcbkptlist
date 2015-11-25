@@ -964,7 +964,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/NSDictionary+Attributes.m"
-            timestampString = "467054104.857284"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "189"
@@ -1890,11 +1890,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemViewController.m"
-            timestampString = "468351798.327336"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
+            startingLineNumber = "146"
+            endingLineNumber = "146"
             landmarkName = "-refreshedObject:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2145,11 +2145,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemViewController.m"
-            timestampString = "468351798.327336"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "-addOutstandingLabelIfNecessary"
             landmarkType = "5">
          </BreakpointContent>
@@ -2161,11 +2161,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemViewController.m"
-            timestampString = "468351798.327336"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "646"
-            endingLineNumber = "646"
+            startingLineNumber = "650"
+            endingLineNumber = "650"
             landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2177,11 +2177,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemViewController.m"
-            timestampString = "468351798.327336"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "668"
-            endingLineNumber = "668"
+            startingLineNumber = "672"
+            endingLineNumber = "672"
             landmarkName = "-imagePickerController:didFinishPickingMediaWithInfo:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2225,11 +2225,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemViewController.m"
-            timestampString = "468351798.327336"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "-numberOfSectionsInTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2241,11 +2241,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemViewController.m"
-            timestampString = "468351798.327336"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "197"
+            endingLineNumber = "197"
             landmarkName = "-numberOfSectionsInTableView:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2369,7 +2369,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/NSDictionary+Attributes.m"
-            timestampString = "464546103.081643"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "40"
@@ -2753,12 +2753,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemViewController.m"
-            timestampString = "468351798.327336"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "345"
-            endingLineNumber = "345"
-            landmarkName = "-updateAudioStream"
+            startingLineNumber = "349"
+            endingLineNumber = "349"
+            landmarkName = "-longPressWithObject:type:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2769,11 +2769,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHItemViewController.m"
-            timestampString = "468351798.327336"
+            timestampString = "470168103.354625"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "338"
-            endingLineNumber = "338"
+            startingLineNumber = "342"
+            endingLineNumber = "342"
             landmarkName = "-updateAudioStream"
             landmarkType = "5">
             <Locations>
@@ -3095,6 +3095,22 @@
             startingLineNumber = "74"
             endingLineNumber = "74"
             landmarkName = "-configureWithLinkURLString:delegate:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Hippocampus/SHItemViewController.m"
+            timestampString = "470167650.546401"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "333"
+            endingLineNumber = "333"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
