@@ -22,6 +22,9 @@
 #import "SHBucketTableViewCell.h"
 #import "SHLinkMetadataTableViewCell.h"
 
+#import "NYTPhotosViewController.h"
+#import "LXMediumObject.h"
+
 static NSString *messageCellIdentifier = @"SHItemMessageTableViewCell";
 static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
 static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
@@ -327,7 +330,12 @@ static NSString *linkMetadataCellIdentifier = @"SHLinkMetadataTableViewCell";
             //SHMediaPlayerViewController* vc = (SHMediaPlayerViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMediaPlayerViewController"];
             //[vc setMedium:self.mediaInQuestion];
             //[self presentViewController:vc animated:NO completion:^(void){}];
-            NYTPhotosViewController *photosViewController = [[NYTPhotosViewController alloc] initWithPhotos:photos];
+            NSMutableArray* photosArray = [[NSMutableArray alloc] init];
+            LXMediumObject* mo = [[LXMediumObject alloc] initWithMutableDictionary:self.mediaInQuestion];
+            if (mo && [mo image]) {
+                [photosArray addObject:mo];
+            }
+            NYTPhotosViewController *photosViewController = [[NYTPhotosViewController alloc] initWithPhotos:photosArray];
             [self presentViewController:photosViewController animated:YES completion:nil];
         }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"linkMetadata"]) {

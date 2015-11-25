@@ -33,6 +33,7 @@
 		281CA925196C2B9100E6BE96 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 281CA924196C2B9100E6BE96 /* Login.storyboard */; };
 		281CA929196C2C2900E6BE96 /* HCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA928196C2C2900E6BE96 /* HCLoginViewController.m */; };
 		281CA950196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */; };
+		282552731C062A1500E5809A /* NYTPhotoViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 282552721C062A1500E5809A /* NYTPhotoViewer.framework */; };
 		2826C60B1AD848DB008DC533 /* tutorial.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60A1AD848DB008DC533 /* tutorial.png */; };
 		2826C60D1ADC9474008DC533 /* Group-100.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60C1ADC9474008DC533 /* Group-100.png */; };
 		2826C6101ADDA5D1008DC533 /* txt_scrnsht.png in Resources */ = {isa = PBXBuildFile; fileRef = 2826C60F1ADDA5D1008DC533 /* txt_scrnsht.png */; };
@@ -70,6 +71,7 @@
 		2856C7B11BF16BA0009728CB /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B01BF16BA0009728CB /* AFNetworking.framework */; };
 		2856C7B41BF17AD2009728CB /* AlgoliaSearch_Client.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */; };
 		2856C7B51BF17AD6009728CB /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2856C7B01BF16BA0009728CB /* AFNetworking.framework */; };
+		2863C2341C063119000B99DE /* LXMediumObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2863C2331C063119000B99DE /* LXMediumObject.m */; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
@@ -268,6 +270,7 @@
 		281CA928196C2C2900E6BE96 /* HCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCLoginViewController.m; sourceTree = "<group>"; };
 		281CA94E196DB62A00E6BE96 /* LXDate+RailsTimeConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LXDate+RailsTimeConverter.h"; sourceTree = "<group>"; };
 		281CA94F196DB62A00E6BE96 /* LXDate+RailsTimeConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "LXDate+RailsTimeConverter.m"; sourceTree = "<group>"; };
+		282552721C062A1500E5809A /* NYTPhotoViewer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NYTPhotoViewer.framework; path = "Pods/../build/Debug-iphoneos/NYTPhotoViewer.framework"; sourceTree = "<group>"; };
 		2826C60A1AD848DB008DC533 /* tutorial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tutorial.png; sourceTree = "<group>"; };
 		2826C60C1ADC9474008DC533 /* Group-100.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Group-100.png"; sourceTree = "<group>"; };
 		2826C60F1ADDA5D1008DC533 /* txt_scrnsht.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = txt_scrnsht.png; sourceTree = "<group>"; };
@@ -319,6 +322,8 @@
 		28491BAC1BBCAFE90014E4B2 /* SHPaywallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHPaywallViewController.m; sourceTree = "<group>"; };
 		2856C7B01BF16BA0009728CB /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
 		2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AlgoliaSearch_Client.framework; path = "Pods/../build/Release-iphoneos/AlgoliaSearch_Client.framework"; sourceTree = "<group>"; };
+		2863C2321C063119000B99DE /* LXMediumObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LXMediumObject.h; sourceTree = "<group>"; };
+		2863C2331C063119000B99DE /* LXMediumObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXMediumObject.m; sourceTree = "<group>"; };
 		286F434F1A9F71DB0086AAC9 /* UIFont+HCFonts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+HCFonts.h"; sourceTree = "<group>"; };
 		286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+HCFonts.m"; sourceTree = "<group>"; };
 		286F43521A9F7C290086AAC9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -512,6 +517,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				282552731C062A1500E5809A /* NYTPhotoViewer.framework in Frameworks */,
 				766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */,
 				2856C7B51BF17AD6009728CB /* AFNetworking.framework in Frameworks */,
 				286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */,
@@ -589,6 +595,7 @@
 		281CA8CA1951EC7E00E6BE96 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				282552721C062A1500E5809A /* NYTPhotoViewer.framework */,
 				2856C7B21BF16E36009728CB /* AlgoliaSearch_Client.framework */,
 				2856C7B01BF16BA0009728CB /* AFNetworking.framework */,
 				28AC96811BC4AC4100A5C1E9 /* StoreKit.framework */,
@@ -784,6 +791,8 @@
 				76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */,
 				289FFF261BE513D600CFD5C5 /* LXSegmentedControl.h */,
 				289FFF271BE513D600CFD5C5 /* LXSegmentedControl.m */,
+				2863C2321C063119000B99DE /* LXMediumObject.h */,
+				2863C2331C063119000B99DE /* LXMediumObject.m */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -1588,6 +1597,7 @@
 				289D2F831BAA4867007F719B /* SHEditBucketViewController.m in Sources */,
 				289CFCCE1BEA670800651B53 /* SHLinkMetadataTableViewCell.m in Sources */,
 				2880B6141BFCC28200FC65CB /* SHIntroThoughtViewController.m in Sources */,
+				2863C2341C063119000B99DE /* LXMediumObject.m in Sources */,
 				761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */,
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
 				2880B6131BFCC28200FC65CB /* SHIntroBucketViewController.m in Sources */,
