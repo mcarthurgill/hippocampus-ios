@@ -254,10 +254,10 @@ static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
                 if (![[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] phoneNumber] isEqualToString: [[[LXSession thisSession] user] phone]]) { //not you
                     [self showAlertWithTitle:@"Remove Collaborator?" andMessage:[NSString stringWithFormat:@"Are you sure you want to remove %@ from %@", [[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name], [[self bucket] firstName]] andCancelButtonTitle:@"No" andOtherTitle:@"Yes" andTag:3 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:indexPath];
                 } else { //you
-                    [self showAlertWithTitle:@"Change your name in this bucket?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:indexPath];
+                    [self showAlertWithTitle:@"Change your name?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:indexPath];
                 }
             } else if ([[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] phoneNumber] isEqualToString: [[[LXSession thisSession] user] phone]]) { //you
-                [self showAlertWithTitle:@"Change your name in this bucket?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:indexPath];
+                [self showAlertWithTitle:@"Change your name?" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:4 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[[[self bucket] authorizedUsers] objectAtIndex:indexPath.row] name] andIndexPath:indexPath];
             }
         } else {
             UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"collaboratorsViewController"];
@@ -267,12 +267,12 @@ static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
         }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"actions"]) {
         if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"rename"]) {
-            [self showAlertWithTitle:@"Rename Bucket" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:1 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[self bucket] firstName] andIndexPath:nil];
+            [self showAlertWithTitle:@"Rename Person" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:1 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[[self bucket] firstName] andIndexPath:nil];
         } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"delete"]) {
             if ([[self bucket] belongsToCurrentUser]) {
-                [self showAlertWithTitle:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] firstName]] andMessage:@"Are you sure you want to delete this bucket?" andCancelButtonTitle:@"Cancel" andOtherTitle:@"Yes" andTag:2 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:nil];
+                [self showAlertWithTitle:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] firstName]] andMessage:@"Are you sure you want to delete this person?" andCancelButtonTitle:@"Cancel" andOtherTitle:@"Yes" andTag:2 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:nil];
             } else {
-                [self showAlertWithTitle:@"Not yours!" andMessage:@"You can't delete a bucket you didn't create." andCancelButtonTitle:@"Okay" andOtherTitle:nil andTag:0 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:nil];
+                [self showAlertWithTitle:@"Not yours!" andMessage:@"You can't delete a person you didn't create." andCancelButtonTitle:@"Okay" andOtherTitle:nil andTag:0 andAlertType:UIAlertViewStyleDefault andTextInput:nil andIndexPath:nil];
             }
         } else if ([[self.actions objectAtIndex:indexPath.row] isEqualToString:@"leave"]) {
             //delete bucket user pair

@@ -59,7 +59,7 @@
     [self setBackgroundColor:[UIColor whiteColor]];
     
     if ([self.action isEqualToString:@"rename"]) {
-        [self.label setText:@"Rename Bucket"];
+        [self.label setText:@"Rename Person"];
         [self.imageView setImage:[UIImage imageNamed:@"action_icon_flag.png"]];
     } else if ([self.action isEqualToString:@"delete"]) {
         [self.label setText:[NSString stringWithFormat:@"Delete \"%@\"", [[self bucket] firstName]]];

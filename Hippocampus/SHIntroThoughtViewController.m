@@ -58,7 +58,7 @@
 
 - (void) setupLabel
 {
-    [self.questionLabel setText:[NSString stringWithFormat:@"Cool. You just created your first Bucket!\n\nWhat is something you would like to add to the \"%@\" Bucket?", [[self bucket] firstName]]];
+    [self.questionLabel setText:[NSString stringWithFormat:@"Cool. You just created your first Person!\n\nWhat is something you'd like to remember about %@?", [[self bucket] firstName]]];
     [self.questionLabel setFont:[UIFont secondaryFontWithSize:18.0f]];
     [self.questionLabel setTextColor:[UIColor SHFontDarkGray]];
 }

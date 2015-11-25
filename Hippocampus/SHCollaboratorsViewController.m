@@ -200,7 +200,7 @@ static NSString *contactCellIdentifier = @"SHContactTableViewCell";
 - (void) alertBeforeSendingInvites
 {
     UIAlertView * alert =[[UIAlertView alloc ] initWithTitle:@"Invite Collaborators?"
-                                                     message:[NSString stringWithFormat:@"Are you sure you want to share this bucket with %@", [self.contactsToInvite namesOfContacts]]
+                                                     message:[NSString stringWithFormat:@"Are you sure you want to share this person with %@", [self.contactsToInvite namesOfContacts]]
                                                     delegate:self
                                            cancelButtonTitle:@"No"
                                            otherButtonTitles: nil];

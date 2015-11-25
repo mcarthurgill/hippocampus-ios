@@ -243,7 +243,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     if ([[self.sections objectAtIndex:section] isEqualToString:@"results"])
         return [NSString stringWithFormat:@"\"%@\" in Thoughts  (%lu)", [[SHSearch defaultManager] getCachedResultsTermWithType:@"items" withTerm:[self.searchBar text]], (unsigned long)[self.searchResults count]];
     if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"])
-        return [NSString stringWithFormat:@"\"%@\" in Buckets  (%lu)", [[SHSearch defaultManager] getCachedResultsTermWithType:@"buckets" withTerm:[self.searchBar text]], (unsigned long)[self.searchResults count]];
+        return [NSString stringWithFormat:@"\"%@\" in People  (%lu)", [[SHSearch defaultManager] getCachedResultsTermWithType:@"buckets" withTerm:[self.searchBar text]], (unsigned long)[self.searchResults count]];
         //return [NSString stringWithFormat:@"Buckets (%lu)", (unsigned long)[self.bucketResults count]];
     return nil;
 }

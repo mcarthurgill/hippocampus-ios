@@ -10,22 +10,28 @@
 
 @implementation SHNewBucketTableViewCell
 
-- (void)awakeFromNib {
+@synthesize actionButton;
+
+- (void)awakeFromNib
+{
     [self setupTableViewCell];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
+
+
+
 # pragma mark Setup
+
 - (void)setupTableViewCell
 {
     [self.titleLabel setFont:[UIFont titleFontWithSize:15.0f]];
     [self.titleLabel setTextColor:[UIColor SHFontLightGray]];
-    [self.titleLabel setText:@"New Bucket"];
+    [self.titleLabel setText:@"New Person"];
     
     [self.bucketNameTextField setText:@""];
     [self.bucketNameTextField setDelegate:self];
@@ -37,6 +43,11 @@
     [self.typingView setHidden:YES];
     [self.defaultView setHidden:NO];
 }
+
+
+
+
+
 
 # pragma mark Actions
 
@@ -62,10 +73,12 @@
     }failure:nil];
     [self toggleNewBucket];
 }
+
 - (IBAction)tappedNewBucketAction:(id)sender
 {
     [self toggleNewBucket];
 }
+
 
 - (void) toggleNewBucket
 {
@@ -94,9 +107,13 @@
     return [self.typingView isHidden];
 }
 
+
+
+
 # pragma mark UITextField Delegate
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+- (BOOL) textFieldShouldReturn:(UITextField *)textField
+{
     [self addBucketWithText:self.bucketNameTextField.text];
     return YES;
 }

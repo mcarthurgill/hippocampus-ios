@@ -34,7 +34,11 @@
     pageControlAppearance.currentPageIndicatorTintColor = [UIColor darkGrayColor];
     
     quotes = @[
-               @"Ready for an assistant?",
+               @"Use Hippo to remember names, dates, and moments;",
+               @"jot down important details about people in your personal and business network;",
+               @"set nudges to remind you to follow up, like \"send flowers\" or \"ask how that surgery went\";",
+               @"and journal your thoughts so you never forget the information that matters.",
+               @"Ready to become an advanced people-person?",
                //@"Have you ever realized dogs are the only animals that don't have to work?\n\nHens lay eggs, cows give milk, and canaries sing. But a dog makes his living by giving you nothing but love.",
                //@"Names are the sweetest sound in any language. Start writing them down.",
                //@"Information not found in notes has only a 5% chance of being remembered.",

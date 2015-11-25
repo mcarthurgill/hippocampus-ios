@@ -14,9 +14,11 @@
 @property (weak, nonatomic) IBOutlet UIView *typingView;
 @property (weak, nonatomic) IBOutlet UIView *defaultView;
 @property (weak, nonatomic) IBOutlet UITextField *bucketNameTextField;
+@property (strong, nonatomic) IBOutlet UIButton *actionButton;
 
 - (IBAction)saveBucketAction:(id)sender;
 - (IBAction)tappedNewBucketAction:(id)sender;
+
 - (void) toggleNewBucket;
 - (void) setViewBackToDefault;
 - (BOOL) inDefaultMode;

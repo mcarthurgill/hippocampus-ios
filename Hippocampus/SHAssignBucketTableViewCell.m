@@ -64,7 +64,7 @@
     [self setContact:nil];
     
     [self.title setText:[NSString stringWithFormat:@"%@%@", [[self bucket] firstName], ([[[self bucket] itemsCount] integerValue] > 0 ? [NSString stringWithFormat:@" (%i)", [[[self bucket] itemsCount] intValue]] : @"")]];
-    [self.preview setText:([[self bucket] ID] ? [[self bucket] cachedItemMessage] : @"New Bucket")];
+    [self.preview setText:([[self bucket] ID] ? [[self bucket] cachedItemMessage] : @"New Person")];
     
     [self setNeedsLayout];
 }

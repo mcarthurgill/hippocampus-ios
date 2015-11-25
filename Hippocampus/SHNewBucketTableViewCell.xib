@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -68,7 +68,7 @@
                                     <constraint firstAttribute="height" constant="25" id="ySW-0q-Dsk"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name new bucket" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fYh-2S-dX4">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="New person name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fYh-2S-dX4">
                                 <rect key="frame" x="51" y="15" width="466" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26" id="Yuo-Zd-Cnp"/>
@@ -142,6 +142,7 @@
                 </variation>
             </tableViewCellContentView>
             <connections>
+                <outlet property="actionButton" destination="oZY-AT-qHQ" id="V6S-d1-2Lz"/>
                 <outlet property="bucketNameTextField" destination="fYh-2S-dX4" id="TLq-b3-8kI"/>
                 <outlet property="defaultView" destination="in1-9L-JjP" id="fue-6G-ple"/>
                 <outlet property="titleLabel" destination="V6L-S1-OYg" id="8wd-Of-LGf"/>

@@ -78,7 +78,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) setTitle
 {
-    [self setTitle:[NSString stringWithFormat:@"Assign Buckets%@", ([[self bucketSelectedKeys] count] > 0 ? [NSString stringWithFormat:@" (%lu)", (unsigned long)[[self bucketSelectedKeys] count]] : @"")]];
+    [self setTitle:[NSString stringWithFormat:@"Assign to People%@", ([[self bucketSelectedKeys] count] > 0 ? [NSString stringWithFormat:@" (%lu)", (unsigned long)[[self bucketSelectedKeys] count]] : @"")]];
 }
 
 - (void) setupSettings
@@ -93,7 +93,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [self.topViewLabel setFont:[UIFont titleFontWithSize:15.0f]];
     [self.topViewLabel setTextColor:[UIColor SHFontDarkGray]];
-    [self.topViewLabel setText:@"New Bucket"];
+    [self.topViewLabel setText:@"New Person"];
     
     [self.topView setBackgroundColor:[UIColor slightBackgroundColor]];
     
@@ -381,9 +381,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"recent"]) {
         return @"Recent";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"other"]) {
-        return @"Buckets";
+        return @"People";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contacts"]) {
-        return @"Contacts";
+        return @"Create From Contacts";
     }
     return nil;
 }
