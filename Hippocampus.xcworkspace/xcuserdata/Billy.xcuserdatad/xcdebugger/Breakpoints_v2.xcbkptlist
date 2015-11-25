@@ -2758,7 +2758,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "349"
             endingLineNumber = "349"
-            landmarkName = "-longPressWithObject:type:"
+            landmarkName = "-updateAudioStream"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -2774,7 +2774,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "342"
             endingLineNumber = "342"
-            landmarkName = "-updateAudioStream"
+            landmarkName = "-tableView:didSelectRowAtIndexPath:"
             landmarkType = "5">
             <Locations>
                <Location

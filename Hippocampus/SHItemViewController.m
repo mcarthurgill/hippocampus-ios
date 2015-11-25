@@ -22,6 +22,9 @@
 #import "SHBucketTableViewCell.h"
 #import "SHLinkMetadataTableViewCell.h"
 
+#import "NYTPhotosViewController.h"
+#import "LXMediumObject.h"
+
 static NSString *messageCellIdentifier = @"SHItemMessageTableViewCell";
 static NSString *authorCellIdentifier = @"SHItemAuthorTableViewCell";
 static NSString *mediaBoxCellIdentifier = @"SHMediaBoxTableViewCell";
@@ -324,9 +327,16 @@ static NSString *linkMetadataCellIdentifier = @"SHLinkMetadataTableViewCell";
             [self setAudioTableViewCell:[self.tableView cellForRowAtIndexPath:indexPath]];
             //self.audioTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(updateAudioStream) userInfo:nil repeats:YES];
         } else {
-            SHMediaPlayerViewController* vc = (SHMediaPlayerViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMediaPlayerViewController"];
-            [vc setMedium:self.mediaInQuestion];
-            [self presentViewController:vc animated:NO completion:^(void){}];
+            //SHMediaPlayerViewController* vc = (SHMediaPlayerViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMediaPlayerViewController"];
+            //[vc setMedium:self.mediaInQuestion];
+            //[self presentViewController:vc animated:NO completion:^(void){}];
+            NSMutableArray* photosArray = [[NSMutableArray alloc] init];
+            LXMediumObject* mo = [[LXMediumObject alloc] initWithMutableDictionary:self.mediaInQuestion];
+            if (mo && [mo image]) {
+                [photosArray addObject:mo];
+            }
+            NYTPhotosViewController *photosViewController = [[NYTPhotosViewController alloc] initWithPhotos:photosArray];
+            [self presentViewController:photosViewController animated:YES completion:nil];
         }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"linkMetadata"]) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[[self item] links] objectAtIndex:indexPath.row]]];

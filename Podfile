@@ -7,6 +7,7 @@ target :Hippocampus do
 	pod 'AlgoliaSearch-Client', '~> 3.0'
 	pod 'MGSwipeTableCell', :head
 	pod 'SlackTextViewController'
+    pod 'NYTPhotoViewer'
 	pod 'libPusher', '~> 1.6.1'
 	use_frameworks!
 	pod 'PermissionScope', '~> 1.0'
