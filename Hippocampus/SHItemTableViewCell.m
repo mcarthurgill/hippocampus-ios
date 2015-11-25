@@ -278,7 +278,11 @@
     [self.linkMetadataMiddleLabel setText:[link bestTitle]];
     
     //[self.bottomLabel setText:[NSString stringWithFormat:@"%@",[[self link] bestDescription]]];
-    [self.linkMetadataBottomLabel setText:[link bestDescription]];
+    if ([link bestDescription] && [[link bestDescription] length] > 0) {
+        [self.linkMetadataBottomLabel setText:[[link bestDescription] truncated:256]];
+    } else {
+        [self.linkMetadataBottomLabel setText:nil];
+    }
 }
 
 - (void) hideLinkMetadataBox

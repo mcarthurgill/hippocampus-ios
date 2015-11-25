@@ -89,7 +89,7 @@
     if ([sender selectedSegmentIndex] == 0 && ![currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
         [self switchContainerToView:@"thoughtsViewController" fromView:currentPresentedViewController];
     } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
-        if ([currentTitle isEqualToString:@"Buckets"]) {
+        if ([currentTitle isEqualToString:@"People"]) {
             [self switchContainerToView:@"bucketsViewController" fromView:currentPresentedViewController];
         } else if ([currentTitle isEqualToString:@"Groups"]) {
             [self switchContainerToView:@"tagsViewController" fromView:currentPresentedViewController];
@@ -150,8 +150,8 @@
     if ([toName isEqualToString:@"thoughtsViewController"]) {
         [self setTitle:@"Thoughts"];
     } else if ([toName isEqualToString:@"bucketsViewController"]) {
-        [self setTitle:@"Buckets"];
-        [self.segmentControl setTitle:@"Buckets" forSegmentAtIndex:1];
+        [self setTitle:@"People"];
+        [self.segmentControl setTitle:@"People" forSegmentAtIndex:1];
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [[(SHBucketsViewController*)vc tableView] reloadData];
         });
