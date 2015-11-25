@@ -35,7 +35,7 @@
     
     quotes = @[
                @"Use Hippo to remember names, dates, and moments;",
-               @"jot down important details about people in your personal and business network;",
+               @"jot down important details about people in your personal and business networks;",
                @"set nudges to remind you to follow up, like \"send flowers\" or \"ask how that surgery went\";",
                @"and journal your thoughts so you never forget the information that matters.",
                @"Ready to become an advanced people-person?",

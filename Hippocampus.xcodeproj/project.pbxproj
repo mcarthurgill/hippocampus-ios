@@ -1259,8 +1259,8 @@
 				2808B6101BEC01F6009784F4 /* Frameworks */,
 				2808B6111BEC01F6009784F4 /* Resources */,
 				E4FC8B5C134C51B13137D19E /* Copy Pods Resources */,
-				2856C7B61BF180DB009728CB /* ShellScript */,
 				4FDF7E88DD4DFBD70B0965D3 /* Embed Pods Frameworks */,
+				2856C7B61BF180DB009728CB /* ShellScript */,
 			);
 			buildRules = (
 			);
