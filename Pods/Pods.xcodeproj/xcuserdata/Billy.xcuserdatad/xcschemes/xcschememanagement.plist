@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>NYTPhotoViewer.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>PermissionScope.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,16 +82,6 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>095628B9DA8CC4C5A980D73376AB08DF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>41C1F9F892D89EBF66A9DCE6FC42B356</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>4878C70B21CA37D7CB8A476BF986741B</key>
 		<dict>
 			<key>primary</key>
@@ -102,17 +97,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>54F5A67FC697A76B1B5BCA6258512F06</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>61EE2DAE7B82CDF5925D367A72CE401F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>68C2CC34B364F239C5FA621E4B017473</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>76DDF364BE771BE8645A099344BDF30E</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -132,17 +122,37 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>ACFFC89B5C491A55D7CAB6761AAD7914</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AE731FCB224E4AA192C78CF2163BF865</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>C55E46AC6A1E70A6AA25E306AE545375</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E430F654C8745894438B7AA76D24E23E</key>
+		<key>E142AAA516EFFE1499EAF62FCA9DC56D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>E61CE3B6DFA1FE6B3E296965C76C0E10</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E623D3218DBF9B5E58632804F4A8655E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FA44859A1E5A7CC8E1587D9F7C58CAD6</key>
 		<dict>
 			<key>primary</key>
 			<true/>

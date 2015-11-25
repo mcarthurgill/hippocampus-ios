@@ -29,6 +29,7 @@ PODS:
   - MBProgressHUD (0.9.1)
   - MGEvents (1.0.3)
   - MGSwipeTableCell (HEAD based on 1.5.3)
+  - NYTPhotoViewer (0.1.2)
   - PermissionScope (1.0.1)
   - PromiseKit/base (1.5.3):
     - PromiseKit/Promise
@@ -56,6 +57,7 @@ DEPENDENCIES:
   - libPusher (~> 1.6.1)
   - MBProgressHUD (~> 0.8)
   - MGSwipeTableCell (HEAD)
+  - NYTPhotoViewer
   - PermissionScope (~> 1.0)
   - SGImageCache
   - SlackTextViewController
@@ -67,6 +69,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MGEvents: 739ea3e582a8df05bd1044500c7fb6d8f7aff5c8
   MGSwipeTableCell: 5ae3b9a15efda26b201adc8676b24040febe6ff6
+  NYTPhotoViewer: 874a57dd833238b52ab2e8d1c827356c763626c3
   PermissionScope: 9767066cedefd211d90a8c4f92f6f1a987085ee8
   PromiseKit: ecdccab1791b95b4752a9fac57223044f5a6c105
   SGHTTPRequest: 6054b0d9915b391f0858abcbd50f5d5f2ad6365f

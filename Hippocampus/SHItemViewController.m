@@ -324,9 +324,11 @@ static NSString *linkMetadataCellIdentifier = @"SHLinkMetadataTableViewCell";
             [self setAudioTableViewCell:[self.tableView cellForRowAtIndexPath:indexPath]];
             //self.audioTimer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(updateAudioStream) userInfo:nil repeats:YES];
         } else {
-            SHMediaPlayerViewController* vc = (SHMediaPlayerViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMediaPlayerViewController"];
-            [vc setMedium:self.mediaInQuestion];
-            [self presentViewController:vc animated:NO completion:^(void){}];
+            //SHMediaPlayerViewController* vc = (SHMediaPlayerViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMediaPlayerViewController"];
+            //[vc setMedium:self.mediaInQuestion];
+            //[self presentViewController:vc animated:NO completion:^(void){}];
+            NYTPhotosViewController *photosViewController = [[NYTPhotosViewController alloc] initWithPhotos:photos];
+            [self presentViewController:photosViewController animated:YES completion:nil];
         }
     } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"linkMetadata"]) {
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:[[[self item] links] objectAtIndex:indexPath.row]]];
