@@ -277,7 +277,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         self.currentlyCellSwiping = [[[notification userInfo] objectForKey:@"gestureIsActive"] boolValue];
         if (!self.currentlyCellSwiping) {
             [self checkForReload];
-            NSLog(@"no longer cell swiping! just checked for reload");
         }
     }
 }
