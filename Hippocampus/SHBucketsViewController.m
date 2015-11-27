@@ -60,6 +60,9 @@ static NSString *newBucketCellIdentifier = @"SHNewBucketTableViewCell";
     [self.tableView setContentInset:UIEdgeInsetsMake(64.0f, 0, 0, 0)];
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     
+    [self.tableView setSectionIndexBackgroundColor:[UIColor clearColor]];
+    [self.tableView setSectionIndexColor:[UIColor SHBlue]];
+    
     self.searchBar.layer.borderWidth = 1.0f;
     self.searchBar.layer.borderColor = [UIColor slightBackgroundColor].CGColor;
 }
@@ -368,6 +371,47 @@ static NSString *newBucketCellIdentifier = @"SHNewBucketTableViewCell";
         [self.navigationController pushViewController:vc animated:YES];
 
     }
+}
+
+
+
+
+
+# pragma mark navigation
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    if ([self searchActivated])
+        return nil;
+    if ([[self bucketKeys] count] < 10)
+        return nil;
+    return [NSArray alphabetUppercase];
+}
+
+- (NSInteger)tableView:(UITableView *)tV sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    NSInteger newRow = [self indexForFirstCharAtSidebarIndex:index];
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:newRow inSection:[self.sections indexOfObject:@"buckets"]];
+    [tV scrollToRowAtIndexPath:newIndexPath atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    
+    return index;
+}
+
+// Return the index for the location of the first item in an array that begins with a certain character
+- (NSInteger) indexForFirstCharAtSidebarIndex:(NSInteger)index
+{
+    NSString* character;
+    while (index > 0) {
+        character = [[NSArray alphabetUppercase] objectAtIndex:index];
+        for (NSInteger count = 0; count < [[self bucketKeys] count]; ++count) {
+            NSMutableDictionary* temp = [self bucketAtIndexPath:[NSIndexPath indexPathForRow:count inSection:[self.sections indexOfObject:@"buckets"]]];
+            if (temp && [temp firstName] && [[[[temp firstName] substringToIndex:1] uppercaseString] isEqualToString:[character uppercaseString]]) {
+                return count;
+            }
+        }
+        --index;
+    }
+    return 0;
 }
 
 
