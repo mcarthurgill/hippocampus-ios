@@ -402,6 +402,14 @@
     return YES;
 }
 
+-(void) swipeTableCell:(MGSwipeTableCell*) cell didChangeSwipeState:(MGSwipeState) state gestureIsActive:(BOOL) gestureIsActive
+{
+    NSLog(@"gesture started / %d", gestureIsActive);
+    if (self.bucketLocalKey) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"swipeGestureDidChangeState" object:nil userInfo:@{@"bucketLocalKey":self.bucketLocalKey,@"gestureIsActive":[NSNumber numberWithBool:gestureIsActive]}];
+    }
+}
+
 
 # pragma mark actions
 

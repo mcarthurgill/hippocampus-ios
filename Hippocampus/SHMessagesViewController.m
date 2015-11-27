@@ -29,7 +29,9 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 @implementation SHMessagesViewController
 
 @synthesize localKey;
+
 @synthesize shouldReload;
+@synthesize currentlyCellSwiping;
 
 @synthesize blankItem;
 
@@ -88,10 +90,12 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 - (void) setupSettings
 {
     self.shouldReload = NO;
+    self.currentlyCellSwiping = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(bucketRefreshed:) name:@"bucketRefreshed" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removedItemFromBucket:) name:@"removedItemFromBucket" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshVCWithLocalKey:) name:@"refreshVCWithLocalKey" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(swipeGestureDidChangeState:) name:@"swipeGestureDidChangeState" object:nil];
     
     page = 0;
     
@@ -251,7 +255,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 - (void) tryToReload
 {
-    if (![self.tableView isDragging] && ![self.tableView isDecelerating]) {
+    if (![self.tableView isDragging] && ![self.tableView isDecelerating] && !self.currentlyCellSwiping) {
         [self reloadScreen];
         self.shouldReload = NO;
     } else {
@@ -267,7 +271,16 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     }
 }
 
-
+- (void) swipeGestureDidChangeState:(NSNotification*)notification
+{
+    if ([[notification userInfo] objectForKey:@"bucketLocalKey"] && [[[notification userInfo] objectForKey:@"bucketLocalKey"] isEqualToString:self.localKey]) {
+        self.currentlyCellSwiping = [[[notification userInfo] objectForKey:@"gestureIsActive"] boolValue];
+        if (!self.currentlyCellSwiping) {
+            [self checkForReload];
+            NSLog(@"no longer cell swiping! just checked for reload");
+        }
+    }
+}
 
 
 
@@ -280,7 +293,9 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     if ([[notification userInfo] objectForKey:@"bucket"] && [[[[notification userInfo] objectForKey:@"bucket"] localKey] isEqualToString:self.localKey]) {
         //BUCKET MATCHES!
         //[self performSelectorOnMainThread:@selector(reloadIfDifferentCountOfKeys:) withObject:[[notification userInfo] objectForKey:@"oldItemKeys"] waitUntilDone:NO];
-        [self reloadScreen];
+        
+        //[self reloadScreen];
+        [self tryToReload];
         
         if (![[[notification userInfo] objectForKey:@"bucket"] isAllThoughtsBucket]) {
             [self checkSecurity];

@@ -15,6 +15,7 @@
 
 @property (strong, nonatomic) NSString* localKey;
 @property (nonatomic) BOOL shouldReload;
+@property (nonatomic) BOOL currentlyCellSwiping;
 
 @property (strong, nonatomic) NSMutableDictionary* blankItem;
 
