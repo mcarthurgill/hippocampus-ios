@@ -658,7 +658,6 @@
 				76CA904B1AE1572800C6E400 /* Permissions */,
 				288F122E1B75221D0001E0B0 /* Main */,
 				282FA83E1B8F9B6D004ADA00 /* Search */,
-				28ED41C81B9CB921000292AE /* Assign */,
 				28ED41DD1BA0013E000292AE /* Nudge */,
 			);
 			name = "View Controllers";
@@ -986,6 +985,7 @@
 		289D2F801BAA4854007F719B /* Bucket */ = {
 			isa = PBXGroup;
 			children = (
+				28ED41C81B9CB921000292AE /* Assign */,
 				289D2F841BAA50FC007F719B /* Cells */,
 				289D2F811BAA4867007F719B /* SHEditBucketViewController.h */,
 				289D2F821BAA4867007F719B /* SHEditBucketViewController.m */,
