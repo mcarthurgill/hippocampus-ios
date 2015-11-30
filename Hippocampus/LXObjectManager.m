@@ -71,7 +71,6 @@ static LXObjectManager* defaultManager = nil;
 - (void) runQueries
 {
     NSLog(@"queries: %@", self.queries);
-    NSLog(@"%d", 1);
     if ([self.queries count] > 0) { //&& !runningQueries) {
         runningQueries = YES;
         NSMutableDictionary* query = [self.queries firstObject];
@@ -79,17 +78,12 @@ static LXObjectManager* defaultManager = nil;
         NSMutableDictionary* obj = [query objectForKey:@"object"];
         NSMutableDictionary* underlyingObj = [obj objectForKey:[[obj allKeys] firstObject]];
         if (!obj || ![query objectForKey:@"path"] || ![query objectForKey:@"method"] || ([underlyingObj respondsToSelector:@selector(objectType)] && ![underlyingObj objectType])) {
-            NSLog(@"underlying = %@", underlyingObj);
-            NSLog(@"obj = %@", obj);
-            NSLog(@"%d", 3);
             [self removeQuery:query];
             [self saveQueries];
             runningQueries = NO;
             [self runQueries];
         } else {
-                NSLog(@"%d", 4);
             if ([obj objectForKey:@"item"] && [[obj objectForKey:@"item"] hasUnsavedMedia]) {
-                    NSLog(@"%d", 6);
                 NSString* tempPath;
                 if (![underlyingObj ID] && [[query objectForKey:@"method"] isEqualToString:@"PUT"] && ![[query objectForKey:@"path"] isEqualToString:@"/items/update_buckets"] && ![[query objectForKey:@"path"] isEqualToString:@"/buckets/update_tags"] && [LXObjectManager objectWithLocalKey:[obj localKey]]) {
                     tempPath = [[LXObjectManager objectWithLocalKey:[obj localKey]] requestPath];
@@ -135,19 +129,16 @@ static LXObjectManager* defaultManager = nil;
                      }
                  ];
             } else {
-                    NSLog(@"%d", 7);
                 NSString* tempPath;
                 if ((![underlyingObj respondsToSelector:@selector(ID)] || ![underlyingObj ID]) && [[query objectForKey:@"method"] isEqualToString:@"PUT"] && ![[query objectForKey:@"path"] isEqualToString:@"/items/update_buckets"] && ![[query objectForKey:@"path"] isEqualToString:@"/buckets/update_tags"] && [LXObjectManager objectWithLocalKey:[obj localKey]]) {
                     tempPath = [[LXObjectManager objectWithLocalKey:[obj localKey]] requestPath];
                 } else {
                     tempPath = [query objectForKey:@"path"];
                 }
-                    NSLog(@"%d", 8);
                 NSLog(@"%@", tempPath);
                 [[LXServer shared] requestPath:tempPath withMethod:[query objectForKey:@"method"] withParamaters:obj authType:@"repeat"
                                        success:^(id responseObject){
                                            [[NSNotificationCenter defaultCenter] postNotificationName:@"successfulQueryDelayed" object:nil userInfo:@{@"query":query}];//,@"responseObject":responseObject
-                                               NSLog(@"%d", 9);
                                            [self removeQuery:query];
                                            [self saveQueries];
                                            runningQueries = NO;
@@ -155,7 +146,6 @@ static LXObjectManager* defaultManager = nil;
                                        }
                                        failure:^(NSError* error){
                                            NSLog(@"CODE=%ld", (long)error.code);
-                                               NSLog(@"%d", 10);
                                            if (![LXServer errorBecauseOfBadConnection:error.code]) {
                                                [self removeQuery:query];
                                                    NSLog(@"%d", 11);
@@ -168,7 +158,6 @@ static LXObjectManager* defaultManager = nil;
             }
         }
     } else if ([self.queries count] == 0) {
-            NSLog(@"%d", 12);
         runningQueries = NO;
     }
     [self saveQueries];
@@ -191,7 +180,6 @@ static LXObjectManager* defaultManager = nil;
     }
     if (dictOfCalls) {
         [self.queries addObject:dictOfCalls];
-        NSLog(@"JUST ADDED: %@", dictOfCalls);
         [LXObjectManager assignLocal:self.queries WithLocalKey:@"failed-queries" alsoToDisk:YES];
         [self runQueries];
     }
