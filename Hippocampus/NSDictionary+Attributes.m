@@ -100,6 +100,11 @@
     return [self objectForKey:@"media_type"] && [[self objectForKey:@"media_type"] isEqualToString:@"audio"];
 }
 
+- (BOOL) isImage
+{
+    return [self objectForKey:@"media_type"] && [[self objectForKey:@"media_type"] isEqualToString:@"image"];
+}
+
 - (NSArray*) userIDsArray
 {
     if ([self objectForKey:@"user_ids_array"] && NULL_TO_NIL([self objectForKey:@"user_ids_array"])) {

@@ -335,6 +335,12 @@ static NSString *linkMetadataCellIdentifier = @"SHLinkMetadataTableViewCell";
             if (mo && [mo image]) {
                 [photosArray addObject:mo];
             }
+            for (NSInteger i = 0; i < [[[self item] media] count]; ++i) {
+                NSMutableDictionary* tempMedia = [[[self item] media] objectAtIndex:i];
+                if (tempMedia && [tempMedia isImage] && ![[tempMedia localKey] isEqualToString:[self.mediaInQuestion localKey]]) {
+                    [photosArray addObject:[[LXMediumObject alloc] initWithMutableDictionary:tempMedia]];
+                }
+            }
             NYTPhotosViewController *photosViewController = [[NYTPhotosViewController alloc] initWithPhotos:photosArray];
             [self presentViewController:photosViewController animated:YES completion:nil];
         }
