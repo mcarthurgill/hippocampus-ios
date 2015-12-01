@@ -277,9 +277,9 @@ static NSString *newBucketCellIdentifier = @"SHNewBucketTableViewCell";
     if ([[self.sections objectAtIndex:section] isEqualToString:@"newBucket"]) {
         return nil;
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"buckets"]) {
-        return @"All Buckets";
+        return @"All People";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"recent"]) {
-        return @"Recent Buckets";
+        return @"Recent People";
     }
     return nil;
 }

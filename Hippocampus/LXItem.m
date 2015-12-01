@@ -239,7 +239,22 @@
                                                  }
                      ];
                 }
-            } failure:^(NSError* error){}];
+            } failure:^(NSError* error){
+                if ([LXServer errorBecauseOfBadConnection:error.code]) {
+                    [self sendUpdateBucketsWithLocalKeys:newLocalKeys
+                                                 success:^(id responseObject){
+                                                     if (successCallback) {
+                                                         successCallback(responseObject);
+                                                     }
+                                                 }
+                                                 failure:^(NSError* error){
+                                                     if (failureCallback) {
+                                                         failureCallback(error);
+                                                     }
+                                                 }
+                     ];
+                }
+            }];
         }
     }
     

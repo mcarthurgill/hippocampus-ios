@@ -74,10 +74,10 @@ static LXObjectManager* defaultManager = nil;
     if ([self.queries count] > 0) { //&& !runningQueries) {
         runningQueries = YES;
         NSMutableDictionary* query = [self.queries firstObject];
-        
+            NSLog(@"%d", 2);
         NSMutableDictionary* obj = [query objectForKey:@"object"];
         NSMutableDictionary* underlyingObj = [obj objectForKey:[[obj allKeys] firstObject]];
-        if (!obj || ![query objectForKey:@"path"] || ![query objectForKey:@"method"] || ![underlyingObj respondsToSelector:@selector(objectType)] || ![underlyingObj objectType]) {
+        if (!obj || ![query objectForKey:@"path"] || ![query objectForKey:@"method"] || ([underlyingObj respondsToSelector:@selector(objectType)] && ![underlyingObj objectType])) {
             [self removeQuery:query];
             [self saveQueries];
             runningQueries = NO;
@@ -130,7 +130,7 @@ static LXObjectManager* defaultManager = nil;
                  ];
             } else {
                 NSString* tempPath;
-                if (![underlyingObj ID] && [[query objectForKey:@"method"] isEqualToString:@"PUT"] && ![[query objectForKey:@"path"] isEqualToString:@"/items/update_buckets"] && ![[query objectForKey:@"path"] isEqualToString:@"/buckets/update_tags"] && [LXObjectManager objectWithLocalKey:[obj localKey]]) {
+                if ((![underlyingObj respondsToSelector:@selector(ID)] || ![underlyingObj ID]) && [[query objectForKey:@"method"] isEqualToString:@"PUT"] && ![[query objectForKey:@"path"] isEqualToString:@"/items/update_buckets"] && ![[query objectForKey:@"path"] isEqualToString:@"/buckets/update_tags"] && [LXObjectManager objectWithLocalKey:[obj localKey]]) {
                     tempPath = [[LXObjectManager objectWithLocalKey:[obj localKey]] requestPath];
                 } else {
                     tempPath = [query objectForKey:@"path"];
@@ -148,6 +148,7 @@ static LXObjectManager* defaultManager = nil;
                                            NSLog(@"CODE=%ld", (long)error.code);
                                            if (![LXServer errorBecauseOfBadConnection:error.code]) {
                                                [self removeQuery:query];
+                                                   NSLog(@"%d", 11);
                                                [self saveQueries];
                                                runningQueries = NO;
                                                [self runQueries];
