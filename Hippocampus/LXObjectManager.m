@@ -70,11 +70,17 @@ static LXObjectManager* defaultManager = nil;
 
 - (void) runQueries
 {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self runQueriesAsync]; 
+    });
+}
+
+- (void) runQueriesAsync
+{
     NSLog(@"queries: %@", self.queries);
     if ([self.queries count] > 0) { //&& !runningQueries) {
         runningQueries = YES;
         NSMutableDictionary* query = [self.queries firstObject];
-            NSLog(@"%d", 2);
         NSMutableDictionary* obj = [query objectForKey:@"object"];
         NSMutableDictionary* underlyingObj = [obj objectForKey:[[obj allKeys] firstObject]];
         if (!obj || ![query objectForKey:@"path"] || ![query objectForKey:@"method"] || ([underlyingObj respondsToSelector:@selector(objectType)] && ![underlyingObj objectType])) {
@@ -148,7 +154,6 @@ static LXObjectManager* defaultManager = nil;
                                            NSLog(@"CODE=%ld", (long)error.code);
                                            if (![LXServer errorBecauseOfBadConnection:error.code]) {
                                                [self removeQuery:query];
-                                                   NSLog(@"%d", 11);
                                                [self saveQueries];
                                                runningQueries = NO;
                                                [self runQueries];
