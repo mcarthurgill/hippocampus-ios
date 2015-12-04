@@ -395,7 +395,23 @@ static NSInteger maxRecentCount = 6;
                                                  }
                      ];
                 }
-            } failure:^(NSError* error){}];
+            } failure:^(NSError* error){
+                if ([LXServer errorBecauseOfBadConnection:error.code]) {
+                    [self sendUpdateTagsWithLocalKeys:newLocalKeys
+                                              success:^(id responseObject){
+                                                  if (successCallback) {
+                                                      successCallback(responseObject);
+                                                  }
+                                              }
+                                              failure:^(NSError* error){
+                                                  if (failureCallback) {
+                                                      failureCallback(error);
+                                                  }
+                                              }
+                     ];
+                }
+
+            }];
         }
     }
     
