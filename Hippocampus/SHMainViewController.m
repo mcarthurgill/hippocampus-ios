@@ -73,8 +73,10 @@
 - (void) loadIfNoChildController
 {
     if ([[self.containerView subviews] count] == 0) {
-        [self switchContainerToView:@"bucketsViewController" fromView:nil];
-        [self switchContainerToView:@"thoughtsViewController" fromView:@"bucketsViewController"];
+        //[self switchContainerToView:@"bucketsViewController" fromView:nil];
+        //[self switchContainerToView:@"thoughtsViewController" fromView:@"bucketsViewController"];
+        [self switchContainerToView:@"thoughtsViewController" fromView:nil];
+        [self switchContainerToView:@"bucketsViewController" fromView:@"thoughtsViewController"];
     }
 }
 
@@ -86,17 +88,17 @@
 - (IBAction)segmentControlAction:(UISegmentedControl*)sender
 {
     NSString* currentTitle = [sender titleForSegmentAtIndex:[sender selectedSegmentIndex]];
-    if ([sender selectedSegmentIndex] == 0 && ![currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
+    if ([sender selectedSegmentIndex] == 1 && ![currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
         [self switchContainerToView:@"thoughtsViewController" fromView:currentPresentedViewController];
-    } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
+    } else if ([sender selectedSegmentIndex] == 0 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
         if ([currentTitle isEqualToString:@"People"]) {
             [self switchContainerToView:@"bucketsViewController" fromView:currentPresentedViewController];
         } else if ([currentTitle isEqualToString:@"Groups"]) {
             [self switchContainerToView:@"tagsViewController" fromView:currentPresentedViewController];
         }
-    } else if ([NSMutableDictionary userHasTags] && [sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"bucketsViewController"]) {
+    } else if ([NSMutableDictionary userHasTags] && [sender selectedSegmentIndex] == 0 && [currentPresentedViewController isEqualToString:@"bucketsViewController"]) {
         [self switchContainerToView:@"tagsViewController" fromView:currentPresentedViewController];
-    } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"tagsViewController"]) {
+    } else if ([sender selectedSegmentIndex] == 0 && [currentPresentedViewController isEqualToString:@"tagsViewController"]) {
         [self switchContainerToView:@"bucketsViewController" fromView:currentPresentedViewController];
     }
 }
@@ -148,16 +150,16 @@
     }
     
     if ([toName isEqualToString:@"thoughtsViewController"]) {
-        [self setTitle:@"Thoughts"];
+        [self setTitle:@"Notes"];
     } else if ([toName isEqualToString:@"bucketsViewController"]) {
         [self setTitle:@"People"];
-        [self.segmentControl setTitle:@"People" forSegmentAtIndex:1];
+        [self.segmentControl setTitle:@"People" forSegmentAtIndex:0];
         dispatch_async(dispatch_get_main_queue(), ^(void){
             [[(SHBucketsViewController*)vc tableView] reloadData];
         });
     } else if ([toName isEqualToString:@"tagsViewController"]) {
         [self setTitle:@"Groups"];
-        [self.segmentControl setTitle:@"Groups" forSegmentAtIndex:1];
+        [self.segmentControl setTitle:@"Groups" forSegmentAtIndex:0];
         dispatch_async(dispatch_get_main_queue(), ^(void){
             //ATTENTION!
 //            [[(SHBucketsViewController*)vc tableView] reloadData];

@@ -788,11 +788,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCOnboardingPageViewController.m"
-            timestampString = "470164761.905975"
+            timestampString = "471218942.604867"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
             landmarkName = "-pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:"
             landmarkType = "5">
          </BreakpointContent>
@@ -804,11 +804,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/HCOnboardingPageViewController.m"
-            timestampString = "470164761.905975"
+            timestampString = "471218942.604867"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "83"
+            endingLineNumber = "83"
             landmarkName = "-pageViewController:didFinishAnimating:previousViewControllers:transitionCompleted:"
             landmarkType = "5">
          </BreakpointContent>
@@ -1428,11 +1428,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMainViewController.m"
-            timestampString = "467998699.065143"
+            timestampString = "471217798.55261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "-segmentControlAction:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2193,11 +2193,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMainViewController.m"
-            timestampString = "468031112.872296"
+            timestampString = "471217798.55261"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
+            startingLineNumber = "180"
+            endingLineNumber = "180"
             landmarkName = "-loadViewController:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2289,11 +2289,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "470350349.115247"
+            timestampString = "471221016.041773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "568"
-            endingLineNumber = "568"
+            startingLineNumber = "586"
+            endingLineNumber = "586"
             landmarkName = "@implementation SHMessagesViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -2305,11 +2305,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "470350349.115247"
+            timestampString = "471221016.041773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "581"
-            endingLineNumber = "581"
+            startingLineNumber = "599"
+            endingLineNumber = "599"
             landmarkName = "-showKeyboard:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2321,11 +2321,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "470338114.313558"
+            timestampString = "471221016.041773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "248"
+            endingLineNumber = "248"
             landmarkName = "-scrollToTop:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2337,11 +2337,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "470338114.313558"
+            timestampString = "471221016.041773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "239"
-            endingLineNumber = "239"
+            startingLineNumber = "257"
+            endingLineNumber = "257"
             landmarkName = "-scrollViewShouldScrollToTop:"
             landmarkType = "5">
          </BreakpointContent>
@@ -2609,11 +2609,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hippocampus/SHMessagesViewController.m"
-            timestampString = "470350349.115247"
+            timestampString = "471221016.041773"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "436"
-            endingLineNumber = "436"
+            startingLineNumber = "454"
+            endingLineNumber = "454"
             landmarkName = "-didPressRightButton:"
             landmarkType = "5">
          </BreakpointContent>

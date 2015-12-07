@@ -63,7 +63,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         [self.searchBar performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.01];
     }
     
-    [self prePermissionsDelegate:@"contacts" message:@"Assigning thoughts is simple when choosing a contact from your address book."];
+    [self prePermissionsDelegate:@"contacts" message:@"Assigning a note is simple when choosing a contact from your address book."];
 }
 
 - (BOOL) shouldOpenOnSearchKeyboard

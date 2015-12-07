@@ -440,7 +440,7 @@ static NSString *linkMetadataCellIdentifier = @"SHLinkMetadataTableViewCell";
         [[LXObjectManager objectWithLocalKey:self.localKey] destroyItem];
         [self.navigationController popViewControllerAnimated:YES];
     } else {
-        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Not yours!" message:@"Since you didn't create this thought, you can't delete it." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
+        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Not yours!" message:@"Since you didn't create this note, you can't delete it." delegate:self cancelButtonTitle:@"Okay" otherButtonTitles:nil];
         [av show];
     }
 }
@@ -546,7 +546,7 @@ static NSString *linkMetadataCellIdentifier = @"SHLinkMetadataTableViewCell";
             });
         });
     } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"delete"]) {
-        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Are you sure you want to delete this thought?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
+        UIAlertView* av = [[UIAlertView alloc] initWithTitle:@"Delete" message:@"Are you sure you want to delete this note?" delegate:self cancelButtonTitle:@"No" otherButtonTitles:@"Yes", nil];
         [av setTag:(sender.tag+100)];
         [av show];
     } else if ([[self optionAtIndex:sender.tag] isEqualToString:@"share"]) {

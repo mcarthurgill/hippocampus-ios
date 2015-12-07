@@ -158,7 +158,7 @@
     [self.centerLabel setClipsToBounds:YES];
     
     [self.rightLabel setHidden:NO];
-    [self.rightLabel setText:[NSString stringWithFormat:@"%@ Thoughts", [bucket itemsCount]]];
+    [self.rightLabel setText:[NSString stringWithFormat:@"%@ Notes", [bucket itemsCount]]];
     
     self.centerLabelHeight.constant = 22.0f;
     self.leftAlignmentForBottomLabel.constant = 6;

@@ -154,7 +154,7 @@ static NSInteger maxRecentCount = 6;
     if ([self objectForKey:@"cached_item_message"] && NULL_TO_NIL([self objectForKey:@"cached_item_message"])){
         return [[[self objectForKey:@"cached_item_message"] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\uFFFC"]] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     } else {
-        return [NSString stringWithFormat:@"[Add thoughts to %@]", self.firstName];
+        return [NSString stringWithFormat:@"[Add notes to %@]", self.firstName];
     }
     
     return nil;

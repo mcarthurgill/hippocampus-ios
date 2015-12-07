@@ -23,16 +23,21 @@
 @property (strong, nonatomic) IBOutlet UIView *inputToolbar;
 @property (strong, nonatomic) IBOutlet UITextView *textView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomConstraint;
-@property (strong, nonatomic) IBOutlet UILabel *placeholderLabel;
+@property (strong, nonatomic) IBOutlet UIView *placeholderLabel;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *textViewHeightConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *inputControlToolbarHeightConstraint;
 @property (strong, nonatomic) IBOutlet UIView *inputControlToolbar;
 @property (strong, nonatomic) IBOutlet UIButton *rightButton;
 @property (strong, nonatomic) IBOutlet UIButton *leftButton;
+@property (strong, nonatomic) IBOutlet UIButton *leftPlaceholderButton;
+@property (strong, nonatomic) IBOutlet UIButton *rightPlaceholderButton;
 
 - (void) tryToReload;
 
 - (IBAction)rightButtonAction:(id)sender;
 - (IBAction)leftButtonAction:(id)sender;
+
+- (IBAction)leftPlaceholderAction:(id)sender;
+- (IBAction)rightPlaceholderAction:(id)sender;
 
 @end

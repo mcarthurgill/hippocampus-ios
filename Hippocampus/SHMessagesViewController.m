@@ -42,6 +42,8 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 @synthesize textViewHeightConstraint;
 @synthesize inputControlToolbarHeightConstraint;
 @synthesize inputControlToolbar;
+@synthesize leftPlaceholderButton;
+@synthesize rightPlaceholderButton;
 @synthesize rightButton;
 @synthesize leftButton;
 
@@ -102,8 +104,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.textView setFont:[UIFont inputFont]];
     [self.textView setTextColor:[UIColor SHFontDarkGray]];
     
-    [self.placeholderLabel setFont:self.textView.font];
-    [self.placeholderLabel setTextColor:[UIColor SHFontLightGray]];
     [self textViewResignedFirstResponder];
     
     CALayer *TopBorder = [CALayer layer];
@@ -139,6 +139,24 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.leftButton setContentMode:UIViewContentModeScaleAspectFit];
     [self.leftButton setTintColor:[UIColor SHGreen]];
     [self.leftButton setTitle:nil forState:UIControlStateNormal];
+    
+    [self.leftPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Note "] forState:UIControlStateNormal];
+    [self.leftPlaceholderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.leftPlaceholderButton setBackgroundColor:[UIColor SHBlue]];
+    [[self.leftPlaceholderButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
+    //[self.leftPlaceholderButton.layer setBorderWidth:1.0f];
+    //[self.leftPlaceholderButton.layer setBorderColor:[UIColor SHGreen].CGColor];
+    [self.leftPlaceholderButton.layer setCornerRadius:4.0f];
+    [self.leftPlaceholderButton setClipsToBounds:YES];
+    
+    [self.rightPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Nudge "] forState:UIControlStateNormal];
+    [self.rightPlaceholderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [[self.rightPlaceholderButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
+    [self.rightPlaceholderButton setBackgroundColor:[UIColor SHGreen]];
+    //[self.rightPlaceholderButton.layer setBorderWidth:1.0f];
+    //[self.rightPlaceholderButton.layer setBorderColor:[UIColor SHGreen].CGColor];
+    [self.rightPlaceholderButton.layer setCornerRadius:4.0f];
+    [self.rightPlaceholderButton setClipsToBounds:YES];
     
     [self.tableView setScrollsToTop:YES];
     [self.textView setScrollsToTop:NO];
@@ -179,7 +197,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     if ([LXObjectManager objectWithLocalKey:self.localKey]) {
         return [LXObjectManager objectWithLocalKey:self.localKey];
     } else if ([localKey isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
-        return [@{@"id":@0, @"first_name":@"All Thoughts", @"object_type":@"all-thoughts"} mutableCopy];
+        return [@{@"id":@0, @"first_name":@"All Notes", @"object_type":@"all-thoughts"} mutableCopy];
     } else {
         return [@{} mutableCopy];
     }
@@ -602,6 +620,16 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self textViewResignedFirstResponder];
 }
 
+- (IBAction)leftPlaceholderAction:(id)sender
+{
+    [self.textView becomeFirstResponder];
+}
+
+- (IBAction)rightPlaceholderAction:(id)sender
+{
+    [self.textView becomeFirstResponder];
+}
+
 - (void) textViewResignedFirstResponder
 {
     if (!self.textView.text || self.textView.text.length == 0) {
@@ -721,7 +749,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 {
     NSLog(@"TAP!!");
 }
-
 
 
 
