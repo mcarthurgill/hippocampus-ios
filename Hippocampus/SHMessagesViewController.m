@@ -13,6 +13,8 @@
 #import "SHEditBucketViewController.h"
 #import "UIImage+Helpers.h"
 
+#import "SHNudgeSetView.h"
+
 #define PAGE_COUNT 64
 #define MAX_TEXTVIEW_HEIGHT 140
 
@@ -46,6 +48,8 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 @synthesize rightPlaceholderButton;
 @synthesize rightButton;
 @synthesize leftButton;
+@synthesize nudgeSetView;
+@synthesize nudgeSetViewHeight;
 
 - (void)viewDidLoad
 {
@@ -140,21 +144,17 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.leftButton setTintColor:[UIColor SHGreen]];
     [self.leftButton setTitle:nil forState:UIControlStateNormal];
     
-    [self.leftPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Note "] forState:UIControlStateNormal];
+    [self.leftPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Nudge "] forState:UIControlStateNormal];
     [self.leftPlaceholderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.leftPlaceholderButton setBackgroundColor:[UIColor SHBlue]];
+    [self.leftPlaceholderButton setBackgroundColor:[UIColor SHGreen]];
     [[self.leftPlaceholderButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
-    //[self.leftPlaceholderButton.layer setBorderWidth:1.0f];
-    //[self.leftPlaceholderButton.layer setBorderColor:[UIColor SHGreen].CGColor];
     [self.leftPlaceholderButton.layer setCornerRadius:4.0f];
     [self.leftPlaceholderButton setClipsToBounds:YES];
     
-    [self.rightPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Nudge "] forState:UIControlStateNormal];
+    [self.rightPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Noe "] forState:UIControlStateNormal];
     [self.rightPlaceholderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [[self.rightPlaceholderButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
-    [self.rightPlaceholderButton setBackgroundColor:[UIColor SHGreen]];
-    //[self.rightPlaceholderButton.layer setBorderWidth:1.0f];
-    //[self.rightPlaceholderButton.layer setBorderColor:[UIColor SHGreen].CGColor];
+    [self.rightPlaceholderButton setBackgroundColor:[UIColor SHBlue]];
     [self.rightPlaceholderButton.layer setCornerRadius:4.0f];
     [self.rightPlaceholderButton setClipsToBounds:YES];
     
@@ -620,16 +620,6 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self textViewResignedFirstResponder];
 }
 
-- (IBAction)leftPlaceholderAction:(id)sender
-{
-    [self.textView becomeFirstResponder];
-}
-
-- (IBAction)rightPlaceholderAction:(id)sender
-{
-    [self.textView becomeFirstResponder];
-}
-
 - (void) textViewResignedFirstResponder
 {
     if (!self.textView.text || self.textView.text.length == 0) {
@@ -657,9 +647,23 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     }
 }
 
+- (IBAction)leftPlaceholderAction:(id)sender
+{
+    [self.textView becomeFirstResponder];
+    
+    [self showNudgeSetView];
+    
+}
 
+- (IBAction)rightPlaceholderAction:(id)sender
+{
+    [self.textView becomeFirstResponder];
+}
 
-
+- (void) showNudgeSetView
+{
+    self.nudgeSetViewHeight.constant = 256;
+}
 
 
 
@@ -733,6 +737,8 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 
 
 
+
+
 # pragma mark security check
 
 - (void) checkSecurity
@@ -741,6 +747,8 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
+
+
 
 
 # pragma mark navigation bar actions

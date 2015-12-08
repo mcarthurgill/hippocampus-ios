@@ -10,9 +10,11 @@
 #import "SHAssignTagTableViewCell.h"
 #import "SHLoadingTableViewCell.h"
 #import "SHSearch.h"
+#import "SHNewBucketTableViewCell.h"
 
 static NSString *assignCellIdentifier = @"SHAssignTagTableViewCell";
 static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
+static NSString *newBucketCellIdentifier = @"SHNewBucketTableViewCell";
 
 @interface SHTagsIndexViewController ()
 
@@ -31,10 +33,10 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatedTagLocalKeys:) name:@"updatedTagLocalKeys" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadScreen) name:@"refreshTagsViewController" object:nil];
-    
-    [self beginningActions];
+    [self.tableView registerNib:[UINib nibWithNibName:newBucketCellIdentifier bundle:nil] forCellReuseIdentifier:newBucketCellIdentifier];
     
     [self performSelectorOnMainThread:@selector(reloadAndScroll) withObject:nil waitUntilDone:NO];
+    [self reloadScreen];
 }
 
 - (void) reloadAndScroll
@@ -70,6 +72,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self beginningActions];
 }
 
 - (void) beginningActions
@@ -119,6 +122,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     self.sections = [[NSMutableArray alloc] init];
     
+    [self.sections addObject:@"new"];
     [self.sections addObject:@"tags"];
     
     return [self.sections count];
@@ -128,6 +132,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     if ([[self.sections objectAtIndex:section] isEqualToString:@"tags"]) {
         return [[self tagKeys] count];
+    } else if ([[self.sections objectAtIndex:section] isEqualToString:@"new"]) {
+        return 1;
     }
     return 0;
 }
@@ -145,6 +151,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
              ];
             return [self tableView:tV loadingCellForRowAtIndexPath:indexPath];
         }
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"new"]) {
+        return [self tableView:tV newCellForRowAtIndexPath:indexPath];
     }
     return nil;
 }
@@ -165,6 +173,13 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     return cell;
 }
 
+- (UITableViewCell*) tableView:(UITableView *)tV newCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SHNewBucketTableViewCell* cell = (SHNewBucketTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:newBucketCellIdentifier];
+    [[cell titleLabel] setText:@"Add Group"];
+    return cell;
+}
+
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if ([self.searchBar isFirstResponder]) {
@@ -174,10 +189,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     float scrollViewHeight = scrollView.frame.size.height;
     float scrollContentSizeHeight = scrollView.contentSize.height;
     float scrollOffset = scrollView.contentOffset.y;
-    //NSLog(@"scrollOffset = %f", scrollOffset);
+
     if ((NSInteger)scrollOffset == (NSInteger)-64 && [self tagKeys] && [[self tagKeys] count] > 0) {
-        // then we are at the top
-        //[self.searchBar becomeFirstResponder];
+        
     }
     else if (scrollOffset + scrollViewHeight == scrollContentSizeHeight) {
         // then we are at the end
@@ -186,7 +200,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%f", cell.frame.size.height);
 }
 
 
@@ -268,6 +281,44 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"tags"]) {
         NSMutableDictionary* tag = [LXObjectManager objectWithLocalKey:[[self tagKeys] objectAtIndex:indexPath.row]];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"pushTagViewController" object:nil userInfo:@{@"tag":tag}];
+    } else if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"new"]) {
+        [self showAlertWithTitle:@"Create New Group" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:2 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[self.searchBar text] andIndexPath:nil];
+        [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+    }
+}
+
+
+
+# pragma mark ui alert view delegate
+
+- (void) showAlertWithTitle:(NSString*)title andMessage:(NSString*)message andCancelButtonTitle:(NSString*)cancel andOtherTitle:(NSString*)successTitle andTag:(NSInteger)tag andAlertType:(UIAlertViewStyle)alertStyle andTextInput:(NSString*)textInput andIndexPath:(NSIndexPath*)indexPath
+{
+    UIAlertView* av = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:successTitle, nil];
+    av.alertViewStyle = alertStyle;
+    av.delegate = self;
+    av.indexPath = indexPath;
+    if (alertStyle == UIAlertViewStylePlainTextInput) {
+        UITextField* textField = [av textFieldAtIndex:0];
+        [textField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
+        [textField setText:textInput];
+        [textField setFont:[UIFont titleFontWithSize:16.0f]];
+    }
+    [av setTag:tag];
+    [av show];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 2) {
+        if ([alertView cancelButtonIndex] != buttonIndex && [alertView textFieldAtIndex:0].text && [[alertView textFieldAtIndex:0].text length] > 0) {
+            //CREATE TAG
+            NSMutableDictionary* newTag = [NSMutableDictionary create:@"tag"];
+            [newTag setObject:[alertView textFieldAtIndex:0].text forKey:@"tag_name"];
+            [newTag assignLocalVersionIfNeeded:YES];
+            [newTag saveRemote];
+            [NSMutableDictionary addTagWithKey:[newTag localKey]];
+            [self reloadScreen];
+        }
     }
 }
 

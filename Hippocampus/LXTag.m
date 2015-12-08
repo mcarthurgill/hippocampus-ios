@@ -44,4 +44,13 @@
      ];
 }
 
++ (void) addTagWithKey:(NSString*)key
+{
+    if ([self userHasTags]) {
+        NSMutableArray* tags = [LXObjectManager objectWithLocalKey:@"tagLocalKeys"];
+        [tags insertObject:key atIndex:0];
+        [LXObjectManager assignLocal:tags WithLocalKey:@"tagLocalKeys" alsoToDisk:YES];
+    }
+}
+
 @end

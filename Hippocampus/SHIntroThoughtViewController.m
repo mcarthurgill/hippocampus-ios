@@ -164,8 +164,9 @@
 
 - (void) next
 {
-    UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHAppPreviewViewController"];
-    [self.navigationController pushViewController:vc animated:YES];
+    //UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHAppPreviewViewController"];
+    //[self.navigationController pushViewController:vc animated:YES];
+    [self dismissViewControllerAnimated:YES completion:^(void){}];
 }
                                            
                                            

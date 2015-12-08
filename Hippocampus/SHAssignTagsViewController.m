@@ -30,13 +30,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 @synthesize tagResultKeys;
 @synthesize tagSelectedKeys;
 
-@synthesize topViewLabel;
-@synthesize topView;
-
-@synthesize topInputView;
-@synthesize bucketTextField;
-@synthesize inputActionButton;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -48,12 +41,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self determineSelectedKeys];
     
     [self reloadScreen];
-    
-    [self.topInputView setHidden:YES];
-    [self.bucketTextField setFont:[UIFont titleFontWithSize:15.0f]];
-    [self.bucketTextField setTextColor:[UIColor SHFontDarkGray]];
-    
-    [[self.inputActionButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatedTagLocalKeys:) name:@"updatedTagLocalKeys" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadScreen) name:@"refreshTagsViewController" object:nil];
@@ -89,12 +76,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self.tableView registerNib:[UINib nibWithNibName:loadingCellIdentifier bundle:nil] forCellReuseIdentifier:loadingCellIdentifier];
     
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
-    
-    [self.topViewLabel setFont:[UIFont titleFontWithSize:15.0f]];
-    [self.topViewLabel setTextColor:[UIColor SHFontDarkGray]];
-    [self.topViewLabel setText:@"New Group"];
-    
-    [self.topView setBackgroundColor:[UIColor slightBackgroundColor]];
     
     self.searchBar.layer.borderWidth = 1.0f;
     self.searchBar.layer.borderColor = [UIColor slightBackgroundColor].CGColor;
@@ -259,20 +240,21 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self endEditing];
     [self addKeyToSelected:([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"selected"] ? [self.tagSelectedKeys objectAtIndex:indexPath.row] : [[self tagKeys] objectAtIndex:indexPath.row])];
     if ([self.searchBar isFirstResponder]) {
         [self.searchBar resignFirstResponder];
     }
     [self reloadScreen];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self saveAndDismiss];
 }
 
 - (void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self removeKeyFromSelected:([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"selected"] ? [self.tagSelectedKeys objectAtIndex:indexPath.row] : [[self tagKeys] objectAtIndex:indexPath.row])];
     [self reloadScreen];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self saveAndDismiss];
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
@@ -280,7 +262,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if ([self.searchBar isFirstResponder]) {
         [self.searchBar resignFirstResponder];
     }
-    [self endEditing];
 }
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -341,14 +322,14 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (IBAction)rightButtonAction:(id)sender
 {
+    [self showAlertWithTitle:@"Create New Group" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:2 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[self.searchBar text] andIndexPath:nil];
+}
+
+- (void) saveAndDismiss
+{
     [[self bucket] updateTagsWithLocalKeys:self.tagSelectedKeys success:^(id responseObject){} failure:^(NSError* error){}];
     //dismiss
     [self dismissViewControllerAnimated:NO completion:^(void){}];
-}
-
-- (IBAction)topViewButtonAction:(id)sender
-{
-    [self beginEditing];
 }
 
 
@@ -377,7 +358,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    [self endEditing];
 }
 
 - (BOOL) searchActivated
@@ -390,61 +370,16 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 # pragma mark new bucket
 
-- (void) beginEditing
-{
-    [self.topView setHidden:YES];
-    if ([self.searchBar isFirstResponder]) {
-        [self.searchBar resignFirstResponder];
-        if (self.searchBar.text && self.searchBar.text.length > 0){
-            [self.bucketTextField setText:self.searchBar.text];
-        }
-    }
-    [self.topInputView setHidden:NO];
-    [self.bucketTextField becomeFirstResponder];
-    [self.tableView setAlpha:0.3f];
-    [self.searchBar setAlpha:0.3f];
-    [self.navigationItem.rightBarButtonItem setEnabled:NO];
-}
 
-- (void) endEditing
+- (void) addTagWithText:(NSString*)text
 {
-    [self.topView setHidden:NO];
-    if ([self.bucketTextField isFirstResponder]) {
-        [self.bucketTextField resignFirstResponder];
-    }
-    [self.topInputView setHidden:YES];
-    [self.tableView setAlpha:1.0f];
-    [self.searchBar setAlpha:1.0f];
-    [self.navigationItem.rightBarButtonItem setEnabled:YES];
-}
-
-- (BOOL) textFieldShouldReturn:(UITextField *)textField
-{
-    [self captureBucketAndEnd];
-    return YES;
-}
-
-- (IBAction)inputAction:(id)sender
-{
-    [self captureBucketAndEnd];
-}
-
-- (void) captureBucketAndEnd
-{
-    if ([self.bucketTextField text] && [[self.bucketTextField text] length] > 0) {
-        [self addBucketWithText:[self.bucketTextField text]];
-    }
-    [self.bucketTextField setText:@""];
-    [self endEditing];
-}
-
-- (void) addBucketWithText:(NSString*)text
-{
-    //CREATE BUCKET
+    //CREATE TAG
     NSMutableDictionary* newTag = [NSMutableDictionary create:@"tag"];
     [newTag setObject:text forKey:@"tag_name"];
     [newTag assignLocalVersionIfNeeded:YES];
+    [newTag saveRemote];
     [self addKeyToSelected:[newTag localKey]];
+    [NSMutableDictionary addTagWithKey:[newTag localKey]];
     [self reloadScreen];
 }
 
@@ -457,5 +392,38 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     [self reloadScreen];
 }
+
+
+
+
+# pragma mark ui alert view delegate
+
+- (void) showAlertWithTitle:(NSString*)title andMessage:(NSString*)message andCancelButtonTitle:(NSString*)cancel andOtherTitle:(NSString*)successTitle andTag:(NSInteger)tag andAlertType:(UIAlertViewStyle)alertStyle andTextInput:(NSString*)textInput andIndexPath:(NSIndexPath*)indexPath
+{
+    UIAlertView* av = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:successTitle, nil];
+    av.alertViewStyle = alertStyle;
+    av.delegate = self;
+    av.indexPath = indexPath;
+    if (alertStyle == UIAlertViewStylePlainTextInput) {
+        UITextField* textField = [av textFieldAtIndex:0];
+        [textField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
+        [textField setText:textInput];
+        [textField setFont:[UIFont titleFontWithSize:16.0f]];
+    }
+    [av setTag:tag];
+    [av show];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 2) {
+        if ([alertView cancelButtonIndex] != buttonIndex && [alertView textFieldAtIndex:0].text && [[alertView textFieldAtIndex:0].text length] > 0) {
+            [self addTagWithText:[alertView textFieldAtIndex:0].text];
+            [self saveAndDismiss];
+        }
+    }
+}
+
+
 
 @end

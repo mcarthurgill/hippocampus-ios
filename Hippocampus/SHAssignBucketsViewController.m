@@ -31,13 +31,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 @synthesize bucketSelectedKeys;
 @synthesize contactsSelected;
 
-@synthesize topViewLabel;
-@synthesize topView;
-
-@synthesize topInputView;
-@synthesize bucketTextField;
-@synthesize inputActionButton;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -50,12 +43,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     [self determineSelectedKeys];
     
     [self reloadScreen];
-    
-    [self.topInputView setHidden:YES];
-    [self.bucketTextField setFont:[UIFont titleFontWithSize:15.0f]];
-    [self.bucketTextField setTextColor:[UIColor SHFontDarkGray]];
-    
-    [[self.inputActionButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatedBucketLocalKeys:) name:@"updatedBucketLocalKeys" object:nil];
     
@@ -71,6 +58,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     return NO;
 }
 
+- (BOOL) isCreateMode
+{
+    return [self.localKey isEqualToString:@"CREATE-MODE"];
+}
+
 - (void) viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -78,7 +70,11 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) setTitle
 {
-    [self setTitle:[NSString stringWithFormat:@"Assign to %@", ([[self bucketSelectedKeys] count] == 0 ? @"Person" : @"People")]];
+    if ([self isCreateMode]) {
+        [self setTitle:@"Add Person"];
+    } else {
+        [self setTitle:[NSString stringWithFormat:@"Assign to %@", ([[self bucketSelectedKeys] count] == 0 ? @"Person" : @"People")]];
+    }
 }
 
 - (void) setupSettings
@@ -91,19 +87,13 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     
-    [self.topViewLabel setFont:[UIFont titleFontWithSize:15.0f]];
-    [self.topViewLabel setTextColor:[UIColor SHFontDarkGray]];
-    [self.topViewLabel setText:@"Create New Person"];
-    
-    [self.topView setBackgroundColor:[UIColor slightBackgroundColor]];
-    
     self.searchBar.layer.borderWidth = 1.0f;
     self.searchBar.layer.borderColor = [UIColor slightBackgroundColor].CGColor;
     
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectZero]];
 }
 
-- (void)didReceiveMemoryWarning
+- (void) didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
@@ -188,15 +178,19 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) reloadScreen
 {
-    //deselect all rows
-    for (NSIndexPath* selectedPath in [self.tableView indexPathsForSelectedRows]) {
-        [self.tableView deselectRowAtIndexPath:selectedPath animated:NO];
-    }
     [self.tableView reloadData];
-    for (NSIndexPath* indexPath in [self indexPathsForKeys]) {
-        [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
-    }
     [self setTitle];
+    
+    if (![self isCreateMode]) {
+        //deselect all rows
+        for (NSIndexPath* selectedPath in [self.tableView indexPathsForSelectedRows]) {
+            [self.tableView deselectRowAtIndexPath:selectedPath animated:NO];
+        }
+        
+        for (NSIndexPath* indexPath in [self indexPathsForKeys]) {
+            [self.tableView selectRowAtIndexPath:indexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+        }
+    }
 }
 
 - (NSMutableArray*) indexPathsForKeys
@@ -222,14 +216,16 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 {
     self.sections = [[NSMutableArray alloc] init];
     
-    if ([self.bucketSelectedKeys count] > 0) {
-        [self.sections addObject:@"selected"];
-    }
-    if ([self recent] && [[self recent] count] > 0 && ![self searchActivated]) {
-        [self.sections addObject:@"recent"];
-    }
-    if ([self bucketKeys] && [[self bucketKeys] count] > 0) {
-        [self.sections addObject:@"other"];
+    if (![self isCreateMode]) {
+        if ([self.bucketSelectedKeys count] > 0) {
+            [self.sections addObject:@"selected"];
+        }
+        if ([self recent] && [[self recent] count] > 0 && ![self searchActivated]) {
+            [self.sections addObject:@"recent"];
+        }
+        if ([self bucketKeys] && [[self bucketKeys] count] > 0) {
+            [self.sections addObject:@"other"];
+        }
     }
     if ([self contacts] && [[self contacts] count] > 0) {
         [self.sections addObject:@"contacts"];
@@ -325,7 +321,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self endEditing];
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"contacts"]) {
         NSMutableDictionary* newBucket = [NSMutableDictionary create:@"bucket"];
         [newBucket setObject:[[[self contacts] objectAtIndex:indexPath.row] objectForKey:@"name"] forKey:@"first_name"];
@@ -343,7 +338,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         [self.searchBar resignFirstResponder];
     }
     [self reloadScreen];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self saveAndDismiss];
 }
 
 - (void) tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -354,7 +350,8 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         [self removeKeyFromSelected:([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"selected"] ? [self.bucketSelectedKeys objectAtIndex:indexPath.row] : [[self bucketKeys] objectAtIndex:indexPath.row])];
     }
     [self reloadScreen];
-    [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    //[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+    [self saveAndDismiss];
 }
 
 - (void) scrollViewDidScroll:(UIScrollView *)scrollView
@@ -362,7 +359,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     if ([self.searchBar isFirstResponder]) {
         [self.searchBar resignFirstResponder];
     }
-    [self endEditing];
 }
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -383,7 +379,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"other"]) {
         return @"People";
     } else if ([[self.sections objectAtIndex:section] isEqualToString:@"contacts"]) {
-        return @"Create From Contacts";
+        return @"Add From Contacts";
     }
     return nil;
 }
@@ -427,17 +423,26 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (IBAction)rightButtonAction:(id)sender
 {
-    [[self item] updateBucketsWithLocalKeys:self.bucketSelectedKeys success:^(id responseObject){} failure:^(NSError* error){}];
-    //dismiss
+    [self showAlertWithTitle:@"Create New Person" andMessage:nil andCancelButtonTitle:@"Cancel" andOtherTitle:@"Save" andTag:2 andAlertType:UIAlertViewStylePlainTextInput andTextInput:[self.searchBar text] andIndexPath:nil];
+}
+
+- (void) saveAndDismiss
+{
+    if ([self isCreateMode] && [self.bucketSelectedKeys firstObject]) {
+        //add to all buckets, recent buckets, and save bucket
+        NSLog(@"key: %@", [self.bucketSelectedKeys firstObject]);
+        NSMutableDictionary* newBucket = [LXObjectManager objectWithLocalKey:[self.bucketSelectedKeys firstObject]];
+        NSLog(@"newBucket: %@", newBucket);
+        if (newBucket) {
+            [newBucket saveRemote];
+            [NSMutableDictionary addRecentBucketLocalKey:[self.bucketSelectedKeys firstObject]];
+            NSLog(@"added recent local key");
+        }
+    } else {
+        [[self item] updateBucketsWithLocalKeys:self.bucketSelectedKeys success:^(id responseObject){} failure:^(NSError* error){}];
+    }
     [self dismissViewControllerAnimated:NO completion:^(void){}];
 }
-
-- (IBAction)topViewButtonAction:(id)sender
-{
-    [self beginEditing];
-}
-
-
 
 
 
@@ -480,7 +485,6 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 - (void) searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    [self endEditing];
 }
 
 - (BOOL) searchActivated
@@ -491,66 +495,36 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
 
 
 
-# pragma mark new bucket
+# pragma mark ui alert view delegate
 
-- (void) beginEditing
+- (void) showAlertWithTitle:(NSString*)title andMessage:(NSString*)message andCancelButtonTitle:(NSString*)cancel andOtherTitle:(NSString*)successTitle andTag:(NSInteger)tag andAlertType:(UIAlertViewStyle)alertStyle andTextInput:(NSString*)textInput andIndexPath:(NSIndexPath*)indexPath
 {
-    [self.topView setHidden:YES];
-    if ([self.searchBar isFirstResponder]) {
-        [self.searchBar resignFirstResponder];
-        if (self.searchBar.text && self.searchBar.text.length > 0){
-            [self.bucketTextField setText:self.searchBar.text];
+    UIAlertView* av = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:cancel otherButtonTitles:successTitle, nil];
+    av.alertViewStyle = alertStyle;
+    av.delegate = self;
+    av.indexPath = indexPath;
+    if (alertStyle == UIAlertViewStylePlainTextInput) {
+        UITextField* textField = [av textFieldAtIndex:0];
+        [textField setAutocapitalizationType:UITextAutocapitalizationTypeWords];
+        [textField setText:textInput];
+        [textField setFont:[UIFont titleFontWithSize:16.0f]];
+    }
+    [av setTag:tag];
+    [av show];
+}
+
+- (void) alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 2) {
+        if ([alertView cancelButtonIndex] != buttonIndex && [alertView textFieldAtIndex:0].text && [[alertView textFieldAtIndex:0].text length] > 0) {
+            NSMutableDictionary* newBucket = [NSMutableDictionary create:@"bucket"];
+            [newBucket setObject:[alertView textFieldAtIndex:0].text forKey:@"first_name"];
+            [newBucket assignLocalVersionIfNeeded:YES];
+            [self addKeyToSelected:[newBucket localKey]];
+            [self saveAndDismiss];
         }
     }
-    [self.topInputView setHidden:NO];
-    [self.bucketTextField becomeFirstResponder];
-    [self.tableView setAlpha:0.3f];
-    [self.searchBar setAlpha:0.3f];
-    [self.navigationItem.rightBarButtonItem setEnabled:NO];
 }
-
-- (void) endEditing
-{
-    [self.topView setHidden:NO];
-    if ([self.bucketTextField isFirstResponder]) {
-        [self.bucketTextField resignFirstResponder];
-    }
-    [self.topInputView setHidden:YES];
-    [self.tableView setAlpha:1.0f];
-    [self.searchBar setAlpha:1.0f];
-    [self.navigationItem.rightBarButtonItem setEnabled:YES];
-}
-
-- (BOOL) textFieldShouldReturn:(UITextField *)textField
-{
-    [self captureBucketAndEnd];
-    return YES;
-}
-
-- (IBAction)inputAction:(id)sender
-{
-    [self captureBucketAndEnd];
-}
-
-- (void) captureBucketAndEnd
-{
-    if ([self.bucketTextField text] && [[self.bucketTextField text] length] > 0) {
-        [self addBucketWithText:[self.bucketTextField text]];
-    }
-    [self.bucketTextField setText:@""];
-    [self endEditing];
-}
-
-- (void) addBucketWithText:(NSString*)text
-{
-    //CREATE BUCKET
-    NSMutableDictionary* newBucket = [NSMutableDictionary create:@"bucket"];
-    [newBucket setObject:text forKey:@"first_name"];
-    [newBucket assignLocalVersionIfNeeded:YES];
-    [self addKeyToSelected:[newBucket localKey]];
-    [self reloadScreen];
-}
-
 
 
 

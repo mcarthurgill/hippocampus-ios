@@ -80,6 +80,8 @@
 		2880B6141BFCC28200FC65CB /* SHIntroThoughtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880B60F1BFCC28200FC65CB /* SHIntroThoughtViewController.m */; };
 		2880B6151BFCC28200FC65CB /* SHNewBucketTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880B6111BFCC28200FC65CB /* SHNewBucketTableViewCell.m */; };
 		2880B6161BFCC28200FC65CB /* SHNewBucketTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2880B6121BFCC28200FC65CB /* SHNewBucketTableViewCell.xib */; };
+		2881AA831C17645C00E33517 /* SHNudgeSetView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2881AA821C17645C00E33517 /* SHNudgeSetView.xib */; };
+		2881AA861C17647E00E33517 /* SHNudgeSetView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2881AA851C17647E00E33517 /* SHNudgeSetView.m */; };
 		2882A80C1BCC36F50058D4C9 /* toolbar_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A80B1BCC36F50058D4C9 /* toolbar_share.png */; };
 		2882A8101BCC3BAD0058D4C9 /* toolbar_media.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A80E1BCC3BAD0058D4C9 /* toolbar_media.png */; };
 		2882A8121BCC3C190058D4C9 /* toolbar_bucket.png in Resources */ = {isa = PBXBuildFile; fileRef = 2882A8111BCC3C190058D4C9 /* toolbar_bucket.png */; };
@@ -188,8 +190,6 @@
 		28F859A51BBA072600F7738C /* action_icon_flag.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859A41BBA072600F7738C /* action_icon_flag.png */; };
 		28F859A91BBA075000F7738C /* bucket_detail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859A81BBA075000F7738C /* bucket_detail_icon.png */; };
 		28F859AD1BBB53DA00F7738C /* backsplash.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AB1BBB53DA00F7738C /* backsplash.png */; };
-		28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */; };
-		28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */; };
 		586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
@@ -337,6 +337,9 @@
 		2880B6101BFCC28200FC65CB /* SHNewBucketTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHNewBucketTableViewCell.h; sourceTree = "<group>"; };
 		2880B6111BFCC28200FC65CB /* SHNewBucketTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHNewBucketTableViewCell.m; sourceTree = "<group>"; };
 		2880B6121BFCC28200FC65CB /* SHNewBucketTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHNewBucketTableViewCell.xib; sourceTree = "<group>"; };
+		2881AA821C17645C00E33517 /* SHNudgeSetView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHNudgeSetView.xib; sourceTree = "<group>"; };
+		2881AA841C17647E00E33517 /* SHNudgeSetView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHNudgeSetView.h; sourceTree = "<group>"; };
+		2881AA851C17647E00E33517 /* SHNudgeSetView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHNudgeSetView.m; sourceTree = "<group>"; };
 		2882A80B1BCC36F50058D4C9 /* toolbar_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_share.png; sourceTree = "<group>"; };
 		2882A80E1BCC3BAD0058D4C9 /* toolbar_media.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_media.png; sourceTree = "<group>"; };
 		2882A8111BCC3C190058D4C9 /* toolbar_bucket.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = toolbar_bucket.png; sourceTree = "<group>"; };
@@ -480,9 +483,6 @@
 		28F859A41BBA072600F7738C /* action_icon_flag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = action_icon_flag.png; sourceTree = "<group>"; };
 		28F859A81BBA075000F7738C /* bucket_detail_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bucket_detail_icon.png; sourceTree = "<group>"; };
 		28F859AB1BBB53DA00F7738C /* backsplash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backsplash.png; sourceTree = "<group>"; };
-		28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = HippoPreview.mp4; sourceTree = "<group>"; };
-		28F859B01BBB564F00F7738C /* SHAppPreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAppPreviewViewController.h; sourceTree = "<group>"; };
-		28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAppPreviewViewController.m; sourceTree = "<group>"; };
 		3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hippocampus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		761CACDA1BAC88CC00B5C682 /* SHCollaboratorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollaboratorsViewController.h; sourceTree = "<group>"; };
 		761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCollaboratorsViewController.m; sourceTree = "<group>"; };
@@ -649,7 +649,6 @@
 				2810B9B31BE3CB67003D20F8 /* Tags */,
 				2882A81C1BCD98990058D4C9 /* Email View */,
 				28491BAA1BBCAFD90014E4B2 /* Paywall */,
-				28F859AF1BBB564100F7738C /* Preview */,
 				28B8BB681BB244C5005131EB /* Profile */,
 				28419A261BB08D9C00CF21A6 /* Media Player */,
 				289D2F801BAA4854007F719B /* Bucket */,
@@ -860,6 +859,9 @@
 				2880B6101BFCC28200FC65CB /* SHNewBucketTableViewCell.h */,
 				2880B6111BFCC28200FC65CB /* SHNewBucketTableViewCell.m */,
 				2880B6121BFCC28200FC65CB /* SHNewBucketTableViewCell.xib */,
+				2881AA841C17647E00E33517 /* SHNudgeSetView.h */,
+				2881AA851C17647E00E33517 /* SHNudgeSetView.m */,
+				2881AA821C17645C00E33517 /* SHNudgeSetView.xib */,
 			);
 			name = New;
 			sourceTree = "<group>";
@@ -1199,18 +1201,8 @@
 			isa = PBXGroup;
 			children = (
 				28F859AB1BBB53DA00F7738C /* backsplash.png */,
-				28F859AC1BBB53DA00F7738C /* HippoPreview.mp4 */,
 			);
 			name = Tutorial;
-			sourceTree = "<group>";
-		};
-		28F859AF1BBB564100F7738C /* Preview */ = {
-			isa = PBXGroup;
-			children = (
-				28F859B01BBB564F00F7738C /* SHAppPreviewViewController.h */,
-				28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */,
-			);
-			name = Preview;
 			sourceTree = "<group>";
 		};
 		761CACDF1BAC8E5400B5C682 /* Add Collaborators */ = {
@@ -1439,12 +1431,12 @@
 				28ED42501BA357F0000292AE /* compose_media.png in Resources */,
 				28ED42101BA210AE000292AE /* toolbar_duplicate.png in Resources */,
 				28419A251BAC9A9700CF21A6 /* compose-media.png in Resources */,
-				28F859B31BBB591A00F7738C /* HippoPreview.mp4 in Resources */,
 				28CD3FC01AEA887200B3ABB6 /* new-collection-screen.jpg in Resources */,
 				281CA91F196C29E500E6BE96 /* 256-box2@2x.png in Resources */,
 				28ACA3A21B8B7CF900D7B215 /* SHBucketTableViewCell.xib in Resources */,
 				28419A2C1BB20AC900CF21A6 /* nudge_swipe@2x.png in Resources */,
 				28ED41FF1BA0F637000292AE /* Roboto-Medium.ttf in Resources */,
+				2881AA831C17645C00E33517 /* SHNudgeSetView.xib in Resources */,
 				289FFF211BE46B0600CFD5C5 /* navFlag@2x.png in Resources */,
 				28ED42521BA357F0000292AE /* compose_media@3x.png in Resources */,
 				28ED42211BA25245000292AE /* nudge_detail_icon.png in Resources */,
@@ -1596,6 +1588,7 @@
 				28ACA39C1B8B73E800D7B215 /* SHLoadingTableViewCell.m in Sources */,
 				289D2F831BAA4867007F719B /* SHEditBucketViewController.m in Sources */,
 				289CFCCE1BEA670800651B53 /* SHLinkMetadataTableViewCell.m in Sources */,
+				2881AA861C17647E00E33517 /* SHNudgeSetView.m in Sources */,
 				2880B6141BFCC28200FC65CB /* SHIntroThoughtViewController.m in Sources */,
 				2863C2341C063119000B99DE /* LXMediumObject.m in Sources */,
 				761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */,
@@ -1614,7 +1607,6 @@
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */,
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
-				28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */,
 				289D2F881BAA51BF007F719B /* SHCollaboratorTableViewCell.m in Sources */,
 				28ED41E31BA089AC000292AE /* SHItemViewController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,

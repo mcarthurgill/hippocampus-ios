@@ -31,6 +31,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *leftButton;
 @property (strong, nonatomic) IBOutlet UIButton *leftPlaceholderButton;
 @property (strong, nonatomic) IBOutlet UIButton *rightPlaceholderButton;
+@property (strong, nonatomic) IBOutlet UIView *nudgeSetView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *nudgeSetViewHeight;
 
 - (void) tryToReload;
 

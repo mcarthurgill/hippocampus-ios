@@ -17,4 +17,6 @@
 
 + (void) tagKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
++ (void) addTagWithKey:(NSString*)key;
+
 @end
