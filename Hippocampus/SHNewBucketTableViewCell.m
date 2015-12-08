@@ -31,7 +31,7 @@
 {
     [self.titleLabel setFont:[UIFont titleFontWithSize:15.0f]];
     [self.titleLabel setTextColor:[UIColor SHFontLightGray]];
-    [self.titleLabel setText:@"New Person"];
+    [self.titleLabel setText:@"Add Person"];
     
     [self.bucketNameTextField setText:@""];
     [self.bucketNameTextField setDelegate:self];
@@ -51,7 +51,8 @@
 
 # pragma mark Actions
 
-- (IBAction)saveBucketAction:(id)sender {
+- (IBAction)saveBucketAction:(id)sender
+{
     if ([self.bucketNameTextField text] && [[self.bucketNameTextField text] length] > 0) {
         [self addBucketWithText:[self.bucketNameTextField text]];
     }
@@ -76,7 +77,7 @@
 
 - (IBAction)tappedNewBucketAction:(id)sender
 {
-    [self toggleNewBucket];
+    //[self toggleNewBucket]; if you uncomment this, set cell selection style to 'none'
 }
 
 

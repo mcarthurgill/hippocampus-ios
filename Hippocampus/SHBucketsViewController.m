@@ -12,6 +12,7 @@
 #import "SHLoadingTableViewCell.h"
 #import "SHSearch.h"
 #import "SHNewBucketTableViewCell.h"
+#import "SHAssignBucketsViewController.h"
 
 static NSString *bucketCellIdentifier = @"SHBucketTableViewCell";
 static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
@@ -359,6 +360,11 @@ static NSString *newBucketCellIdentifier = @"SHNewBucketTableViewCell";
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if ([[self.sections objectAtIndex:indexPath.section] isEqualToString:@"newBucket"]) {
+        UINavigationController* nc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"navigationSHAssignBucketsViewController"];
+        SHAssignBucketsViewController* vc = [[nc viewControllers] firstObject];
+        [vc setLocalKey:@"CREATE-MODE"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"presentViewController" object:nil userInfo:@{@"viewController":nc,@"animated":@YES}];
+        
         [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
     } else {
         SHMessagesViewController* vc = (SHMessagesViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
