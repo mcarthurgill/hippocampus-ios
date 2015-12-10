@@ -195,6 +195,8 @@
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; };
 		76450E541AEA8509004D7FAD /* HCPermissionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76450E531AEA8509004D7FAD /* HCPermissionViewController.m */; };
+		7667F53A1C176FF7001E043F /* SHAllNudgesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7667F5391C176FF7001E043F /* SHAllNudgesViewController.m */; };
+		7667F53E1C1772CA001E043F /* SHNudgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7667F53D1C1772CA001E043F /* SHNudgeTableViewCell.m */; };
 		766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */; };
 		76906E6D1BADAEF9005BF124 /* UIAlertView+Addons.m in Sources */ = {isa = PBXBuildFile; fileRef = 76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */; };
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
@@ -491,6 +493,10 @@
 		761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHContactTableViewCell.m; sourceTree = "<group>"; };
 		76450E521AEA8509004D7FAD /* HCPermissionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCPermissionViewController.h; sourceTree = "<group>"; };
 		76450E531AEA8509004D7FAD /* HCPermissionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCPermissionViewController.m; sourceTree = "<group>"; };
+		7667F5381C176FF7001E043F /* SHAllNudgesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHAllNudgesViewController.h; sourceTree = "<group>"; };
+		7667F5391C176FF7001E043F /* SHAllNudgesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHAllNudgesViewController.m; sourceTree = "<group>"; };
+		7667F53C1C1772CA001E043F /* SHNudgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHNudgeTableViewCell.h; sourceTree = "<group>"; };
+		7667F53D1C1772CA001E043F /* SHNudgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHNudgeTableViewCell.m; sourceTree = "<group>"; };
 		766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		76906E6B1BADAEF9005BF124 /* UIAlertView+Addons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertView+Addons.h"; sourceTree = "<group>"; };
 		76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertView+Addons.m"; sourceTree = "<group>"; };
@@ -658,7 +664,7 @@
 				76CA904B1AE1572800C6E400 /* Permissions */,
 				288F122E1B75221D0001E0B0 /* Main */,
 				282FA83E1B8F9B6D004ADA00 /* Search */,
-				28ED41DD1BA0013E000292AE /* Nudge */,
+				28ED41DD1BA0013E000292AE /* Nudges */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -1102,13 +1108,16 @@
 			name = Check;
 			sourceTree = "<group>";
 		};
-		28ED41DD1BA0013E000292AE /* Nudge */ = {
+		28ED41DD1BA0013E000292AE /* Nudges */ = {
 			isa = PBXGroup;
 			children = (
+				7667F53B1C17721A001E043F /* Table View Cells */,
 				28ED41DE1BA00156000292AE /* HCReminderViewController.h */,
 				28ED41DF1BA00156000292AE /* HCReminderViewController.m */,
+				7667F5381C176FF7001E043F /* SHAllNudgesViewController.h */,
+				7667F5391C176FF7001E043F /* SHAllNudgesViewController.m */,
 			);
-			name = Nudge;
+			name = Nudges;
 			sourceTree = "<group>";
 		};
 		28ED41E81BA0985E000292AE /* Item */ = {
@@ -1223,6 +1232,15 @@
 				761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */,
 			);
 			name = "Add Collaborators";
+			sourceTree = "<group>";
+		};
+		7667F53B1C17721A001E043F /* Table View Cells */ = {
+			isa = PBXGroup;
+			children = (
+				7667F53C1C1772CA001E043F /* SHNudgeTableViewCell.h */,
+				7667F53D1C1772CA001E043F /* SHNudgeTableViewCell.m */,
+			);
+			name = "Table View Cells";
 			sourceTree = "<group>";
 		};
 		76CA904B1AE1572800C6E400 /* Permissions */ = {
@@ -1596,6 +1614,7 @@
 				28ACA39C1B8B73E800D7B215 /* SHLoadingTableViewCell.m in Sources */,
 				289D2F831BAA4867007F719B /* SHEditBucketViewController.m in Sources */,
 				289CFCCE1BEA670800651B53 /* SHLinkMetadataTableViewCell.m in Sources */,
+				7667F53E1C1772CA001E043F /* SHNudgeTableViewCell.m in Sources */,
 				2880B6141BFCC28200FC65CB /* SHIntroThoughtViewController.m in Sources */,
 				2863C2341C063119000B99DE /* LXMediumObject.m in Sources */,
 				761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */,
@@ -1613,6 +1632,7 @@
 				288A746C1B77E6F600F6A618 /* LXObjectManager.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
 				2826C6161ADDA6AF008DC533 /* NSString+SHAEncryption.m in Sources */,
+				7667F53A1C176FF7001E043F /* SHAllNudgesViewController.m in Sources */,
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
 				28F859B21BBB564F00F7738C /* SHAppPreviewViewController.m in Sources */,
 				289D2F881BAA51BF007F719B /* SHCollaboratorTableViewCell.m in Sources */,
