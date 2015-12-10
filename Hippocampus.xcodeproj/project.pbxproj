@@ -199,6 +199,8 @@
 		76906E6D1BADAEF9005BF124 /* UIAlertView+Addons.m in Sources */ = {isa = PBXBuildFile; fileRef = 76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */; };
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
 		76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029761AC20247003539B4 /* UILabel+Bold.m */; };
+		76CC22B11C19E36C004705E6 /* SHFeaturePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CC22B01C19E36C004705E6 /* SHFeaturePreviewViewController.m */; };
+		76CC22B41C19E594004705E6 /* SHFeatureOnboardingPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76CC22B31C19E594004705E6 /* SHFeatureOnboardingPageViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -498,6 +500,10 @@
 		76B029701AC1AF99003539B4 /* LXAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXAddressBook.m; sourceTree = "<group>"; };
 		76B029751AC20247003539B4 /* UILabel+Bold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Bold.h"; sourceTree = "<group>"; };
 		76B029761AC20247003539B4 /* UILabel+Bold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Bold.m"; sourceTree = "<group>"; };
+		76CC22AF1C19E36C004705E6 /* SHFeaturePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHFeaturePreviewViewController.h; sourceTree = "<group>"; };
+		76CC22B01C19E36C004705E6 /* SHFeaturePreviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHFeaturePreviewViewController.m; sourceTree = "<group>"; };
+		76CC22B21C19E594004705E6 /* SHFeatureOnboardingPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHFeatureOnboardingPageViewController.h; sourceTree = "<group>"; };
+		76CC22B31C19E594004705E6 /* SHFeatureOnboardingPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHFeatureOnboardingPageViewController.m; sourceTree = "<group>"; };
 		B9D9B6AA3020C8131DCFCCC7 /* Pods-Hippocampus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hippocampus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus.release.xcconfig"; sourceTree = "<group>"; };
 		EDFA522816ADD529C01E9E9C /* Pods-Hippocampus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hippocampus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus.debug.xcconfig"; sourceTree = "<group>"; };
 		F60CCE3AD6C425F912A2E5AA /* Pods-HippoShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1209,6 +1215,10 @@
 			children = (
 				28F859B01BBB564F00F7738C /* SHAppPreviewViewController.h */,
 				28F859B11BBB564F00F7738C /* SHAppPreviewViewController.m */,
+				76CC22AF1C19E36C004705E6 /* SHFeaturePreviewViewController.h */,
+				76CC22B01C19E36C004705E6 /* SHFeaturePreviewViewController.m */,
+				76CC22B21C19E594004705E6 /* SHFeatureOnboardingPageViewController.h */,
+				76CC22B31C19E594004705E6 /* SHFeatureOnboardingPageViewController.m */,
 			);
 			name = Preview;
 			sourceTree = "<group>";
@@ -1598,6 +1608,7 @@
 				289CFCCE1BEA670800651B53 /* SHLinkMetadataTableViewCell.m in Sources */,
 				2880B6141BFCC28200FC65CB /* SHIntroThoughtViewController.m in Sources */,
 				2863C2341C063119000B99DE /* LXMediumObject.m in Sources */,
+				76CC22B11C19E36C004705E6 /* SHFeaturePreviewViewController.m in Sources */,
 				761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */,
 				281CA8DC1951EC7E00E6BE96 /* LXAppDelegate.m in Sources */,
 				2880B6131BFCC28200FC65CB /* SHIntroBucketViewController.m in Sources */,
@@ -1609,6 +1620,7 @@
 				288F122A1B751B040001E0B0 /* LXItem.m in Sources */,
 				288F12241B73DFC90001E0B0 /* LXUser.m in Sources */,
 				2882A8161BCC79B90058D4C9 /* SHAudioAttachmentTableViewCell.m in Sources */,
+				76CC22B41C19E594004705E6 /* SHFeatureOnboardingPageViewController.m in Sources */,
 				28ED41D21B9CD641000292AE /* SHAssignBucketTableViewCell.m in Sources */,
 				288A746C1B77E6F600F6A618 /* LXObjectManager.m in Sources */,
 				281CA90C1951ECBA00E6BE96 /* LXSession.m in Sources */,
