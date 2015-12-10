@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="M5v-e7-wJ1">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9060" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="M5v-e7-wJ1">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -1094,7 +1094,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Rb-5E-7at">
-                                                <rect key="frame" x="8" y="15" width="280" height="30"/>
+                                                <rect key="frame" x="8" y="15" width="584" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="30" id="7GO-Y9-DcL"/>
                                                 </constraints>
@@ -1103,23 +1103,12 @@
                                                     <action selector="leftPlaceholderAction:" destination="ZHa-yY-JQr" eventType="touchUpInside" id="rUr-0P-BxF"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iN8-Ha-d7w">
-                                                <rect key="frame" x="312" y="15" width="280" height="30"/>
-                                                <state key="normal" title="Button"/>
-                                                <connections>
-                                                    <action selector="rightPlaceholderAction:" destination="ZHa-yY-JQr" eventType="touchUpInside" id="RXM-HR-eeU"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="4Rb-5E-7at" firstAttribute="centerY" secondItem="Cv2-wU-GPQ" secondAttribute="centerY" id="8aN-h4-PtT"/>
-                                            <constraint firstAttribute="trailing" secondItem="iN8-Ha-d7w" secondAttribute="trailing" constant="24" id="A2u-NS-tc8"/>
-                                            <constraint firstItem="4Rb-5E-7at" firstAttribute="height" secondItem="iN8-Ha-d7w" secondAttribute="height" id="KnN-8g-Kus"/>
-                                            <constraint firstItem="iN8-Ha-d7w" firstAttribute="leading" secondItem="4Rb-5E-7at" secondAttribute="trailing" constant="24" id="Mwu-cS-U4I"/>
                                             <constraint firstItem="4Rb-5E-7at" firstAttribute="leading" secondItem="Cv2-wU-GPQ" secondAttribute="leading" constant="24" id="NNO-K2-KHN"/>
-                                            <constraint firstItem="4Rb-5E-7at" firstAttribute="width" secondItem="iN8-Ha-d7w" secondAttribute="width" id="PNB-FU-gxQ"/>
-                                            <constraint firstItem="iN8-Ha-d7w" firstAttribute="centerY" secondItem="Cv2-wU-GPQ" secondAttribute="centerY" id="Y62-bJ-rqv"/>
+                                            <constraint firstAttribute="trailing" secondItem="4Rb-5E-7at" secondAttribute="trailing" constant="24" id="qHg-eb-md2"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -1189,7 +1178,6 @@
                         <outlet property="leftPlaceholderButton" destination="4Rb-5E-7at" id="Aii-ix-kcx"/>
                         <outlet property="placeholderLabel" destination="Cv2-wU-GPQ" id="xw4-97-aLm"/>
                         <outlet property="rightButton" destination="0eB-Lv-zLP" id="BSX-bR-fGb"/>
-                        <outlet property="rightPlaceholderButton" destination="iN8-Ha-d7w" id="VzR-F3-kb0"/>
                         <outlet property="tableView" destination="urJ-pe-Y40" id="PzM-e4-VHT"/>
                         <outlet property="textView" destination="mI4-Qt-2tf" id="mb3-l6-GVU"/>
                         <outlet property="textViewHeightConstraint" destination="kt8-wO-Irj" id="Uh2-78-SSg"/>

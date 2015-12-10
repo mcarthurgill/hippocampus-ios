@@ -140,7 +140,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.leftButton setTintColor:[UIColor SHGreen]];
     [self.leftButton setTitle:nil forState:UIControlStateNormal];
     
-    [self.leftPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Note "] forState:UIControlStateNormal];
+    [self.leftPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Note %@", [[self bucket] isAllThoughtsBucket] ? @"" : [NSString stringWithFormat:@"to %@", [[self bucket] firstName]]] forState:UIControlStateNormal];
     [self.leftPlaceholderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.leftPlaceholderButton setBackgroundColor:[UIColor SHBlue]];
     [[self.leftPlaceholderButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
