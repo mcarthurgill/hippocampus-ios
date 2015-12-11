@@ -278,8 +278,8 @@
 
 - (void) presentTutorialIfShould
 {
-    if (YES) {
-    //if ([[[[LXSession thisSession] user] numberBuckets] integerValue] == 0) {
+    //if (YES) {
+    if ([[[[LXSession thisSession] user] numberBuckets] integerValue] == 0) {
         [self presentTutorial];
     }
 }

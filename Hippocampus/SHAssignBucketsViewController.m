@@ -434,7 +434,9 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
         NSMutableDictionary* newBucket = [LXObjectManager objectWithLocalKey:[self.bucketSelectedKeys firstObject]];
         NSLog(@"newBucket: %@", newBucket);
         if (newBucket) {
-            [newBucket saveRemote];
+            [newBucket saveRemote:^(id responseObject){
+                [NSMutableDictionary bucketKeysWithSuccess:nil failure:nil];
+            } failure:nil];
             [NSMutableDictionary addRecentBucketLocalKey:[self.bucketSelectedKeys firstObject]];
             NSLog(@"added recent local key");
         }
