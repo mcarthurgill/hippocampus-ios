@@ -74,6 +74,7 @@
 		2863C2341C063119000B99DE /* LXMediumObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2863C2331C063119000B99DE /* LXMediumObject.m */; };
 		286F43511A9F71DB0086AAC9 /* UIFont+HCFonts.m in Sources */ = {isa = PBXBuildFile; fileRef = 286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */; };
 		286F43531A9F7C290086AAC9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 286F43521A9F7C290086AAC9 /* CoreLocation.framework */; };
+		287144231C1B6D750024C03D /* SHDismissFeatureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 287144221C1B6D750024C03D /* SHDismissFeatureViewController.m */; };
 		287423D31B059F7200A3242C /* email-screen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 287423D21B059F7200A3242C /* email-screen.jpg */; };
 		28793F011B28743900E2998F /* NSArray+Attributes.m in Sources */ = {isa = PBXBuildFile; fileRef = 28793F001B28743900E2998F /* NSArray+Attributes.m */; };
 		2880B6131BFCC28200FC65CB /* SHIntroBucketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2880B60D1BFCC28200FC65CB /* SHIntroBucketViewController.m */; };
@@ -334,6 +335,8 @@
 		286F43501A9F71DB0086AAC9 /* UIFont+HCFonts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+HCFonts.m"; sourceTree = "<group>"; };
 		286F43521A9F7C290086AAC9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		287144201C1B668D0024C03D /* SHFeatureOnboardingPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHFeatureOnboardingPageViewController.h; sourceTree = "<group>"; };
+		287144211C1B6D750024C03D /* SHDismissFeatureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHDismissFeatureViewController.h; sourceTree = "<group>"; };
+		287144221C1B6D750024C03D /* SHDismissFeatureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHDismissFeatureViewController.m; sourceTree = "<group>"; };
 		287423D21B059F7200A3242C /* email-screen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "email-screen.jpg"; sourceTree = "<group>"; };
 		28793EFF1B28743900E2998F /* NSArray+Attributes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Attributes.h"; sourceTree = "<group>"; };
 		28793F001B28743900E2998F /* NSArray+Attributes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Attributes.m"; sourceTree = "<group>"; };
@@ -1245,6 +1248,8 @@
 				762032491C1B3049004E54E2 /* SHFeatureOnboardingPageViewController.m */,
 				7620324B1C1B3049004E54E2 /* SHFeaturePreviewViewController.h */,
 				7620324A1C1B3049004E54E2 /* SHFeaturePreviewViewController.m */,
+				287144211C1B6D750024C03D /* SHDismissFeatureViewController.h */,
+				287144221C1B6D750024C03D /* SHDismissFeatureViewController.m */,
 			);
 			name = Preview;
 			sourceTree = "<group>";
@@ -1687,6 +1692,7 @@
 				2880B6151BFCC28200FC65CB /* SHNewBucketTableViewCell.m in Sources */,
 				282FA8411B8F9C2E004ADA00 /* SHSearchViewController.m in Sources */,
 				282FA8441B909BD5004ADA00 /* SHSearch.m in Sources */,
+				287144231C1B6D750024C03D /* SHDismissFeatureViewController.m in Sources */,
 				2882A81F1BCD98B00058D4C9 /* SHEmailViewController.m in Sources */,
 				28ED41F71BA0BBA8000292AE /* SHMediaBoxTableViewCell.m in Sources */,
 				2810B9B91BE3CB99003D20F8 /* SHTagDetailViewController.m in Sources */,

@@ -19,7 +19,8 @@
 @synthesize descriptions;
 @synthesize resourceNames;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.childIndex = 0;
     
@@ -46,7 +47,8 @@
 
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -66,7 +68,7 @@
 {
     if ([viewController respondsToSelector:@selector(index)]) {
         if ([(SHFeaturePreviewViewController*)viewController index] == self.descriptions.count-1) {
-            return (UINavigationController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"mainNavigationController"];
+            return (UINavigationController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHDismissFeatureViewController"];
         } else if ([(SHFeaturePreviewViewController*)viewController index] < self.descriptions.count-1) {
             return [self featureControllerWithDescription:[self.descriptions objectAtIndex:([(SHFeaturePreviewViewController*)viewController index]+1)] andResourceName:[self.resourceNames objectAtIndex:([(SHFeaturePreviewViewController*)viewController index]+1)] andIndex:([(SHFeaturePreviewViewController*)viewController index]+1)];
         }
@@ -95,7 +97,7 @@
 
 - (SHFeaturePreviewViewController*) featureControllerWithDescription:(NSString*)description andResourceName:(NSString *)resourceName andIndex:(NSUInteger)index
 {
-    SHFeaturePreviewViewController* controller = (SHFeaturePreviewViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"featurePreviewViewController"];
+    SHFeaturePreviewViewController* controller = (SHFeaturePreviewViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHFeaturePreviewViewController"];
     
     [controller setResourceName:resourceName];
     [controller setDescriptionText:description];
@@ -104,5 +106,11 @@
     return controller;
 }
 
+
+
+- (BOOL) prefersStatusBarHidden
+{
+    return YES;
+}
 
 @end

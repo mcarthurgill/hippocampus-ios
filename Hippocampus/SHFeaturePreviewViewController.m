@@ -72,7 +72,8 @@
 - (void) setupAppearance
 {
     [self.featureDescriptionLabel setText:self.descriptionText];
-    [self.featureDescriptionLabel setFont:[UIFont titleFontWithSize:18.0f]];
+    [self.featureDescriptionLabel setFont:[UIFont secondaryFontWithSize:18.0f]];
+    [self.featureDescriptionLabel setTextColor:[UIColor SHFontDarkGray]];
 }
 
 - (void) setupVideo

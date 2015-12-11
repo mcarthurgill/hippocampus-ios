@@ -12,8 +12,10 @@
 @interface SHFeaturePreviewViewController : UIViewController
 
 @property (strong, nonatomic) MPMoviePlayerController* moviePlayer;
+
 @property (strong, nonatomic) IBOutlet UIView *videoView;
 @property (strong, nonatomic) IBOutlet UILabel *featureDescriptionLabel;
+
 @property (strong, nonatomic) NSString *resourceName;
 @property (strong, nonatomic) NSString *descriptionText;
 @property (nonatomic) NSUInteger index;

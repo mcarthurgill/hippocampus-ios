@@ -23,7 +23,7 @@
 {
     [super viewDidLoad];
     
-    [self setTitle:@"Step 2 of 2"];
+    [self setTitle:@"Tutorial Step 2 of 3"];
     
     [self setupLabel];
     [self setupTextField];
@@ -164,9 +164,9 @@
 
 - (void) next
 {
-    //UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHAppPreviewViewController"];
-    //[self.navigationController pushViewController:vc animated:YES];
-    [self dismissViewControllerAnimated:YES completion:^(void){}];
+    UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHFeaturePreviewInitialViewController"];
+    [self.navigationController pushViewController:vc animated:YES];
+    //[self dismissViewControllerAnimated:YES completion:^(void){}];
 }
                                            
                                            

@@ -651,8 +651,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
 - (IBAction)leftPlaceholderAction:(id)sender
 {
     [self.textView becomeFirstResponder];
-    
-    [self showNudgeSetView];
+    //[self showNudgeSetView];
     
 }
 

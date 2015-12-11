@@ -16,14 +16,23 @@
 
 @synthesize pageController;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self setupView];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void) viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.hidden = YES;
 }
 
 - (void) setupView
@@ -34,6 +43,12 @@
     [self addChildViewController:pageController];
     [self.view addSubview:pageController.view];
     [pageController didMoveToParentViewController:self];
+}
+
+
+- (BOOL) prefersStatusBarHidden
+{
+    return YES;
 }
 
 @end

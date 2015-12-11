@@ -25,7 +25,7 @@
     [self setupTextField];
     [self setupLabel];
     
-    [self setTitle:@"Step 1 of 2"];
+    [self setTitle:@"Tutorial Step 1 of 3"];
 }
 
 - (void)didReceiveMemoryWarning
