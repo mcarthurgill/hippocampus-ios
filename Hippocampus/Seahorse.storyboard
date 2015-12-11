@@ -104,8 +104,8 @@
                                     <constraint firstAttribute="width" secondItem="AdO-u3-43J" secondAttribute="height" multiplier="79:159" id="eFW-Ya-LAH"/>
                                 </constraints>
                             </imageView>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8mx-vm-6FH" userLabel="Video View">
-                                <rect key="frame" x="180" y="116.5" width="238" height="421"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8mx-vm-6FH" userLabel="Video View">
+                                <rect key="frame" x="182" y="123.5" width="234" height="414"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                         </subviews>

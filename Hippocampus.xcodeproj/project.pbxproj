@@ -198,14 +198,14 @@
 		7620324D1C1B3049004E54E2 /* SHFeatureOnboardingPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 762032491C1B3049004E54E2 /* SHFeatureOnboardingPageViewController.m */; };
 		7620324E1C1B3049004E54E2 /* SHFeaturePreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7620324A1C1B3049004E54E2 /* SHFeaturePreviewViewController.m */; };
 		762032511C1B354A004E54E2 /* SHFeaturePreviewInitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 762032501C1B354A004E54E2 /* SHFeaturePreviewInitialViewController.m */; };
-		76328BC51C1B7C390035A017 /* add_nudge.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 76328BC21C1B7C390035A017 /* add_nudge.mp4 */; };
-		76328BC61C1B7C390035A017 /* create_person.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 76328BC31C1B7C390035A017 /* create_person.mp4 */; };
 		76328BC71C1B7C390035A017 /* add_note.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 76328BC41C1B7C390035A017 /* add_note.mp4 */; };
 		76450E541AEA8509004D7FAD /* HCPermissionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76450E531AEA8509004D7FAD /* HCPermissionViewController.m */; };
 		766E1A2B1AF2AB140028BCD5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 766E1A2A1AF2AB140028BCD5 /* MediaPlayer.framework */; };
 		76906E6D1BADAEF9005BF124 /* UIAlertView+Addons.m in Sources */ = {isa = PBXBuildFile; fileRef = 76906E6C1BADAEF9005BF124 /* UIAlertView+Addons.m */; };
 		76B029711AC1AF99003539B4 /* LXAddressBook.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029701AC1AF99003539B4 /* LXAddressBook.m */; };
 		76B029771AC20247003539B4 /* UILabel+Bold.m in Sources */ = {isa = PBXBuildFile; fileRef = 76B029761AC20247003539B4 /* UILabel+Bold.m */; };
+		76F7B1371C1B85CF0010A7C0 /* add_nudge.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 76F7B1351C1B85CF0010A7C0 /* add_nudge.mp4 */; };
+		76F7B1381C1B85CF0010A7C0 /* create_person.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 76F7B1361C1B85CF0010A7C0 /* create_person.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -504,8 +504,6 @@
 		7620324B1C1B3049004E54E2 /* SHFeaturePreviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHFeaturePreviewViewController.h; sourceTree = "<group>"; };
 		7620324F1C1B354A004E54E2 /* SHFeaturePreviewInitialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHFeaturePreviewInitialViewController.h; sourceTree = "<group>"; };
 		762032501C1B354A004E54E2 /* SHFeaturePreviewInitialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHFeaturePreviewInitialViewController.m; sourceTree = "<group>"; };
-		76328BC21C1B7C390035A017 /* add_nudge.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = add_nudge.mp4; sourceTree = "<group>"; };
-		76328BC31C1B7C390035A017 /* create_person.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = create_person.mp4; sourceTree = "<group>"; };
 		76328BC41C1B7C390035A017 /* add_note.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = add_note.mp4; sourceTree = "<group>"; };
 		76450E521AEA8509004D7FAD /* HCPermissionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HCPermissionViewController.h; sourceTree = "<group>"; };
 		76450E531AEA8509004D7FAD /* HCPermissionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCPermissionViewController.m; sourceTree = "<group>"; };
@@ -516,6 +514,8 @@
 		76B029701AC1AF99003539B4 /* LXAddressBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LXAddressBook.m; sourceTree = "<group>"; };
 		76B029751AC20247003539B4 /* UILabel+Bold.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+Bold.h"; sourceTree = "<group>"; };
 		76B029761AC20247003539B4 /* UILabel+Bold.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Bold.m"; sourceTree = "<group>"; };
+		76F7B1351C1B85CF0010A7C0 /* add_nudge.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = add_nudge.mp4; sourceTree = "<group>"; };
+		76F7B1361C1B85CF0010A7C0 /* create_person.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = create_person.mp4; sourceTree = "<group>"; };
 		B9D9B6AA3020C8131DCFCCC7 /* Pods-Hippocampus.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hippocampus.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus.release.xcconfig"; sourceTree = "<group>"; };
 		EDFA522816ADD529C01E9E9C /* Pods-Hippocampus.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hippocampus.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hippocampus/Pods-Hippocampus.debug.xcconfig"; sourceTree = "<group>"; };
 		F60CCE3AD6C425F912A2E5AA /* Pods-HippoShare.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HippoShare.debug.xcconfig"; path = "Pods/Target Support Files/Pods-HippoShare/Pods-HippoShare.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1255,8 +1255,8 @@
 		76328BBD1C1B74220035A017 /* Tutorial Videos */ = {
 			isa = PBXGroup;
 			children = (
-				76328BC21C1B7C390035A017 /* add_nudge.mp4 */,
-				76328BC31C1B7C390035A017 /* create_person.mp4 */,
+				76F7B1351C1B85CF0010A7C0 /* add_nudge.mp4 */,
+				76F7B1361C1B85CF0010A7C0 /* create_person.mp4 */,
 				76328BC41C1B7C390035A017 /* add_note.mp4 */,
 			);
 			name = "Tutorial Videos";
@@ -1401,6 +1401,7 @@
 				289FFF151BE3FE6500CFD5C5 /* SHAssignTagTableViewCell.xib in Resources */,
 				28CD3FBE1AEA0F8700B3ABB6 /* item-screen.jpg in Resources */,
 				28D8E56C1BAA47BF00AEEEBC /* gear.png in Resources */,
+				76F7B1381C1B85CF0010A7C0 /* create_person.mp4 in Resources */,
 				2882A80C1BCC36F50058D4C9 /* toolbar_share.png in Resources */,
 				28ED422D1BA2728A000292AE /* toolbar_bells.png in Resources */,
 				28ED42291BA2700F000292AE /* toolbar_bella.png in Resources */,
@@ -1414,7 +1415,6 @@
 				283700911A6F366E00C16E87 /* 122-stats@2x.png in Resources */,
 				281CA91E196C29E500E6BE96 /* 256-box2.png in Resources */,
 				288A74621B7531DD00F6A618 /* search@2x.png in Resources */,
-				76328BC51C1B7C390035A017 /* add_nudge.mp4 in Resources */,
 				28ED41FD1BA0CBB6000292AE /* SHAttachmentBoxTableViewCell.xib in Resources */,
 				2882A81B1BCD86410058D4C9 /* audio_icon_shrink.png in Resources */,
 				28ED42111BA210AE000292AE /* toolbar_location.png in Resources */,
@@ -1440,12 +1440,12 @@
 				28CD3FC21AEA89F400B3ABB6 /* nudge-screen.jpg in Resources */,
 				281CA8D61951EC7E00E6BE96 /* InfoPlist.strings in Resources */,
 				28ED41E71BA097EA000292AE /* Roboto-Light.ttf in Resources */,
-				76328BC61C1B7C390035A017 /* create_person.mp4 in Resources */,
 				28ED42321BA276A0000292AE /* 37x-Checkmark@2x.png in Resources */,
 				28D8E56E1BAA47BF00AEEEBC /* gear@3x.png in Resources */,
 				2837E8001ABD09400089FA33 /* More-100.png in Resources */,
 				288A747B1B7985DA00F6A618 /* nudge_icon_white_swipe.png in Resources */,
 				28AC96731BC487A700A5C1E9 /* 60x60@3x.png in Resources */,
+				76F7B1371C1B85CF0010A7C0 /* add_nudge.mp4 in Resources */,
 				28F859A91BBA075000F7738C /* bucket_detail_icon.png in Resources */,
 				28431DE11A8D69BA00B12548 /* 78-stopwatch@2x.png in Resources */,
 				28ED41EE1BA09882000292AE /* SHItemMessageTableViewCell.xib in Resources */,
