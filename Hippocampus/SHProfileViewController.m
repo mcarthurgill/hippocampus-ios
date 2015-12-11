@@ -70,7 +70,7 @@ static NSString *userProfileIdentifier = @"SHUserProfileTableViewCell";
         } else if ([section isEqualToString:@"info"]) {
             [self.sectionRows setObject:@[@"version", @"author"] forKey:section];
         } else if ([section isEqualToString:@"actions"]) {
-            [self.sectionRows setObject:@[@"demo",@"email",@"logout"] forKey:section];
+            [self.sectionRows setObject:@[@"email",@"logout"] forKey:section];
         }
     }
 }
@@ -169,8 +169,8 @@ static NSString *userProfileIdentifier = @"SHUserProfileTableViewCell";
         [[[LXSession thisSession] user] logout];
         [(LXAppDelegate*)[[UIApplication sharedApplication] delegate] setRootStoryboard:@"Login"];
     } else if ([[self rowForIndexPath:indexPath] isEqualToString:@"demo"]) {
-        UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHAppPreviewViewController"];
-        [self presentViewController:vc animated:NO completion:^(void){}];
+        //UIViewController* vc = (UIViewController*)[[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHAppPreviewViewController"];
+        //[self presentViewController:vc animated:NO completion:^(void){}];
     }
 }
 
