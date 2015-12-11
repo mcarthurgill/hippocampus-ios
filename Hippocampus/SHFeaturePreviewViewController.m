@@ -42,6 +42,11 @@
     [self removeTop];
 }
 
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -67,37 +72,46 @@
 - (void) setupAppearance
 {
     [self.featureDescriptionLabel setText:self.descriptionText];
-    [self.featureDescriptionLabel setFont:[UIFont titleFontWithSize:14.0f]]; 
+    [self.featureDescriptionLabel setFont:[UIFont titleFontWithSize:18.0f]];
 }
 
 - (void) setupVideo
 {
-    if (!self.moviePlayer) {
-        NSString*thePath=[[NSBundle mainBundle] pathForResource:self.resourceName ofType:@"mp4"];
-        NSURL*theurl=[NSURL fileURLWithPath:thePath];
-        
-        NSLog(@"%@, %@", thePath, theurl);
-        
-        self.moviePlayer=[[MPMoviePlayerController alloc] initWithContentURL:theurl];
-        [self.moviePlayer.view setFrame:CGRectMake(0, 0, self.videoView.frame.size.width, self.videoView.frame.size.height)];
-        
-        self.moviePlayer.repeatMode = MPMovieRepeatModeOne;
-        self.moviePlayer.fullscreen = NO;
-        self.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-        [self.moviePlayer setControlStyle:MPMovieControlStyleNone];
-        self.moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
-        
-        [self.moviePlayer prepareToPlay];
-        [self.moviePlayer setShouldAutoplay:YES]; // And other options you can look through the documentation.
-        [self.videoView addSubview:self.moviePlayer.view];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playBackFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:self.moviePlayer];
-    }
+    [self createMoviePlayer];
+}
+
+- (void) createMoviePlayer
+{
+    NSString*thePath=[[NSBundle mainBundle] pathForResource:self.resourceName ofType:@"mp4"];
+    NSURL*theurl=[NSURL fileURLWithPath:thePath];
+    
+    NSLog(@"%@, %@", thePath, theurl);
+    
+    self.moviePlayer=[[MPMoviePlayerController alloc] initWithContentURL:theurl];
+    [self.moviePlayer.view setFrame:CGRectMake(0, 0, self.videoView.frame.size.width, self.videoView.frame.size.height)];
+    
+    self.moviePlayer.repeatMode = MPMovieRepeatModeOne;
+    self.moviePlayer.fullscreen = NO;
+    self.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
+    [self.moviePlayer setControlStyle:MPMovieControlStyleNone];
+    self.moviePlayer.scalingMode = MPMovieScalingModeAspectFill;
+    
+    [self.moviePlayer prepareToPlay];
+    [self.moviePlayer setShouldAutoplay:YES]; // And other options you can look through the documentation.
+    [self.videoView addSubview:self.moviePlayer.view];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playBackFinished:) name:MPMoviePlayerPlaybackDidFinishNotification object:self.moviePlayer];
 }
 
 - (void) playBackFinished:(NSNotification*)notification
 {
     NSLog(@"playback finished!");
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:MPMoviePlayerPlaybackDidFinishNotification object:nil];
+    
+    [self.moviePlayer stop];
+    self.moviePlayer.initialPlaybackTime = -1;
+    
+    self.moviePlayer = nil;
 }
 
 

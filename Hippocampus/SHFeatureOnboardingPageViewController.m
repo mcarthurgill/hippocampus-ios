@@ -28,17 +28,17 @@
     
     UIPageControl *pageControlAppearance = [UIPageControl appearanceWhenContainedIn:[UIPageViewController class], nil];
     pageControlAppearance.pageIndicatorTintColor = [UIColor lightGrayColor];
-    pageControlAppearance.currentPageIndicatorTintColor = [UIColor darkGrayColor];
-    
+    pageControlAppearance.currentPageIndicatorTintColor= [UIColor darkGrayColor];
+
     self.descriptions = @[
                @"Create a person.",
                @"Add a note to a person.",
                @"Set a nudge to get reminded about a note.",
                ];
     self.resourceNames = @[
-                          @"HippoPreview",
-                          @"HippoPreview",
-                          @"HippoPreview",
+                          @"color_coding",
+                          @"search_word_networking",
+                          @"set_nudge",
                           ];
     
     [self setViewControllers:@[[self featureControllerWithDescription:[self.descriptions firstObject] andResourceName:[self.resourceNames firstObject] andIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:^(BOOL finished) {

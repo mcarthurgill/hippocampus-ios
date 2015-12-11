@@ -13,9 +13,9 @@
 
 @property (strong, nonatomic) MPMoviePlayerController* moviePlayer;
 @property (strong, nonatomic) IBOutlet UIView *videoView;
-@property (weak, nonatomic) IBOutlet UILabel *featureDescriptionLabel;
-@property (weak, nonatomic) NSString *resourceName; 
-@property (weak, nonatomic) NSString *descriptionText; 
+@property (strong, nonatomic) IBOutlet UILabel *featureDescriptionLabel;
+@property (strong, nonatomic) NSString *resourceName;
+@property (strong, nonatomic) NSString *descriptionText;
 @property (nonatomic) NSUInteger index;
 
 @end
