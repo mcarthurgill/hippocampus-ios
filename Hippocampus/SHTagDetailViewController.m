@@ -56,7 +56,7 @@ static NSString *loadingCellIdentifier = @"SHLoadingTableViewCell";
     //[self.tableView setContentInset:UIEdgeInsetsMake(64.0f, 0, 0, 0)];
     [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     
-    UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navFlag.png"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemAction:)];
+    UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear.png"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemAction:)];
     [self.navigationItem setRightBarButtonItem:item];
 }
 
