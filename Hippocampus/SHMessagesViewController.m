@@ -132,7 +132,7 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.tableView setContentInset:UIEdgeInsetsMake(self.tableView.contentInset.top, self.tableView.contentInset.left, self.tableView.contentInset.bottom+20.0f, self.tableView.contentInset.right)];
     
     if (![self.localKey isEqualToString:[NSMutableDictionary allThoughtsLocalKey]]) {
-        UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"navBucket.png"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemAction:)];
+        UIBarButtonItem* item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"gear.png"] style:UIBarButtonItemStylePlain target:self action:@selector(rightBarButtonItemAction:)];
         [self.navigationItem setRightBarButtonItem:item];
     }
     
@@ -144,9 +144,10 @@ static NSString *editBucketIdentifier = @"SHEditBucketViewController";
     [self.leftButton setTintColor:[UIColor SHGreen]];
     [self.leftButton setTitle:nil forState:UIControlStateNormal];
     
-    [self.leftPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Nudge "] forState:UIControlStateNormal];
+
+    [self.leftPlaceholderButton setTitle:[NSString stringWithFormat:@" + New Note %@", [[self bucket] isAllThoughtsBucket] ? @"" : [NSString stringWithFormat:@"to %@", [[self bucket] firstName]]] forState:UIControlStateNormal];
     [self.leftPlaceholderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.leftPlaceholderButton setBackgroundColor:[UIColor SHGreen]];
+    [self.leftPlaceholderButton setBackgroundColor:[UIColor SHBlue]];
     [[self.leftPlaceholderButton titleLabel] setFont:[UIFont titleFontWithSize:14.0f]];
     [self.leftPlaceholderButton.layer setCornerRadius:4.0f];
     [self.leftPlaceholderButton setClipsToBounds:YES];
