@@ -38,6 +38,8 @@
     
     [self setupPusher];
     
+    [self preloadNudges]; 
+    
     return YES;
 }
 
@@ -341,5 +343,15 @@
 }
 
 
+#pragma mark - Preload Nudges
+
+- (void) preloadNudges
+{
+    if ([[LXSession thisSession] user] && [[[LXSession thisSession] user] ID]) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[[LXSession thisSession] user] nudgeKeysWithSuccess:nil failure:nil];
+        });
+    }
+}
 
 @end

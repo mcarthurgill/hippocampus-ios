@@ -12,6 +12,7 @@
 #import "SHTagDetailViewController.h"
 #import "SHSearchViewController.h"
 #import "SHProfileViewController.h"
+#import "SHNudgesIndexViewController.h"
 
 @interface SHMainViewController ()
 
@@ -189,8 +190,10 @@
     if ([[LXSession thisSession] searchActivated]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"searchPushBucketViewController" object:nil userInfo:[notification userInfo]];
     } else {
-        SHMessagesViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
-        [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
+//        SHMessagesViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+//        [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
+//        [self.navigationController pushViewController:vc animated:YES];
+        SHNudgesIndexViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHNudgesIndexViewController"];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

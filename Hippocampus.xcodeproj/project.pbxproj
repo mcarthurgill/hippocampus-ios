@@ -192,6 +192,7 @@
 		28F859A91BBA075000F7738C /* bucket_detail_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859A81BBA075000F7738C /* bucket_detail_icon.png */; };
 		28F859AD1BBB53DA00F7738C /* backsplash.png in Resources */ = {isa = PBXBuildFile; fileRef = 28F859AB1BBB53DA00F7738C /* backsplash.png */; };
 		586145D5153112E1F0255F45 /* Pods_Hippocampus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */; };
+		7601C1841C20C1CC008D82E2 /* SHNudgesIndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7601C1811C20C1CC008D82E2 /* SHNudgesIndexViewController.m */; };
 		761CACDC1BAC88CC00B5C682 /* SHCollaboratorsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */; };
 		761CACDE1BAC8E4800B5C682 /* SHContactTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */; };
 		761CACE21BAC8E8400B5C682 /* SHContactTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 761CACE11BAC8E8400B5C682 /* SHContactTableViewCell.m */; };
@@ -494,6 +495,8 @@
 		28F859A81BBA075000F7738C /* bucket_detail_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bucket_detail_icon.png; sourceTree = "<group>"; };
 		28F859AB1BBB53DA00F7738C /* backsplash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = backsplash.png; sourceTree = "<group>"; };
 		3466375006C4AEA3CA869009 /* Pods_Hippocampus.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hippocampus.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7601C1801C20C1CC008D82E2 /* SHNudgesIndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHNudgesIndexViewController.h; sourceTree = "<group>"; };
+		7601C1811C20C1CC008D82E2 /* SHNudgesIndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHNudgesIndexViewController.m; sourceTree = "<group>"; };
 		761CACDA1BAC88CC00B5C682 /* SHCollaboratorsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SHCollaboratorsViewController.h; sourceTree = "<group>"; };
 		761CACDB1BAC88CC00B5C682 /* SHCollaboratorsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SHCollaboratorsViewController.m; sourceTree = "<group>"; };
 		761CACDD1BAC8E4800B5C682 /* SHContactTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SHContactTableViewCell.xib; sourceTree = "<group>"; };
@@ -1127,6 +1130,8 @@
 		28ED41DD1BA0013E000292AE /* Nudge */ = {
 			isa = PBXGroup;
 			children = (
+				7601C1801C20C1CC008D82E2 /* SHNudgesIndexViewController.h */,
+				7601C1811C20C1CC008D82E2 /* SHNudgesIndexViewController.m */,
 				28ED41DE1BA00156000292AE /* HCReminderViewController.h */,
 				28ED41DF1BA00156000292AE /* HCReminderViewController.m */,
 			);
@@ -1658,6 +1663,7 @@
 				283700891A6F199600C16E87 /* LXTokenViewController.m in Sources */,
 				289D2F881BAA51BF007F719B /* SHCollaboratorTableViewCell.m in Sources */,
 				28ED41E31BA089AC000292AE /* SHItemViewController.m in Sources */,
+				7601C1841C20C1CC008D82E2 /* SHNudgesIndexViewController.m in Sources */,
 				28BD3EAF196F519B00BBF5B0 /* NSArray+Alphabet.m in Sources */,
 				289FFF251BE46D1900CFD5C5 /* SHEditTagViewController.m in Sources */,
 				2837E8061AC11D2A0089FA33 /* HCInitialViewController.m in Sources */,

@@ -168,4 +168,25 @@
     return ![[[LXSession thisSession] user] hasMembership] && [[[LXSession thisSession] user] overNumberBucketsAllowed];
 }
 
+
+# pragma mark - Nudges
+- (void) nudgeKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    [[LXServer shared] requestPath:[NSString stringWithFormat:@"/users/%@/reminders", [[[LXSession thisSession] user] ID]] withMethod:@"GET" withParamaters:nil authType:@"user"
+                           success:^(id responseObject){
+                               if ([[responseObject objectForKey:@"reminders"] respondsToSelector:@selector(count)]) {
+                                   [LXObjectManager assignLocal:[responseObject objectForKey:@"reminders"] WithLocalKey:@"nudgeLocalKeys" alsoToDisk:YES];
+                                   [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedNudgeLocalKeys" object:nil userInfo:nil];
+                               }
+                               if (successCallback) {
+                                   successCallback(responseObject);
+                               }
+                           } failure:^(NSError* error){
+                               if (failureCallback) {
+                                   failureCallback(error);
+                               }
+                           }
+     ];
+}
+
 @end
