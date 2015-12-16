@@ -26,7 +26,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updatedNudgeLocalKeys:) name:@"updatedNudgeLocalKeys" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedObject:) name:@"refreshedObject" object:nil];
     [self setupSettings];
 }
 
@@ -38,7 +38,11 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 {
     [super viewWillAppear:animated];
     [self beginningActions];
-    [self reloadScreen];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 # pragma mark - setup
@@ -46,13 +50,23 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) setupSettings
 {
     [self.view setBackgroundColor:[UIColor slightBackgroundColor]];
+    [self.tableView setBackgroundColor:[UIColor slightBackgroundColor]];
     [self.tableView registerNib:[UINib nibWithNibName:itemCellIdentifier bundle:nil] forCellReuseIdentifier:itemCellIdentifier];
     [self.tableView registerNib:[UINib nibWithNibName:loadingCellIdentifier bundle:nil] forCellReuseIdentifier:loadingCellIdentifier];
+    tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void) beginningActions
 {
-    [[[LXSession thisSession] user] nudgeKeysWithSuccess:nil failure:nil];
+    requesting = YES;
+    [self reloadScreen];
+    [[[LXSession thisSession] user] nudgeKeysWithSuccess:^(id responseObject){
+        requesting = NO;
+        [self reloadScreen];
+    }failure:^(NSError *error){
+        requesting = NO;
+        [self reloadScreen];
+    }];
 }
 
 
@@ -75,14 +89,22 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (NSString*) dateAsStringForSection:(NSInteger)section
 {
-    return [NSDate formattedDateFromString:[[[[self nudgeKeysByDate] objectAtIndex:section] allKeys] firstObject]];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    NSDate *d = [NSDate timeWithString:[[[[self nudgeKeysByDate] objectAtIndex:section] allKeys] firstObject]];
+    NSDate *today = [NSDate date];
+    if (d.dayInteger == today.dayInteger && d.monthInteger == today.monthInteger && d.yearInteger == today.yearInteger) {
+        return @"Today";
+    } else {
+        [formatter setDateFormat:@"EEE, MMMM d, yyyy"];
+        return [formatter stringFromDate:d];
+    }
 }
 
 # pragma mark notifications
 
-- (void) updatedNudgeLocalKeys:(NSNotification*)notification
+- (void) refreshedObject:(NSNotification*)notification
 {
-    //replace/move/remove item_local_key in allNudgesKey
+    //replace/move/remove item_local_key in allNudgesKey, then do a complete replacement
     [self reloadScreen];
 }
 
@@ -91,6 +113,11 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void) reloadScreen
 {
+    if (requesting && [[self nudgeKeysByDate] count] == 0 && hud.hidden) {
+        [self showHUDWithMessage:@"Getting Nudges..."];
+    } else if (!requesting && !hud.hidden){
+        [self hideHUD];
+    }
     [self.tableView reloadData];
 }
 
@@ -109,13 +136,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     if ([LXObjectManager objectWithLocalKey:[self itemLocalKeyForIndexPath:indexPath]]) {
         return [self tableView:tV nudgeCellForRowAtIndexPath:indexPath];
     } else {
-        [[LXObjectManager defaultManager] refreshObjectWithKey:[self itemLocalKeyForIndexPath:indexPath]
-                                                       success:^(id responseObject){
-//                                                           [self.tableView beginUpdates];
-//                                                           [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//                                                           [self.tableView endUpdates];
-                                                       }failure:nil
-         ];
+        [[LXObjectManager defaultManager] refreshObjectWithKey:[self itemLocalKeyForIndexPath:indexPath] success:nil failure:nil];
         return [self tableView:tV loadingCellForRowAtIndexPath:indexPath];
     }
     return nil;
@@ -134,8 +155,8 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (UITableViewCell*) tableView:(UITableView *)tV loadingCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHLoadingTableViewCell* cell = (SHLoadingTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:loadingCellIdentifier];
+    [cell setShouldInvert:NO];
     [cell configureWithResponseObject:[@{@"local_key":[self itemLocalKeyForIndexPath:indexPath]} mutableCopy]];
-    [cell invertIfUpsideDown];
     return cell;
 }
 
@@ -202,5 +223,25 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     [self prePermissionsDelegate:@"notifications" message:[NSString stringWithFormat:@"Enable notifications to get a nudge on the morning of %@%@.", [NSDate timeAgoActualFromDatetime:[item reminderDate]], [item message] && [[item message] length] > 0 ? [NSString stringWithFormat:@" about the thought: \"%@.\"", [item message]] : @""]];
 
 }
+
+
+# pragma mark hud delegate
+
+- (void) showHUDWithMessage:(NSString*) message
+{
+    hud = [[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:hud];
+    hud.labelText = message;
+    hud.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
+    [hud show:YES];
+}
+
+- (void) hideHUD
+{
+    if (hud) {
+        [hud hide:YES];
+    }
+}
+
 
 @end

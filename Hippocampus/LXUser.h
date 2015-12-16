@@ -33,6 +33,7 @@
 - (void) updateToMembership:(NSString*)type success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
 - (BOOL) shouldShowPaywall;
-- (void) nudgeKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
 
+- (void) nudgeKeysWithSuccess:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback;
++ (BOOL) userHasNudges;
 @end

@@ -9,6 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface SHNudgesIndexViewController : UIViewController
+{
+    BOOL requesting;
+    MBProgressHUD* hud;
+}
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *reminderDates; 

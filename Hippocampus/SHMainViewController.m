@@ -95,7 +95,7 @@
         } else if ([currentTitle isEqualToString:@"Nudges"]) {
             [self switchContainerToView:@"nudgesViewController" fromView:currentPresentedViewController];
         }
-    } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
+    } else if ([NSMutableDictionary userHasNudges] && [sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
         [self switchContainerToView:@"nudgesViewController" fromView:currentPresentedViewController];
     } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"nudgesViewController"]) {
         [self switchContainerToView:@"thoughtsViewController" fromView:currentPresentedViewController];

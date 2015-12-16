@@ -18,10 +18,7 @@
 {
     // Initialization code
     inverted = NO;
-    
-    if (!inverted) {
-        [self invert];
-    }
+    self.shouldInvert = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedObject:) name:@"refreshedObject" object:nil];
     
@@ -42,6 +39,10 @@
 {
     //NSLog(@"height: %f", self.frame.size.height);
     //NSLog(@"rO: %@", rO);
+    if (!inverted && self.shouldInvert) {
+        self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);
+        inverted = YES;
+    }
     [self setResponseObject:rO];
 }
 
@@ -76,6 +77,13 @@
 - (void) invertIfUpsideDown
 {
     if (inverted) {
+        [self invert];
+    }
+}
+
+- (void) invertIfRightSideUp
+{
+    if (!inverted) {
         [self invert];
     }
 }

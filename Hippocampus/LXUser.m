@@ -189,4 +189,8 @@
      ];
 }
 
++ (BOOL) userHasNudges
+{
+    return [LXObjectManager objectWithLocalKey:@"nudgeLocalKeys"] && [[LXObjectManager objectWithLocalKey:@"nudgeLocalKeys"] respondsToSelector:@selector(count)] && [[LXObjectManager objectWithLocalKey:@"nudgeLocalKeys"] count] > 0;
+}
 @end

@@ -13,6 +13,8 @@
     BOOL inverted;
 }
 
+@property (nonatomic) BOOL shouldInvert;
+
 @property (strong, nonatomic) NSMutableDictionary* responseObject;
 @property (strong, nonatomic) IBOutlet UILabel *label;
 
@@ -20,5 +22,6 @@
 
 - (void) invertIfUpsideDown;
 - (void) invert;
+- (void) invertIfRightSideUp;
 
 @end

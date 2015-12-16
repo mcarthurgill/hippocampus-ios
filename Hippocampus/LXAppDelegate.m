@@ -38,8 +38,6 @@
     
     [self setupPusher];
     
-    [self preloadNudges]; 
-    
     return YES;
 }
 
@@ -140,6 +138,8 @@
     [self.client connect];
     
     [self incrementApplicationDidBecomeActiveCount];
+    
+    [self preloadNudges];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
