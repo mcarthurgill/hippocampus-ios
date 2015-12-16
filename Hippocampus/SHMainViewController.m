@@ -89,9 +89,17 @@
 - (IBAction)segmentControlAction:(UISegmentedControl*)sender
 {
     NSString* currentTitle = [sender titleForSegmentAtIndex:[sender selectedSegmentIndex]];
-    if ([sender selectedSegmentIndex] == 1 && ![currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
+    if ([sender selectedSegmentIndex] == 1 && ([currentPresentedViewController isEqualToString:@"bucketsViewController"] || [currentPresentedViewController isEqualToString:@"tagsViewController"])) {
+        if ([currentTitle isEqualToString:@"Notes"]) {
+            [self switchContainerToView:@"thoughtsViewController" fromView:currentPresentedViewController];
+        } else if ([currentTitle isEqualToString:@"Nudges"]) {
+            [self switchContainerToView:@"nudgesViewController" fromView:currentPresentedViewController];
+        }
+    } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
+        [self switchContainerToView:@"nudgesViewController" fromView:currentPresentedViewController];
+    } else if ([sender selectedSegmentIndex] == 1 && [currentPresentedViewController isEqualToString:@"nudgesViewController"]) {
         [self switchContainerToView:@"thoughtsViewController" fromView:currentPresentedViewController];
-    } else if ([sender selectedSegmentIndex] == 0 && [currentPresentedViewController isEqualToString:@"thoughtsViewController"]) {
+    } else if ([sender selectedSegmentIndex] == 0 && ([currentPresentedViewController isEqualToString:@"thoughtsViewController"] || [currentPresentedViewController isEqualToString:@"nudgesViewController"])) {
         if ([currentTitle isEqualToString:@"People"]) {
             [self switchContainerToView:@"bucketsViewController" fromView:currentPresentedViewController];
         } else if ([currentTitle isEqualToString:@"Groups"]) {
@@ -152,6 +160,7 @@
     
     if ([toName isEqualToString:@"thoughtsViewController"]) {
         [self setTitle:@"Notes"];
+        [self.segmentControl setTitle:@"Notes" forSegmentAtIndex:1];
     } else if ([toName isEqualToString:@"bucketsViewController"]) {
         [self setTitle:@"People"];
         [self.segmentControl setTitle:@"People" forSegmentAtIndex:0];
@@ -165,6 +174,9 @@
             //ATTENTION!
 //            [[(SHBucketsViewController*)vc tableView] reloadData];
         });
+    } else if ([toName isEqualToString:@"nudgesViewController"]){
+        [self setTitle:@"Nudges"];
+        [self.segmentControl setTitle:@"Nudges" forSegmentAtIndex:1];
     }
     
     [self setCurrentPresentedViewController:toName];
@@ -190,10 +202,8 @@
     if ([[LXSession thisSession] searchActivated]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"searchPushBucketViewController" object:nil userInfo:[notification userInfo]];
     } else {
-//        SHMessagesViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
-//        [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
-//        [self.navigationController pushViewController:vc animated:YES];
-        SHNudgesIndexViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHNudgesIndexViewController"];
+        SHMessagesViewController* vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
+        [vc setLocalKey:[[[notification userInfo] objectForKey:@"bucket"] localKey]];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

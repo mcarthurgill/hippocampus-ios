@@ -111,9 +111,9 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     } else {
         [[LXObjectManager defaultManager] refreshObjectWithKey:[self itemLocalKeyForIndexPath:indexPath]
                                                        success:^(id responseObject){
-                                                           [self.tableView beginUpdates];
-                                                           [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                                                           [self.tableView endUpdates];
+//                                                           [self.tableView beginUpdates];
+//                                                           [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//                                                           [self.tableView endUpdates];
                                                        }failure:nil
          ];
         return [self tableView:tV loadingCellForRowAtIndexPath:indexPath];
