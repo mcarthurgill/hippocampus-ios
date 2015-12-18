@@ -37,5 +37,7 @@
 
 - (int) daysInSelectedMonth;
 
++ (BOOL) date:(NSDate*)d1 isEqualTo:(NSDate*)d2;
++ (NSString*) formattedStringFromDate:(NSDate*)date;
 
 @end

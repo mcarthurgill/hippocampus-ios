@@ -31,7 +31,12 @@
     return [formatter stringFromDate:d];
 }
 
-
++ (NSString*) formattedStringFromDate:(NSDate*)date
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    return [formatter stringFromDate:date];
+}
 
 + (NSString*) timeAgoInWords:(double)relativeTimestamp
 {
@@ -148,6 +153,12 @@
 - (int) daysInSelectedMonth
 {
     return [NSArray daysInMonthAtIndex:(int)[self monthIndex] forYear:(int)[self yearInteger]];
+}
+
+
++ (BOOL) date:(NSDate *)d1 isEqualTo:(NSDate *)d2
+{
+    return d1.dayInteger == d2.dayInteger && d1.monthInteger == d2.monthInteger && d1.yearInteger == d2.yearInteger;
 }
 
 

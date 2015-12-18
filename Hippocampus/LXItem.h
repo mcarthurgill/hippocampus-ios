@@ -47,4 +47,5 @@
 
 - (void) addEstimatedRowHeight:(CGFloat)height;
 
+- (NSString*) determineNextReminderWithDate:(NSDate*)newDate andItemType:(NSString*)itemType;
 @end

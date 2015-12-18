@@ -472,4 +472,55 @@
 }
 
 
+- (NSString*) determineNextReminderWithDate:(NSDate*)newDate andItemType:(NSString*)itemType
+{
+    NSDate *today = [NSDate date];
+    NSCalendar *cal = [NSCalendar currentCalendar];
+    
+    if (!newDate || (([newDate timeIntervalSince1970] < [today timeIntervalSince1970]) && [itemType isEqualToString:@"once"])) {
+        return nil;
+    } else {
+        if ([itemType isEqualToString:@"daily"]) {
+            return [NSDate formattedStringFromDate:today];
+        } else if ([itemType isEqualToString:@"weekly"]) {
+            NSDate *tempDate = newDate;
+            if (tempDate >= today) {
+                return [NSDate formattedStringFromDate:tempDate];
+            } else {
+                while (tempDate < today) {
+                    tempDate = [cal dateByAddingUnit:NSCalendarUnitDay value:7  toDate:tempDate options:0];
+                    if (tempDate >= today) {
+                        return [NSDate formattedStringFromDate:tempDate];
+                    }
+                }
+            }
+        } else if ([itemType isEqualToString:@"monthly"]) {
+            NSDate *tempDate = newDate;
+            if (tempDate >= today) {
+                return [NSDate formattedStringFromDate:tempDate];
+            } else {
+                while (tempDate < today) {
+                    tempDate = [cal dateByAddingUnit:NSCalendarUnitMonth value:1 toDate:tempDate options:0];
+                    if (tempDate >= today) {
+                        return [NSDate formattedStringFromDate:tempDate];
+                    }
+                }
+            }
+        } else if ([itemType isEqualToString:@"yearly"]) {
+            NSDate *tempDate = newDate;
+            if (tempDate >= today) {
+                return [NSDate formattedStringFromDate:tempDate];
+            } else {
+                while (tempDate < today) {
+                    tempDate = [cal dateByAddingUnit:NSCalendarUnitYear value:1 toDate:tempDate options:0];
+                    if (tempDate >= today) {
+                        return [NSDate formattedStringFromDate:tempDate];
+                    }
+                }
+            }
+        }
+    }
+    return nil; 
+}
+
 @end

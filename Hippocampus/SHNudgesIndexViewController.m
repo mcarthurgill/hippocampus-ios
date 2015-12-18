@@ -25,8 +25,10 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+        
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshedObject:) name:@"refreshedObject" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reminderDateChanged:) name:@"updatedReminderDate" object:nil];
+    
     [self setupSettings];
 }
 
@@ -38,7 +40,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 {
     [super viewWillAppear:animated];
     [self setupConstraints];
-    [self beginningActions];
+    [self beginningActions:nil failure:nil];
 }
 
 - (void) setupConstraints
@@ -63,13 +65,19 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
-- (void) beginningActions
+- (void) beginningActions:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[[LXSession thisSession] user] nudgeKeysWithSuccess:^(id responseObject){
             [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
+            if (successCallback) {
+                successCallback(responseObject);
+            }
         }failure:^(NSError *error){
             [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
+            if (failureCallback) {
+                failureCallback(error);
+            }
         }];
     });
 }
@@ -97,7 +105,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     NSDate *d = [NSDate timeWithString:[[[[self nudgeKeysByDate] objectAtIndex:section] allKeys] firstObject]];
     NSDate *today = [NSDate date];
-    if (d.dayInteger == today.dayInteger && d.monthInteger == today.monthInteger && d.yearInteger == today.yearInteger) {
+    if ([NSDate date:d isEqualTo:today]) {
         return @"Today";
     } else {
         [formatter setDateFormat:@"EEE, MMMM d, yyyy"];
@@ -105,15 +113,76 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     }
 }
 
+- (void) removeItemFromNudges:(NSMutableDictionary*)item success:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
+{
+    NSDate *originalDate = [NSDate timeWithString:[item reminderDate]];
+    if ([self nudgeKeysByDate]) {
+        for (NSDictionary *itemHash in [self nudgeKeysByDate]) {
+            NSDate *d = [NSDate timeWithString:[[itemHash allKeys] firstObject]];
+            if ([NSDate date:originalDate isEqualTo:d]) {
+                NSMutableDictionary *mutableItemHash = [itemHash mutableCopy];
+                [[[mutableItemHash allValues] firstObject] removeObject:[item localKey]];
+                if (successCallback) {
+                    successCallback(nil);
+                }
+            }
+        }
+    }
+}
+
+- (void) addItemToNudges:(NSMutableDictionary*)item withItemType:(NSString*)itemType andNewDate:(NSDate*)newDate
+{
+    NSDate *nextReminder = [NSDate timeWithString:[item determineNextReminderWithDate:date andItemType:itemType]];
+    for (NSDictionary *itemHash in [self nudgeKeysByDate]) {
+        NSDate *dateKey = [NSDate timeWithString:[[itemHash allKeys] firstObject]];
+        if ([NSDate date:nextReminder isEqualTo:dateKey]) {
+            NSMutableDictionary *mutableItemHash = [itemHash mutableCopy];
+            if (![[[mutableItemHash allValues] firstObject] containsObject:[item localKey]]) {
+                [[[mutableItemHash allValues] firstObject] addObject:[item localKey]];
+                [self reloadScreen];
+            }
+        }
+    }
+
+}
+                     
+- (void) makeOfflineReminderDateChange:(NSNotification*)notification
+{
+    NSMutableDictionary *userInfo = [[notification userInfo] mutableCopy];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self updateNudgesDictionary:userInfo];
+    });
+}
+
 # pragma mark notifications
 
 - (void) refreshedObject:(NSNotification*)notification
 {
-    //replace/move/remove item_local_key in allNudgesKey, then do a complete replacement
     [self reloadScreen];
 }
 
+- (void) reminderDateChanged:(NSNotification*)notification
+{
+    [self beginningActions:nil failure:^(NSError *error){
+        if ([LXServer errorBecauseOfBadConnection:error.code]) {
+            [self makeOfflineReminderDateChange:notification];
+        }
+    }];
+}
 
+- (void) updateNudgesDictionary:(NSMutableDictionary *)updatedItem
+{
+    NSMutableDictionary *item = [[updatedItem objectForKey:@"item"] mutableCopy];
+    NSDate *newDate = [updatedItem objectForKey:@"newDate"];
+    NSString *itemType = [updatedItem objectForKey:@"itemType"];
+    if (item && newDate && itemType) {
+        [self removeItemFromNudges:item success:^(id responseObject){
+            [self addItemToNudges:item withItemType:itemType andNewDate:newDate];
+        }failure:nil];
+    } else if (item){ //remove nudge chosen
+        [self removeItemFromNudges:item success:nil failure:nil];
+    }
+}
 # pragma mark table view delegate and data source
 
 - (void) reloadScreen

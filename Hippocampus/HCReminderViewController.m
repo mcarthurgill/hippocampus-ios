@@ -377,13 +377,18 @@
 - (IBAction)saveAction:(id)sender
 {
     NSMutableDictionary* item = [self item];
+    NSString* newDate;
+    
     if (item) {
         NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZ"];
-        NSString* newDate = [dateFormat stringFromDate:self.currentlySelectedDate];
+        newDate = [dateFormat stringFromDate:self.currentlySelectedDate];
         
         [item saveRemoteWithNewAttributes:@{@"reminder_date":newDate, @"item_type":[self typeSelected]} success:nil failure:nil];
     }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedReminderDate" object:nil userInfo:@{@"item":item, @"itemType": [self typeSelected], @"newDate": self.currentlySelectedDate}];
+    
     [self dismissViewControllerAnimated:NO completion:^(void){}];
 }
 
@@ -404,7 +409,10 @@
     [comps setMonth:1];
     [comps setYear:1970];
     self.currentlySelectedDate = [[NSCalendar currentCalendar] dateFromComponents:comps];
-    [self.typeSegmentedControl setSelectedSegmentIndex:0]; 
+    [self.typeSegmentedControl setSelectedSegmentIndex:0];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedReminderDate" object:nil userInfo:@{@"item":[self item]}];
+    
     [self saveAction:sender];
 }
 

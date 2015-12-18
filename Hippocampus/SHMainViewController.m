@@ -45,6 +45,7 @@
 - (void) preloadViewControllers
 {
     SHNudgesIndexViewController *vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"nudgesViewController"];
+    [vc view]; //Necessary! It calls viewDidLoad and sets the observers for changed items
     [self.viewControllersCached setObject:vc forKey:@"nudgesViewController"];
 }
 
@@ -193,6 +194,7 @@
 {
     UIViewController* vc = [self.viewControllersCached objectForKey:viewControllerName];
     if (!vc) {
+        NSLog(@"******LOAD VC COULDNT FIND THE PRELOADED ONE************%@", viewControllerName);
         if ([viewControllerName isEqualToString:@"thoughtsViewController"]) {
             vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
             [(SHMessagesViewController*)vc setLocalKey:[NSMutableDictionary allThoughtsLocalKey]];
