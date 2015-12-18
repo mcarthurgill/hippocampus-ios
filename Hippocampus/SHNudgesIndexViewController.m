@@ -132,18 +132,19 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void) addItemToNudges:(NSMutableDictionary*)item withItemType:(NSString*)itemType andNewDate:(NSDate*)newDate
 {
-    NSDate *nextReminder = [NSDate timeWithString:[item determineNextReminderWithDate:date andItemType:itemType]];
-    for (NSDictionary *itemHash in [self nudgeKeysByDate]) {
-        NSDate *dateKey = [NSDate timeWithString:[[itemHash allKeys] firstObject]];
-        if ([NSDate date:nextReminder isEqualTo:dateKey]) {
-            NSMutableDictionary *mutableItemHash = [itemHash mutableCopy];
-            if (![[[mutableItemHash allValues] firstObject] containsObject:[item localKey]]) {
-                [[[mutableItemHash allValues] firstObject] addObject:[item localKey]];
-                [self reloadScreen];
+    NSDate *nextReminder = [NSDate timeWithString:[item determineNextReminderWithDate:newDate andItemType:itemType]];
+    if (nextReminder) {
+        for (NSDictionary *itemHash in [self nudgeKeysByDate]) {
+            NSDate *dateKey = [NSDate timeWithString:[[itemHash allKeys] firstObject]];
+            if ([NSDate date:nextReminder isEqualTo:dateKey]) {
+                NSMutableDictionary *mutableItemHash = [itemHash mutableCopy];
+                if (![[[mutableItemHash allValues] firstObject] containsObject:[item localKey]]) {
+                    [[[mutableItemHash allValues] firstObject] addObject:[item localKey]];
+                    [self reloadScreen];
+                }
             }
         }
     }
-
 }
                      
 - (void) makeOfflineReminderDateChange:(NSNotification*)notification
