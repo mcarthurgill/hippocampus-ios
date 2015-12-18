@@ -37,13 +37,20 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self setupConstraints];
     [self beginningActions];
 }
 
-- (void) viewDidAppear:(BOOL)animated
+- (void) setupConstraints
 {
-    [super viewDidAppear:animated];
+    if (self.navigationController.navigationBar.frame.size.height == 0) {
+        self.tableViewToTopLayoutGuideConstraint.constant = 44.0;
+    } else {
+        self.tableViewToTopLayoutGuideConstraint.constant = 0.0;
+    }
+    [self.view layoutIfNeeded];
 }
+
 
 # pragma mark - setup
 
@@ -58,15 +65,13 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void) beginningActions
 {
-    requesting = YES;
-    [self reloadScreen];
-    [[[LXSession thisSession] user] nudgeKeysWithSuccess:^(id responseObject){
-        requesting = NO;
-        [self reloadScreen];
-    }failure:^(NSError *error){
-        requesting = NO;
-        [self reloadScreen];
-    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[[LXSession thisSession] user] nudgeKeysWithSuccess:^(id responseObject){
+            [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
+        }failure:^(NSError *error){
+            [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
+        }];
+    });
 }
 
 
@@ -113,11 +118,6 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void) reloadScreen
 {
-    if (requesting && [[self nudgeKeysByDate] count] == 0 && hud.hidden) {
-        [self showHUDWithMessage:@"Getting Nudges..."];
-    } else if (!requesting && !hud.hidden){
-        [self hideHUD];
-    }
     [self.tableView reloadData];
 }
 
@@ -220,28 +220,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     if (item) {
         [item addEstimatedRowHeight:cell.frame.size.height];
     }
-    [self prePermissionsDelegate:@"notifications" message:[NSString stringWithFormat:@"Enable notifications to get a nudge on the morning of %@%@.", [NSDate timeAgoActualFromDatetime:[item reminderDate]], [item message] && [[item message] length] > 0 ? [NSString stringWithFormat:@" about the thought: \"%@.\"", [item message]] : @""]];
-
+    [self prePermissionsDelegate:@"notifications" message:@"Enable notifications to get a nudge for each of these notes."];
 }
-
-
-# pragma mark hud delegate
-
-- (void) showHUDWithMessage:(NSString*) message
-{
-    hud = [[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:hud];
-    hud.labelText = message;
-    hud.color = [[UIColor SHGreen] colorWithAlphaComponent:0.8f];
-    [hud show:YES];
-}
-
-- (void) hideHUD
-{
-    if (hud) {
-        [hud hide:YES];
-    }
-}
-
 
 @end

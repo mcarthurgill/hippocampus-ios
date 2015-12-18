@@ -31,6 +31,7 @@
     [super viewDidLoad];
     
     [self setupLogic];
+    [self preloadViewControllers];
     [self registerForNotifications];
     
     //[self setupSegmentedControl];
@@ -39,6 +40,12 @@
 - (void) setupLogic
 {
     self.viewControllersCached = [[NSMutableDictionary alloc] init];
+}
+
+- (void) preloadViewControllers
+{
+    SHNudgesIndexViewController *vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"nudgesViewController"];
+    [self.viewControllersCached setObject:vc forKey:@"nudgesViewController"];
 }
 
 - (void) setupSegmentedControl

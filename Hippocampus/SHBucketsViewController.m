@@ -214,6 +214,7 @@ static NSString *newBucketCellIdentifier = @"SHNewBucketTableViewCell";
 - (UITableViewCell*) tableView:(UITableView *)tV loadingCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     SHLoadingTableViewCell* cell = (SHLoadingTableViewCell*)[self.tableView dequeueReusableCellWithIdentifier:loadingCellIdentifier];
+    [cell setShouldInvert:NO];
     [cell configureWithResponseObject:[@{@"local_key":[[self bucketKeys] objectAtIndex:indexPath.row]} mutableCopy]];
     return cell;
 }

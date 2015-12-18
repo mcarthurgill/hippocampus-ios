@@ -81,13 +81,6 @@
     }
 }
 
-- (void) invertIfRightSideUp
-{
-    if (!inverted) {
-        [self invert];
-    }
-}
-
 - (void) invert
 {
     self.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0);

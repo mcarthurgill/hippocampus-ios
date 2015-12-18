@@ -22,6 +22,5 @@
 
 - (void) invertIfUpsideDown;
 - (void) invert;
-- (void) invertIfRightSideUp;
 
 @end

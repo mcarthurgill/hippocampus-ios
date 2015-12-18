@@ -44,7 +44,7 @@
                                     <constraint firstAttribute="height" constant="32" id="401-rt-Se5"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8hG-L1-fRI">
@@ -1654,20 +1654,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="1yt-bT-fpt" firstAttribute="top" secondItem="Tia-Qq-wgD" secondAttribute="bottom" id="688-Xt-MeR"/>
-                            <constraint firstItem="1yt-bT-fpt" firstAttribute="top" secondItem="5dI-Jh-2jz" secondAttribute="top" id="cgO-fk-RAS"/>
                             <constraint firstItem="1yt-bT-fpt" firstAttribute="bottom" secondItem="Goq-JM-VZS" secondAttribute="top" id="krf-TH-DGS"/>
                             <constraint firstItem="1yt-bT-fpt" firstAttribute="leading" secondItem="5dI-Jh-2jz" secondAttribute="leading" id="l2l-f9-Wa8"/>
                             <constraint firstAttribute="trailing" secondItem="1yt-bT-fpt" secondAttribute="trailing" id="vnK-4x-X62"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="cgO-fk-RAS"/>
-                            </mask>
-                        </variation>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="isZ-dc-nZ4"/>
                     <connections>
                         <outlet property="tableView" destination="1yt-bT-fpt" id="rHb-fB-QGL"/>
+                        <outlet property="tableViewToTopLayoutGuideConstraint" destination="688-Xt-MeR" id="KWW-ie-3Ae"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NBr-df-0ky" userLabel="First Responder" sceneMemberID="firstResponder"/>
