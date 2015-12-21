@@ -176,6 +176,7 @@
                            success:^(id responseObject){
                                if ([[responseObject objectForKey:@"reminders"] respondsToSelector:@selector(count)]) {
                                    [LXObjectManager assignLocal:[responseObject objectForKey:@"reminders"] WithLocalKey:@"nudgeLocalKeys" alsoToDisk:YES];
+                                   [LXObjectManager assignLocal:[responseObject objectForKey:@"nudge_list"] WithLocalKey:@"nudgeList" alsoToDisk:YES];
                                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updatedNudgeLocalKeys" object:nil userInfo:nil];
                                }
                                if (successCallback) {

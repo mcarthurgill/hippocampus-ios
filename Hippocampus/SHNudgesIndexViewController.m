@@ -96,6 +96,11 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     return [[LXObjectManager objectWithLocalKey:@"nudgeLocalKeys"] mutableCopy];
 }
 
+- (NSMutableArray*) nudgesList
+{
+    return [[LXObjectManager objectWithLocalKey:@"nudgeList"] mutableCopy];
+}
+
 - (NSMutableArray*) nudgeKeysForSection:(NSInteger)indexPathSection
 {
     return [[[[[self nudgeKeysByDate] objectAtIndex:indexPathSection] allValues] firstObject] mutableCopy];
@@ -238,7 +243,15 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void) refreshedObject:(NSNotification*)notification
 {
-    [self reloadScreen];
+    NSLog(@"****************");
+    NSLog(@"notification = %@", [self nudgesList]);
+    NSLog(@"****************");
+    if (NULL_TO_NIL([[notification userInfo] objectForKey:@"local_key"]) && [self nudgesList] && [[self nudgesList] containsObject:[[notification userInfo] objectForKey:@"local_key"]]) {
+        NSLog(@"****************");
+        NSLog(@"reloading!!!");
+        NSLog(@"****************");
+        [self reloadScreen];
+    }
 }
 
 - (void) reminderDateChanged:(NSNotification*)notification
