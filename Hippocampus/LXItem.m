@@ -474,13 +474,18 @@
 
 - (NSString*) determineNextReminderWithDate:(NSDate*)newDate andItemType:(NSString*)itemType
 {
+    NSLog(@"*****in determine next reminder");
     NSDate *today = [NSDate date];
     NSCalendar *cal = [NSCalendar currentCalendar];
     
     if (!newDate || (([newDate timeIntervalSince1970] < [today timeIntervalSince1970]) && [itemType isEqualToString:@"once"])) {
+            NSLog(@"*****in determine next reminder RETURNING NIL");
         return nil;
     } else {
-        if ([itemType isEqualToString:@"daily"]) {
+            NSLog(@"*****NEXT");
+        if ([itemType isEqualToString:@"once"]) {
+            return [NSDate formattedStringFromDate:newDate];
+        } else if ([itemType isEqualToString:@"daily"]) {
             return [NSDate formattedStringFromDate:today];
         } else if ([itemType isEqualToString:@"weekly"]) {
             NSDate *tempDate = newDate;
