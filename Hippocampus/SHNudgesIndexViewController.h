@@ -15,7 +15,8 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) NSMutableArray *reminderDates; 
-
+@property (strong, nonatomic) NSMutableArray *reminderDates;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableViewToTopLayoutGuideConstraint;
+
+- (void) prepareViewController;
 @end

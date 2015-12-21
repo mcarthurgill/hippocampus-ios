@@ -484,6 +484,8 @@
     } else {
             NSLog(@"*****NEXT");
         if ([itemType isEqualToString:@"once"]) {
+            NSLog(@"*****ONCE = %@", newDate);
+            NSLog(@"*****ONCE = %@", [NSDate formattedStringFromDate:newDate]);
             return [NSDate formattedStringFromDate:newDate];
         } else if ([itemType isEqualToString:@"daily"]) {
             return [NSDate formattedStringFromDate:today];

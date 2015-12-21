@@ -360,12 +360,9 @@ static LXObjectManager* defaultManager = nil;
     dispatch_queue_t backgroundQueue = dispatch_queue_create("com.busproductions.savetodiskqueue", 0);
     dispatch_async(backgroundQueue, ^{
         if (object) {
-            
             NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
             NSString *documentsDirectory = [paths objectAtIndex:0];
             NSString *filePath = [documentsDirectory stringByAppendingPathComponent:key];
-            
-            
             
             [NSKeyedArchiver archiveRootObject:[temp firstObject] toFile:filePath];
         }

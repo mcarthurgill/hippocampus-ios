@@ -185,6 +185,9 @@
     } else if ([toName isEqualToString:@"nudgesViewController"]){
         [self setTitle:@"Nudges"];
         [self.segmentControl setTitle:@"Nudges" forSegmentAtIndex:1];
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [(SHNudgesIndexViewController*)vc prepareViewController];
+        });
     }
     
     [self setCurrentPresentedViewController:toName];
@@ -194,7 +197,6 @@
 {
     UIViewController* vc = [self.viewControllersCached objectForKey:viewControllerName];
     if (!vc) {
-        NSLog(@"******LOAD VC COULDNT FIND THE PRELOADED ONE************%@", viewControllerName);
         if ([viewControllerName isEqualToString:@"thoughtsViewController"]) {
             vc = [[UIStoryboard storyboardWithName:@"Seahorse" bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@"SHMessagesViewController"];
             [(SHMessagesViewController*)vc setLocalKey:[NSMutableDictionary allThoughtsLocalKey]];

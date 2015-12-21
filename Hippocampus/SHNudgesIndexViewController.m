@@ -39,6 +39,11 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 - (void) viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self prepareViewController];
+}
+
+- (void) prepareViewController
+{
     [self setupConstraints];
     [self beginningActions:nil failure:nil];
 }
@@ -67,6 +72,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
 
 - (void) beginningActions:(void (^)(id responseObject))successCallback failure:(void (^)(NSError* error))failureCallback
 {
+    NSLog(@"beginning actions");
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[[LXSession thisSession] user] nudgeKeysWithSuccess:^(id responseObject){
             [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
@@ -74,6 +80,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
                 successCallback(responseObject);
             }
         }failure:^(NSError *error){
+            [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
             if (failureCallback) {
                 failureCallback(error);
             }
@@ -147,9 +154,7 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
     NSLog(@"*****add");
     NSDate *nextReminder = [NSDate timeWithString:[item determineNextReminderWithDate:newDate andItemType:itemType]];
     NSLog(@"next reminder = %@", nextReminder);
-    NSDate *today = [NSDate date];
     NSLog(@"*******next Reminder = %@", nextReminder);
-    NSMutableArray *nudges = [self nudgeKeysByDate];
     if (nextReminder) {
         NSLog(@"**inside add");
         NSMutableArray *nudgesCopy = [[self nudgeKeysByDate] mutableCopy];
@@ -158,38 +163,40 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
         for (int i=0; i < [nudgesCopy count]; i++) {
             NSLog(@"**inside FOR LOOP");
 
-            NSDate *dateKey = [NSDate timeWithString:[[[nudges objectAtIndex:i] allKeys] firstObject]];
+            NSDate *dateKey = [NSDate timeWithString:[[[nudgesCopy objectAtIndex:i] allKeys] firstObject]];
             NSLog(@"**GOT DATE KEY %@", dateKey);
 
             if ([NSDate date:nextReminder isEqualTo:dateKey]) {
                 NSLog(@"THEY ARE EQUAL %@", dateKey);
-                NSMutableArray *itemLocalKeys = [[[[nudges objectAtIndex:i] allValues] firstObject] mutableCopy];
+                NSMutableArray *itemLocalKeys = [[[[nudgesCopy objectAtIndex:i] allValues] firstObject] mutableCopy];
                 if (![itemLocalKeys containsObject:[item localKey]]) {
                     NSLog(@"***************");
                     NSLog(@"adding dictionary for %@", [item localKey]);
                     [itemLocalKeys addObject:[item localKey]];
-                    NSMutableDictionary *dateHash = [[nudges objectAtIndex:i] mutableCopy];
+                    NSMutableDictionary *dateHash = [[nudgesCopy objectAtIndex:i] mutableCopy];
                     [dateHash setObject:itemLocalKeys forKey:[[dateHash allKeys] firstObject]];
-                    [nudges replaceObjectAtIndex:i withObject:dateHash];
-                    [LXObjectManager assignLocal:nudges WithLocalKey:@"nudgeLocalKeys" alsoToDisk:YES];
+                    [nudgesCopy replaceObjectAtIndex:i withObject:dateHash];
+                    [LXObjectManager assignLocal:nudgesCopy WithLocalKey:@"nudgeLocalKeys" alsoToDisk:YES];
                     NSLog(@"after addition = %@", [self nudgeKeysByDate]);
                     NSLog(@"***************");
                     return;
                 }
+            } else {
+                NSComparisonResult result;
+                result = [dateKey compare:nextReminder]; // comparing the date in the array to next reminder date. if reminder date is
+                if(result==NSOrderedDescending) { //next reminder is an earlier date than the date comparing
+                    NSLog(@"***************");
+                    NSLog(@"creating new key for %@", [NSDate formattedStringFromDate:nextReminder]);
+                    NSLog(@"***************");
+                    NSMutableArray *itemLocalKeys = [[NSMutableArray alloc] initWithObjects:[item localKey], nil];
+                    NSString *dateKey = [NSDate formattedStringFromDate:nextReminder];
+                    NSMutableDictionary *dateHash = [[NSMutableDictionary alloc] init];
+                    [dateHash setObject:itemLocalKeys forKey:dateKey];
+                    [nudgesCopy insertObject:dateHash atIndex:i];
+                    [LXObjectManager assignLocal:nudgesCopy WithLocalKey:@"nudgeLocalKeys" alsoToDisk:YES];
+                    return;
+                }
             }
-            
-//            else if ([nextReminder timeIntervalSince1970] > [today timeIntervalSince1970]) {
-//                NSLog(@"***************");
-//                NSLog(@"creating new key for %@", [NSDate formattedStringFromDate:nextReminder]);
-//                NSLog(@"***************");
-//                NSMutableArray *itemLocalKeys = [[NSMutableArray alloc] initWithObjects:[item localKey], nil];
-//                NSString *dateKey = [NSDate formattedStringFromDate:nextReminder];
-//                NSMutableDictionary *dateHash = [[NSMutableDictionary alloc] init];
-//                [dateHash setObject:itemLocalKeys forKey:dateKey];
-//                [nudges insertObject:dateHash atIndex:i];
-//                [LXObjectManager assignLocal:nudges WithLocalKey:@"nudgeLocalKeys" alsoToDisk:YES];
-//                return; 
-//            }
         }
     }
 }
@@ -212,13 +219,13 @@ static NSString *itemViewControllerIdentifier = @"SHItemViewController";
         NSLog(@"*****in updateNudgesDictionary starting removal");
         [self removeItemFromNudges:item success:^(id responseObject){
             NSLog(@"*****in updateNudgesDictionary SUCCESS");
-            [self addItemToNudges:item withItemType:itemType andNewDate:newDate success:^(id responseObject){
-                NSLog(@"ADDED SUCCESSFUL");
-                [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
-            } failure:^(NSError *error){
-                NSLog(@"ADDED FAIL");
-                [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
-            }];
+//            [self addItemToNudges:item withItemType:itemType andNewDate:newDate success:^(id responseObject){
+//                NSLog(@"ADDED SUCCESSFUL");
+//                [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
+//            } failure:^(NSError *error){
+//                NSLog(@"ADDED FAIL");
+//                [self performSelectorOnMainThread:@selector(reloadScreen) withObject:nil waitUntilDone:NO];
+//            }];
         }failure:^(NSError *error){
             NSLog(@"*****in updateNudgesDictionary FAIL");
         }];
